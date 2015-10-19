@@ -73,3 +73,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+public
+npm-debug.log
+bb.sublime-workspace
+sftpPass.json
+couchPass.json
