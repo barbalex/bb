@@ -1,0 +1,45 @@
+{
+  "name": "bb",
+  "version": "1.0.0",
+  "description": "There are land or 'green' borders, and there are maritime or 'blue' borders. The focus of this website is on the latter - and on migration",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "clean": "gulp cleanPublic",
+    "prebuild": "npm run clean",
+    "build": "set NODE_ENV=production&& webpack",
+    "deploy": "surge -p public -d bb.surge.sh"
+  },
+  "keywords": [
+    "migration",
+    "migrants",
+    "mediterranean",
+    "Italy",
+    "Malta",
+    "Tunisia",
+    "Libya"
+  ],
+  "author": "Jürg Martin Gabriel",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer-stylus": "0.5.0",
+    "babel": "5.1.13",
+    "babel-core": "5.1.13",
+    "babel-loader": "5.0.0",
+    "css-loader": "0.12.0",
+    "del": "2.0.2",
+    "file-loader": "0.8.1",
+    "gulp": "3.9.0",
+    "hjs-webpack": "2.0.1",
+    "react": "0.13.2",
+    "react-hot-loader": "1.2.5",
+    "require-dir": "0.3.0",
+    "style-loader": "0.12.1",
+    "stylus-loader": "1.1.0",
+    "surge": "0.16.0",
+    "url-loader": "0.5.5",
+    "webpack": "1.8.11",
+    "webpack-dev-server": "1.8.2",
+    "yeticss": "6.0.5"
+  }
+}
