@@ -3,7 +3,9 @@
 import app from 'ampersand-app'
 import PouchDB from 'pouchdb'
 import Router from './router.js'
-import pouchUrl from './modules/getCouchUrl.js'
+import actions from './actions.js'
+import stores from './stores'
+import couchUrl from './modules/getCouchUrl.js'
 // make webpack import styles
 import './styles/main.styl'
 
@@ -24,17 +26,16 @@ window.PouchDB = PouchDB
  */
 app.extend({
   init () {
-    /**
-     * pouchdb keeps setting a lot of listeners which makes browsers show warnings in the console
-     * up the number of listeners to reduce the number of console warnings
-     */
-    PouchDB.setMaxListeners(80)
-    this.DB = new PouchDB(pouchUrl())
-      .then(() => {
-        this.router = new Router()
-        this.router.history.start()
-      })
-      .catch((error) => console.log('error:', error))
+    this.Actions = actions()
+    stores(this.Actions)
+    Promise.all([
+      this.db = new PouchDB(couchUrl())
+    ])
+    .then(() => {
+      this.router = new Router()
+      this.router.history.start()
+    })
+    .catch((error) => console.error('error:', error))
   }
 })
 
