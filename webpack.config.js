@@ -9,7 +9,7 @@ let config = getConfig({
   isDev: process.env.NODE_ENV !== 'production',
   // the excluded files are not cleared
   // and not hashed as would be if webpack imports them
-  clearBeforeBuild: '!(themes|images|favicon.ico)',
+  clearBeforeBuild: '!(tinymce|images|favicon.ico)',
   html: function (context) {
     return {
       'index.html': indexTemplate()
@@ -26,7 +26,18 @@ config.module.loaders.push(
   {test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
   {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
   {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
-  {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'}
+  {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'},
+  {
+    // Only apply on tinymce/tinymce
+    include: require.resolve('./node_modules/tinymce/tinymce.js'),
+    // Export window.tinymce
+    loader: 'exports?window.tinymce'
+  }
 )
+
+config.resolve.alias = {
+  // require('tinymce') will do require('tinymce/tinymce')
+  tinymce: 'tinymce/tinymce'
+}
 
 module.exports = config
