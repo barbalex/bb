@@ -1,12 +1,19 @@
 'use strict'
 
 import React from 'react'
-import { Navbar, NavBrand, NavItem, NavDropdown, Nav, MenuItem } from 'react-bootstrap'
+import { Navbar, NavBrand, NavItem, NavDropdown, Nav, MenuItem, Glyphicon } from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'Header',
 
+  propTypes: {
+    editing: React.PropTypes.bool,
+    onClickEdit: React.PropTypes.func
+  },
+
   render () {
+    const { editing, onClickEdit } = this.props
+    const glyph = editing ? 'eye-open' : 'pencil'
     return (
       <div>
         <div className='masthead introHeader'>
@@ -41,6 +48,7 @@ export default React.createClass({
                 <MenuItem eventKey='3'>IO & NGO</MenuItem>
               </NavDropdown>
               <NavItem eventKey={6} href='#'>About us</NavItem>
+              <NavItem eventKey={7} href='#' onClick={onClickEdit}><Glyphicon glyph={glyph} /></NavItem>
             </Nav>
           </Navbar>
         </div>

@@ -8,15 +8,23 @@ export default React.createClass({
   displayName: 'Page',
 
   propTypes: {
-    pageDoc: React.PropTypes.object
+    pageDoc: React.PropTypes.object,
+    editing: React.PropTypes.bool
   },
 
   render () {
-    const { pageDoc } = this.props
+    const { pageDoc, editing } = this.props
     const articleValue = Base64.decode(pageDoc.article)
+    if (editing) {
+      return (
+        <div>
+          <CkEditor value={articleValue} />
+        </div>
+      )
+    }
     return (
       <div>
-        <CkEditor value={articleValue} />
+        {articleValue}
       </div>
     )
   }

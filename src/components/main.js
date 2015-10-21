@@ -13,12 +13,14 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    pageDoc: React.PropTypes.object
+    pageDoc: React.PropTypes.object,
+    editing: React.PropTypes.bool
   },
 
   getInitialState () {
     return {
-      pageDoc: {}
+      pageDoc: {},
+      editing: true
     }
   },
 
@@ -31,12 +33,18 @@ export default React.createClass({
     this.setState({ pageDoc })
   },
 
+  onClickEdit () {
+    let { editing } = this.state
+    editing = !editing
+    this.setState({ editing })
+  },
+
   render () {
-    const { pageDoc } = this.state
+    const { pageDoc, editing } = this.state
     return (
       <NavHelper>
-        <Header />
-        <Page pageDoc={pageDoc} />
+        <Header editing={editing} onClickEdit={this.onClickEdit}/>
+        <Page pageDoc={pageDoc} editing={editing} />
       </NavHelper>
     )
   }
