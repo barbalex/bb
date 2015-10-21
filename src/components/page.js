@@ -12,6 +12,10 @@ export default React.createClass({
     editing: React.PropTypes.bool
   },
 
+  saveArticle (articleData) {
+    console.log('page.js shall save article', articleData)
+  },
+
   render () {
     const { pageDoc, editing } = this.props
     const articleValue = Base64.decode(pageDoc.article)

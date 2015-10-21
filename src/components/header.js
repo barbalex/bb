@@ -8,11 +8,12 @@ export default React.createClass({
 
   propTypes: {
     editing: React.PropTypes.bool,
-    onClickEdit: React.PropTypes.func
+    onClickEdit: React.PropTypes.func,
+    onClickSaveCkeditor: React.PropTypes.func
   },
 
   render () {
-    const { editing, onClickEdit } = this.props
+    const { editing, onClickEdit, onClickSaveCkeditor } = this.props
     const glyph = editing ? 'eye-open' : 'pencil'
     return (
       <div>
@@ -49,6 +50,7 @@ export default React.createClass({
               </NavDropdown>
               <NavItem eventKey={6} href='#'>About us</NavItem>
               <NavItem eventKey={7} href='#' onClick={onClickEdit}><Glyphicon glyph={glyph} /></NavItem>
+              <NavItem eventKey={8} href='#' onClick={onClickSaveCkeditor}><Glyphicon glyph='floppy-disk' /></NavItem>
             </Nav>
           </Navbar>
         </div>

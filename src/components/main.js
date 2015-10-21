@@ -26,10 +26,10 @@ export default React.createClass({
 
   componentDidMount () {
     // listen to stores
-    this.listenTo(app.pageStore, this.onPageStoreChange)
+    this.listenTo(app.pageDocStore, this.onPageDocStoreChange)
   },
 
-  onPageStoreChange (pageDoc) {
+  onPageDocStoreChange (pageDoc) {
     this.setState({ pageDoc })
   },
 
@@ -39,11 +39,15 @@ export default React.createClass({
     this.setState({ editing })
   },
 
+  onClickSaveCkeditor () {
+    app.Actions.saveCkeditor()
+  },
+
   render () {
     const { pageDoc, editing } = this.state
     return (
       <NavHelper>
-        <Header editing={editing} onClickEdit={this.onClickEdit}/>
+        <Header editing={editing} onClickEdit={this.onClickEdit} onClickSaveCkeditor={this.onClickSaveCkeditor}/>
         <Page pageDoc={pageDoc} editing={editing} />
       </NavHelper>
     )
