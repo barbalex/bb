@@ -16,7 +16,6 @@ export default React.createClass({
     const articleValue = Base64.decode(pageDoc.article)
     return (
       <div>
-        <p>Hello World</p>
         <CkEditor value={articleValue} />
       </div>
     )

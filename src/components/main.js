@@ -4,6 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
 import NavHelper from '../components/navHelper.js'
+import Header from '../components/header.js'
 import Page from './page.js'
 
 export default React.createClass({
@@ -34,6 +35,7 @@ export default React.createClass({
     const { pageDoc } = this.state
     return (
       <NavHelper>
+        <Header />
         <Page pageDoc={pageDoc} />
       </NavHelper>
     )
