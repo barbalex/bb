@@ -27,7 +27,7 @@ export default React.createClass({
             </div>
           </div>
         </div>
-        <div id='nav-wrapper' data-spy='affix' data-offset-top='150'>
+        <div id='nav-wrapper' dataSpy='affix' dataOffsetTop='150'>
           <Navbar inverse>
             <NavBrand>Home</NavBrand>
             <Nav right>
