@@ -4,9 +4,11 @@ import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
 import { Base64 } from 'js-base64'
+// import 'tinymce/tinymce.js'
+import TinyMCE from 'react-tinymce'
 
 export default React.createClass({
-  displayName: 'CkEditor',
+  displayName: 'Editor',
 
   mixins: [ListenerMixin],
 
@@ -17,17 +19,16 @@ export default React.createClass({
 
   componentDidMount () {
     this.listenTo(app.requestSaveCkeditorStore, this.onRequestSaveCkeditor)
-    window.CKEDITOR.replace('article', {
-      // allow Content that ckeditor can not build itself
-      allowedContent: false
+    window.tinymce.init({
+      selector: '#article'
     })
   },
 
   onRequestSaveCkeditor () {
     const { onSaveArticle } = this.props
     // TODO: how get the right instance?
-    const articleDecoded = window.CKEDITOR.instances.article.getData()
-    console.log('ckeditor.js, onRequestSaveCkeditor, articleDecoded', articleDecoded)
+    const articleDecoded = window.tinyMCE.activeEditor.getContent()
+    console.log('editor.js, onRequestSaveCkeditor, articleDecoded', articleDecoded)
     const articleEncoded = Base64.encode(articleDecoded)
     onSaveArticle(articleEncoded)
   },

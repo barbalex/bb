@@ -2,29 +2,26 @@
 
 import app from 'ampersand-app'
 import Reflux from 'reflux'
-import PouchDB from 'pouchdb'
 
 export default (Actions) => {
   app.pageDocStore = Reflux.createStore({
 
     listenables: Actions,
 
-    onGetPage (id) {
+    onGetDoc (id) {
       app.db.get(id, { include_docs: true })
         .then((doc) => this.trigger(doc))
         .catch((error) => console.log('Error fetching page ' + id + ':', error))
     },
 
-    onSaveArticle (article) {
-
-
-      app.db.put(pageDoc)
+    onSaveDoc (doc) {
+      app.db.put(doc)
         .then((resp) => {
           // resp.rev is new rev
-          pageDoc._rev = rev
-          this.trigger(pageDoc)
+          doc._rev = resp.rev
+          this.trigger(doc)
         })
-        .catch((error) => console.error('savePageDocStore, onSavePageDoc:', error))
+        .catch((error) => console.error('pageDocStore, onSaveDoc:', error))
     }
   })
 

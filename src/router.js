@@ -14,10 +14,11 @@ export default Router.extend({
   },
 
   home () {
-    app.Actions.getPage('pages_home')
+    app.Actions.getDoc('pages_home')
     ReactDOM.render(
       <Main />,
       document.getElementById('content')
+      //document.body
     )
   }
 })

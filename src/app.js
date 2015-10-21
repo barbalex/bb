@@ -10,10 +10,11 @@ import 'expose?$!expose?jQuery!jquery'
 // make webpack import styles
 import './styles/main.styl'
 import 'bootstrap-webpack'
+// import 'tinymce/tinymce.js'
 
 // function requireAll(r) { r.keys().forEach(r) }
 // requireAll(require.context('./libs/', true, /.*/))
-//import 'script!./ckeditor/ckeditor.js'
+// import 'script!./tinymce/tinymce.min.js'
 
 /**
  * expose 'app' to the browser console
@@ -26,11 +27,11 @@ window.app = app
  */
 window.PouchDB = PouchDB
 
-$('#nav-wrapper').affix({
+/*window.$('#nav-wrapper').affix({
   offset: {
     top: 150
   }
-});
+})*/
 
 /**
  * ampersand-app is extended with app methods (=singleton)

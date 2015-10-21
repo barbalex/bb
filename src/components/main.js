@@ -40,7 +40,13 @@ export default React.createClass({
   },
 
   onClickSaveCkeditor () {
-    app.Actions.saveCkeditor()
+    app.Actions.requestSaveCkeditor()
+  },
+
+  onSaveArticle (articleEncoded) {
+    let { pageDoc } = this.state
+    pageDoc.article = articleEncoded
+    app.Actions.saveDoc(pageDoc)
   },
 
   render () {
@@ -48,7 +54,7 @@ export default React.createClass({
     return (
       <NavHelper>
         <Header editing={editing} onClickEdit={this.onClickEdit} onClickSaveCkeditor={this.onClickSaveCkeditor}/>
-        <Page pageDoc={pageDoc} editing={editing} />
+        <Page pageDoc={pageDoc} editing={editing} onSaveArticle={this.onSaveArticle} />
       </NavHelper>
     )
   }

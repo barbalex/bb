@@ -9,14 +9,14 @@ let config = getConfig({
   isDev: process.env.NODE_ENV !== 'production',
   // the excluded files are not cleared
   // and not hashed as would be if webpack imports them
-  clearBeforeBuild: '!(ckeditor|images|favicon.ico)',
+  clearBeforeBuild: '!(themes|images|favicon.ico)',
   html: function (context) {
     return {
       'index.html': indexTemplate()
     }
-  },
-  // this only works on mac
-  hostname: 'alex-mac.local'
+  }
+// this only works on mac
+// hostname: 'alex-mac.local'
 })
 
 config.module.loaders.push(

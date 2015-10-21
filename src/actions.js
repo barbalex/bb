@@ -4,9 +4,9 @@ import Reflux from 'reflux'
 
 export default () => {
   let Actions = Reflux.createActions({
-    getPage: {},
+    getDoc: {},
     requestSaveCkeditor: {},
-    saveArticle: {}
+    saveDoc: {}
   })
   return Actions
 }
