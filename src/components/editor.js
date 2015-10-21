@@ -5,7 +5,6 @@ import React from 'react'
 import { ListenerMixin } from 'reflux'
 import { Base64 } from 'js-base64'
 // import 'tinymce/tinymce.js'
-import TinyMCE from 'react-tinymce'
 
 export default React.createClass({
   displayName: 'Editor',
@@ -19,6 +18,7 @@ export default React.createClass({
 
   componentDidMount () {
     this.listenTo(app.requestSaveCkeditorStore, this.onRequestSaveCkeditor)
+    window.tinymce.baseURL = 'tinymce'
     window.tinymce.init({
       selector: '#article'
     })
@@ -27,7 +27,7 @@ export default React.createClass({
   onRequestSaveCkeditor () {
     const { onSaveArticle } = this.props
     // TODO: how get the right instance?
-    const articleDecoded = window.tinyMCE.activeEditor.getContent()
+    const articleDecoded = window.tinymce.activeEditor.getContent()
     console.log('editor.js, onRequestSaveCkeditor, articleDecoded', articleDecoded)
     const articleEncoded = Base64.encode(articleDecoded)
     onSaveArticle(articleEncoded)

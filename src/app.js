@@ -10,7 +10,7 @@ import 'expose?$!expose?jQuery!jquery'
 // make webpack import styles
 import './styles/main.styl'
 import 'bootstrap-webpack'
-// import 'tinymce/tinymce.js'
+import 'tinymce'
 
 // function requireAll(r) { r.keys().forEach(r) }
 // requireAll(require.context('./libs/', true, /.*/))
