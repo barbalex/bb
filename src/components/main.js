@@ -20,7 +20,7 @@ export default React.createClass({
   getInitialState () {
     return {
       pageDoc: {},
-      editing: true
+      editing: false
     }
   },
 

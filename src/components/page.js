@@ -22,10 +22,9 @@ export default React.createClass({
         </div>
       )
     }
+    function createMarkup() { return {__html: articleValue}; }
     return (
-      <div>
-        {articleValue}
-      </div>
+      <div dangerouslySetInnerHTML={createMarkup()} />
     )
   }
 })
