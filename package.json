@@ -5,8 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "clean": "gulp cleanPublic",
-    "prebuild": "npm run clean",
     "build": "set NODE_ENV=production&& webpack",
     "deploy": "surge -p public -d bb.surge.sh"
   },

@@ -11,6 +11,10 @@ import 'expose?$!expose?jQuery!jquery'
 import './styles/main.styl'
 import 'bootstrap-webpack'
 
+// function requireAll(r) { r.keys().forEach(r) }
+// requireAll(require.context('./libs/', true, /.*/))
+//import 'script!./ckeditor/ckeditor.js'
+
 /**
  * expose 'app' to the browser console
  * this is handy to call actions and stores in the browser console

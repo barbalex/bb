@@ -17,7 +17,7 @@ export default Router.extend({
     app.Actions.getPage('pages_home')
     ReactDOM.render(
       <Main />,
-      document.body
+      document.getElementById('content')
     )
   }
 })

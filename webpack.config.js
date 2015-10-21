@@ -1,11 +1,20 @@
 'use strict'
 
 var getConfig = require('hjs-webpack')
+var indexTemplate = require('./src/indexTemplate.js')
 
 let config = getConfig({
   in: 'src/app.js',
   out: 'public',
-  isDev: process.env.NODE_ENV !== 'production'
+  isDev: process.env.NODE_ENV !== 'production',
+  // the excluded files are not cleared
+  // and not hashed as would be if webpack imports them
+  clearBeforeBuild: '!(ckeditor|images|favicon.ico)',
+  html: function (context) {
+    return {
+      'index.html': indexTemplate()
+    }
+  }
 })
 
 config.module.loaders.push(

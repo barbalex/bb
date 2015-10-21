@@ -17,10 +17,14 @@ export default React.createClass({
     })
   },
 
+  shouldComponentUpdate () {
+    return false
+  },
+
   render () {
     const { value } = this.props
     return (
-      <textarea id='document' value={value} />
+      <textarea id='document' defaultValue={value} />
     )
   }
 })
