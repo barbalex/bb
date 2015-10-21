@@ -15,6 +15,8 @@ let config = getConfig({
       'index.html': indexTemplate()
     }
   }
+  // this only works on mac
+  // hostname: 'alex.local'
 })
 
 config.module.loaders.push(
