@@ -8,12 +8,11 @@ export default React.createClass({
 
   propTypes: {
     editing: React.PropTypes.bool,
-    onClickEdit: React.PropTypes.func,
-    onClickSaveCkeditor: React.PropTypes.func
+    onClickEdit: React.PropTypes.func
   },
 
   render () {
-    const { editing, onClickEdit, onClickSaveCkeditor } = this.props
+    const { editing, onClickEdit } = this.props
     const glyph = editing ? 'eye-open' : 'pencil'
     return (
       <div>
@@ -38,7 +37,7 @@ export default React.createClass({
         <div id='nav-wrapper' dataSpy='affix' dataOffsetTop='150'>
           <Navbar inverse>
             <NavBrand>Home</NavBrand>
-            <Nav right>
+            <Nav>
               <NavItem eventKey={1} href='#'>Events</NavItem>
               <NavItem eventKey={2} href='#'>Commentaries</NavItem>
               <NavItem eventKey={3} href='#'>Sources</NavItem>
@@ -49,6 +48,8 @@ export default React.createClass({
                 <MenuItem eventKey='3'>IO & NGO</MenuItem>
               </NavDropdown>
               <NavItem eventKey={6} href='#'>About us</NavItem>
+            </Nav>
+            <Nav right>
               <NavItem eventKey={7} href='#' onClick={onClickEdit}><Glyphicon glyph={glyph} /></NavItem>
             </Nav>
           </Navbar>
