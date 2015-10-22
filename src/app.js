@@ -33,6 +33,8 @@ window.PouchDB = PouchDB
   }
 })*/
 
+
+
 /**
  * ampersand-app is extended with app methods (=singleton)
  * modules that need an app method import ampersand-app instead of using a global

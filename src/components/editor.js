@@ -16,6 +16,10 @@ export default React.createClass({
   },
 
   componentDidMount () {
+    const { onSaveArticle } = this.props
+    // height = window - menu height - (menubar + iconbar)
+    const height = window.innerHeight - 52 - 74
+    console.log('height', height)
     this.listenTo(app.requestSaveCkeditorStore, this.onRequestSaveCkeditor)
     window.tinymce.init({
       selector: '#article',
@@ -26,10 +30,17 @@ export default React.createClass({
       ],
       menubar: 'edit insert view format table tools',
       toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | emoticons print fullscreen',
-      height: 1000,
+      height: height,
       browser_spellcheck: true,
       automatic_uploads: false,
-      statusbar: false
+      statusbar: false,
+      setup (editor) {
+        editor.on('change undo redo', (e) => {
+          const articleDecoded = editor.getContent()
+          const articleEncoded = Base64.encode(articleDecoded)
+          onSaveArticle(articleEncoded)
+        })
+      }
     })
   },
 
@@ -39,17 +50,16 @@ export default React.createClass({
     window.tinymce.remove('#article')
   },
 
+  shouldComponentUpdate () {
+    return false
+  },
+
   onRequestSaveCkeditor () {
     const { onSaveArticle } = this.props
-    // TODO: how get the right instance?
     const articleDecoded = window.tinymce.activeEditor.getContent()
     console.log('editor.js, onRequestSaveCkeditor, articleDecoded', articleDecoded)
     const articleEncoded = Base64.encode(articleDecoded)
     onSaveArticle(articleEncoded)
-  },
-
-  shouldComponentUpdate () {
-    return false
   },
 
   render () {
