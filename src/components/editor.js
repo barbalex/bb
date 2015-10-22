@@ -40,7 +40,7 @@ export default React.createClass({
     // scroll editor to top
     window.$('html, body').animate({
       scrollTop: 140
-    }, 500)
+    }, 800)
   },
 
   componentWillUnmount () {
