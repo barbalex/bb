@@ -8,12 +8,13 @@ export default React.createClass({
   displayName: 'Header',
 
   propTypes: {
+    page: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func
   },
 
   render () {
-    const { editing, onClickEdit } = this.props
+    const { page, editing, onClickEdit } = this.props
     const glyph = editing ? 'eye-open' : 'pencil'
     return (
       <div>
@@ -22,7 +23,7 @@ export default React.createClass({
             <NavBrand>Home</NavBrand>
             <CollapsibleNav eventKey={0}>
               <Nav navbar>
-                <NavItem eventKey={0} href='#'>Events</NavItem>
+                <NavItem eventKey={0} href='#' {}>Events</NavItem>
                 <NavItem eventKey={1} href='#'>Commentaries</NavItem>
                 <NavItem eventKey={2} href='#'>Sources</NavItem>
                 <NavItem eventKey={3} href='#'>Actors</NavItem>

@@ -14,6 +14,7 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
+    page: React.PropTypes.string,
     pageDoc: React.PropTypes.object,
     editing: React.PropTypes.bool
   },
@@ -47,11 +48,11 @@ export default React.createClass({
   },
 
   render () {
-    const { pageDoc, editing } = this.state
+    const { page, pageDoc, editing } = this.state
     return (
       <NavHelper>
         <Header />
-        <Navbar editing={editing} onClickEdit={this.onClickEdit} />
+        <Navbar page={page} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
           <Page pageDoc={pageDoc} editing={editing} onSaveArticle={this.onSaveArticle} />
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
