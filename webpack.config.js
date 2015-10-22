@@ -28,16 +28,14 @@ config.module.loaders.push(
   {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
   {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'},
   {
-    // Only apply on tinymce/tinymce
-    include: require.resolve('./node_modules/tinymce/tinymce.js'),
-    // Export window.tinymce
-    loader: 'exports?window.tinymce'
+    test: /tinymce\/tinymce\.js/,
+    loader: 'imports?document=>window.document,this=>window!exports?window.tinymce'
   }
 )
 
 config.resolve.alias = {
   // require('tinymce') will do require('tinymce/tinymce')
-  tinymce: 'tinymce/tinymce'
+  tinymce: 'tinymce/tinymce.js'
 }
 
 module.exports = config

@@ -4,7 +4,6 @@ import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
 import { Base64 } from 'js-base64'
-// import 'tinymce/tinymce.js'
 
 export default React.createClass({
   displayName: 'Editor',
@@ -18,9 +17,14 @@ export default React.createClass({
 
   componentDidMount () {
     this.listenTo(app.requestSaveCkeditorStore, this.onRequestSaveCkeditor)
-    window.tinymce.baseURL = 'tinymce'
     window.tinymce.init({
-      selector: '#article'
+      selector: '#article',
+      plugins: [
+        'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+        'save table contextmenu directionality emoticons template paste textcolor'
+      ],
+      height: 600
     })
   },
 
