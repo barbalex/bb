@@ -26,16 +26,16 @@ config.module.loaders.push(
   {test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
   {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'},
   {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
-  {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'},
+  {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'} /*,
   {
     test: /tinymce\/tinymce\.js/,
     loader: 'imports?document=>window.document,this=>window!exports?window.tinymce'
-  }
+  }*/
 )
 
-config.resolve.alias = {
+/*config.resolve.alias = {
   // require('tinymce') will do require('tinymce/tinymce')
   tinymce: 'tinymce/tinymce.js'
-}
+}*/
 
 module.exports = config
