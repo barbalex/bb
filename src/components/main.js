@@ -5,6 +5,7 @@ import React from 'react'
 import { ListenerMixin } from 'reflux'
 import NavHelper from '../components/navHelper.js'
 import Header from '../components/header.js'
+import Navbar from '../components/navbar.js'
 import Page from './page.js'
 
 export default React.createClass({
@@ -49,7 +50,8 @@ export default React.createClass({
     const { pageDoc, editing } = this.state
     return (
       <NavHelper>
-        <Header editing={editing} onClickEdit={this.onClickEdit} />
+        <Header />
+        <Navbar editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
           <Page pageDoc={pageDoc} editing={editing} onSaveArticle={this.onSaveArticle} />
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
