@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Navbar, NavBrand, CollapsibleNav, NavItem, NavDropdown, Nav, MenuItem, Glyphicon } from 'react-bootstrap'
+import AffixWrapper from './affixWrapper.js'
 
 export default React.createClass({
   displayName: 'Header',
@@ -34,7 +35,7 @@ export default React.createClass({
             </div>
           </div>
         </div>
-        <div id='nav-wrapper' dataSpy='affix' dataOffsetTop='150'>
+        <AffixWrapper id='nav-wrapper' offset={150}>
           <Navbar inverse toggleNavKey={0}>
             <NavBrand>Home</NavBrand>
             <CollapsibleNav eventKey={0}>
@@ -55,7 +56,7 @@ export default React.createClass({
               </Nav>
             </CollapsibleNav>
           </Navbar>
-        </div>
+        </AffixWrapper>
       </div>
     )
   }
