@@ -2,15 +2,23 @@
 
 import app from 'ampersand-app'
 import Reflux from 'reflux'
+import getPathFromDoc from './modules/getPathFromDoc.js'
 
 export default (Actions) => {
-  app.pageDocStore = Reflux.createStore({
+  app.docStore = Reflux.createStore({
 
     listenables: Actions,
 
+    doc: {},
+
     onGetDoc (id) {
       app.db.get(id, { include_docs: true })
-        .then((doc) => this.trigger(doc))
+        .then((doc) => {
+          this.doc = doc
+          const path = getPathFromDoc(doc)
+          app.router.navigate('/' + path)
+          this.trigger(doc)
+        })
         .catch((error) => console.log('Error fetching page ' + id + ':', error))
     },
 
@@ -21,22 +29,7 @@ export default (Actions) => {
           doc._rev = resp.rev
           this.trigger(doc)
         })
-        .catch((error) => console.error('pageDocStore, onSaveDoc:', error))
-    }
-  })
-
-  app.pathStore = Reflux.createStore({
-
-    listenables: Actions,
-
-    path: '',
-
-    onLoadPath (path) {
-      this.path = path
-      const docName = 'pages_' + path.replace(/\//g, '_')
-      app.Actions.getDoc(docName)
-      this.trigger(path)
-      app.router.navigate('/' + path)
+        .catch((error) => console.error('docStore, onSaveDoc:', error))
     }
   })
 }

@@ -14,25 +14,24 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    page: React.PropTypes.string,
-    pageDoc: React.PropTypes.object,
+    doc: React.PropTypes.object,
     editing: React.PropTypes.bool
   },
 
   getInitialState () {
     return {
-      pageDoc: {},
+      doc: {},
       editing: false
     }
   },
 
   componentDidMount () {
     // listen to stores
-    this.listenTo(app.pageDocStore, this.onPageDocStoreChange)
+    this.listenTo(app.docStore, this.onDocStoreChange)
   },
 
-  onPageDocStoreChange (pageDoc) {
-    this.setState({ pageDoc })
+  onDocStoreChange (doc) {
+    this.setState({ doc })
   },
 
   onClickEdit () {
@@ -42,19 +41,19 @@ export default React.createClass({
   },
 
   onSaveArticle (articleEncoded) {
-    let { pageDoc } = this.state
-    pageDoc.article = articleEncoded
-    app.Actions.saveDoc(pageDoc)
+    let { doc } = this.state
+    doc.article = articleEncoded
+    app.Actions.saveDoc(doc)
   },
 
   render () {
-    const { page, pageDoc, editing } = this.state
+    const { doc, editing } = this.state
     return (
       <NavHelper>
         <Header />
-        <Navbar page={page} editing={editing} onClickEdit={this.onClickEdit} />
+        <Navbar doc={doc} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
-          <Page pageDoc={pageDoc} editing={editing} onSaveArticle={this.onSaveArticle} />
+          <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} />
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
         </div>
       </NavHelper>

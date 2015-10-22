@@ -27,14 +27,6 @@ window.app = app
  */
 window.PouchDB = PouchDB
 
-/*window.$('#nav-wrapper').affix({
-  offset: {
-    top: 150
-  }
-})*/
-
-
-
 /**
  * ampersand-app is extended with app methods (=singleton)
  * modules that need an app method import ampersand-app instead of using a global

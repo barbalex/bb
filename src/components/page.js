@@ -8,14 +8,14 @@ export default React.createClass({
   displayName: 'Page',
 
   propTypes: {
-    pageDoc: React.PropTypes.object,
+    doc: React.PropTypes.object,
     editing: React.PropTypes.bool,
     onSaveArticle: React.PropTypes.func
   },
 
   render () {
-    const { pageDoc, editing, onSaveArticle } = this.props
-    const articleEncoded = pageDoc.article
+    const { doc, editing, onSaveArticle } = this.props
+    const articleEncoded = doc.article
     const articleDecoded = Base64.decode(articleEncoded)
     if (editing) {
       return (
