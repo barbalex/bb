@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { Navbar, NavBrand, NavItem, NavDropdown, Nav, MenuItem, Glyphicon } from 'react-bootstrap'
+import { Navbar, NavBrand, CollapsibleNav, NavItem, NavDropdown, Nav, MenuItem, Glyphicon } from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'Header',
@@ -35,23 +35,25 @@ export default React.createClass({
           </div>
         </div>
         <div id='nav-wrapper' dataSpy='affix' dataOffsetTop='150'>
-          <Navbar inverse>
+          <Navbar inverse toggleNavKey={0}>
             <NavBrand>Home</NavBrand>
-            <Nav>
-              <NavItem eventKey={1} href='#'>Events</NavItem>
-              <NavItem eventKey={2} href='#'>Commentaries</NavItem>
-              <NavItem eventKey={3} href='#'>Sources</NavItem>
-              <NavItem eventKey={4} href='#'>Actors</NavItem>
-              <NavDropdown eventKey={5} title='Publications' id='publications'>
-                <MenuItem eventKey='1'>Academic</MenuItem>
-                <MenuItem eventKey='2'>European Union</MenuItem>
-                <MenuItem eventKey='3'>IO & NGO</MenuItem>
-              </NavDropdown>
-              <NavItem eventKey={6} href='#'>About us</NavItem>
-            </Nav>
-            <Nav right>
-              <NavItem eventKey={7} href='#' onClick={onClickEdit}><Glyphicon glyph={glyph} /></NavItem>
-            </Nav>
+            <CollapsibleNav eventKey={0}>
+              <Nav navbar>
+                <NavItem eventKey={0} href='#'>Events</NavItem>
+                <NavItem eventKey={1} href='#'>Commentaries</NavItem>
+                <NavItem eventKey={2} href='#'>Sources</NavItem>
+                <NavItem eventKey={3} href='#'>Actors</NavItem>
+                <NavDropdown eventKey={4} title='Publications' id='publications'>
+                  <MenuItem eventKey='1'>Academic</MenuItem>
+                  <MenuItem eventKey='2'>European Union</MenuItem>
+                  <MenuItem eventKey='3'>IO & NGO</MenuItem>
+                </NavDropdown>
+                <NavItem eventKey={5} href='#'>About us</NavItem>
+              </Nav>
+              <Nav navbar right>
+                <NavItem eventKey={1} href='#' onClick={onClickEdit}><Glyphicon glyph={glyph} /></NavItem>
+              </Nav>
+            </CollapsibleNav>
           </Navbar>
         </div>
       </div>

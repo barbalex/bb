@@ -7,6 +7,9 @@
   
 body .navbar
   margin-bottom 0
+  
+.navbar-brand
+  color #D5D5D5
 
 p,
 div
@@ -23,10 +26,23 @@ a:link
 .introHeader {
 	margin-top: -10px
 	height: 150px
-  background-image: url('../../images/ocean.jpg')
-  z-index: -1
+  // background-image: url('../../images/ocean.jpg')
+  z-index: 1
   padding: 15px
 }
+
+.introHeader:before
+  content ' '
+  background-image url('../../images/ocean.jpg')
+  display block
+  position absolute
+  left 0
+  top 0
+  width 100%
+  height 150px
+  z-index: -1
+  opacity: .6
+  
 
 .introText,
 .introText div
