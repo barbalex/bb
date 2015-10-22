@@ -15,14 +15,14 @@ export default Router.extend({
   },
 
   home () {
-    app.Actions.getDoc('pages_home')
+    app.Actions.loadPath('home')
     ReactDOM.render(
       <Main page='home' />, document.getElementById('content')
     )
   },
 
   sources () {
-    app.Actions.getDoc('pages_sources')
+    app.Actions.loadPath('sources')
     ReactDOM.render(
       <Main page='sources' />, document.getElementById('content')
     )

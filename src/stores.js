@@ -24,4 +24,19 @@ export default (Actions) => {
         .catch((error) => console.error('pageDocStore, onSaveDoc:', error))
     }
   })
+
+  app.pathStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    path: '',
+
+    onLoadPath (path) {
+      this.path = path
+      const docName = 'pages_' + path.replace(/\//g, '_')
+      app.Actions.getDoc(docName)
+      this.trigger(path)
+      app.router.navigate('/' + path)
+    }
+  })
 }
