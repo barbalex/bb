@@ -8,11 +8,11 @@ module.exports = () => {
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-  <link rel="stylesheet" href="/assets-and-index-html.1.0.0.css"/>
+  <link rel="stylesheet" href="/bb.1.0.0.css"/>
 </head>
 <body>
   <div id='content'></div>
 </body>
-<script src="/app.js"></script>
+<script src="/bb.1.0.0.js"></script>
 `
 }
