@@ -28,6 +28,7 @@ export default React.createClass({
       browser_spellcheck: true,
       automatic_uploads: false,
       statusbar: false,
+      // enable auto-saving
       setup (editor) {
         editor.on('change undo redo', (e) => {
           const articleDecoded = editor.getContent()
@@ -49,6 +50,7 @@ export default React.createClass({
   },
 
   shouldComponentUpdate () {
+    // make shure react does not touch this component
     return false
   },
 

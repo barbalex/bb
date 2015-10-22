@@ -1,8 +1,8 @@
 /**
- * @author Juliano Castilho <julianocomg@gmail.com>
+ * original author: Juliano Castilho <julianocomg@gmail.com>
  * https://gist.github.com/julianocomg/296469e414db1202fc86
  */
-const React = require('react');
+import React from 'react'
 import classnames from 'classnames'
 
 export default React.createClass({
