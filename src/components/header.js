@@ -50,7 +50,6 @@ export default React.createClass({
               </NavDropdown>
               <NavItem eventKey={6} href='#'>About us</NavItem>
               <NavItem eventKey={7} href='#' onClick={onClickEdit}><Glyphicon glyph={glyph} /></NavItem>
-              <NavItem eventKey={8} href='#' onClick={onClickSaveCkeditor}><Glyphicon glyph='floppy-disk' /></NavItem>
             </Nav>
           </Navbar>
         </div>

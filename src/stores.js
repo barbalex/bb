@@ -24,13 +24,4 @@ export default (Actions) => {
         .catch((error) => console.error('pageDocStore, onSaveDoc:', error))
     }
   })
-
-  app.requestSaveCkeditorStore = Reflux.createStore({
-
-    listenables: Actions,
-
-    onRequestSaveCkeditor () {
-      this.trigger(true)
-    }
-  })
 }

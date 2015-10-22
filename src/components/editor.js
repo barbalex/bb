@@ -1,14 +1,10 @@
 'use strict'
 
-import app from 'ampersand-app'
 import React from 'react'
-import { ListenerMixin } from 'reflux'
 import { Base64 } from 'js-base64'
 
 export default React.createClass({
   displayName: 'Editor',
-
-  mixins: [ListenerMixin],
 
   propTypes: {
     articleDecoded: React.PropTypes.string,
@@ -19,8 +15,6 @@ export default React.createClass({
     const { onSaveArticle } = this.props
     // height = window - menu height - (menubar + iconbar)
     const height = window.innerHeight - 52 - 74
-    console.log('height', height)
-    this.listenTo(app.requestSaveCkeditorStore, this.onRequestSaveCkeditor)
     window.tinymce.init({
       selector: '#article',
       plugins: [
@@ -52,14 +46,6 @@ export default React.createClass({
 
   shouldComponentUpdate () {
     return false
-  },
-
-  onRequestSaveCkeditor () {
-    const { onSaveArticle } = this.props
-    const articleDecoded = window.tinymce.activeEditor.getContent()
-    console.log('editor.js, onRequestSaveCkeditor, articleDecoded', articleDecoded)
-    const articleEncoded = Base64.encode(articleDecoded)
-    onSaveArticle(articleEncoded)
   },
 
   render () {
