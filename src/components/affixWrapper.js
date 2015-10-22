@@ -35,9 +35,9 @@ export default React.createClass({
    * @return {void}
    */
   handleScroll() {
-    var affix = this.state.affix;
-    var offset = this.props.offset;
-    var scrollTop = document.body.scrollTop;
+    const affix = this.state.affix
+    const offset = this.props.offset
+    const scrollTop = document.body.scrollTop
 
     if (!affix && scrollTop >= offset) {
       this.setState({

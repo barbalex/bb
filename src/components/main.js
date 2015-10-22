@@ -52,10 +52,8 @@ export default React.createClass({
         <Header editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
           <Page pageDoc={pageDoc} editing={editing} onSaveArticle={this.onSaveArticle} />
-        </div>
-        <footer>
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
-        </footer>
+        </div>
       </NavHelper>
     )
   }
