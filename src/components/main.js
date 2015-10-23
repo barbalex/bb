@@ -48,12 +48,13 @@ export default React.createClass({
 
   render () {
     const { doc, editing } = this.state
+    const isPage = doc.type && doc.type === 'page'
     return (
       <NavHelper>
         <Header />
         <Navbar doc={doc} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
-          <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} />
+          {isPage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
         </div>
       </NavHelper>
