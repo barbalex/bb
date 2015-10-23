@@ -16,54 +16,55 @@ export default Router.extend({
     'academic-publications': 'academicPublications',
     'european-union-publications': 'europeanUnionPublications',
     'io-and-ngo-publications': 'ioAndNgoPublications',
+    'commentaries/:year/:month/:day/:title': 'commentaries',
     '*path': 'home'
   },
 
   home () {
-    console.log('router.js rendering home')
-    this.render()
-    app.Actions.getDoc('pages_home')
+    const id = 'pages_home'
+    this.render(id)
   },
 
   sources () {
-    console.log('router.js rendering sources')
-    this.render()
-    app.Actions.getDoc('pages_sources')
+    const id = 'pages_sources'
+    this.render(id)
   },
 
   aboutUs () {
-    console.log('router.js rendering aboutUs')
-    this.render()
-    app.Actions.getDoc('pages_aboutUs')
+    const id = 'pages_aboutUs'
+    this.render(id)
   },
 
   actors () {
-    console.log('router.js rendering actors')
-    this.render()
-    app.Actions.getDoc('pages_actors')
+    const id = 'pages_actors'
+    this.render(id)
   },
 
   academicPublications () {
-    console.log('router.js rendering academic-publications')
-    this.render()
-    app.Actions.getDoc('pages_academic-publications')
+    const id = 'pages_academic-publications'
+    this.render(id)
   },
 
   europeanUnionPublications () {
-    console.log('router.js rendering european-union-publications')
-    this.render()
-    app.Actions.getDoc('pages_european-union-publications')
+    const id = 'pages_european-union-publications'
+    this.render(id)
   },
 
   ioAndNgoPublications () {
-    console.log('router.js rendering io-and-ngo-publications')
-    this.render()
-    app.Actions.getDoc('pages_io-and-ngo-publications')
+    const id = 'pages_io-and-ngo-publications'
+    this.render(id)
   },
 
-  render () {
+  commentaries (year, month, day, title) {
+    const id = `commentaries_${year}_${month}_${day}_${title}`
+    this.render(id)
+  },
+
+  render (id) {
+    console.log('router.js rendering id', id)
     ReactDOM.render(
       <Main />, document.getElementById('content')
     )
+    app.Actions.getDoc(id)
   }
 })
