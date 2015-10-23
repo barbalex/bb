@@ -88,8 +88,8 @@ export default React.createClass({
                   </MenuItem>
                   <MenuItem
                     eventKey='3'
-                    active={id === 'pages_publicationsIoNgo'}
-                    onClick={this.onClickPage.bind(this, 'pages_publicationsIoNgo')}
+                    active={id === 'pages_io-and-ngo-publications'}
+                    onClick={this.onClickPage.bind(this, 'pages_io-and-ngo-publications')}
                   >
                     IO & NGO
                   </MenuItem>

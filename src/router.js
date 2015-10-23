@@ -15,6 +15,7 @@ export default Router.extend({
     'actors': 'actors',
     'academic-publications': 'academicPublications',
     'european-union-publications': 'europeanUnionPublications',
+    'io-and-ngo-publications': 'ioAndNgoPublications',
     '*path': 'home'
   },
 
@@ -52,6 +53,12 @@ export default Router.extend({
     console.log('router.js rendering european-union-publications')
     this.render()
     app.Actions.getDoc('pages_european-union-publications')
+  },
+
+  ioAndNgoPublications () {
+    console.log('router.js rendering io-and-ngo-publications')
+    this.render()
+    app.Actions.getDoc('pages_io-and-ngo-publications')
   },
 
   render () {
