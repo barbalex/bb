@@ -12,8 +12,9 @@ export default Router.extend({
     'home': 'home',
     'sources': 'sources',
     'aboutUs': 'aboutUs',
-    'actors': 'actors'/*,
-    '*path': 'home'*/
+    'actors': 'actors',
+    'academic-publications': 'academicPublications',
+    '*path': 'home'
   },
 
   home () {
@@ -38,6 +39,12 @@ export default Router.extend({
     console.log('router.js rendering actors')
     this.render()
     app.Actions.getDoc('pages_actors')
+  },
+
+  academicPublications () {
+    console.log('router.js rendering academic-publications')
+    this.render()
+    app.Actions.getDoc('pages_academic-publications')
   },
 
   render () {

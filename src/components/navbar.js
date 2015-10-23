@@ -74,8 +74,8 @@ export default React.createClass({
                 >
                   <MenuItem
                     eventKey='1'
-                    active={id === 'pages_publicationsAcademic'}
-                    onClick={this.onClickPage.bind(this, 'pages_publicationsAcademic')}
+                    active={id === 'pages_academic-publications'}
+                    onClick={this.onClickPage.bind(this, 'pages_academic-publications')}
                   >
                     Academic
                   </MenuItem>
