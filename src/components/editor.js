@@ -20,10 +20,10 @@ export default React.createClass({
       plugins: [
         'advlist autolink link image lists charmap print hr anchor pagebreak',
         'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
-        'save table contextmenu directionality emoticons template paste textcolor autosave'
+        'save table contextmenu directionality emoticons template paste textcolor autosave codemirror'
       ],
       menubar: 'edit insert view format table tools',
-      toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | emoticons print fullscreen',
+      toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | emoticons print code fullscreen',
       height: height,
       browser_spellcheck: true,
       automatic_uploads: false,
@@ -35,7 +35,14 @@ export default React.createClass({
           const articleEncoded = Base64.encode(articleDecoded)
           onSaveArticle(articleEncoded)
         })
-      }
+      },
+      // options for http://www.avoid.org/codemirror-for-tinymce4
+      codemirror: {
+        path: 'http://localhost:3000/tinymce/plugins/codemirror/codemirror-4.8',
+        indentOnInit: true
+      },
+      code_dialog_width: 1500,
+      code_dialog_height: 1000
     })
     // scroll editor to top
     window.$('html, body').animate({
