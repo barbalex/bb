@@ -21,7 +21,7 @@ export default React.createClass({
 
   render () {
     const { doc, editing, onClickEdit } = this.props
-    console.log('navbar.js render, doc', doc)
+    console.log('navbar.js rendering doc', doc._id)
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
     return (

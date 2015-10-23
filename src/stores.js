@@ -9,17 +9,19 @@ export default (Actions) => {
 
     listenables: Actions,
 
-    doc: {},
+    doc: null,
 
     onGetDoc (id) {
-      app.db.get(id, { include_docs: true })
-        .then((doc) => {
-          this.doc = doc
-          const path = getPathFromDoc(doc)
-          app.router.navigate('/' + path)
-          this.trigger(doc)
-        })
-        .catch((error) => console.log('Error fetching page ' + id + ':', error))
+      if (!this.doc || (this.doc._id && this.doc._id !== id)) {
+        app.db.get(id, { include_docs: true })
+          .then((doc) => {
+            this.doc = doc
+            const path = getPathFromDoc(doc)
+            app.router.navigate('/' + path)
+            this.trigger(doc)
+          })
+          .catch((error) => console.log('Error fetching page ' + id + ':', error))
+      }
     },
 
     onSaveDoc (doc) {
