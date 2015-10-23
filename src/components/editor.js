@@ -40,9 +40,7 @@ export default React.createClass({
       codemirror: {
         path: 'http://localhost:3000/tinymce/plugins/codemirror/codemirror-4.8',
         indentOnInit: true
-      },
-      code_dialog_width: 1500,
-      code_dialog_height: 1000
+      }
     })
     // scroll editor to top
     window.$('html, body').animate({
