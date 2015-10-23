@@ -48,7 +48,7 @@ export default React.createClass({
 
   render () {
     const { doc, editing } = this.state
-    const isPage = doc.type && doc.type === 'page'
+    const isPage = doc.type && doc.type === 'pages'
     return (
       <NavHelper>
         <Header />
