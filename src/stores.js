@@ -4,6 +4,7 @@ import app from 'ampersand-app'
 import Reflux from 'reflux'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
+import _ from 'lodash'
 
 export default (Actions) => {
   app.docStore = Reflux.createStore({
