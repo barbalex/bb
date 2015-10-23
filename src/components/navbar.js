@@ -16,7 +16,7 @@ export default React.createClass({
   },
 
   onClickPage (pageType, event) {
-    event.preventDefault()
+    // event.preventDefault()
     app.Actions.getDoc(pageType)
   },
 
@@ -40,7 +40,6 @@ export default React.createClass({
               <Nav navbar>
                 <NavItem
                   eventKey={0}
-                  href='#'
                   active={id === 'pages_events'}
                   onClick={this.onClickPage.bind(this, 'pages_events')}
                 >
@@ -48,7 +47,6 @@ export default React.createClass({
                 </NavItem>
                 <NavItem
                   eventKey={1}
-                  href='#'
                   active={id === 'pages_commentaries'}
                   onClick={this.onClickPage.bind(this, 'pages_commentaries')}
                 >
@@ -56,7 +54,6 @@ export default React.createClass({
                 </NavItem>
                 <NavItem
                   eventKey={2}
-                  href='#'
                   active={id === 'pages_sources'}
                   onClick={this.onClickPage.bind(this, 'pages_sources')}
                 >
@@ -64,7 +61,6 @@ export default React.createClass({
                 </NavItem>
                 <NavItem
                   eventKey={3}
-                  href='#'
                   active={id === 'pages_actors'}
                   onClick={this.onClickPage.bind(this, 'pages_actors')}
                 >
@@ -99,7 +95,6 @@ export default React.createClass({
                 </NavDropdown>
                 <NavItem
                   eventKey={5}
-                  href='#'
                   active={id === 'pages_aboutUs'}
                   onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
                 >
@@ -110,7 +105,6 @@ export default React.createClass({
                 <Nav navbar right>
                   <NavItem
                     eventKey={1}
-                    href='#'
                     onClick={onClickEdit}
                   >
                     <Glyphicon glyph={glyph} />
