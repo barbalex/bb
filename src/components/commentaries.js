@@ -27,16 +27,18 @@ export default React.createClass({
   },
 
   onCommentariesStoreChange (docs) {
-    console.log('commentaries arrived:', docs)
     this.setState({ docs })
   },
 
   commentaries () {
-    const { docs } = this.state
+    let { docs } = this.state
     if (docs.length > 0) {
+      docs = docs.sort((a, b) => {
+        if (a._id < b._id) return 1
+        return -1
+      })
       return docs.map((doc, index) => {
         const path = getPathFromDoc(doc)
-        console.log('doc', doc)
         return (
           <ListGroupItem
             key={index}
