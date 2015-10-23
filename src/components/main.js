@@ -9,6 +9,7 @@ import Navbar from '../components/navbar.js'
 import Page from './page.js'
 import Commentaries from './commentaries.js'
 import Commentary from './commentary.js'
+import MonthlyEvents from './monthlyEvents.js'
 
 export default React.createClass({
   displayName: 'Main',
@@ -52,6 +53,7 @@ export default React.createClass({
     const { doc, editing } = this.state
     const isSimplePage = doc.type && doc.type === 'pages' && doc._id !== 'pages_commentaries'
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
+    const isMonthlyEventsPage = doc.type && doc.type === 'pages' && doc._id === 'pages_monthlyEvents'
     const isCommentary = doc.type && doc.type === 'commentaries'
     return (
       <NavHelper>
@@ -60,6 +62,7 @@ export default React.createClass({
         <div className='container'>
           {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
+          {isMonthlyEventsPage ? <MonthlyEvents /> : null}
           {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
         </div>

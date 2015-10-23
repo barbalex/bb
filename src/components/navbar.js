@@ -40,8 +40,8 @@ export default React.createClass({
               <Nav navbar>
                 <NavItem
                   eventKey={0}
-                  active={id === 'pages_events'}
-                  onClick={this.onClickPage.bind(this, 'pages_events')}
+                  active={id === 'pages_monthlyEvents'}
+                  onClick={this.onClickPage.bind(this, 'pages_monthlyEvents')}
                 >
                   Events
                 </NavItem>

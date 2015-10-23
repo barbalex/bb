@@ -6,7 +6,8 @@ export default () => {
   let Actions = Reflux.createActions({
     getDoc: {},
     saveDoc: {},
-    getCommentaries: {}
+    getCommentaries: {},
+    getMonthlyEvents: {}
   })
   return Actions
 }

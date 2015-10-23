@@ -4,6 +4,7 @@ import app from 'ampersand-app'
 import Reflux from 'reflux'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
+import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import _ from 'lodash'
 
 export default (Actions) => {
@@ -43,6 +44,20 @@ export default (Actions) => {
 
     onGetCommentaries () {
       getCommentaries()
+        .then((result) => {
+          const docs = _.pluck(result.rows, 'doc')
+          this.trigger(docs)
+        })
+        .catch((error) => console.error(error))
+    }
+  })
+
+  app.monthlyEventsStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetMonthlyEvents () {
+      getMonthlyEvents()
         .then((result) => {
           const docs = _.pluck(result.rows, 'doc')
           this.trigger(docs)
