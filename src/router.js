@@ -10,21 +10,33 @@ export default Router.extend({
   routes: {
     '/': 'home',
     '/home': 'home',
-    '*path': 'home',
-    '/sources': 'sources'
+    'sources': 'sources',
+    '/sources': 'sources',
+    'aboutUs': 'aboutUs',
+    '*path': 'home'
   },
 
   home () {
-    ReactDOM.render(
-      <Main />, document.getElementById('content')
-    )
+    console.log('router.js rendering home')
+    this.render()
     app.Actions.getDoc('pages_home')
   },
 
   sources () {
+    console.log('router.js rendering sources')
+    this.render()
+    app.Actions.getDoc('pages_sources')
+  },
+
+  aboutUs () {
+    console.log('router.js rendering aboutUs')
+    this.render()
+    app.Actions.getDoc('pages_aboutUs')
+  },
+
+  render () {
     ReactDOM.render(
       <Main />, document.getElementById('content')
     )
-    app.Actions.getDoc('pages_sources')
   }
 })
