@@ -16,7 +16,8 @@ export default Router.extend({
     'academic-publications': 'academicPublications',
     'european-union-publications': 'europeanUnionPublications',
     'io-and-ngo-publications': 'ioAndNgoPublications',
-    'commentaries/:year/:month/:day/:title': 'commentaries',
+    'commentaries': 'commentaries',
+    'commentaries/:year/:month/:day/:title': 'commentary',
     '*path': 'home'
   },
 
@@ -55,7 +56,12 @@ export default Router.extend({
     this.render(id)
   },
 
-  commentaries (year, month, day, title) {
+  commentaries () {
+    const id = 'pages_commentaries'
+    this.render(id)
+  },
+
+  commentary (year, month, day, title) {
     const id = `commentaries_${year}_${month}_${day}_${title}`
     this.render(id)
   },
@@ -65,6 +71,6 @@ export default Router.extend({
     ReactDOM.render(
       <Main />, document.getElementById('content')
     )
-    app.Actions.getDoc(id)
+    if (id) app.Actions.getDoc(id)
   }
 })

@@ -3,6 +3,7 @@
 import app from 'ampersand-app'
 import Reflux from 'reflux'
 import getPathFromDoc from './modules/getPathFromDoc.js'
+import getCommentaries from './modules/getCommentaries.js'
 
 export default (Actions) => {
   app.docStore = Reflux.createStore({
@@ -32,19 +33,17 @@ export default (Actions) => {
           this.trigger(doc)
         })
         .catch((error) => console.error('docStore, onSaveDoc:', error))
-    },
+    }
+  })
 
-    getCommentaries () {
-      return new Promise((resolve, reject) => {
-        const options = {
-          include_docs: true,
-          startkey: 'commentaries_',
-          endkey: 'commentaries_\uffff'
-        }
-        app.db.allDocs(options)
-          .then((docs) => resolve(docs))
-          .catch((error) => reject('Error fetching commentaries:', error))
-      })
+  app.commentariesStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetCommentaries () {
+      getCommentaries()
+        .then((result) => this.trigger(result.rows))
+        .catch((error) => console.error(error))
     }
   })
 }

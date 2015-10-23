@@ -7,6 +7,7 @@ import NavHelper from '../components/navHelper.js'
 import Header from '../components/header.js'
 import Navbar from '../components/navbar.js'
 import Page from './page.js'
+import Commentaries from './commentaries.js'
 
 export default React.createClass({
   displayName: 'Main',
@@ -48,13 +49,15 @@ export default React.createClass({
 
   render () {
     const { doc, editing } = this.state
-    const isPage = doc.type && doc.type === 'pages'
+    const isSimplePage = doc.type && doc.type === 'pages' && doc._id !== 'pages_commentaries'
+    const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
     return (
       <NavHelper>
         <Header />
         <Navbar doc={doc} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
-          {isPage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
+          {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
+          {isCommentariesPage ? <Commentaries /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
         </div>
       </NavHelper>
