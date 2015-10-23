@@ -26,6 +26,12 @@ export default React.createClass({
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
-    return <div dangerouslySetInnerHTML={createMarkup()} />
+    const notHome = doc.title !== 'Home'
+    return (
+      <div>
+        {notHome ? <h1>{doc.title}</h1> : null}
+        <div dangerouslySetInnerHTML={createMarkup()} />
+      </div>
+    )
   }
 })

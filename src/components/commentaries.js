@@ -55,9 +55,12 @@ export default React.createClass({
 
   render () {
     return (
-      <ul>
-        {this.commentaries()}
-      </ul>
+      <div>
+        <h1>Commentaries</h1> 
+        <ul>
+          {this.commentaries()}
+        </ul>
+      </div>
     )
   }
 })
