@@ -3,6 +3,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Navbar, NavBrand, CollapsibleNav, NavItem, NavDropdown, Nav, MenuItem, Glyphicon } from 'react-bootstrap'
+import _ from 'lodash'
 import AffixWrapper from './affixWrapper.js'
 
 export default React.createClass({
@@ -24,6 +25,8 @@ export default React.createClass({
     console.log('navbar.js rendering doc', doc._id)
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
+    const nonEditableIds = ['pages_commentaries', 'pages_events']
+    const showEdit = !_.includes(nonEditableIds, id)
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -103,15 +106,18 @@ export default React.createClass({
                   About us
                 </NavItem>
               </Nav>
-              <Nav navbar right>
-                <NavItem
-                  eventKey={1}
-                  href='#'
-                  onClick={onClickEdit}
-                >
-                  <Glyphicon glyph={glyph} />
-                </NavItem>
-              </Nav>
+              {showEdit ?
+                <Nav navbar right>
+                  <NavItem
+                    eventKey={1}
+                    href='#'
+                    onClick={onClickEdit}
+                  >
+                    <Glyphicon glyph={glyph} />
+                  </NavItem>
+                </Nav>
+                : null
+              }
             </CollapsibleNav>
           </Navbar>
         </AffixWrapper>
