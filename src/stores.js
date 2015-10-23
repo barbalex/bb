@@ -20,7 +20,7 @@ export default (Actions) => {
             app.router.navigate('/' + path)
             this.trigger(doc)
           })
-          .catch((error) => console.log('Error fetching page ' + id + ':', error))
+          .catch((error) => console.error('Error fetching page ' + id + ':', error))
       }
     },
 
@@ -32,6 +32,19 @@ export default (Actions) => {
           this.trigger(doc)
         })
         .catch((error) => console.error('docStore, onSaveDoc:', error))
+    },
+
+    getCommentaries () {
+      return new Promise((resolve, reject) => {
+        const options = {
+          include_docs: true,
+          startkey: 'commentaries_',
+          endkey: 'commentaries_\uffff'
+        }
+        app.db.allDocs(options)
+          .then((docs) => resolve(docs))
+          .catch((error) => reject('Error fetching commentaries:', error))
+      })
     }
   })
 }
