@@ -2,8 +2,8 @@
 
 import app from 'ampersand-app'
 import React from 'react'
+import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
-import _ from 'lodash'
 import getPathFromDoc from '../modules/getPathFromDoc.js'
 
 export default React.createClass({
@@ -31,12 +31,6 @@ export default React.createClass({
     this.setState({ docs })
   },
 
-  onClickCommentary (id) {
-    // TODO: remove when it works with link only
-    console.log('commentaries.js getting id', id)
-    //app.Actions.getDoc(id)
-  },
-
   commentaries () {
     const { docs } = this.state
     if (docs.length > 0) {
@@ -44,9 +38,12 @@ export default React.createClass({
         const path = getPathFromDoc(doc)
         console.log('doc', doc)
         return (
-          <li key={index}>
-            <a href={path} onClick={this.onClickCommentary.bind(this, doc._id)}>{doc.title}</a>
-          </li>
+          <ListGroupItem
+            key={index}
+            href={path}
+          >
+            {doc.title}
+          </ListGroupItem>
         )
       })
     }
@@ -56,10 +53,10 @@ export default React.createClass({
   render () {
     return (
       <div>
-        <h1>Commentaries</h1> 
-        <ul>
+        <h1>Commentaries</h1>
+        <ListGroup>
           {this.commentaries()}
-        </ul>
+        </ListGroup>
       </div>
     )
   }
