@@ -38,7 +38,7 @@ export default React.createClass({
                 <NavItem
                   eventKey={0}
                   href='#'
-                  active={id === 'pages_events' ? true : false}
+                  active={id === 'pages_events'}
                   onClick={this.onClickPage.bind(this, 'pages_events')}
                 >
                   Events
@@ -46,7 +46,7 @@ export default React.createClass({
                 <NavItem
                   eventKey={1}
                   href='#'
-                  active={id === 'pages_commentaries' ? true : false}
+                  active={id === 'pages_commentaries'}
                   onClick={this.onClickPage.bind(this, 'pages_commentaries')}
                 >
                   Commentaries
@@ -54,7 +54,7 @@ export default React.createClass({
                 <NavItem
                   eventKey={2}
                   href='#'
-                  active={id === 'pages_sources' ? true : false}
+                  active={id === 'pages_sources'}
                   onClick={this.onClickPage.bind(this, 'pages_sources')}
                 >
                   Sources
@@ -62,7 +62,7 @@ export default React.createClass({
                 <NavItem
                   eventKey={3}
                   href='#'
-                  active={id === 'pages_actors' ? true : false}
+                  active={id === 'pages_actors'}
                   onClick={this.onClickPage.bind(this, 'pages_actors')}
                 >
                   Actors
@@ -74,21 +74,21 @@ export default React.createClass({
                 >
                   <MenuItem
                     eventKey='1'
-                    active={id === 'pages_publicationsAcademic' ? true : false}
+                    active={id === 'pages_publicationsAcademic'}
                     onClick={this.onClickPage.bind(this, 'pages_publicationsAcademic')}
                   >
                     Academic
                   </MenuItem>
                   <MenuItem
                     eventKey='2'
-                    active={id === 'pages_publicationsEu' ? true : false}
+                    active={id === 'pages_publicationsEu'}
                     onClick={this.onClickPage.bind(this, 'pages_publicationsEu')}
                   >
                     European Union
                   </MenuItem>
                   <MenuItem
                     eventKey='3'
-                    active={id === 'pages_publicationsIoNgo' ? true : false}
+                    active={id === 'pages_publicationsIoNgo'}
                     onClick={this.onClickPage.bind(this, 'pages_publicationsIoNgo')}
                   >
                     IO & NGO
@@ -97,7 +97,7 @@ export default React.createClass({
                 <NavItem
                   eventKey={5}
                   href='#'
-                  active={id === 'pages_aboutUs' ? true : false}
+                  active={id === 'pages_aboutUs'}
                   onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
                 >
                   About us
