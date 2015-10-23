@@ -42,7 +42,10 @@ export default (Actions) => {
 
     onGetCommentaries () {
       getCommentaries()
-        .then((result) => this.trigger(result.rows))
+        .then((result) => {
+          const docs = _.pluck(result.rows, 'doc')
+          this.trigger(docs)
+        })
         .catch((error) => console.error(error))
     }
   })

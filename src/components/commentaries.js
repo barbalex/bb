@@ -3,6 +3,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
+import _ from 'lodash'
 import getPathFromDoc from '../modules/getPathFromDoc.js'
 
 export default React.createClass({
@@ -30,14 +31,21 @@ export default React.createClass({
     this.setState({ docs })
   },
 
+  onClickCommentary (id) {
+    // TODO: remove when it works with link only
+    console.log('commentaries.js getting id', id)
+    //app.Actions.getDoc(id)
+  },
+
   commentaries () {
     const { docs } = this.state
     if (docs.length > 0) {
-      return docs.map((doc) => {
+      return docs.map((doc, index) => {
         const path = getPathFromDoc(doc)
+        console.log('doc', doc)
         return (
-          <li>
-            <a href={path}>doc.title</a>
+          <li key={index}>
+            <a href={path} onClick={this.onClickCommentary.bind(this, doc._id)}>{doc.title}</a>
           </li>
         )
       })

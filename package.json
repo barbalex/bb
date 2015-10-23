@@ -43,6 +43,7 @@
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
     "local-links": "1.4.0",
+    "lodash": "^3.10.1",
     "postcss-loader": "0.7.0",
     "pouchdb": "5.0.0",
     "react": "0.14.0",
