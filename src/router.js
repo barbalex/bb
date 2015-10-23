@@ -8,12 +8,12 @@ import Main from './components/main.js'
 
 export default Router.extend({
   routes: {
-    '/': 'home',
-    '/home': 'home',
+    '': 'home',
+    'home': 'home',
     'sources': 'sources',
-    '/sources': 'sources',
     'aboutUs': 'aboutUs',
-    '*path': 'home'
+    'actors': 'actors'/*,
+    '*path': 'home'*/
   },
 
   home () {
@@ -32,6 +32,12 @@ export default Router.extend({
     console.log('router.js rendering aboutUs')
     this.render()
     app.Actions.getDoc('pages_aboutUs')
+  },
+
+  actors () {
+    console.log('router.js rendering actors')
+    this.render()
+    app.Actions.getDoc('pages_actors')
   },
 
   render () {
