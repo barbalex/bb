@@ -67,6 +67,7 @@ export default React.createClass({
             key={dIndex}
             header={doc.title}
             eventKey={dIndex}
+            className='month'
           >
             <Event doc={doc} editing={editing} onSaveArticle={onSaveArticle} />
           </Panel>
@@ -87,7 +88,7 @@ export default React.createClass({
       })
       return years.map((year, yIndex) => {
         return (
-          <Panel key={yIndex} header={year} eventKey={yIndex}>
+          <Panel key={yIndex} header={year} eventKey={yIndex} className='year'>
             {this.eventsOfYearPanel(year)}
           </Panel>
         )
@@ -99,7 +100,7 @@ export default React.createClass({
   render () {
     console.log('rendering monthly events')
     return (
-      <div>
+      <div id='events'>
         <h1>Events</h1>
         <PanelGroup defaultActiveKey={0} accordion>
           {this.events()}
