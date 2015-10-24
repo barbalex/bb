@@ -23,7 +23,7 @@ export default (Actions) => {
             app.router.navigate('/' + path)
             this.trigger(doc)
           })
-          .catch((error) => app.Actions.showError({title: 'Fehler beim Laden der Seite ' + id + ':', msg: error}))
+          .catch((error) => app.Actions.showError({title: 'Error loading ' + id + ':', msg: error}))
       }
     },
 
@@ -34,7 +34,7 @@ export default (Actions) => {
           doc._rev = resp.rev
           this.trigger(doc)
         })
-        .catch((error) => app.Actions.showError({title: 'Fehler in docStore, onSaveDoc:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error in docStore, onSaveDoc:', msg: error}))
     }
   })
 
@@ -79,7 +79,6 @@ export default (Actions) => {
     },
 
     onLogin (email) {
-      console.log('app.loginStore, onLogin, email', email)
       // change email only if it was passed
       const changeEmail = email !== undefined
       let lsEmail = window.localStorage.email
@@ -89,7 +88,6 @@ export default (Actions) => {
         } else {
           email = lsEmail
         }
-        console.log('app.loginStore, onLogin, email 2', email)
         this.trigger(email)
         window.localStorage.email = email
       }
