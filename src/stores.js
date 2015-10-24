@@ -65,4 +65,45 @@ export default (Actions) => {
         .catch((error) => console.error(error))
     }
   })
+
+  app.loginStore = Reflux.createStore({
+    /*
+     * contains email of logged in user
+     * well, it is saved in pouch as local doc _local/login
+     * and contains "logIn" bool which states if user needs to log in
+     * app.js sets default _local/login if not exists on app start
+     */
+    listenables: Actions,
+
+    getLogin () {
+      return new Promise((resolve, reject) => {
+        app.localDb.get('_local/login', { include_docs: true })
+          .then((doc) => resolve(doc))
+          .catch((error) =>
+            reject('loginStore: error getting login from localDb: ' + error)
+          )
+      })
+    },
+
+    onLogin (email) {
+      // change email only if it was passed
+      const changeEmail = email !== undefined
+      app.localDb.get('_local/login', { include_docs: true })
+        .then((doc) => {
+          if ((changeEmail && doc.email !== email) || !email) {
+            doc.logIn = logIn
+            if (changeEmail) {
+              doc.email = email
+            } else {
+              email = doc.email
+            }
+            this.trigger(email)
+            return app.localDb.put(doc)
+          }
+        })
+        .catch((error) =>
+          app.Actions.showError({title: 'loginStore: error logging in:', msg: error})
+        )
+    }
+  })
 }

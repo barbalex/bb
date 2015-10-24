@@ -11,6 +11,7 @@ import Page from './page.js'
 import Commentaries from './commentaries.js'
 import Commentary from './commentary.js'
 import MonthlyEvents from './monthlyEvents.js'
+import Login from './login.js'
 
 export default React.createClass({
   displayName: 'Main',
@@ -19,23 +20,31 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
-    editing: React.PropTypes.bool
+    editing: React.PropTypes.bool,
+    login: React.PropTypes.bool,
+    email: React.PropTypes.string
   },
 
   getInitialState () {
     return {
       doc: {},
-      editing: false
+      editing: false,
+      email: null
     }
   },
 
   componentDidMount () {
     // listen to stores
     this.listenTo(app.docStore, this.onDocStoreChange)
+    this.listenTo(app.loginStore, this.onLoginStoreChange)
   },
 
   onDocStoreChange (doc) {
     this.setState({ doc })
+  },
+
+  onLoginStoreChange (email) {
+    this.setState({ email })
   },
 
   onClickEdit () {
@@ -51,7 +60,8 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, editing } = this.state
+    const { login } = this.props
+    const { doc, editing, email } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
     const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
@@ -60,12 +70,13 @@ export default React.createClass({
     return (
       <NavHelper>
         <Header />
-        <Navbar doc={doc} editing={editing} onClickEdit={this.onClickEdit} />
+        <Navbar doc={doc} email={email} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
           {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
           {isMonthlyEventsPage ? <MonthlyEvents editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
+          {login ? <Login /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
         </div>
       </NavHelper>

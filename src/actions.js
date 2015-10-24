@@ -7,7 +7,9 @@ export default () => {
     getDoc: {},
     saveDoc: {},
     getCommentaries: {},
-    getMonthlyEvents: {}
+    getMonthlyEvents: {},
+    login: {},
+    showError: {}
   })
   return Actions
 }

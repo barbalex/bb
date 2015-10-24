@@ -11,6 +11,7 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
+    email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func
   },
@@ -21,12 +22,12 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, editing, onClickEdit } = this.props
+    const { doc, email, editing, onClickEdit } = this.props
     console.log('navbar.js rendering doc', doc._id)
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_events']
-    const showEdit = !_.includes(nonEditableIds, id)
+    const showEdit = !_.includes(nonEditableIds, id) && email
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>

@@ -19,6 +19,7 @@ export default Router.extend({
     'commentaries': 'commentaries',
     'commentaries/:year/:month/:day/:title': 'commentary',
     'monthlyEvents': 'monthlyEvents',
+    'login': 'login',
     '*path': 'home'
   },
 
@@ -70,6 +71,12 @@ export default Router.extend({
   monthlyEvents () {
     const id = 'pages_monthlyEvents'
     this.render(id)
+  },
+
+  login () {
+    ReactDOM.render(
+      <Main login={true} />, document.getElementById('content')
+    )
   },
 
   render (id) {
