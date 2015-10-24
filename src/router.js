@@ -18,6 +18,7 @@ export default Router.extend({
     'io-and-ngo-publications': 'ioAndNgoPublications',
     'commentaries': 'commentaries',
     'commentaries/:year/:month/:day/:title': 'commentary',
+    'monthlyEvents': 'monthlyEvents',
     '*path': 'home'
   },
 
@@ -63,6 +64,11 @@ export default Router.extend({
 
   commentary (year, month, day, title) {
     const id = `commentaries_${year}_${month}_${day}_${title}`
+    this.render(id)
+  },
+
+  monthlyEvents () {
+    const id = 'pages_monthlyEvents'
     this.render(id)
   },
 

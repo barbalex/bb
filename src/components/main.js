@@ -3,6 +3,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
+import _ from 'lodash'
 import NavHelper from '../components/navHelper.js'
 import Header from '../components/header.js'
 import Navbar from '../components/navbar.js'
@@ -51,7 +52,8 @@ export default React.createClass({
 
   render () {
     const { doc, editing } = this.state
-    const isSimplePage = doc.type && doc.type === 'pages' && doc._id !== 'pages_commentaries'
+    const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
+    const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
     const isMonthlyEventsPage = doc.type && doc.type === 'pages' && doc._id === 'pages_monthlyEvents'
     const isCommentary = doc.type && doc.type === 'commentaries'

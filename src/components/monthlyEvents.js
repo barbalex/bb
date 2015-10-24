@@ -34,7 +34,11 @@ export default React.createClass({
     let { docs } = this.state
     const dates = _.pluck(docs, 'date')
     if (dates.length > 0) {
-      const allYears = dates.map((date) => date.getFullYear())
+      const allYears = dates.map((datenumber) => {
+        const date = new Date(datenumber)
+        const year = date.getFullYear()
+        return year
+      })
       const years = _.uniq(allYears)
       return years.sort().reverse()
     }
@@ -45,7 +49,8 @@ export default React.createClass({
     let { docs } = this.state
     let events = []
     docs.forEach((doc, dIndex) => {
-      if (doc.date.getFullYear() === year) {
+      const date = new Date(doc.date)
+      if (date.getFullYear() === year) {
         const event = (
           <li
             key={dIndex}
@@ -92,6 +97,7 @@ export default React.createClass({
   },
 
   render () {
+    console.log('rendering monthly events')
     return (
       <div>
         <h1>Events</h1>
