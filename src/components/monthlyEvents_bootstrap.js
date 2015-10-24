@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { PanelGroup, Panel, ListGroup, ListGroupItem, Glyphicon } from 'react-bootstrap'
+import { Glyphicon } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
 
@@ -45,16 +45,6 @@ export default React.createClass({
     return []
   },
 
-  eventsOfYearPanel (year) {
-    return (
-      <div>
-        <ListGroup fill>
-          {this.eventsOfYear(year)}
-        </ListGroup>
-      </div>
-    )
-  },
-
   eventsOfYear (year) {
     let { docs } = this.state
     let events = []
@@ -62,11 +52,13 @@ export default React.createClass({
       const date = new Date(doc.date)
       if (date.getFullYear() === year) {
         const event = (
-          <ListGroupItem
+          <li
             key={dIndex}
+            className='list-group-item'
           >
             {doc.title}
-          </ListGroupItem>
+            <Glyphicon className='pull-right' glyph='pencil' />
+          </li>
         )
         events.push(event)
       }
@@ -83,10 +75,23 @@ export default React.createClass({
         return -1
       })
       return years.map((year, yIndex) => {
+        const tabpanelClasses = yIndex === 0 ? 'panel-collapse collapse in' : 'panel-collapse collapse'
+        const ariaExpanded = yIndex === 0
         return (
-          <Panel key={yIndex} header={year} eventKey={yIndex}>
-            {this.eventsOfYearPanel(year)}
-          </Panel>
+          <div key={yIndex} className='panel panel-default'>
+            <div className='panel-heading' role='tab' id={'heading' + year}>
+              <h4 className='panel-title'>
+                <a role='button' data-toggle='collapse' data-parent='#accordion' href={'#collapse' + year} aria-expanded={ariaExpanded} aria-controls={'#collapse' + year}>
+                  {year}
+                </a>
+              </h4>
+            </div>
+            <div id={'#collapse' + year} className={tabpanelClasses} role='tabpanel' aria-labelledby={'heading' + year}>
+              <div className='list-group'>
+                {this.eventsOfYear(year)}
+              </div>
+            </div>
+          </div>
         )
       })
     }
@@ -98,9 +103,9 @@ export default React.createClass({
     return (
       <div>
         <h1>Events</h1>
-        <PanelGroup defaultActiveKey={1} accordion>
+        <div className='panel-group' id='accordion' role='tablist' aria-multiselectable='true'>
           {this.events()}
-        </PanelGroup>
+        </div>
       </div>
     )
   }
