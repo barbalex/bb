@@ -12,6 +12,7 @@ import Commentaries from './commentaries.js'
 import Commentary from './commentary.js'
 import MonthlyEvents from './monthlyEvents.js'
 import Login from './login.js'
+import Errors from './errors.js'
 
 export default React.createClass({
   displayName: 'Main',
@@ -22,14 +23,16 @@ export default React.createClass({
     doc: React.PropTypes.object,
     editing: React.PropTypes.bool,
     login: React.PropTypes.bool,
-    email: React.PropTypes.string
+    email: React.PropTypes.string,
+    errors: React.PropTypes.array
   },
 
   getInitialState () {
     return {
       doc: {},
       editing: false,
-      email: null
+      email: null,
+      errors: []
     }
   },
 
@@ -37,6 +40,7 @@ export default React.createClass({
     // listen to stores
     this.listenTo(app.docStore, this.onDocStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
+    this.listenTo(app.errorStore, this.onError)
   },
 
   onDocStoreChange (doc) {
@@ -45,6 +49,12 @@ export default React.createClass({
 
   onLoginStoreChange (email) {
     this.setState({ email })
+    console.log('user ' + email + ' logged in')
+    app.Actions.getDoc('pages_home')
+  },
+
+  onError (errors) {
+    this.setState({ errors })
   },
 
   onClickEdit () {
@@ -61,7 +71,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { doc, editing, email } = this.state
+    const { doc, editing, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
     const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
@@ -72,6 +82,7 @@ export default React.createClass({
         <Header />
         <Navbar doc={doc} email={email} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
+          <Errors errors={errors} />
           {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
           {isMonthlyEventsPage ? <MonthlyEvents editing={editing} onSaveArticle={this.onSaveArticle} /> : null}

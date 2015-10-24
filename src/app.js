@@ -39,25 +39,14 @@ app.extend({
     this.Actions = actions()
     stores(this.Actions)
     Promise.all([
-      this.localDb = new PouchDB('bb'),
       this.db = new PouchDB(couchUrl())
     ])
     .then(() => {
-      /**
-       * initiate login data if necessary
-       * by adding a local document to pouch
-       * local documents are not replicated
-       */
-      return this.localDb.putIfNotExists({
-        _id: '_local/login',
-        email: null
-      })
-    })
-    .then(() => {
+      window.localStorage.email = window.localStorage.email || null
       this.router = new Router()
       this.router.history.start()
     })
-    .catch((error) => console.error('error:', error))
+    .catch((error) => app.Actions.showError({title: 'Fehler in app.js:', msg: error}))
   }
 })
 

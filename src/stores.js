@@ -23,7 +23,7 @@ export default (Actions) => {
             app.router.navigate('/' + path)
             this.trigger(doc)
           })
-          .catch((error) => console.error('Error fetching page ' + id + ':', error))
+          .catch((error) => app.Actions.showError({title: 'Fehler beim Laden der Seite ' + id + ':', msg: error}))
       }
     },
 
@@ -34,7 +34,7 @@ export default (Actions) => {
           doc._rev = resp.rev
           this.trigger(doc)
         })
-        .catch((error) => console.error('docStore, onSaveDoc:', error))
+        .catch((error) => app.Actions.showError({title: 'Fehler in docStore, onSaveDoc:', msg: error}))
     }
   })
 
@@ -48,7 +48,7 @@ export default (Actions) => {
           const docs = _.pluck(result.rows, 'doc')
           this.trigger(docs)
         })
-        .catch((error) => console.error(error))
+        .catch((error) => app.Actions.showError({msg: error}))
     }
   })
 
@@ -62,48 +62,75 @@ export default (Actions) => {
           const docs = _.pluck(result.rows, 'doc')
           this.trigger(docs)
         })
-        .catch((error) => console.error(error))
+        .catch((error) => app.Actions.showError({msg: error}))
     }
   })
 
   app.loginStore = Reflux.createStore({
     /*
      * contains email of logged in user
-     * well, it is saved in pouch as local doc _local/login
-     * and contains "logIn" bool which states if user needs to log in
-     * app.js sets default _local/login if not exists on app start
+     * well, it is saved in localStorage as window.localStorage.email
+     * app.js sets default email (null) if not exists on app start
      */
     listenables: Actions,
 
     getLogin () {
-      return new Promise((resolve, reject) => {
-        app.localDb.get('_local/login', { include_docs: true })
-          .then((doc) => resolve(doc))
-          .catch((error) =>
-            reject('loginStore: error getting login from localDb: ' + error)
-          )
-      })
+      return window.localStorage.email
     },
 
     onLogin (email) {
+      console.log('app.loginStore, onLogin, email', email)
       // change email only if it was passed
       const changeEmail = email !== undefined
-      app.localDb.get('_local/login', { include_docs: true })
-        .then((doc) => {
-          if ((changeEmail && doc.email !== email) || !email) {
-            doc.logIn = logIn
-            if (changeEmail) {
-              doc.email = email
-            } else {
-              email = doc.email
-            }
-            this.trigger(email)
-            return app.localDb.put(doc)
-          }
-        })
-        .catch((error) =>
-          app.Actions.showError({title: 'loginStore: error logging in:', msg: error})
-        )
+      let lsEmail = window.localStorage.email
+      if ((changeEmail && lsEmail !== email) || !email) {
+        if (changeEmail) {
+          lsEmail = email
+        } else {
+          email = lsEmail
+        }
+        console.log('app.loginStore, onLogin, email 2', email)
+        this.trigger(email)
+        window.localStorage.email = email
+      }
+    }
+  })
+
+  app.errorStore = Reflux.createStore({
+    /*
+     * receives an error object with two keys: title, msg
+     * keeps error objects in the array errors
+     * deletes errors after a defined time - the time while the error will be shown to the user
+     *
+     * if a view wants to inform of an error it
+     * calls action showError and passes the object
+     *
+     * the errorStore triggers, passing the errors array
+     * ...then triggers again after removing the last error some time later
+     *
+     * Test: app.Actions.showError({title: 'testTitle', msg: 'testMessage'})
+     * template: app.Actions.showError({title: 'title', msg: error})
+     */
+    listenables: Actions,
+
+    errors: [],
+
+    // this is how long the error will be shown
+    duration: 10000,
+
+    onShowError (error) {
+      if (!error) {
+        // user wants to remove error messages
+        this.errors = []
+        this.trigger(this.errors)
+      } else {
+        this.errors.unshift(error)
+        this.trigger(this.errors)
+        setTimeout(() => {
+          this.errors.pop()
+          this.trigger(this.errors)
+        }, this.duration)
+      }
     }
   })
 }

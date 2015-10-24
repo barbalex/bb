@@ -7,6 +7,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Input, Alert, Button } from 'react-bootstrap'
+import _ from 'lodash'
 import validateEmail from '../modules/validateEmail.js'
 
 export default React.createClass({
@@ -62,8 +63,9 @@ export default React.createClass({
   checkSignin (email, password) {
     if (this.validSignin(email, password)) {
       app.db.login(email, password)
-        .then((response) => app.Actions.login(email)
-        )
+        .then((response) => {
+          app.Actions.login(email)
+        })
         .catch((error) => this.setState({ email: null, loginError: error }))
     }
   },
@@ -115,6 +117,9 @@ export default React.createClass({
     const styleAlert = {
       marginBottom: 8
     }
+    let error = loginError
+    if (_.isObject(loginError)) error = loginError.message
+    const isError = error && error.length > 0
 
     return (
       <div>
@@ -128,7 +133,7 @@ export default React.createClass({
             <Input type='password' id='password' label={'Passwort'} className={'controls'} placeholder='Passwort' bsStyle={passwordInputBsStyle} onBlur={this.onBlurPassword} onKeyDown={this.onKeyDownPassword} required />
             {invalidPassword ? <div className='validateDivAfterRBC'>Bitte Passwort prüfen</div> : ''}
           </div>
-          {loginError ? <Alert bsStyle='danger' onDismiss={this.onAlertDismiss} style={styleAlert}>Fehler beim Anmelden: {loginError}</Alert> : ''}
+          {isError ? <Alert bsStyle='danger' onDismiss={this.onAlertDismiss} style={styleAlert}>Fehler beim Anmelden: {error}</Alert> : null}
         </form>
         <Button ref='anmeldenButton' className='btn-primary' onClick={this.onClickLogin}>anmelden</Button>
       </div>
