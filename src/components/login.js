@@ -123,17 +123,17 @@ export default React.createClass({
 
     return (
       <div>
-        <h1>Anmelden</h1>
+        <h1>Login</h1>
         <form className={'form'} autoComplete='off'>
           <div className='formGroup'>
             <Input type='email' id='email' label={'Email'} bsSize='small' className={'controls'} placeholder='Email' bsStyle={emailInputBsStyle} onBlur={this.onBlurEmail} onKeyDown={this.onKeyDownEmail} required autoFocus />
-            {invalidEmail ? <div className='validateDivAfterRBC'>Bitte Email prüfen</div> : ''}
+            {invalidEmail ? <div className='validateDivAfterRBC'>Please check email</div> : ''}
           </div>
           <div className='formGroup'>
-            <Input type='password' id='password' label={'Passwort'} className={'controls'} placeholder='Passwort' bsStyle={passwordInputBsStyle} onBlur={this.onBlurPassword} onKeyDown={this.onKeyDownPassword} required />
-            {invalidPassword ? <div className='validateDivAfterRBC'>Bitte Passwort prüfen</div> : ''}
+            <Input type='password' id='password' label={'Password'} className={'controls'} placeholder='Passwort' bsStyle={passwordInputBsStyle} onBlur={this.onBlurPassword} onKeyDown={this.onKeyDownPassword} required />
+            {invalidPassword ? <div className='validateDivAfterRBC'>Please check password</div> : ''}
           </div>
-          {isError ? <Alert bsStyle='danger' onDismiss={this.onAlertDismiss} style={styleAlert}>Fehler beim Anmelden: {error}</Alert> : null}
+          {isError ? <Alert bsStyle='danger' onDismiss={this.onAlertDismiss} style={styleAlert}>Error: {error}</Alert> : null}
         </form>
         <Button ref='anmeldenButton' className='btn-primary' onClick={this.onClickLogin}>anmelden</Button>
       </div>
