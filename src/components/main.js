@@ -64,7 +64,7 @@ export default React.createClass({
         <div className='container'>
           {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
-          {isMonthlyEventsPage ? <MonthlyEvents /> : null}
+          {isMonthlyEventsPage ? <MonthlyEvents editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
         </div>

@@ -2,9 +2,10 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { PanelGroup, Panel, ListGroup, ListGroupItem, Glyphicon } from 'react-bootstrap'
+import { PanelGroup, Panel } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
+import Event from './event.js'
 
 export default React.createClass({
   displayName: 'Events',
@@ -12,7 +13,9 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    docs: React.PropTypes.array
+    docs: React.PropTypes.array,
+    editing: React.PropTypes.bool,
+    onSaveArticle: React.PropTypes.func
   },
 
   getInitialState () {
@@ -47,26 +50,26 @@ export default React.createClass({
 
   eventsOfYearPanel (year) {
     return (
-      <div>
-        <ListGroup fill>
-          {this.eventsOfYear(year)}
-        </ListGroup>
-      </div>
+      <PanelGroup defaultActiveKey='0' accordion>
+        {this.eventsOfYear(year)}
+      </PanelGroup>
     )
   },
 
   eventsOfYear (year) {
-    let { docs } = this.state
+    let { docs, editing, onSaveArticle } = this.state
     let events = []
     docs.forEach((doc, dIndex) => {
       const date = new Date(doc.date)
       if (date.getFullYear() === year) {
         const event = (
-          <ListGroupItem
+          <Panel
             key={dIndex}
+            header={doc.title}
+            eventKey={dIndex}
           >
-            {doc.title}
-          </ListGroupItem>
+            <Event doc={doc} editing={editing} onSaveArticle={onSaveArticle} />
+          </Panel>
         )
         events.push(event)
       }
@@ -98,7 +101,7 @@ export default React.createClass({
     return (
       <div>
         <h1>Events</h1>
-        <PanelGroup defaultActiveKey={1} accordion>
+        <PanelGroup defaultActiveKey={0} accordion>
           {this.events()}
         </PanelGroup>
       </div>
