@@ -17,7 +17,6 @@ export default React.createClass({
     events: React.PropTypes.array,
     event: React.PropTypes.object,
     activeYear: React.PropTypes.number,
-    activeEventId: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onSaveArticle: React.PropTypes.func
   },
@@ -25,8 +24,7 @@ export default React.createClass({
   getInitialState () {
     return {
       events: [],
-      activeYear: null,
-      activeEventId: null
+      activeYear: null
     }
   },
 
@@ -41,21 +39,8 @@ export default React.createClass({
 
   onClickMonthlyEvent (id) {
     const { event } = this.props
-    console.log('monthlyEvents.js, onClickMonthlyEvent, id', id)
-    console.log('monthlyEvents.js, onClickMonthlyEvent, event', event)
-    if (Object.keys(event).length === 0 || event._id !== id) {
-      console.log('monthlyEvents.js, onClickMonthlyEvent, get event with id', id)
-      app.Actions.getEvent(id)
-      this.setState({
-        activeEventId: id
-      })
-    } else {
-      app.Actions.getEvent(null)
-      this.setState({
-        activeEventId: null
-      })
-    }
-
+    const idToGet = (Object.keys(event).length === 0 || event._id !== id) ? id : null
+    app.Actions.getEvent(idToGet)
   },
 
   onClickYear (activeYear) {
@@ -98,8 +83,7 @@ export default React.createClass({
 
   eventsOfYear (year) {
     const { event } = this.props
-    const activeEventId = _.has(event, '_id') ? event._id : (this.state.activeEventId ? this.state.activeEventId : null)
-    console.log('monthlyEvents.js, activeEventId', activeEventId)
+    const activeEventId = _.has(event, '_id') ? event._id : null
     return (
       <PanelGroup activeKey={activeEventId} accordion>
         {this.monthlyEvents(year)}

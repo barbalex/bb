@@ -42,22 +42,18 @@ export default (Actions) => {
 
     listenables: Actions,
 
-    event: null,
-
     onGetEvent (id) {
-      console.log('eventStore, onGetEvent, id', id)
       if (!id) {
         app.router.navigate('/monthlyEvents')
         this.trigger({})
-      } else if (!this.event || (this.event._id && this.event._id !== id)) {
+      } else {
         app.db.get(id, { include_docs: true })
           .then((event) => {
-            this.event = event
             const path = getPathFromDoc(event)
             app.router.navigate('/' + path)
             this.trigger(event)
           })
-          .catch((error) => app.Actions.showError({title: 'Error loading ' + id + ':', msg: error}))
+          .catch((error) => app.Actions.showError({title: 'Error in eventStore, onGetEvent, loading ' + id + ':', msg: error}))
       }
     },
 
