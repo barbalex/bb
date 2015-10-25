@@ -78,6 +78,9 @@ export default React.createClass({
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
     const isMonthlyEventsPage = doc.type && doc.type === 'pages' && doc._id === 'pages_monthlyEvents'
     const isCommentary = doc.type && doc.type === 'commentaries'
+    const isMonthlyEvent = doc.type && doc.type === 'monthlyEvents'
+    const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
+    const monthlyEventDoc = doc.type === 'monthlyEvents' ? doc : null
 
     return (
       <NavHelper>
@@ -87,7 +90,7 @@ export default React.createClass({
           <Errors errors={errors} />
           {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
-          {isMonthlyEventsPage ? <MonthlyEvents editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
+          {showMonthlyEventsPage ? <MonthlyEvents doc={monthlyEventDoc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {login ? <Login /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>

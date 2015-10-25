@@ -15,6 +15,7 @@ export default React.createClass({
 
   propTypes: {
     docs: React.PropTypes.array,
+    doc: React.PropTypes.object,
     editing: React.PropTypes.bool,
     onSaveArticle: React.PropTypes.func
   },
@@ -32,6 +33,10 @@ export default React.createClass({
 
   onMonthlyEventsStoreChange (docs) {
     this.setState({ docs })
+  },
+
+  onClickMonthlyEvent (id) {
+    app.Actions.getDoc(id)
   },
 
   yearsOfEvents () {
@@ -64,26 +69,31 @@ export default React.createClass({
   },
 
   eventsOfYear (year) {
+    const { doc } = this.props
+    const activeKey = doc ? doc._id : null
     return (
-      <PanelGroup defaultActiveKey='0' accordion>
+      <PanelGroup activeKey={activeKey} accordion>
         {this.events(year)}
       </PanelGroup>
     )
   },
 
   events (year) {
-    let { docs, editing, onSaveArticle } = this.state
+    const { doc } = this.props
+    const { docs, editing, onSaveArticle } = this.state
     let events = []
-    docs.forEach((doc, dIndex) => {
-      if (getYearFromEventId(doc._id) === year) {
+    docs.forEach((ddoc, dIndex) => {
+      if (getYearFromEventId(ddoc._id) === year) {
+        const showEvent = doc ? ddoc._id === doc._id : false
         const event = (
           <Panel
             key={dIndex}
-            header={doc.title}
-            eventKey={dIndex}
+            header={ddoc.title}
+            eventKey={ddoc._id}
             className='month'
+            onClick={this.onClickMonthlyEvent.bind(this, ddoc._id)}
           >
-            <Event doc={doc} editing={editing} onSaveArticle={onSaveArticle} />
+            {showEvent ? <Event doc={doc} editing={editing} onSaveArticle={onSaveArticle} /> : null}
           </Panel>
         )
         /* version with pure bootstrap. advantage: could add edit icon to panel-heading
@@ -110,6 +120,8 @@ export default React.createClass({
   },
 
   render () {
+    const { doc } = this.props
+    console.log('monthlyEvents.js, doc', doc)
     return (
       <div id='events'>
         <h1>Events</h1>
