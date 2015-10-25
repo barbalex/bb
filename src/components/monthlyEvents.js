@@ -45,6 +45,9 @@ export default React.createClass({
 
   onClickYear (activeYear) {
     this.setState({ activeYear })
+    // make sure no event is loaded
+    // i.e. if an event was loaded it is unloaded
+    app.Actions.getEvent(null)
   },
 
   yearsOfEvents () {
