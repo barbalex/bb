@@ -7,16 +7,19 @@ export default React.createClass({
   displayName: 'Editor',
 
   propTypes: {
+    docId: React.PropTypes.string,
     articleDecoded: React.PropTypes.string,
     onSaveArticle: React.PropTypes.func
   },
 
   componentDidMount () {
-    const { onSaveArticle } = this.props
+    const { docId, onSaveArticle } = this.props
     // height = window - menu height - (menubar + iconbar)
     const height = window.innerHeight - 52 - 74
+    const instanceSelector = `#${docId}`
+
     window.tinymce.init({
-      selector: '#article',
+      selector: instanceSelector,
       plugins: [
         'advlist autolink link image lists charmap print hr anchor pagebreak',
         'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
@@ -51,7 +54,9 @@ export default React.createClass({
   componentWillUnmount () {
     // this is needed for correct behaviour, see
     // http://stackoverflow.com/questions/29169158/react-html-editor-tinymce
-    window.tinymce.remove('#article')
+    const { docId } = this.props
+    const instanceSelector = `#${docId}`
+    window.tinymce.remove(instanceSelector)
   },
 
   shouldComponentUpdate () {
@@ -60,9 +65,9 @@ export default React.createClass({
   },
 
   render () {
-    const { articleDecoded } = this.props
+    const { docId, articleDecoded } = this.props
     return (
-      <textarea id='article' defaultValue={articleDecoded} />
+      <textarea id={docId} defaultValue={articleDecoded} />
     )
   }
 })

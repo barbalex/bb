@@ -21,7 +21,7 @@ export default React.createClass({
     if (editing) {
       return (
         <div>
-          <Editor articleDecoded={articleDecoded} onSaveArticle={onSaveArticle} />
+          <Editor docId={doc._id} articleDecoded={articleDecoded} onSaveArticle={onSaveArticle} />
         </div>
       )
     }
