@@ -95,8 +95,8 @@ export default React.createClass({
   },
 
   monthlyEvents (year) {
-    const { event } = this.props
-    const { events, editing, onSaveArticle } = this.state
+    const { event, editing, onSaveArticle } = this.props
+    const { events } = this.state
     // console.log('monthlyEvents.js, monthlyEvents, event', event)
     let monthlyEvents = []
     events.forEach((doc, dIndex) => {
