@@ -17,7 +17,6 @@ export default React.createClass({
     const { doc, editing, onSaveArticle } = this.props
     const articleEncoded = doc.article
     const articleDecoded = Base64.decode(articleEncoded)
-    console.log('event.js rendering doc', doc._id)
     if (editing) {
       return (
         <div>
