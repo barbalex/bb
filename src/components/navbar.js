@@ -23,7 +23,6 @@ export default React.createClass({
 
   render () {
     const { doc, email, editing, onClickEdit } = this.props
-    console.log('navbar.js rendering doc', doc._id)
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_events']

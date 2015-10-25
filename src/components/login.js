@@ -63,9 +63,7 @@ export default React.createClass({
   checkSignin (email, password) {
     if (this.validSignin(email, password)) {
       app.db.login(email, password)
-        .then((response) => {
-          app.Actions.login(email)
-        })
+        .then((response) => app.Actions.login(email))
         .catch((error) => this.setState({ email: null, loginError: error }))
     }
   },

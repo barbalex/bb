@@ -80,7 +80,6 @@ export default Router.extend({
   },
 
   render (id) {
-    console.log('router.js rendering id', id)
     ReactDOM.render(
       <Main />, document.getElementById('content')
     )
