@@ -14,15 +14,22 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    docs: React.PropTypes.array,
-    doc: React.PropTypes.object,
+    events: React.PropTypes.array,
+    event: React.PropTypes.object,
+    activeYear: React.PropTypes.number,
+    activeEventId: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onSaveArticle: React.PropTypes.func
   },
 
   getInitialState () {
+    const { event } = this.props
+    const activeYear = event && event._id ? getYearFromEventId(event._id) : this.mostRecentYear()
+    const activeEventId = event && event._id ? event._id : null
     return {
-      docs: []
+      events: [],
+      activeYear: activeYear,
+      activeEventId: activeEventId
     }
   },
 
@@ -31,22 +38,26 @@ export default React.createClass({
     app.Actions.getMonthlyEvents()
   },
 
-  onMonthlyEventsStoreChange (docs) {
-    this.setState({ docs })
+  onMonthlyEventsStoreChange (events) {
+    this.setState({ events })
   },
 
   onClickMonthlyEvent (id) {
-    const { doc } = this.props
-    if (!doc || doc._id !== id) {
-      app.Actions.getPage(id)
+    const { event } = this.props
+    if (!event || event._id !== id) {
+      app.Actions.getEvent(id)
     } else {
-      app.Actions.getPage(null)
+      app.Actions.getEvent(null)
     }
   },
 
+  onClickYear (year) {
+
+  },
+
   yearsOfEvents () {
-    let { docs } = this.state
-    const allYears = _.map(docs, (doc) => getYearFromEventId(doc._id))
+    let { events } = this.state
+    const allYears = _.map(events, (doc) => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
       const years = _.uniq(allYears)
       return years.sort().reverse()
@@ -60,16 +71,16 @@ export default React.createClass({
   },
 
   eventYears () {
-    let { docs } = this.state
+    let { events } = this.state
     const years = this.yearsOfEvents()
-    if (docs.length > 0 && years.length > 0) {
-      docs = docs.sort((a, b) => {
+    if (events.length > 0 && years.length > 0) {
+      events = events.sort((a, b) => {
         if (a._id < b._id) return 1
         return -1
       })
       return years.map((year, yIndex) => {
         return (
-          <Panel key={year} header={year} eventKey={year} className='year'>
+          <Panel key={year} header={year} eventKey={year} className='year' onClick={this.onClickYear.bind(this, year)}>
             {this.eventsOfYear(year)}
           </Panel>
         )
@@ -79,31 +90,30 @@ export default React.createClass({
   },
 
   eventsOfYear (year) {
-    const { doc } = this.props
-    const activeKey = doc ? doc._id : null
+    const { activeEventId } = this.state
     return (
-      <PanelGroup activeKey={activeKey} accordion>
-        {this.events(year)}
+      <PanelGroup activeKey={activeEventId} accordion>
+        {this.monthlyEvents(year)}
       </PanelGroup>
     )
   },
 
-  events (year) {
-    const { doc } = this.props
-    const { docs, editing, onSaveArticle } = this.state
-    let events = []
-    docs.forEach((ddoc, dIndex) => {
-      if (getYearFromEventId(ddoc._id) === year) {
-        const showEvent = doc ? ddoc._id === doc._id : false
-        const event = (
+  monthlyEvents (year) {
+    const { event } = this.props
+    const { events, editing, onSaveArticle } = this.state
+    let monthlyEvents = []
+    events.forEach((doc, dIndex) => {
+      if (getYearFromEventId(doc._id) === year) {
+        const showEvent = event ? doc._id === event._id : false
+        const eventComponent = (
           <Panel
             key={dIndex}
-            header={ddoc.title}
-            eventKey={ddoc._id}
+            header={doc.title}
+            eventKey={doc._id}
             className='month'
-            onClick={this.onClickMonthlyEvent.bind(this, ddoc._id)}
+            onClick={this.onClickMonthlyEvent.bind(this, doc._id)}
           >
-            {showEvent ? <Event doc={doc} editing={editing} onSaveArticle={onSaveArticle} /> : null}
+            {showEvent ? <Event doc={event} editing={editing} onSaveArticle={onSaveArticle} /> : null}
           </Panel>
         )
         /* version with pure bootstrap. advantage: could add edit icon to panel-heading
@@ -123,27 +133,21 @@ export default React.createClass({
             </div>
           </div>
         )*/
-        events.push(event)
+        monthlyEvents.push(eventComponent)
       }
     })
-    return events
+    return monthlyEvents
   },
 
   render () {
-    const { doc } = this.props
-    console.log('doc', doc)
-    let activeKey
-    if (doc) {
-      activeKey = getYearFromEventId(doc._id)
-    } else {
-      activeKey = this.mostRecentYear()
-    }
-    console.log('activeKey', activeKey)
+    const { event } = this.props
+    const { activeYear } = this.state
+    console.log('event', event)
     return (
       <div id='events'>
         <h1>Events</h1>
-        <PanelGroup activeKey={activeKey} accordion>
-          {this.eventYears()}
+        <PanelGroup activeKey={activeYear} accordion>
+          {/*this.eventYears()*/}
         </PanelGroup>
       </div>
     )

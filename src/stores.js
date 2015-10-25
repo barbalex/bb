@@ -34,7 +34,38 @@ export default (Actions) => {
           doc._rev = resp.rev
           this.trigger(doc)
         })
-        .catch((error) => app.Actions.showError({title: 'Error in docStore, onSaveDoc:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error in pageStore, onSavePage:', msg: error}))
+    }
+  })
+
+  app.eventStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    doc: null,
+
+    onGetEvent (id) {
+      if (!id) return this.trigger({})
+      if (!this.doc || (this.doc._id && this.doc._id !== id)) {
+        app.db.get(id, { include_docs: true })
+          .then((doc) => {
+            this.doc = doc
+            const path = getPathFromDoc(doc)
+            app.router.navigate('/' + path)
+            this.trigger(doc)
+          })
+          .catch((error) => app.Actions.showError({title: 'Error loading ' + id + ':', msg: error}))
+      }
+    },
+
+    onSaveEvent (doc) {
+      app.db.put(doc)
+        .then((resp) => {
+          // resp.rev is new rev
+          doc._rev = resp.rev
+          this.trigger(doc)
+        })
+        .catch((error) => app.Actions.showError({title: 'Error in eventStore, onSaveEvent:', msg: error}))
     }
   })
 

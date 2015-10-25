@@ -76,7 +76,8 @@ export default Router.extend({
 
   monthlyEvent (year, month, day, title) {
     const id = `monthlyEvents_${year}_${month}_${day}_${title}`
-    this.render(id)
+    this.render()
+    app.Actions.getEvent(id)
   },
 
   login () {

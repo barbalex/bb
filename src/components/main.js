@@ -21,6 +21,7 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
+    event: React.PropTypes.object,
     editing: React.PropTypes.bool,
     login: React.PropTypes.bool,
     email: React.PropTypes.string,
@@ -31,6 +32,7 @@ export default React.createClass({
     const email = window.localStorage.email
     return {
       doc: {},
+      event: {},
       editing: false,
       email: email,
       errors: []
@@ -40,12 +42,17 @@ export default React.createClass({
   componentDidMount () {
     // listen to stores
     this.listenTo(app.pageStore, this.onPageStoreChange)
+    this.listenTo(app.eventStore, this.onEventStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
 
   onPageStoreChange (doc) {
     this.setState({ doc })
+  },
+
+  onEventStoreChange (event) {
+    this.setState({ event })
   },
 
   onLoginStoreChange (email) {
@@ -72,7 +79,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { doc, editing, email, errors } = this.state
+    const { doc, event, editing, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
     const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
@@ -80,7 +87,6 @@ export default React.createClass({
     const isCommentary = doc.type && doc.type === 'commentaries'
     const isMonthlyEvent = doc.type && doc.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
-    const monthlyEventDoc = doc.type === 'monthlyEvents' ? doc : null
 
     return (
       <NavHelper>
@@ -90,7 +96,7 @@ export default React.createClass({
           <Errors errors={errors} />
           {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
-          {showMonthlyEventsPage ? <MonthlyEvents doc={monthlyEventDoc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
+          {showMonthlyEventsPage ? <MonthlyEvents event={event} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {login ? <Login /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
