@@ -1,5 +1,7 @@
 'use strict'
 
+// <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+
 module.exports = () => {
   return `<!doctype html>
 <head>
