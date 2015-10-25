@@ -91,7 +91,7 @@ export default React.createClass({
     return (
       <NavHelper>
         <Header />
-        <Navbar doc={doc} email={email} editing={editing} onClickEdit={this.onClickEdit} />
+        <Navbar doc={doc} event={event} email={email} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
           <Errors errors={errors} />
           {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
