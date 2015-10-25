@@ -86,6 +86,23 @@ export default React.createClass({
             <Event doc={doc} editing={editing} onSaveArticle={onSaveArticle} />
           </Panel>
         )
+        /* version with pure bootstrap. advantage: could add edit icon to panel-heading
+        const event = (
+          <div key={dIndex} className='panel panel-default month'>
+            <div className='panel-heading' role='tab' id={'heading' + dIndex}>
+              <h4 className='panel-title'>
+                <a role='button' data-toggle='collapse' data-parent='#accordion' href={'#collapse' + dIndex} aria-expanded='true' aria-controls={'#collapse' + dIndex}>
+                  {doc.title}
+                </a>
+              </h4>
+            </div>
+            <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex}>
+              <div className='panel-body'>
+                <Event doc={doc} editing={editing} onSaveArticle={onSaveArticle} />
+              </div>
+            </div>
+          </div>
+        )*/
         events.push(event)
       }
     })
