@@ -28,10 +28,11 @@ export default React.createClass({
   },
 
   getInitialState () {
+    const email = window.localStorage.email
     return {
       doc: {},
       editing: false,
-      email: null,
+      email: email,
       errors: []
     }
   },
@@ -77,6 +78,7 @@ export default React.createClass({
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
     const isMonthlyEventsPage = doc.type && doc.type === 'pages' && doc._id === 'pages_monthlyEvents'
     const isCommentary = doc.type && doc.type === 'commentaries'
+
     return (
       <NavHelper>
         <Header />
