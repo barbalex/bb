@@ -89,6 +89,6 @@ export default Router.extend({
     ReactDOM.render(
       <Main />, document.getElementById('content')
     )
-    if (id) app.Actions.getDoc(id)
+    if (id) app.Actions.getPage(id)
   }
 })

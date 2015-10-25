@@ -36,7 +36,12 @@ export default React.createClass({
   },
 
   onClickMonthlyEvent (id) {
-    app.Actions.getDoc(id)
+    const { doc } = this.props
+    if (!doc || doc._id !== id) {
+      app.Actions.getPage(id)
+    } else {
+      app.Actions.getPage(null)
+    }
   },
 
   yearsOfEvents () {
@@ -49,6 +54,11 @@ export default React.createClass({
     return []
   },
 
+  mostRecentYear () {
+    const years = this.yearsOfEvents()
+    return years[0]
+  },
+
   eventYears () {
     let { docs } = this.state
     const years = this.yearsOfEvents()
@@ -59,7 +69,7 @@ export default React.createClass({
       })
       return years.map((year, yIndex) => {
         return (
-          <Panel key={yIndex} header={year} eventKey={yIndex} className='year'>
+          <Panel key={year} header={year} eventKey={year} className='year'>
             {this.eventsOfYear(year)}
           </Panel>
         )
@@ -121,11 +131,18 @@ export default React.createClass({
 
   render () {
     const { doc } = this.props
-    console.log('monthlyEvents.js, doc', doc)
+    console.log('doc', doc)
+    let activeKey
+    if (doc) {
+      activeKey = getYearFromEventId(doc._id)
+    } else {
+      activeKey = this.mostRecentYear()
+    }
+    console.log('activeKey', activeKey)
     return (
       <div id='events'>
         <h1>Events</h1>
-        <PanelGroup defaultActiveKey={0} accordion>
+        <PanelGroup activeKey={activeKey} accordion>
           {this.eventYears()}
         </PanelGroup>
       </div>

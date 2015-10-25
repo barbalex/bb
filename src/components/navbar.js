@@ -18,7 +18,7 @@ export default React.createClass({
 
   onClickPage (pageType, event) {
     // event.preventDefault()
-    app.Actions.getDoc(pageType)
+    app.Actions.getPage(pageType)
   },
 
   render () {

@@ -8,13 +8,13 @@ import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import _ from 'lodash'
 
 export default (Actions) => {
-  app.docStore = Reflux.createStore({
+  app.pageStore = Reflux.createStore({
 
     listenables: Actions,
 
     doc: null,
 
-    onGetDoc (id) {
+    onGetPage (id) {
       if (!this.doc || (this.doc._id && this.doc._id !== id)) {
         app.db.get(id, { include_docs: true })
           .then((doc) => {
@@ -27,7 +27,7 @@ export default (Actions) => {
       }
     },
 
-    onSaveDoc (doc) {
+    onSavePage (doc) {
       app.db.put(doc)
         .then((resp) => {
           // resp.rev is new rev

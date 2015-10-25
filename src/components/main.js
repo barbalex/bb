@@ -39,19 +39,19 @@ export default React.createClass({
 
   componentDidMount () {
     // listen to stores
-    this.listenTo(app.docStore, this.onDocStoreChange)
+    this.listenTo(app.pageStore, this.onPageStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
 
-  onDocStoreChange (doc) {
+  onPageStoreChange (doc) {
     this.setState({ doc })
   },
 
   onLoginStoreChange (email) {
     this.setState({ email })
     console.log('user ' + email + ' logged in')
-    app.Actions.getDoc('pages_home')
+    app.Actions.getPage('pages_home')
   },
 
   onError (errors) {
@@ -67,7 +67,7 @@ export default React.createClass({
   onSaveArticle (articleEncoded) {
     let { doc } = this.state
     doc.article = articleEncoded
-    app.Actions.saveDoc(doc)
+    app.Actions.savePage(doc)
   },
 
   render () {
