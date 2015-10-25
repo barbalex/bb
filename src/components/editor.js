@@ -36,7 +36,7 @@ export default React.createClass({
         editor.on('change undo redo', (e) => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
-          onSaveArticle(articleEncoded)
+          onSaveArticle(articleEncoded, 'monthlyEvents')
         })
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4

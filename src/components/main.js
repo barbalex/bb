@@ -57,7 +57,6 @@ export default React.createClass({
 
   onLoginStoreChange (email) {
     this.setState({ email })
-    console.log('user ' + email + ' logged in')
     app.Actions.getPage('pages_home')
   },
 
@@ -71,10 +70,18 @@ export default React.createClass({
     this.setState({ editing })
   },
 
-  onSaveArticle (articleEncoded) {
-    let { doc } = this.state
-    doc.article = articleEncoded
-    app.Actions.savePage(doc)
+  onSaveArticle (articleEncoded, docType) {
+    let { doc, event } = this.state
+    console.log('saving article')
+    const isMonthlyEvent = docType && docType === 'monthlyEvents'
+    console.log('isEvent', isMonthlyEvent)
+    if (isMonthlyEvent) {
+      event.article = articleEncoded
+      app.Actions.saveEvent(event)
+    } else {
+      doc.article = articleEncoded
+      app.Actions.savePage(doc)
+    }
   },
 
   render () {

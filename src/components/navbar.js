@@ -17,8 +17,7 @@ export default React.createClass({
     onClickEdit: React.PropTypes.func
   },
 
-  onClickPage (pageType, event) {
-    // event.preventDefault()
+  onClickPage (pageType) {
     app.Actions.getPage(pageType)
   },
 
