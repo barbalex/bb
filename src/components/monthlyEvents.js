@@ -23,13 +23,10 @@ export default React.createClass({
   },
 
   getInitialState () {
-    const { event } = this.props
-    const activeYear = event && event._id ? getYearFromEventId(event._id) : this.mostRecentYear()
-    const activeEventId = event && event._id ? event._id : null
     return {
       events: [],
-      activeYear: activeYear,
-      activeEventId: activeEventId
+      activeYear: null,
+      activeEventId: null
     }
   },
 
@@ -44,15 +41,25 @@ export default React.createClass({
 
   onClickMonthlyEvent (id) {
     const { event } = this.props
-    if (!event || event._id !== id) {
+    console.log('monthlyEvents.js, onClickMonthlyEvent, id', id)
+    console.log('monthlyEvents.js, onClickMonthlyEvent, event', event)
+    if (Object.keys(event).length === 0 || event._id !== id) {
+      console.log('monthlyEvents.js, onClickMonthlyEvent, get event with id', id)
       app.Actions.getEvent(id)
+      this.setState({
+        activeEventId: id
+      })
     } else {
       app.Actions.getEvent(null)
+      this.setState({
+        activeEventId: null
+      })
     }
+
   },
 
-  onClickYear (year) {
-
+  onClickYear (activeYear) {
+    this.setState({ activeYear })
   },
 
   yearsOfEvents () {
@@ -90,7 +97,9 @@ export default React.createClass({
   },
 
   eventsOfYear (year) {
-    const { activeEventId } = this.state
+    const { event } = this.props
+    const activeEventId = _.has(event, '_id') ? event._id : (this.state.activeEventId ? this.state.activeEventId : null)
+    console.log('monthlyEvents.js, activeEventId', activeEventId)
     return (
       <PanelGroup activeKey={activeEventId} accordion>
         {this.monthlyEvents(year)}
@@ -101,10 +110,13 @@ export default React.createClass({
   monthlyEvents (year) {
     const { event } = this.props
     const { events, editing, onSaveArticle } = this.state
+    // console.log('monthlyEvents.js, monthlyEvents, event', event)
     let monthlyEvents = []
     events.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
         const showEvent = event ? doc._id === event._id : false
+        // console.log('monthlyEvents.js, monthlyEvents, doc', doc)
+        // console.log('monthlyEvents.js, monthlyEvents, showEvent', showEvent)
         const eventComponent = (
           <Panel
             key={dIndex}
@@ -141,13 +153,17 @@ export default React.createClass({
 
   render () {
     const { event } = this.props
-    const { activeYear } = this.state
-    console.log('event', event)
+    let activeYear
+    if (_.has(event, '_id')) {
+      activeYear = getYearFromEventId(event._id)
+    } else {
+      activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()
+    }
     return (
       <div id='events'>
         <h1>Events</h1>
         <PanelGroup activeKey={activeYear} accordion>
-          {/*this.eventYears()*/}
+          {this.eventYears()}
         </PanelGroup>
       </div>
     )

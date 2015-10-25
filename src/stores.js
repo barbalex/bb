@@ -42,28 +42,31 @@ export default (Actions) => {
 
     listenables: Actions,
 
-    doc: null,
+    event: null,
 
     onGetEvent (id) {
-      if (!id) return this.trigger({})
-      if (!this.doc || (this.doc._id && this.doc._id !== id)) {
+      console.log('eventStore, onGetEvent, id', id)
+      if (!id) {
+        app.router.navigate('/monthlyEvents')
+        this.trigger({})
+      } else if (!this.event || (this.event._id && this.event._id !== id)) {
         app.db.get(id, { include_docs: true })
-          .then((doc) => {
-            this.doc = doc
-            const path = getPathFromDoc(doc)
+          .then((event) => {
+            this.event = event
+            const path = getPathFromDoc(event)
             app.router.navigate('/' + path)
-            this.trigger(doc)
+            this.trigger(event)
           })
           .catch((error) => app.Actions.showError({title: 'Error loading ' + id + ':', msg: error}))
       }
     },
 
-    onSaveEvent (doc) {
-      app.db.put(doc)
+    onSaveEvent (event) {
+      app.db.put(event)
         .then((resp) => {
           // resp.rev is new rev
-          doc._rev = resp.rev
-          this.trigger(doc)
+          event._rev = resp.rev
+          this.trigger(event)
         })
         .catch((error) => app.Actions.showError({title: 'Error in eventStore, onSaveEvent:', msg: error}))
     }
