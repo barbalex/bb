@@ -72,6 +72,10 @@ export default React.createClass({
     this.setState({ editing })
   },
 
+  onSaveDoc (doc) {
+    app.Actions.savePage(doc)
+  },
+
   onSaveArticle (articleEncoded) {
     let { doc } = this.state
     doc.article = articleEncoded
@@ -101,7 +105,7 @@ export default React.createClass({
         <Navbar doc={doc} event={event} email={email} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
           <Errors errors={errors} />
-          {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
+          {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} onSaveDoc={this.onSaveDoc} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
           {showMonthlyEventsPage ? <MonthlyEvents event={event} editing={editing} onSaveMonthlyEvent={this.onSaveMonthlyEvent} /> : null}
           {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}

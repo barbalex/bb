@@ -2,13 +2,14 @@
 
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
+import AttachedImgagesList from './attachedImgagesList.js'
 
 export default React.createClass({
   displayName: 'PageMeta',
 
   propTypes: {
     doc: React.PropTypes.object,
-    onSaveArticle: React.PropTypes.func,
+    onSaveDoc: React.PropTypes.func,
     onCloseMeta: React.PropTypes.func
   },
 
@@ -22,14 +23,15 @@ export default React.createClass({
   },
 
   render () {
+    const { doc } = this.props
     return (
       <Modal show={true} onHide={this.close}>
         <Modal.Header>
-          <Modal.Title>Meta-Daten</Modal.Title>
+          <Modal.Title>Meta-Daten für {doc.title}</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <p>bla bla</p>
+          <AttachedImgagesList />
         </Modal.Body>
 
         <Modal.Footer>
