@@ -38,7 +38,7 @@ export default (Actions) => {
     }
   })
 
-  app.eventStore = Reflux.createStore({
+  app.monthlyEventStore = Reflux.createStore({
 
     listenables: Actions,
 
@@ -53,7 +53,7 @@ export default (Actions) => {
             app.router.navigate('/' + path)
             this.trigger(event)
           })
-          .catch((error) => app.Actions.showError({title: 'Error in eventStore, onGetEvent, loading ' + id + ':', msg: error}))
+          .catch((error) => app.Actions.showError({title: 'Error in monthlyEventStore, onGetEvent, loading ' + id + ':', msg: error}))
       }
     },
 
@@ -64,7 +64,7 @@ export default (Actions) => {
           event._rev = resp.rev
           this.trigger(event)
         })
-        .catch((error) => app.Actions.showError({title: 'Error in eventStore, onSaveEvent:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error in monthlyEventStore, onSaveEvent:', msg: error}))
     }
   })
 

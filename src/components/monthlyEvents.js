@@ -37,10 +37,17 @@ export default React.createClass({
     this.setState({ events })
   },
 
-  onClickMonthlyEvent (id) {
+  onClickMonthlyEvent (id, e) {
     const { event } = this.props
-    const idToGet = (Object.keys(event).length === 0 || event._id !== id) ? id : null
-    app.Actions.getEvent(idToGet)
+    // prevent higher level panels from reacting
+    e.stopPropagation()
+    // make sure the heading was clicked
+    const parent = e.target.parentElement
+    const headingWasClicked = _.includes(parent.className, 'panel-title') || _.includes(parent.className, 'panel-heading')
+    if (headingWasClicked) {
+      const idToGet = (Object.keys(event).length === 0 || event._id !== id) ? id : null
+      app.Actions.getEvent(idToGet)
+    }
   },
 
   onClickYear (activeYear) {
@@ -102,8 +109,7 @@ export default React.createClass({
     events.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
         const showEvent = event ? doc._id === event._id : false
-        // console.log('monthlyEvents.js, monthlyEvents, doc', doc)
-        // console.log('monthlyEvents.js, monthlyEvents, showEvent', showEvent)
+        // TODO: make sure onClick only reacts to click in panel HEADER
         const eventComponent = (
           <Panel
             key={dIndex}

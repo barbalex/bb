@@ -38,7 +38,7 @@ export default React.createClass({
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
           if (onSaveArticle) onSaveArticle(articleEncoded)
-          if (onSaveMonthlyEvent) onSaveMonthlyEvent(articleDecoded)
+          if (onSaveMonthlyEvent) onSaveMonthlyEvent(articleEncoded)
         })
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4
@@ -54,6 +54,11 @@ export default React.createClass({
     }, 800)
   },
 
+  shouldComponentUpdate () {
+    // make sure react does not update this component
+    return false
+  },
+
   componentWillUnmount () {
     // this is needed for correct behaviour, see
     // http://stackoverflow.com/questions/29169158/react-html-editor-tinymce
@@ -62,15 +67,12 @@ export default React.createClass({
     window.tinymce.remove(instanceSelector)
   },
 
-  shouldComponentUpdate () {
-    // make shure react does not touch this component
-    return false
-  },
-
   render () {
     const { docId, articleDecoded } = this.props
     return (
-      <textarea id={docId} defaultValue={articleDecoded} />
+      <textarea
+        id={docId}
+        defaultValue={articleDecoded} />
     )
   }
 })

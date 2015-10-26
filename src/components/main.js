@@ -42,7 +42,7 @@ export default React.createClass({
   componentDidMount () {
     // listen to stores
     this.listenTo(app.pageStore, this.onPageStoreChange)
-    this.listenTo(app.eventStore, this.onEventStoreChange)
+    this.listenTo(app.monthlyEventStore, this.onmonthlyEventStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
@@ -51,14 +51,10 @@ export default React.createClass({
     this.setState({ doc })
   },
 
-  onEventStoreChange (eventSaved) {
-    const { event } = this.state
-    // only set state if the event is not active any more
-    //if (!_.has(event, '_id') || event._id !== eventSaved._id) {
-      this.setState({
-        event: eventSaved
-      })
-    //}
+  onmonthlyEventStoreChange (eventSaved) {
+    this.setState({
+      event: eventSaved
+    })
   },
 
   onLoginStoreChange (email) {
