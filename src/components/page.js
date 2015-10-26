@@ -46,6 +46,7 @@ export default React.createClass({
       bottom: 10,
       right: 10
     }
+    console.log('page.js, doc', doc)
     if (editing) {
       return (
         <div>

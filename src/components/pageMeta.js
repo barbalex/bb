@@ -23,7 +23,7 @@ export default React.createClass({
   },
 
   render () {
-    const { doc } = this.props
+    const { doc, onSaveDoc } = this.props
     return (
       <Modal show={true} onHide={this.close}>
         <Modal.Header>
@@ -31,7 +31,7 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <AttachedImgagesList />
+          <AttachedImgagesList doc={doc} onSaveDoc={onSaveDoc} />
         </Modal.Body>
 
         <Modal.Footer>
