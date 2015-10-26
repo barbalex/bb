@@ -1,7 +1,7 @@
 'use strict'
 
 import React from 'react'
-import { Row, Col, Image } from 'react-bootstrap'
+import { Row, Col, Image, Button } from 'react-bootstrap'
 import getCouchUrl from '../modules/getCouchUrl.js'
 
 export default React.createClass({
@@ -17,18 +17,18 @@ export default React.createClass({
     const { doc, attName } = this.props
     const id = doc._id
     const url = getCouchUrl() + '/' + id + '/' + attName
+    const divStyle = {
+      padding: 15
+    }
     return (
-      <Row key={id}>
-        <Col xs={5} md={5}>
-          <Image src={url} rounded responsive />
-        </Col>
-        <Col xs={5} md={5}>
-          <p>url: {url}</p>
-        </Col>
-        <Col xs={2} md={2}>
-          {/*delete button*/}
-        </Col>
-      </Row>
+      <div key={id} style={divStyle}>
+        <div className='media-left'>
+          <img src={url} className='media-object' />
+        </div>
+        <div className='media-body'>
+          <p>{url}</p>
+        </div>
+      </div>
     )
   }
 })

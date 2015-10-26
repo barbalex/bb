@@ -24,18 +24,16 @@ export default React.createClass({
         imageNameArray.push(key)
       }
     })
-    const images = imageNameArray.map((imageName) => {
-      return <AttachedImage doc={doc} attName={imageName} onSaveDoc={onSaveDoc} />
+    const images = imageNameArray.map((imageName, index) => {
+      return <AttachedImage key={index} doc={doc} attName={imageName} onSaveDoc={onSaveDoc} />
     })
     return images
   },
 
   render () {
     return (
-      <div>
-        <Grid>
-          {this.images()}
-        </Grid>
+      <div className='media'>
+        {this.images()}
       </div>
     )
   }
