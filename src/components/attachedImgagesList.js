@@ -10,40 +10,31 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
-    onSaveDoc: React.PropTypes.func,
-    images: React.PropTypes.array
+    onSaveDoc: React.PropTypes.func
   },
 
-  getInitialState () {
-    return {
-      images: []
-    }
-  },
-
-  componentDidMount () {
-    this.getImages()
-  },
-
-  getImages () {
+  images () {
     const { doc, onSaveDoc } = this.props
-    const { images } = this.state
-
+    const imageNameArray = []
     if (!doc._attachments || Object.keys(doc._attachments).length === 0) return []
     Object.keys(doc._attachments).forEach((key) => {
       console.log('getting images, key', key)
       console.log('getting images, key.content_type === image', doc._attachments[key].content_type === 'image/jpeg')
       if (doc._attachments[key].content_type === 'image/jpeg') {
-        images.push(<AttachedImage doc={doc} attName={key} onSaveDoc={onSaveDoc} />)
+        imageNameArray.push(key)
       }
     })
+    const images = imageNameArray.map((imageName) => {
+      return <AttachedImage doc={doc} attName={imageName} onSaveDoc={onSaveDoc} />
+    })
+    return images
   },
 
   render () {
-    const { images } = this.state
     return (
       <div>
         <Grid>
-          {images}
+          {this.images()}
         </Grid>
       </div>
     )

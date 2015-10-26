@@ -16,19 +16,16 @@ export default React.createClass({
   render () {
     const { doc, attName } = this.props
     const id = doc._id
-    console.log('id', id)
-    const idPath = id.replace(/_/g, '/')
-    console.log('idPath', idPath)
-    const url = getCouchUrl() + '/' + idPath + '/' + attName
+    const url = getCouchUrl() + '/' + id + '/' + attName
     return (
       <Row key={id}>
-        <Col xs={6} md={5}>
-          <Image src={url} rounded />
+        <Col xs={5} md={5}>
+          <Image src={url} rounded responsive />
         </Col>
-        <Col xs={6} md={5}>
+        <Col xs={5} md={5}>
           <p>url: {url}</p>
         </Col>
-        <Col xs={6} md={2}>
+        <Col xs={2} md={2}>
           {/*delete button*/}
         </Col>
       </Row>

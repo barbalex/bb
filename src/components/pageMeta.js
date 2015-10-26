@@ -25,7 +25,7 @@ export default React.createClass({
   render () {
     const { doc, onSaveDoc } = this.props
     return (
-      <Modal show={true} onHide={this.close}>
+      <Modal show={true} onHide={this.close} dialogClassName='pageMetaClass'>
         <Modal.Header>
           <Modal.Title>Meta-Daten für {doc.title}</Modal.Title>
         </Modal.Header>
