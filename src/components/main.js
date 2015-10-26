@@ -51,8 +51,14 @@ export default React.createClass({
     this.setState({ doc })
   },
 
-  onEventStoreChange (event) {
-    this.setState({ event })
+  onEventStoreChange (eventSaved) {
+    const { event } = this.state
+    // only set state if the event is not active any more
+    //if (!_.has(event, '_id') || event._id !== eventSaved._id) {
+      this.setState({
+        event: eventSaved
+      })
+    //}
   },
 
   onLoginStoreChange (email) {
@@ -70,18 +76,16 @@ export default React.createClass({
     this.setState({ editing })
   },
 
-  onSaveArticle (articleEncoded, docType) {
-    let { doc, event } = this.state
-    console.log('saving article')
-    const isMonthlyEvent = docType && docType === 'monthlyEvents'
-    console.log('isEvent', isMonthlyEvent)
-    if (isMonthlyEvent) {
-      event.article = articleEncoded
-      app.Actions.saveEvent(event)
-    } else {
-      doc.article = articleEncoded
-      app.Actions.savePage(doc)
-    }
+  onSaveArticle (articleEncoded) {
+    let { doc } = this.state
+    doc.article = articleEncoded
+    app.Actions.savePage(doc)
+  },
+
+  onSaveMonthlyEvent (articleEncoded) {
+    let { event } = this.state
+    event.article = articleEncoded
+    app.Actions.saveEvent(event)
   },
 
   render () {
@@ -103,7 +107,7 @@ export default React.createClass({
           <Errors errors={errors} />
           {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
-          {showMonthlyEventsPage ? <MonthlyEvents event={event} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
+          {showMonthlyEventsPage ? <MonthlyEvents event={event} editing={editing} onSaveMonthlyEvent={this.onSaveMonthlyEvent} /> : null}
           {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
           {login ? <Login /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>

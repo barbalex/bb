@@ -9,11 +9,12 @@ export default React.createClass({
   propTypes: {
     docId: React.PropTypes.string,
     articleDecoded: React.PropTypes.string,
-    onSaveArticle: React.PropTypes.func
+    onSaveArticle: React.PropTypes.func,
+    onSaveMonthlyEvent: React.PropTypes.func
   },
 
   componentDidMount () {
-    const { docId, onSaveArticle } = this.props
+    const { docId, onSaveArticle, onSaveMonthlyEvent } = this.props
     // height = window - menu height - (menubar + iconbar)
     const height = window.innerHeight - 52 - 74
     const instanceSelector = `#${docId}`
@@ -36,7 +37,8 @@ export default React.createClass({
         editor.on('change undo redo', (e) => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
-          onSaveArticle(articleEncoded, 'monthlyEvents')
+          if (onSaveArticle) onSaveArticle(articleEncoded)
+          if (onSaveMonthlyEvent) onSaveMonthlyEvent(articleDecoded)
         })
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4
@@ -46,6 +48,7 @@ export default React.createClass({
       }
     })
     // scroll editor to top
+    // TODO: if event, scroll event title to top
     window.$('html, body').animate({
       scrollTop: 140
     }, 800)

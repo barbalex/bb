@@ -18,7 +18,7 @@ export default React.createClass({
     event: React.PropTypes.object,
     activeYear: React.PropTypes.number,
     editing: React.PropTypes.bool,
-    onSaveArticle: React.PropTypes.func
+    onSaveMonthlyEvent: React.PropTypes.func
   },
 
   getInitialState () {
@@ -95,7 +95,7 @@ export default React.createClass({
   },
 
   monthlyEvents (year) {
-    const { event, editing, onSaveArticle } = this.props
+    const { event, editing, onSaveMonthlyEvent } = this.props
     const { events } = this.state
     // console.log('monthlyEvents.js, monthlyEvents, event', event)
     let monthlyEvents = []
@@ -112,7 +112,7 @@ export default React.createClass({
             className='month'
             onClick={this.onClickMonthlyEvent.bind(this, doc._id)}
           >
-            {showEvent ? <Event doc={event} editing={editing} onSaveArticle={onSaveArticle} /> : null}
+            {showEvent ? <Event doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
           </Panel>
         )
         /* version with pure bootstrap. advantage: could add edit icon to panel-heading
@@ -127,7 +127,7 @@ export default React.createClass({
             </div>
             <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex}>
               <div className='panel-body'>
-                <Event doc={doc} editing={editing} onSaveArticle={onSaveArticle} />
+                <Event doc={doc} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} />
               </div>
             </div>
           </div>
