@@ -7,6 +7,7 @@ import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
 import Event from './event.js'
 import getYearFromEventId from '../modules/getYearFromEventId.js'
+import getMonthFromEventId from '../modules/getMonthFromEventId.js'
 
 export default React.createClass({
   displayName: 'Events',
@@ -109,11 +110,12 @@ export default React.createClass({
     events.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
         const showEvent = event ? doc._id === event._id : false
+        const month = getMonthFromEventId(doc._id)
         // TODO: make sure onClick only reacts to click in panel HEADER
         const eventComponent = (
           <Panel
             key={dIndex}
-            header={doc.title}
+            header={month}
             eventKey={doc._id}
             className='month'
             onClick={this.onClickMonthlyEvent.bind(this, doc._id)}

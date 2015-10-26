@@ -1,6 +1,5 @@
 {
-  "_id": "monthlyEvents_xxx",
+  "_id": "monthlyEvents_xxxx_xx",
   "type": "monthlyEvents",
-  "title": "xxx",
   "article": ""
 }
