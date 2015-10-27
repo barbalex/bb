@@ -3,10 +3,11 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
-import Calendar from 'react-input-calendar'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
 
 export default React.createClass({
-  displayName: 'CommentariesMeta',
+  displayName: 'NewCommentary',
 
   propTypes: {
     onCloseNewCommentary: React.PropTypes.func,
@@ -18,7 +19,7 @@ export default React.createClass({
   getInitialState () {
     return {
       title: null,
-      date: null,
+      date: moment(),
       error: null
     }
   },
@@ -29,9 +30,7 @@ export default React.createClass({
   },
 
   onChangeDate (date) {
-    // TODO
-    console.log('date', date)
-    // this.setState({ date })
+    this.setState({ date })
   },
 
   createNewCommentary () {
@@ -58,6 +57,9 @@ export default React.createClass({
 
   render () {
     const { title, date, error } = this.state
+    const alertStyle = {
+      marginTop: 10
+    }
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
@@ -66,10 +68,9 @@ export default React.createClass({
 
         <Modal.Body>
           <Input type='text' label='title' value={title} onChange={this.onChangeTitle} />
-          <Calendar
-            format='DD.MM.YYYY'
-            computableFormat='DD.MM.YYYY'
-            date={date}
+          <DatePicker
+            selected={date}
+            dateFormat='DD.MM.YYYY'
             onChange={this.onChangeDate} />
           {error ? <Alert bsStyle='danger'>{error}</Alert> : null}
         </Modal.Body>

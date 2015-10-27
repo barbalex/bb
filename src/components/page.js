@@ -5,7 +5,6 @@ import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
 import Editor from './editor.js'
 import Meta from './PageMeta.js'
-import NewCommentary from './newCommentary.js'
 
 export default React.createClass({
   displayName: 'Page',
@@ -14,15 +13,13 @@ export default React.createClass({
     doc: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
-    showNewCommentary: React.PropTypes.bool,
     onSaveArticle: React.PropTypes.func,
     onSavePage: React.PropTypes.func
   },
 
   getInitialState () {
     return {
-      showMeta: false,
-      showNewCommentary: false
+      showMeta: false
     }
   },
 
@@ -33,23 +30,15 @@ export default React.createClass({
     })
   },
 
-  onClickNewCommentary () {
-    this.setState({ showNewCommentary: true })
-  },
-
   onCloseMeta () {
     this.setState({
       showMeta: false
     })
   },
 
-  onCloseNewCommentary () {
-    this.setState({ showNewCommentary: false })
-  },
-
   render () {
     const { doc, editing, onSaveArticle } = this.props
-    const { showMeta, showNewCommentary } = this.state
+    const { showMeta } = this.state
     const articleEncoded = doc.article
     const articleDecoded = Base64.decode(articleEncoded)
     const metaButtonStyle = {
@@ -61,7 +50,6 @@ export default React.createClass({
       return (
         <div>
           {showMeta ? <Meta doc={doc} onCloseMeta={this.onCloseMeta} /> : null}
-          {showNewCommentary ? <NewCommentary onCloseNewCommentary={this.onCloseNewCommentary} /> : null}
           <Editor docId={doc._id} articleDecoded={articleDecoded} onSaveArticle={onSaveArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>Metadaten</Button>
         </div>

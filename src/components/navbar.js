@@ -15,7 +15,7 @@ export default React.createClass({
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
-    onClickAddCommentary: React.PropTypes.func
+    onClickNewCommentary: React.PropTypes.func
   },
 
   onClickPage (pageType) {
@@ -24,7 +24,7 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, event, email, editing, onClickEdit, onClickAddCommentary } = this.props
+    const { doc, event, email, editing, onClickEdit, onClickNewCommentary } = this.props
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents']
@@ -119,7 +119,7 @@ export default React.createClass({
                   {showAddCommentary ?
                     <NavItem
                       eventKey={2}
-                      onClick={onClickAddCommentary}
+                      onClick={onClickNewCommentary}
                     >
                       <Glyphicon glyph='plus' />
                     </NavItem>

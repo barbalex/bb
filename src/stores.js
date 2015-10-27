@@ -96,13 +96,15 @@ export default (Actions) => {
     },
 
     onNewCommentary (title, date) {
-      const year = moment(date).year().format('YYYY')
-      const month = moment(date).month().format('MM')
-      const day = moment(date).day().format('DD')
+      const year = moment(date).year()
+      const month = moment(date).format('MM')
+      const day = moment(date).format('DD')
       const id = `commentaries_${year}_${month}_${day}_${title}`
       const commentary = {
         _id: id,
-        article: null
+        title: title,
+        article: '',
+        type: 'commentaries'
       }
       app.db.put(commentary)
         .then(() => this.onGetCommentaries())

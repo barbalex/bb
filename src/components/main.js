@@ -23,6 +23,7 @@ export default React.createClass({
     doc: React.PropTypes.object,
     event: React.PropTypes.object,
     editing: React.PropTypes.bool,
+    showNewCommentary: React.PropTypes.bool,
     login: React.PropTypes.bool,
     email: React.PropTypes.string,
     errors: React.PropTypes.array
@@ -34,6 +35,7 @@ export default React.createClass({
       doc: {},
       event: {},
       editing: false,
+      showNewCommentary: false,
       email: email,
       errors: []
     }
@@ -70,9 +72,13 @@ export default React.createClass({
     this.setState({ editing })
   },
 
-  // TODO
-  onClickAddCommentary () {
-    console.log('add commentary')
+  onClickNewCommentary () {
+    console.log('main.js, new commentary clicked')
+    this.setState({ showNewCommentary: true })
+  },
+
+  onCloseNewCommentary () {
+    this.setState({ showNewCommentary: false })
   },
 
   onSavePage (doc) {
@@ -93,7 +99,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { doc, event, editing, email, errors } = this.state
+    const { doc, event, editing, showNewCommentary, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
     const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
@@ -110,7 +116,8 @@ export default React.createClass({
           event={event}
           email={email}
           editing={editing}
-          onClickEdit={this.onClickEdit} />
+          onClickEdit={this.onClickEdit}
+          onClickNewCommentary={this.onClickNewCommentary} />
         <div className='container'>
           <Errors errors={errors} />
           {isSimplePage ?
@@ -122,7 +129,9 @@ export default React.createClass({
             : null
           }
           {isCommentariesPage ?
-            <Commentaries />
+            <Commentaries
+              showNewCommentary={showNewCommentary}
+              onCloseNewCommentary={this.onCloseNewCommentary} />
             : null
           }
           {showMonthlyEventsPage ?
@@ -136,8 +145,7 @@ export default React.createClass({
             <Commentary
               doc={doc}
               editing={editing}
-              onSaveArticle={this.onSaveArticle}
-              onClickAddCommentary={this.onClickAddCommentary} />
+              onSaveArticle={this.onSaveArticle} />
             : null
           }
           {login ? <Login /> : null}

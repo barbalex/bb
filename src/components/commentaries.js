@@ -5,6 +5,7 @@ import React from 'react'
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import getPathFromDoc from '../modules/getPathFromDoc.js'
+import NewCommentary from './newCommentary.js'
 
 export default React.createClass({
   displayName: 'Commentaries',
@@ -12,7 +13,9 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    docs: React.PropTypes.array
+    docs: React.PropTypes.array,
+    showNewCommentary: React.PropTypes.bool,
+    onCloseNewCommentary: React.PropTypes.func
   },
 
   getInitialState () {
@@ -53,12 +56,15 @@ export default React.createClass({
   },
 
   render () {
+    const { showNewCommentary, onCloseNewCommentary } = this.props
+    console.log('commentaries.js, render, showNewCommentary', showNewCommentary)
     return (
       <div>
         <h1>Commentaries</h1>
         <ListGroup>
           {this.commentaries()}
         </ListGroup>
+        {showNewCommentary ? <NewCommentary onCloseNewCommentary={onCloseNewCommentary} /> : null}
       </div>
     )
   }
