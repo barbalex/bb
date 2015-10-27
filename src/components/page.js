@@ -37,7 +37,7 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, editing, onSaveArticle, onSavePage } = this.props
+    const { doc, editing, onSaveArticle } = this.props
     const { showMeta } = this.state
     const articleEncoded = doc.article
     const articleDecoded = Base64.decode(articleEncoded)

@@ -18,7 +18,8 @@ export default React.createClass({
   },
 
   onClickPage (pageType) {
-    app.Actions.getPage(pageType)
+    const onlyLoadOtherIds = pageType === 'pages_monthlyEvents'
+    app.Actions.getPage(pageType, onlyLoadOtherIds)
   },
 
   render () {

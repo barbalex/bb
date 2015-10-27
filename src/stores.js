@@ -14,10 +14,9 @@ export default (Actions) => {
 
     doc: null,
 
-    onGetPage (id) {
-      // TODO: EVENTS need check if id is already loaded
-      // But when meta is changed this check is not needed
-      if (!this.doc || (this.doc._id/* && this.doc._id !== id*/)) {
+    onGetPage (id, onlyLoadOtherIds) {
+      const get = !this.doc || (this.doc._id && this.doc._id !== id)
+      if (get) {
         app.db.get(id, { include_docs: true })
           .then((doc) => {
             this.doc = doc
@@ -47,12 +46,14 @@ export default (Actions) => {
 
     onRemovePageAttachment (doc, attachmentId) {
       console.log('pageStore removing attachment', attachmentId)
-      app.db.removeAttachment(doc._id, attachmentId, doc._rev)
+      delete doc._attachments[attachmentId]
+      this.onSavePage(doc)
+      /*app.db.removeAttachment(doc._id, attachmentId, doc._rev)
         .then((resp) => {
           console.log('pageStore removed attachment')
           app.Actions.getPage(doc._id)
         })
-        .catch((error) => app.Actions.showError({title: 'Error in pageStore, onRemovePageAttachment:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error in pageStore, onRemovePageAttachment:', msg: error}))*/
     }
   })
 

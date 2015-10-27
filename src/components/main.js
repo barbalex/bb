@@ -51,10 +51,8 @@ export default React.createClass({
     this.setState({ doc })
   },
 
-  onmonthlyEventStoreChange (eventSaved) {
-    this.setState({
-      event: eventSaved
-    })
+  onmonthlyEventStoreChange (event) {
+    this.setState({ event })
   },
 
   onLoginStoreChange (email) {
