@@ -3,7 +3,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
-import DatePicker from 'react-datepicker'
+import DateTimeField from 'react-bootstrap-datetimepicker'
 import moment from 'moment'
 
 export default React.createClass({
@@ -58,7 +58,14 @@ export default React.createClass({
   render () {
     const { title, date, error } = this.state
     const alertStyle = {
-      marginTop: 10
+      marginBottom: 10
+    }
+    const dateLabelStyle = {
+      fontWeight: 'bold',
+      marginBottom: 5
+    }
+    const dtfStyle = {
+      marginBottom: 20
     }
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
@@ -67,17 +74,23 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='text' label='title' value={title} onChange={this.onChangeTitle} autoFocus />
-          <DatePicker
-            selected={date}
-            dateFormat='DD.MM.YYYY'
-            onChange={this.onChangeDate} />
+          <Input type='text' label='Title' value={title} onChange={this.onChangeTitle} autoFocus />
+          <div style={dateLabelStyle}>Date</div>
+          <div style={dtfStyle}>
+            <DateTimeField
+              dateTime={date}
+              format='DD.MM.YYYY'
+              inputFormat ='DD.MM.YYYY'
+              mode='date'
+              label='Date'
+              onChange={this.onChangeDate} />
+          </div>
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.close}>close</Button>
-          <Button bsStyle='primary' onClick={this.createNewCommentary}>Create new commentary</Button>
+          <Button onClick={this.close}>discard input and close</Button>
+          <Button bsStyle='primary' onClick={this.createNewCommentary}>create new commentary</Button>
         </Modal.Footer>
 
       </Modal>
