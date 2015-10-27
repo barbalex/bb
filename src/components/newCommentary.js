@@ -1,55 +1,55 @@
 'use strict'
 
+import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Input } from 'react-bootstrap'
+import { Modal, Button, Input, Alert } from 'react-bootstrap'
 import Calendar from 'react-input-calendar'
-import AttachedImages from './attachedImages.js'
-import getDatestringFromCommentaryId from '../modules/getDatestringFromCommentaryId.js'
 
 export default React.createClass({
   displayName: 'CommentariesMeta',
 
   propTypes: {
-    doc: React.PropTypes.object,
-    onSavePage: React.PropTypes.func,
-    onCloseMeta: React.PropTypes.func,
-    title: React.PropTypes.text,
-    date: React.PropTypes.number
+    onCloseNewCommentary: React.PropTypes.func,
+    title: React.PropTypes.string,
+    date: React.PropTypes.number,
+    error: React.PropTypes.string
   },
 
   getInitialState () {
-    const { doc } = this.props
-    const date = doc._id ? getDatestringFromCommentaryId(doc._id) : null
     return {
       title: null,
-      date: date
+      date: null,
+      error: null
     }
   },
 
   onChangeTitle (event) {
     const title = event.target.value
     this.setState({ title })
-    this.setId()
   },
 
   onChangeDate (date) {
     // TODO
     console.log('date', date)
-
-    this.setId()
+    // this.setState({ date })
   },
 
-  setId () {
-    const { doc } = this.props
+  createNewCommentary () {
+    const { onCloseNewCommentary } = this.props
     const { title, date } = this.state
-    if (!doc._id && title && date) {
-      // action creates new commentary
+    if (title && date) {
+      app.Actions.newCommentary(title, date)
+      onCloseNewCommentary()
+    } else {
+      let error = 'Please choose a date'
+      if (!title) error = 'Please add a title'
+      this.setState({ error })
     }
   },
 
   close () {
-    const { onCloseMeta } = this.props
-    onCloseMeta()
+    const { onCloseNewCommentary } = this.props
+    onCloseNewCommentary()
   },
 
   onHide () {
@@ -57,13 +57,11 @@ export default React.createClass({
   },
 
   render () {
-    const { doc } = this.props
-    const { title, date } = this.state
-    const showAttachments = !!doc._id
+    const { title, date, error } = this.state
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>Metadaten für {doc.title}</Modal.Title>
+          <Modal.Title>New Commentary</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -73,14 +71,12 @@ export default React.createClass({
             computableFormat='DD.MM.YYYY'
             date={date}
             onChange={this.onChangeDate} />
-          {showAttachments ?
-            <AttachedImages doc={doc} />
-            : null
-          }
+          {error ? <Alert bsStyle='danger'>{error}</Alert> : null}
         </Modal.Body>
 
         <Modal.Footer>
-          <Button bsStyle='primary' onClick={this.close}>schliessen</Button>
+          <Button onClick={this.close}>close</Button>
+          <Button bsStyle='primary' onClick={this.createNewCommentary}>Create new commentary</Button>
         </Modal.Footer>
 
       </Modal>

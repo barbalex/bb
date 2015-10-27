@@ -34,7 +34,7 @@ export default React.createClass({
         </Modal.Body>
 
         <Modal.Footer>
-          <Button bsStyle='primary' onClick={this.close}>schliessen</Button>
+          <Button bsStyle='primary' onClick={this.close}>close</Button>
         </Modal.Footer>
 
       </Modal>

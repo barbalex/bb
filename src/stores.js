@@ -2,6 +2,7 @@
 
 import app from 'ampersand-app'
 import Reflux from 'reflux'
+import moment from 'moment'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
@@ -48,12 +49,6 @@ export default (Actions) => {
       console.log('pageStore removing attachment', attachmentId)
       delete doc._attachments[attachmentId]
       this.onSavePage(doc)
-      /*app.db.removeAttachment(doc._id, attachmentId, doc._rev)
-        .then((resp) => {
-          console.log('pageStore removed attachment')
-          app.Actions.getPage(doc._id)
-        })
-        .catch((error) => app.Actions.showError({title: 'Error in pageStore, onRemovePageAttachment:', msg: error}))*/
     }
   })
 
@@ -98,6 +93,20 @@ export default (Actions) => {
           this.trigger(docs)
         })
         .catch((error) => app.Actions.showError({msg: error}))
+    },
+
+    onNewCommentary (title, date) {
+      const year = moment(date).year().format('YYYY')
+      const month = moment(date).month().format('MM')
+      const day = moment(date).day().format('DD')
+      const id = `commentaries_${year}_${month}_${day}_${title}`
+      const commentary = {
+        _id: id,
+        article: null
+      }
+      app.db.put(commentary)
+        .then(() => this.onGetCommentaries())
+        .catch((error) => app.Actions.showError({title: 'Error in commentariesStore, onNewCommentary:', msg: error}))
     }
   })
 
