@@ -48,7 +48,6 @@ export default React.createClass({
   },
 
   onPageStoreChange (doc) {
-    console.log('main.js, page changed:', doc)
     this.setState({ doc })
   },
 

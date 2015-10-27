@@ -1,8 +1,6 @@
 'use strict'
 
-import app from 'ampersand-app'
 import React from 'react'
-import { Grid } from 'react-bootstrap'
 import AttachedImage from './attachedImage.js'
 
 export default React.createClass({
@@ -10,7 +8,6 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
-    onSavePage: React.PropTypes.func,
     urlCopied: React.PropTypes.string
   },
 
@@ -25,7 +22,7 @@ export default React.createClass({
   },
 
   images () {
-    const { doc, onSavePage } = this.props
+    const { doc } = this.props
     const { urlCopied } = this.state
     const imageNameArray = []
     if (!doc._attachments || Object.keys(doc._attachments).length === 0) return []
@@ -35,7 +32,7 @@ export default React.createClass({
       }
     })
     const images = imageNameArray.map((imageName, index) => {
-      return <AttachedImage key={index} doc={doc} attName={imageName} urlCopied={urlCopied} onSavePage={onSavePage} onCopyUrl={this.onCopyUrl} />
+      return <AttachedImage key={index} doc={doc} attName={imageName} urlCopied={urlCopied} onCopyUrl={this.onCopyUrl} />
     })
     return images
   },

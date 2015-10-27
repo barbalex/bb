@@ -10,7 +10,6 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
-    onSavePage: React.PropTypes.func,
     onCloseMeta: React.PropTypes.func
   },
 
@@ -24,7 +23,7 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, onSavePage } = this.props
+    const { doc } = this.props
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
@@ -32,7 +31,7 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <AttachedImgagesList doc={doc} onSavePage={onSavePage} />
+          <AttachedImgagesList doc={doc} />
           <AttachImages doc={doc} />
         </Modal.Body>
 

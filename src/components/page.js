@@ -46,11 +46,10 @@ export default React.createClass({
       bottom: 10,
       right: 10
     }
-    console.log('page.js, doc', doc)
     if (editing) {
       return (
         <div>
-          {showMeta ? <Meta doc={doc} onSavePage={onSavePage} onCloseMeta={this.onCloseMeta} /> : null}
+          {showMeta ? <Meta doc={doc} onCloseMeta={this.onCloseMeta} /> : null}
           <Editor docId={doc._id} articleDecoded={articleDecoded} onSaveArticle={onSaveArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>Metadaten</Button>
         </div>

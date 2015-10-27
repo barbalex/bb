@@ -12,7 +12,6 @@ export default React.createClass({
   propTypes: {
     doc: React.PropTypes.object,
     attName: React.PropTypes.string,
-    onSavePage: React.PropTypes.func,
     urlCopied: React.PropTypes.string,
     onCopyUrl: React.PropTypes.func
   },
