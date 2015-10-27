@@ -48,6 +48,7 @@ export default React.createClass({
   },
 
   onPageStoreChange (doc) {
+    console.log('main.js, page changed:', doc)
     this.setState({ doc })
   },
 
@@ -74,14 +75,6 @@ export default React.createClass({
 
   onSavePage (doc) {
     app.Actions.savePage(doc)
-  },
-
-  onRemovePageAttachment (doc, attachmentId) {
-
-  },
-
-  onAddPageAttachment (doc, attachmentId, attachment, type) {
-
   },
 
   onSaveArticle (articleEncoded) {

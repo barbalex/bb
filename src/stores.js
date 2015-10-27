@@ -35,6 +35,18 @@ export default (Actions) => {
           this.trigger(doc)
         })
         .catch((error) => app.Actions.showError({title: 'Error in pageStore, onSavePage:', msg: error}))
+    },
+
+    onAddPageAttachment (doc, attachmentId, attachment, type) {
+
+    },
+
+    onRemovePageAttachment (doc, attachmentId) {
+      app.db.removeAttachment(doc._id, attachmentId, doc._rev)
+        .then((resp) => {
+          app.Actions.getPage(doc._id)
+        })
+        .catch((error) => app.Actions.showError({title: 'Error in pageStore, onRemovePageAttachment:', msg: error}))
     }
   })
 

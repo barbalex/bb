@@ -6,6 +6,8 @@ export default () => {
   let Actions = Reflux.createActions({
     getPage: {},
     savePage: {},
+    addPageAttachment: {},
+    removePageAttachment: {},
     getEvent: {},
     saveEvent: {},
     getCommentaries: {},
