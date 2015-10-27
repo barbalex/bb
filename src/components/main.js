@@ -70,6 +70,11 @@ export default React.createClass({
     this.setState({ editing })
   },
 
+  // TODO
+  onClickAddCommentary () {
+    console.log('add commentary')
+  },
+
   onSavePage (doc) {
     app.Actions.savePage(doc)
   },
@@ -100,13 +105,41 @@ export default React.createClass({
     return (
       <NavHelper>
         <Header />
-        <Navbar doc={doc} event={event} email={email} editing={editing} onClickEdit={this.onClickEdit} />
+        <Navbar
+          doc={doc}
+          event={event}
+          email={email}
+          editing={editing}
+          onClickEdit={this.onClickEdit} />
         <div className='container'>
           <Errors errors={errors} />
-          {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} onSavePage={this.onSavePage} /> : null}
-          {isCommentariesPage ? <Commentaries /> : null}
-          {showMonthlyEventsPage ? <MonthlyEvents event={event} editing={editing} onSaveMonthlyEvent={this.onSaveMonthlyEvent} /> : null}
-          {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}
+          {isSimplePage ?
+            <Page
+              doc={doc}
+              editing={editing}
+              onSaveArticle={this.onSaveArticle}
+              onSavePage={this.onSavePage} />
+            : null
+          }
+          {isCommentariesPage ?
+            <Commentaries />
+            : null
+          }
+          {showMonthlyEventsPage ?
+            <MonthlyEvents
+              event={event}
+              editing={editing}
+              onSaveMonthlyEvent={this.onSaveMonthlyEvent} />
+            : null
+          }
+          {isCommentary ?
+            <Commentary
+              doc={doc}
+              editing={editing}
+              onSaveArticle={this.onSaveArticle}
+              onClickAddCommentary={this.onClickAddCommentary} />
+            : null
+          }
           {login ? <Login /> : null}
           <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
         </div>
