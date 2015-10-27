@@ -56,6 +56,7 @@ export default React.createClass({
       top: 10,
       fontSize: 1.5 + 'em'
     }
+    const showRemoveGlyphicon = !!window.localStorage.email
     if (docs.length > 0) {
       docs = docs.sort((a, b) => {
         if (a._id < b._id) return 1
@@ -69,7 +70,10 @@ export default React.createClass({
             href={path}
           >
             {doc.title}
-            <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveCommentary.bind(this, doc)} />
+            {showRemoveGlyphicon ?
+              <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveCommentary.bind(this, doc)} />
+              : null
+            }
           </ListGroupItem>
         )
       })

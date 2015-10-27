@@ -42,7 +42,7 @@ app.extend({
       this.db = new PouchDB(couchUrl())
     ])
     .then(() => {
-      window.localStorage.email = window.localStorage.email || null
+      // window.localStorage.email = window.localStorage.email || ''
       this.router = new Router()
       this.router.history.start()
     })
