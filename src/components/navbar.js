@@ -14,7 +14,8 @@ export default React.createClass({
     event: React.PropTypes.object,
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
-    onClickEdit: React.PropTypes.func
+    onClickEdit: React.PropTypes.func,
+    onClickAddCommentary: React.PropTypes.func
   },
 
   onClickPage (pageType) {
@@ -23,11 +24,13 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, event, email, editing, onClickEdit } = this.props
+    const { doc, event, email, editing, onClickEdit, onClickAddCommentary } = this.props
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents']
-    const showEdit = (!_.includes(nonEditableIds, id) || _.has(event, '_id')) && email
+    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(event, '_id'))
+    const showAddCommentary = email && doc._id === 'pages_commentaries'
+    const showNavbarRight = showEdit || showAddCommentary
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -102,14 +105,26 @@ export default React.createClass({
                   About us
                 </NavItem>
               </Nav>
-              {showEdit ?
+              {showNavbarRight ?
                 <Nav navbar right>
-                  <NavItem
-                    eventKey={1}
-                    onClick={onClickEdit}
-                  >
-                    <Glyphicon glyph={glyph} />
-                  </NavItem>
+                  {showEdit ?
+                    <NavItem
+                      eventKey={1}
+                      onClick={onClickEdit}
+                    >
+                      <Glyphicon glyph={glyph} />
+                    </NavItem>
+                    : null
+                  }
+                  {showAddCommentary ?
+                    <NavItem
+                      eventKey={2}
+                      onClick={onClickAddCommentary}
+                    >
+                      <Glyphicon glyph='plus' />
+                    </NavItem>
+                    : null
+                  }
                 </Nav>
                 : null
               }
