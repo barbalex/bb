@@ -67,12 +67,12 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='text' label='title' value={title} onChange={this.onChangeTitle} />
+          <Input type='text' label='title' value={title} onChange={this.onChangeTitle} autoFocus />
           <DatePicker
             selected={date}
             dateFormat='DD.MM.YYYY'
             onChange={this.onChangeDate} />
-          {error ? <Alert bsStyle='danger'>{error}</Alert> : null}
+          {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>
 
         <Modal.Footer>

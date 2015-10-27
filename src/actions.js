@@ -12,6 +12,7 @@ export default () => {
     saveEvent: {},
     getCommentaries: {},
     newCommentary: {},
+    removeCommentary: {},
     getMonthlyEvents: {},
     login: {},
     showError: {}

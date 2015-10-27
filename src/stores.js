@@ -108,7 +108,13 @@ export default (Actions) => {
       }
       app.db.put(commentary)
         .then(() => this.onGetCommentaries())
-        .catch((error) => app.Actions.showError({title: 'Error in commentariesStore, onNewCommentary:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error creating new commentary:', msg: error}))
+    },
+
+    onRemoveCommentary (doc) {
+      app.db.remove(doc)
+        .then(() => this.onGetCommentaries())
+        .catch((error) => app.Actions.showError({title: 'Error removing commentary:', msg: error}))
     }
   })
 
