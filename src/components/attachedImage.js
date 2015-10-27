@@ -12,37 +12,36 @@ export default React.createClass({
     doc: React.PropTypes.object,
     attName: React.PropTypes.string,
     onSaveDoc: React.PropTypes.func,
-    urlCopied: React.PropTypes.bool
+    urlCopied: React.PropTypes.string,
+    onCopyUrl: React.PropTypes.func
   },
 
-  getInitialState () {
-    return {
-      urlCopied: false
-    }
-  },
-
-  onCopy () {
-    this.setState({ urlCopied: true })
+  onCopy (url) {
+    const { onCopyUrl } = this.props
+    onCopyUrl(url)
   },
 
   render () {
-    const { doc, attName } = this.props
-    const { urlCopied } = this.state
+    const { doc, attName, urlCopied } = this.props
     const id = doc._id
     const url = getCouchUrl() + '/' + id + '/' + attName
     const divStyle = {
-      padding: 15
+      paddingTop: 15,
+      paddingBottom: 15
     }
-    const urlCopiedButtonBsStyle = urlCopied ? 'success' : 'default'
+    const imgStyle = {
+      width: 250
+    }
+    const urlCopiedButtonBsStyle = urlCopied === url ? 'success' : 'default'
     const innerButton = (
-      <CopyToClipboard text={url} onCopy={this.onCopy}>
-        <Button bsStyle={urlCopiedButtonBsStyle}>{urlCopied ? 'copied' : 'copy'}</Button>
+      <CopyToClipboard text={url} onCopy={this.onCopy.bind(this, url)}>
+        <Button bsStyle={urlCopiedButtonBsStyle}>{urlCopied === url ? 'copied' : 'copy'}</Button>
       </CopyToClipboard>
     )
     return (
       <div key={id} style={divStyle}>
         <div className='media-left'>
-          <img src={url} className='media-object' />
+          <img src={url} className='media-object' style={imgStyle} />
         </div>
         <div className='media-body'>
           <Input type='text' buttonAfter={innerButton} value={url} disabled />
