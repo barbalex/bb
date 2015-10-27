@@ -72,8 +72,16 @@ export default React.createClass({
     this.setState({ editing })
   },
 
-  onSaveDoc (doc) {
+  onSavePage (doc) {
     app.Actions.savePage(doc)
+  },
+
+  onRemovePageAttachment (doc, attachmentId) {
+
+  },
+
+  onAddPageAttachment (doc, attachmentId, attachment, type) {
+
   },
 
   onSaveArticle (articleEncoded) {
@@ -105,7 +113,7 @@ export default React.createClass({
         <Navbar doc={doc} event={event} email={email} editing={editing} onClickEdit={this.onClickEdit} />
         <div className='container'>
           <Errors errors={errors} />
-          {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} onSaveDoc={this.onSaveDoc} /> : null}
+          {isSimplePage ? <Page doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} onSavePage={this.onSavePage} /> : null}
           {isCommentariesPage ? <Commentaries /> : null}
           {showMonthlyEventsPage ? <MonthlyEvents event={event} editing={editing} onSaveMonthlyEvent={this.onSaveMonthlyEvent} /> : null}
           {isCommentary ? <Commentary doc={doc} editing={editing} onSaveArticle={this.onSaveArticle} /> : null}

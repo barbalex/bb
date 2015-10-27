@@ -41,12 +41,8 @@ export default React.createClass({
   },
 
   render () {
-    const divStyle = {
-      overflow: 'auto',
-      height: 400
-    }
     return (
-      <div className='media' style={divStyle}>
+      <div className='media'>
         {this.images()}
       </div>
     )

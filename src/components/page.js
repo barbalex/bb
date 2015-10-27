@@ -14,7 +14,7 @@ export default React.createClass({
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
     onSaveArticle: React.PropTypes.func,
-    onSaveDoc: React.PropTypes.func
+    onSavePage: React.PropTypes.func
   },
 
   getInitialState () {
@@ -37,7 +37,7 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, editing, onSaveArticle, onSaveDoc } = this.props
+    const { doc, editing, onSaveArticle, onSavePage } = this.props
     const { showMeta } = this.state
     const articleEncoded = doc.article
     const articleDecoded = Base64.decode(articleEncoded)
@@ -50,7 +50,7 @@ export default React.createClass({
     if (editing) {
       return (
         <div>
-          {showMeta ? <Meta doc={doc} onSaveDoc={onSaveDoc} onCloseMeta={this.onCloseMeta} /> : null}
+          {showMeta ? <Meta doc={doc} onSavePage={onSavePage} onCloseMeta={this.onCloseMeta} /> : null}
           <Editor docId={doc._id} articleDecoded={articleDecoded} onSaveArticle={onSaveArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>Metadaten</Button>
         </div>
