@@ -15,6 +15,8 @@ export default (Actions) => {
     doc: null,
 
     onGetPage (id) {
+      // TODO: EVENTS need check if id is already loaded
+      // But when meta is changed this check is not needed
       if (!this.doc || (this.doc._id/* && this.doc._id !== id*/)) {
         app.db.get(id, { include_docs: true })
           .then((doc) => {
