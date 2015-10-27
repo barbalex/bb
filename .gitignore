@@ -74,7 +74,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-public
+public/*
+!public/tinymce
 npm-debug.log
 bb.sublime-workspace
 sftpPass.json
