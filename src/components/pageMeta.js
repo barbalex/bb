@@ -26,7 +26,7 @@ export default React.createClass({
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>Metadaten für {doc.title}</Modal.Title>
+          <Modal.Title>Images for "{doc.title}"</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>

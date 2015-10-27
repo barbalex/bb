@@ -44,7 +44,7 @@ export default React.createClass({
   componentDidMount () {
     // listen to stores
     this.listenTo(app.pageStore, this.onPageStoreChange)
-    this.listenTo(app.monthlyEventStore, this.onmonthlyEventStoreChange)
+    this.listenTo(app.monthlyEventStore, this.onMonthlyEventStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
@@ -53,7 +53,7 @@ export default React.createClass({
     this.setState({ doc })
   },
 
-  onmonthlyEventStoreChange (event) {
+  onMonthlyEventStoreChange (event) {
     this.setState({ event })
   },
 

@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react'
+import _ from 'lodash'
 import AttachedImage from './attachedImage.js'
 
 export default React.createClass({
@@ -24,10 +25,11 @@ export default React.createClass({
   images () {
     const { doc } = this.props
     const { urlCopied } = this.state
+    const wantedContentTypes = ['image/jpeg', 'image/png']
     const imageNameArray = []
     if (!doc._attachments || Object.keys(doc._attachments).length === 0) return []
     Object.keys(doc._attachments).forEach((key) => {
-      if (doc._attachments[key].content_type === 'image/jpeg') {
+      if (_.includes(wantedContentTypes, doc._attachments[key].content_type)) {
         imageNameArray.push(key)
       }
     })

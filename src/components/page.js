@@ -51,7 +51,7 @@ export default React.createClass({
         <div>
           {showMeta ? <Meta doc={doc} onCloseMeta={this.onCloseMeta} /> : null}
           <Editor docId={doc._id} articleDecoded={articleDecoded} onSaveArticle={onSaveArticle} />
-          <Button style={metaButtonStyle} onClick={this.onClickMeta}>Metadaten</Button>
+          <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )
     }

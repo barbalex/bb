@@ -39,7 +39,7 @@ export default React.createClass({
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle='danger' onClick={this.onClickRemove}>yes, remove!</Button>
-            <Button onClick={this.close}>close</Button>
+            <Button onClick={this.close}>no!</Button>
           </Modal.Footer>
         </Modal.Dialog>
       </div>

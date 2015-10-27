@@ -47,7 +47,7 @@ export default React.createClass({
     return (
       <div className='dropzone'>
         <Dropzone onDrop={this.onDrop}>
-          <div>Drop some files here,<br/>or click to select files to upload.</div>
+          <div>Drop some files here.<br/>Or click to select files to upload.</div>
         </Dropzone>
       </div>
     )
