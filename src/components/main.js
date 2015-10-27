@@ -73,7 +73,6 @@ export default React.createClass({
   },
 
   onClickNewCommentary () {
-    console.log('main.js, new commentary clicked')
     this.setState({ showNewCommentary: true })
   },
 

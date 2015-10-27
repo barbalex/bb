@@ -31,7 +31,6 @@ export default React.createClass({
     const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(event, '_id'))
     const showAddCommentary = email && doc._id === 'pages_commentaries'
     const showNavbarRight = showEdit || showAddCommentary
-    console.log('email === null', email === null)
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
