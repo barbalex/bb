@@ -15,7 +15,7 @@ export default (Actions) => {
     doc: null,
 
     onGetPage (id) {
-      if (!this.doc || (this.doc._id && this.doc._id !== id)) {
+      if (!this.doc || (this.doc._id/* && this.doc._id !== id*/)) {
         app.db.get(id, { include_docs: true })
           .then((doc) => {
             this.doc = doc
@@ -37,13 +37,17 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({title: 'Error in pageStore, onSavePage:', msg: error}))
     },
 
-    onAddPageAttachment (doc, attachmentId, attachment, type) {
-
+    // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
+    onAddPageAttachments (doc, attachments) {
+      doc._attachments = Object.assign(doc._attachments, attachments)
+      this.onSavePage(doc)
     },
 
     onRemovePageAttachment (doc, attachmentId) {
+      console.log('pageStore removing attachment', attachmentId)
       app.db.removeAttachment(doc._id, attachmentId, doc._rev)
         .then((resp) => {
+          console.log('pageStore removed attachment')
           app.Actions.getPage(doc._id)
         })
         .catch((error) => app.Actions.showError({title: 'Error in pageStore, onRemovePageAttachment:', msg: error}))

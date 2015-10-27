@@ -3,6 +3,7 @@
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import AttachedImgagesList from './attachedImgagesList.js'
+import AttachImages from './attachImages.js'
 
 export default React.createClass({
   displayName: 'PageMeta',
@@ -32,6 +33,7 @@ export default React.createClass({
 
         <Modal.Body>
           <AttachedImgagesList doc={doc} onSavePage={onSavePage} />
+          <AttachImages doc={doc} />
         </Modal.Body>
 
         <Modal.Footer>

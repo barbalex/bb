@@ -43,7 +43,8 @@ export default React.createClass({
   render () {
     const divStyle = {
       overflow: 'auto',
-      height: 400
+      maxHeight: 400,
+      paddingBottom: 5
     }
     return (
       <div className='media' style={divStyle}>
