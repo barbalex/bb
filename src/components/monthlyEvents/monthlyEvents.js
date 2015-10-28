@@ -6,11 +6,11 @@ import { PanelGroup, Panel, Glyphicon } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
 import MonthlyEvent from './monthlyEvent.js'
-import getYearFromEventId from '../modules/getYearFromEventId.js'
-import getMonthFromEventId from '../modules/getMonthFromEventId.js'
+import getYearFromEventId from '../../modules/getYearFromEventId.js'
+import getMonthFromEventId from '../../modules/getMonthFromEventId.js'
 
 export default React.createClass({
-  displayName: 'Events',
+  displayName: 'MonthlyEvents',
 
   mixins: [ListenerMixin],
 

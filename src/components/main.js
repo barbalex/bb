@@ -10,7 +10,7 @@ import Navbar from '../components/navbar.js'
 import Page from './page.js'
 import Commentaries from './commentaries.js'
 import Commentary from './commentary.js'
-import MonthlyEvents from './monthlyEvents.js'
+import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
 import Login from './login.js'
 import Errors from './errors.js'
 
