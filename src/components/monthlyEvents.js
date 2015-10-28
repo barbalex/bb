@@ -104,15 +104,10 @@ export default React.createClass({
   eventsOfYearComponent (year) {
     const { monthlyEvent } = this.props
     const activeEventId = _.has(monthlyEvent, '_id') ? monthlyEvent._id : null
-    /*return (
+    return (
       <PanelGroup activeKey={activeEventId} id={year} accordion>
         {this.monthlyEventsComponent(year)}
       </PanelGroup>
-    )*/
-    return (
-      <div className='panel-group' id={year} role='tablist' aria-multiselectable='true' >
-        {this.monthlyEventsComponent(year)}
-      </div>
     )
   },
 
