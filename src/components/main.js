@@ -24,6 +24,7 @@ export default React.createClass({
     monthlyEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
+    showNewMonthlyEvent: React.PropTypes.bool,
     login: React.PropTypes.bool,
     email: React.PropTypes.string,
     errors: React.PropTypes.array
@@ -36,6 +37,7 @@ export default React.createClass({
       monthlyEvent: {},
       editing: false,
       showNewCommentary: false,
+      showNewMonthlyEvent: false,
       email: email,
       errors: []
     }
@@ -76,8 +78,16 @@ export default React.createClass({
     this.setState({ showNewCommentary: true })
   },
 
+  onClickNewMonthlyEvent () {
+    this.setState({ showNewMonthlyEvent: true })
+  },
+
   onCloseNewCommentary () {
     this.setState({ showNewCommentary: false })
+  },
+
+  onCloseNewMonthlyEvent () {
+    this.setState({ showNewMonthlyEvent: false })
   },
 
   onSavePage (doc) {
@@ -98,7 +108,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { doc, monthlyEvent, editing, showNewCommentary, email, errors } = this.state
+    const { doc, monthlyEvent, editing, showNewCommentary, showNewMonthlyEvent, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
     const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
@@ -116,7 +126,8 @@ export default React.createClass({
           email={email}
           editing={editing}
           onClickEdit={this.onClickEdit}
-          onClickNewCommentary={this.onClickNewCommentary} />
+          onClickNewCommentary={this.onClickNewCommentary}
+          onClickNewMonthlyEvent={this.onClickNewMonthlyEvent} />
         <div className='container'>
           <Errors errors={errors} />
           {isSimplePage ?
@@ -137,7 +148,9 @@ export default React.createClass({
             <MonthlyEvents
               monthlyEvent={monthlyEvent}
               editing={editing}
-              onSaveMonthlyEvent={this.onSaveMonthlyEvent} />
+              onSaveMonthlyEvent={this.onSaveMonthlyEvent}
+              showNewMonthlyEvent={showNewMonthlyEvent}
+              onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
             : null
           }
           {isCommentary ?

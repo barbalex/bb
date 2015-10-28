@@ -7,6 +7,7 @@ import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import MonthlyEventsOfYear from './monthlyEventsOfYear.js'
+import NewMonthlyEvent from './newMonthlyEvent.js'
 
 export default React.createClass({
   displayName: 'MonthlyEvents',
@@ -18,7 +19,9 @@ export default React.createClass({
     monthlyEvent: React.PropTypes.object,
     activeYear: React.PropTypes.number,
     editing: React.PropTypes.bool,
-    onSaveMonthlyEvent: React.PropTypes.func
+    onSaveMonthlyEvent: React.PropTypes.func,
+    onCloseNewMonthlyEvent: React.PropTypes.func,
+    showNewMonthlyEvent: React.PropTypes.bool
   },
 
   getInitialState () {
@@ -80,7 +83,7 @@ export default React.createClass({
   },
 
   render () {
-    const { monthlyEvent } = this.props
+    const { monthlyEvent, showNewMonthlyEvent, onCloseNewMonthlyEvent } = this.props
     let activeYear
     if (_.has(monthlyEvent, '_id')) {
       activeYear = getYearFromEventId(monthlyEvent._id)
@@ -93,6 +96,7 @@ export default React.createClass({
         <PanelGroup activeKey={activeYear} accordion>
           {this.eventYearsComponent()}
         </PanelGroup>
+        {showNewMonthlyEvent ? <NewMonthlyEvent onCloseNewMonthlyEvent={onCloseNewMonthlyEvent} /> : null}
       </div>
     )
   }

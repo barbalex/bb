@@ -19,14 +19,14 @@ export default React.createClass({
     const articleDecoded = Base64.decode(articleEncoded)
     if (editing) {
       return (
-        <div>
+        <div className='monthlyEvent'>
           <Editor docId={monthlyEvent._id} articleDecoded={articleDecoded} onSaveMonthlyEvent={onSaveMonthlyEvent} />
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
-      <div>
+      <div className='monthlyEvent'>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )

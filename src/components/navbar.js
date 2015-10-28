@@ -15,7 +15,8 @@ export default React.createClass({
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
-    onClickNewCommentary: React.PropTypes.func
+    onClickNewCommentary: React.PropTypes.func,
+    onClickNewMonthlyEvent: React.PropTypes.func
   },
 
   onClickPage (pageType) {
@@ -24,13 +25,14 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, monthlyEvent, email, editing, onClickEdit, onClickNewCommentary } = this.props
+    const { doc, monthlyEvent, email, editing, onClickEdit, onClickNewCommentary, onClickNewMonthlyEvent } = this.props
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents']
     const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(monthlyEvent, '_id'))
     const showAddCommentary = email && doc._id === 'pages_commentaries'
-    const showNavbarRight = showEdit || showAddCommentary
+    const showAddMonthlyEvent = email && doc._id === 'pages_monthlyEvents'
+    const showNavbarRight = showEdit || showAddCommentary || showAddMonthlyEvent
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -120,6 +122,15 @@ export default React.createClass({
                     <NavItem
                       eventKey={2}
                       onClick={onClickNewCommentary}
+                    >
+                      <Glyphicon glyph='plus' />
+                    </NavItem>
+                    : null
+                  }
+                  {showAddMonthlyEvent ?
+                    <NavItem
+                      eventKey={2}
+                      onClick={onClickNewMonthlyEvent}
                     >
                       <Glyphicon glyph='plus' />
                     </NavItem>

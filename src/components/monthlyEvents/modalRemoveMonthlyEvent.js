@@ -37,10 +37,10 @@ export default React.createClass({
       <div className='static-modal'>
         <Modal.Dialog onHide={this.onHide}>
           <Modal.Header>
-            <Modal.Title>Remove event for "{eventName}"</Modal.Title>
+            <Modal.Title>Remove monthly event "{eventName}"</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure, you want to remove commentary "{eventName}"?</p>
+            <p>Are you sure, you want to remove monthly event "{eventName}"?</p>
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle='danger' onClick={this.onClickRemove}>yes, remove!</Button>
