@@ -33,6 +33,6 @@ module.exports = () => {
   <div id='content'></div>
 </body>
 <script type="text/javascript" src="./tinymce/tinymce.min.js"></script>
-<script src="/app.js"></script>
+<script src="/bb.1.0.0.js"></script>
 `
 }
