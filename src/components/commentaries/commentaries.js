@@ -4,7 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import { ListGroup, ListGroupItem, Glyphicon } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
-import getPathFromDoc from '../modules/getPathFromDoc.js'
+import getPathFromDoc from '../../modules/getPathFromDoc.js'
 import NewCommentary from './newCommentary.js'
 import ModalRemoveCommentary from './modalRemoveCommentary.js'
 
