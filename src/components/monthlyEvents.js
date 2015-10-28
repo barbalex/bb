@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { PanelGroup, Panel } from 'react-bootstrap'
+import { PanelGroup, Panel, Glyphicon } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
 import Event from './event.js'
@@ -51,6 +51,12 @@ export default React.createClass({
     }
   },
 
+  onRemoveMonthlyEvent (docToRemove, event) {
+    event.preventDefault()
+    event.stopPropagation()
+    console.log('remove event', docToRemove)
+  },
+
   onClickYear (activeYear) {
     this.setState({ activeYear })
     // make sure no event is loaded
@@ -96,7 +102,7 @@ export default React.createClass({
     const { event } = this.props
     const activeEventId = _.has(event, '_id') ? event._id : null
     return (
-      <PanelGroup activeKey={activeEventId} accordion>
+      <PanelGroup activeKey={activeEventId} id={year} accordion>
         {this.monthlyEvents(year)}
       </PanelGroup>
     )
@@ -105,14 +111,24 @@ export default React.createClass({
   monthlyEvents (year) {
     const { event, editing, onSaveMonthlyEvent } = this.props
     const { events } = this.state
-    // console.log('monthlyEvents.js, monthlyEvents, event', event)
     let monthlyEvents = []
     events.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
         const showEvent = event ? doc._id === event._id : false
         const month = getMonthFromEventId(doc._id)
-        // TODO: make sure onClick only reacts to click in panel HEADER
-        const eventComponent = (
+        const showRemoveGlyphicon = !!window.localStorage.email
+        const glyphStyle = {
+          position: 'absolute',
+          right: 10,
+          top: 7,
+          fontSize: 1.5 + 'em'
+        }
+        const panelHeadingStyle = {
+          position: 'relative'
+        }
+        // version with react-bootstrap
+        // disadvantage: cant show remove glyphs
+        /*const eventComponent = (
           <Panel
             key={dIndex}
             header={month}
@@ -121,25 +137,34 @@ export default React.createClass({
             onClick={this.onClickMonthlyEvent.bind(this, doc._id)}
           >
             {showEvent ? <Event doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
+            {showRemoveGlyphicon ?
+              <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
+              : null
+            }
           </Panel>
-        )
-        /* version with pure bootstrap. advantage: could add edit icon to panel-heading
-        const event = (
+        )*/
+        // version with pure bootstrap.
+        // advantage: can add edit icon to panel-heading
+        const eventComponent = (
           <div key={dIndex} className='panel panel-default month'>
-            <div className='panel-heading' role='tab' id={'heading' + dIndex}>
+            <div className='panel-heading' role='tab' id={'heading' + dIndex} onClick={this.onClickMonthlyEvent.bind(this, doc._id)} style={panelHeadingStyle}>
               <h4 className='panel-title'>
-                <a role='button' data-toggle='collapse' data-parent='#accordion' href={'#collapse' + dIndex} aria-expanded='true' aria-controls={'#collapse' + dIndex}>
-                  {doc.title}
+                <a role='button' data-toggle='collapse' data-parent={'#' + year} href={'#collapse' + dIndex} aria-expanded='false' aria-controls={'#collapse' + dIndex}>
+                  {month}
                 </a>
               </h4>
+              {showRemoveGlyphicon ?
+                <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
+                : null
+              }
             </div>
             <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex}>
               <div className='panel-body'>
-                <Event doc={doc} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} />
+                {showEvent ? <Event doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
               </div>
             </div>
           </div>
-        )*/
+        )
         monthlyEvents.push(eventComponent)
       }
     })

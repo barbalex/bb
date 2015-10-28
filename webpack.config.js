@@ -34,7 +34,6 @@ config.module.loaders.push(
 )
 
 config.resolve.alias = {
-  // require('tinymce') will do require('tinymce/tinymce')
   tinymce: 'tinymce/tinymce.js'
 }
 
