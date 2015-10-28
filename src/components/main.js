@@ -93,7 +93,7 @@ export default React.createClass({
   onSaveMonthlyEvent (articleEncoded) {
     let { monthlyEvent } = this.state
     monthlyEvent.article = articleEncoded
-    app.Actions.saveEvent(monthlyEvent)
+    app.Actions.saveMonthlyEvent(monthlyEvent)
   },
 
   render () {

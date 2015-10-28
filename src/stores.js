@@ -67,18 +67,18 @@ export default (Actions) => {
             app.router.navigate('/' + path)
             this.trigger(event)
           })
-          .catch((error) => app.Actions.showError({title: 'Error in monthlyEventStore, onGetEvent, loading ' + id + ':', msg: error}))
+          .catch((error) => app.Actions.showError({title: 'Error fetching monthly event ' + id + ':', msg: error}))
       }
     },
 
-    onSaveEvent (event) {
+    onSaveMonthlyEvent (event) {
       app.db.put(event)
         .then((resp) => {
           // resp.rev is new rev
           event._rev = resp.rev
           this.trigger(event)
         })
-        .catch((error) => app.Actions.showError({title: 'Error in monthlyEventStore, onSaveEvent:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
     }
   })
 

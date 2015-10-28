@@ -41,19 +41,22 @@ export default React.createClass({
   onClickMonthlyEvent (id, e) {
     const { monthlyEvent } = this.props
     // prevent higher level panels from reacting
+    e.preventDefault()
     e.stopPropagation()
-    // make sure the heading was clicked
-    const parent = e.target.parentElement
-    const headingWasClicked = _.includes(parent.className, 'panel-title') || _.includes(parent.className, 'panel-heading')
-    if (headingWasClicked) {
-      const idToGet = (Object.keys(monthlyEvent).length === 0 || monthlyEvent._id !== id) ? id : null
-      app.Actions.getMonthlyEvent(idToGet)
-    }
+    const idToGet = (Object.keys(monthlyEvent).length === 0 || monthlyEvent._id !== id) ? id : null
+    app.Actions.getMonthlyEvent(idToGet)
+  },
+
+  onClickEventCollapse (event) {
+    // prevent higher level panels from reacting
+    event.preventDefault()
+    event.stopPropagation()
   },
 
   onRemoveMonthlyEvent (docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
+    // TODO
     console.log('remove monthlyEvent', docToRemove)
   },
 
@@ -90,7 +93,7 @@ export default React.createClass({
       return years.map((year, yIndex) => {
         return (
           <Panel key={year} header={year} eventKey={year} className='year' onClick={this.onClickYear.bind(this, year)}>
-            {this.eventsOfYear(year)}
+            {this.eventsOfYearComponent(year)}
           </Panel>
         )
       })
@@ -98,20 +101,25 @@ export default React.createClass({
     return null
   },
 
-  eventsOfYear (year) {
+  eventsOfYearComponent (year) {
     const { monthlyEvent } = this.props
     const activeEventId = _.has(monthlyEvent, '_id') ? monthlyEvent._id : null
-    return (
+    /*return (
       <PanelGroup activeKey={activeEventId} id={year} accordion>
-        {this.monthlyEvents(year)}
+        {this.monthlyEventsComponent(year)}
       </PanelGroup>
+    )*/
+    return (
+      <div className='panel-group' id={year} role='tablist' aria-multiselectable='true' >
+        {this.monthlyEventsComponent(year)}
+      </div>
     )
   },
 
-  monthlyEvents (year) {
+  monthlyEventsComponent (year) {
     const { monthlyEvent, editing, onSaveMonthlyEvent } = this.props
     const { events } = this.state
-    let monthlyEvents = []
+    let monthlyEventsArray = []
     events.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
         const showEvent = monthlyEvent ? doc._id === monthlyEvent._id : false
@@ -126,24 +134,7 @@ export default React.createClass({
         const panelHeadingStyle = {
           position: 'relative'
         }
-        // version with react-bootstrap
-        // disadvantage: cant show remove glyphs
-        /*const eventComponent = (
-          <Panel
-            key={dIndex}
-            header={month}
-            eventKey={doc._id}
-            className='month'
-            onClick={this.onClickMonthlyEvent.bind(this, doc._id)}
-          >
-            {showEvent ? <MonthlyEvent doc={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
-            {showRemoveGlyphicon ?
-              <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
-              : null
-            }
-          </Panel>
-        )*/
-        // version with pure bootstrap.
+        // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         const eventComponent = (
           <div key={dIndex} className='panel panel-default month'>
@@ -158,17 +149,20 @@ export default React.createClass({
                 : null
               }
             </div>
-            <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex}>
-              <div className='panel-body'>
-                {showEvent ? <MonthlyEvent monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
+            {showEvent ?
+              <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex} onClick={this.onClickEventCollapse}>
+                <div className='panel-body'>
+                  <MonthlyEvent monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} />
+                </div>
               </div>
-            </div>
+              : null
+            }
           </div>
         )
-        monthlyEvents.push(eventComponent)
+        monthlyEventsArray.push(eventComponent)
       }
     })
-    return monthlyEvents
+    return monthlyEventsArray
   },
 
   render () {
