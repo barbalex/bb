@@ -55,8 +55,25 @@ export default React.createClass({
     // seems that this method is needed ???
   },
 
+  handleDateTimeFieldFocus (e) {
+    const parent = e.target.parentElement
+    const children = parent.childNodes
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].tagName.toLowerCase() === 'span') {
+        children[i].click()
+        return
+      }
+    }
+  },
+
   render () {
     const { title, date, error } = this.state
+    const that = this
+    const dateTimeFieldInputProps = {
+      onFocus (e) {
+        that.handleDateTimeFieldFocus(e)
+      }
+    }
     const alertStyle = {
       marginBottom: 10
     }
@@ -67,6 +84,7 @@ export default React.createClass({
     const dtfStyle = {
       marginBottom: 20
     }
+    console.log('date', date)
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
@@ -78,11 +96,11 @@ export default React.createClass({
           <div style={dateLabelStyle}>Date</div>
           <div style={dtfStyle}>
             <DateTimeField
-              dateTime={date}
+              dateTime={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
               format='DD.MM.YYYY'
               inputFormat ='DD.MM.YYYY'
               mode='date'
-              label='Date'
+              inputProps={dateTimeFieldInputProps}
               onChange={this.onChangeDate} />
           </div>
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
