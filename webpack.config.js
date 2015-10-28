@@ -9,7 +9,7 @@ let config = getConfig({
   isDev: process.env.NODE_ENV !== 'production',
   // the excluded files are not cleared
   // and not hashed as would be if webpack imports them
-  clearBeforeBuild: '!(tinymce|favicons|images|favicon.ico)',
+  clearBeforeBuild: '!(tinymce|favicons|images)',
   html: function (context) {
     return {
       'index.html': indexTemplate()
