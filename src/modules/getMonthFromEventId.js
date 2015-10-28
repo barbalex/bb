@@ -1,9 +1,9 @@
 'use strict'
 
-import months from './months.js'
+import getMonths from './getMonths.js'
 
 export default (id) => {
   const idArray = id.split('_')
   const month = idArray[2]
-  return months()[month]
+  return getMonths()[month]
 }
