@@ -7,6 +7,7 @@ import _ from 'lodash'
 import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import getMonthFromEventId from '../../modules/getMonthFromEventId.js'
+import ModalRemoveMonthlyEvent from './modalRemoveMonthlyEvent.js'
 
 export default React.createClass({
   displayName: 'MonthlyEventsOfYear',
@@ -16,7 +17,14 @@ export default React.createClass({
     monthlyEvents: React.PropTypes.array,
     monthlyEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
-    onSaveMonthlyEvent: React.PropTypes.func
+    onSaveMonthlyEvent: React.PropTypes.func,
+    docToRemove: React.PropTypes.object
+  },
+
+  getInitialState () {
+    return {
+      docToRemove: null
+    }
   },
 
   onClickMonthlyEvent (id, e) {
@@ -37,8 +45,13 @@ export default React.createClass({
   onRemoveMonthlyEvent (docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
-    // TODO
-    console.log('remove monthlyEvent', docToRemove)
+    this.setState({ docToRemove })
+  },
+
+  removeMonthlyEvent (remove) {
+    const { docToRemove } = this.state
+    if (remove) app.Actions.removeMonthlyEvent(docToRemove)
+    this.setState({ docToRemove: null })
   },
 
   monthlyEventsComponent (year) {
@@ -91,10 +104,12 @@ export default React.createClass({
 
   render () {
     const { year, monthlyEvent } = this.props
+    const { docToRemove } = this.state
     const activeEventId = _.has(monthlyEvent, '_id') ? monthlyEvent._id : null
     return (
       <PanelGroup activeKey={activeEventId} id={year} accordion>
         {this.monthlyEventsComponent(year)}
+        {docToRemove ? <ModalRemoveMonthlyEvent doc={docToRemove} removeMonthlyEvent={this.removeMonthlyEvent} /> : null}
       </PanelGroup>
     )
   }

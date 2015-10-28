@@ -129,6 +129,12 @@ export default (Actions) => {
           this.trigger(docs)
         })
         .catch((error) => app.Actions.showError({msg: error}))
+    },
+
+    onRemoveMonthlyEvent (doc) {
+      app.db.remove(doc)
+        .then(() => this.onGetMonthlyEvents())
+        .catch((error) => app.Actions.showError({title: 'Error removing monthly event:', msg: error}))
     }
   })
 
