@@ -8,7 +8,7 @@ export default () => {
     savePage: {},
     addPageAttachments: {},
     removePageAttachment: {},
-    getEvent: {},
+    getMonthlyEvent: {},
     saveEvent: {},
     getCommentaries: {},
     newCommentary: {},

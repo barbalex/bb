@@ -47,7 +47,7 @@ export default React.createClass({
     const headingWasClicked = _.includes(parent.className, 'panel-title') || _.includes(parent.className, 'panel-heading')
     if (headingWasClicked) {
       const idToGet = (Object.keys(monthlyEvent).length === 0 || monthlyEvent._id !== id) ? id : null
-      app.Actions.getEvent(idToGet)
+      app.Actions.getMonthlyEvent(idToGet)
     }
   },
 
@@ -61,7 +61,7 @@ export default React.createClass({
     this.setState({ activeYear })
     // make sure no monthlyEvent is loaded
     // i.e. if an monthlyEvent was loaded it is unloaded
-    app.Actions.getEvent(null)
+    app.Actions.getMonthlyEvent(null)
   },
 
   yearsOfEvents () {
@@ -160,7 +160,7 @@ export default React.createClass({
             </div>
             <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex}>
               <div className='panel-body'>
-                {showEvent ? <MonthlyEvent doc={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
+                {showEvent ? <MonthlyEvent monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
               </div>
             </div>
           </div>

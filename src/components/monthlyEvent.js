@@ -5,7 +5,7 @@ import { Base64 } from 'js-base64'
 import Editor from './editor.js'
 
 export default React.createClass({
-  displayName: 'Event',
+  displayName: 'MonthlyEvent',
 
   propTypes: {
     monthlyEvent: React.PropTypes.object,

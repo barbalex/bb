@@ -78,7 +78,7 @@ export default Router.extend({
     const id = `monthlyEvents_${year}_${month}`
     this.render()
     app.Actions.getPage('pages_monthlyEvents')
-    app.Actions.getEvent(id)
+    app.Actions.getMonthlyEvent(id)
   },
 
   login () {

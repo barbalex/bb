@@ -56,7 +56,7 @@ export default (Actions) => {
 
     listenables: Actions,
 
-    onGetEvent (id) {
+    onGetMonthlyEvent (id) {
       if (!id) {
         app.router.navigate('/monthlyEvents')
         this.trigger({})
