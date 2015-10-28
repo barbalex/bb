@@ -8,19 +8,19 @@ export default React.createClass({
   displayName: 'Event',
 
   propTypes: {
-    doc: React.PropTypes.object,
+    monthlyEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
     onSaveMonthlyEvent: React.PropTypes.func
   },
 
   render () {
-    const { doc, editing, onSaveMonthlyEvent } = this.props
-    const articleEncoded = doc.article
+    const { monthlyEvent, editing, onSaveMonthlyEvent } = this.props
+    const articleEncoded = monthlyEvent.article
     const articleDecoded = Base64.decode(articleEncoded)
     if (editing) {
       return (
         <div>
-          <Editor docId={doc._id} articleDecoded={articleDecoded} onSaveMonthlyEvent={onSaveMonthlyEvent} />
+          <Editor docId={monthlyEvent._id} articleDecoded={articleDecoded} onSaveMonthlyEvent={onSaveMonthlyEvent} />
         </div>
       )
     }
