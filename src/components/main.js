@@ -4,6 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
+import DocumentTitle from 'react-document-title'
 import NavHelper from '../components/navHelper.js'
 import Header from '../components/header.js'
 import Navbar from '../components/navbar.js'
@@ -13,6 +14,7 @@ import Commentary from './commentaries/commentary.js'
 import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
 import Login from './login.js'
 import Errors from './errors.js'
+import getPageNameFromDoc from '../modules/getPageNameFromDoc.js'
 
 export default React.createClass({
   displayName: 'Main',
@@ -116,54 +118,58 @@ export default React.createClass({
     const isCommentary = doc.type && doc.type === 'commentaries'
     const isMonthlyEvent = doc.type && doc.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
+    const pageName = getPageNameFromDoc(doc)
+    const pageTitle = `blue-borders | ${pageName}`
 
     return (
-      <NavHelper>
-        <Header />
-        <Navbar
-          doc={doc}
-          monthlyEvent={monthlyEvent}
-          email={email}
-          editing={editing}
-          onClickEdit={this.onClickEdit}
-          onClickNewCommentary={this.onClickNewCommentary}
-          onClickNewMonthlyEvent={this.onClickNewMonthlyEvent} />
-        <div className='container'>
-          <Errors errors={errors} />
-          {isSimplePage ?
-            <Page
-              doc={doc}
-              editing={editing}
-              onSaveArticle={this.onSaveArticle}
-              onSavePage={this.onSavePage} />
-            : null
-          }
-          {isCommentariesPage ?
-            <Commentaries
-              showNewCommentary={showNewCommentary}
-              onCloseNewCommentary={this.onCloseNewCommentary} />
-            : null
-          }
-          {showMonthlyEventsPage ?
-            <MonthlyEvents
-              monthlyEvent={monthlyEvent}
-              editing={editing}
-              onSaveMonthlyEvent={this.onSaveMonthlyEvent}
-              showNewMonthlyEvent={showNewMonthlyEvent}
-              onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
-            : null
-          }
-          {isCommentary ?
-            <Commentary
-              doc={doc}
-              editing={editing}
-              onSaveArticle={this.onSaveArticle} />
-            : null
-          }
-          {login ? <Login /> : null}
-          <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
-        </div>
-      </NavHelper>
+      <DocumentTitle title={pageTitle}>
+        <NavHelper>
+          <Header />
+          <Navbar
+            doc={doc}
+            monthlyEvent={monthlyEvent}
+            email={email}
+            editing={editing}
+            onClickEdit={this.onClickEdit}
+            onClickNewCommentary={this.onClickNewCommentary}
+            onClickNewMonthlyEvent={this.onClickNewMonthlyEvent} />
+          <div className='container'>
+            <Errors errors={errors} />
+            {isSimplePage ?
+              <Page
+                doc={doc}
+                editing={editing}
+                onSaveArticle={this.onSaveArticle}
+                onSavePage={this.onSavePage} />
+              : null
+            }
+            {isCommentariesPage ?
+              <Commentaries
+                showNewCommentary={showNewCommentary}
+                onCloseNewCommentary={this.onCloseNewCommentary} />
+              : null
+            }
+            {showMonthlyEventsPage ?
+              <MonthlyEvents
+                monthlyEvent={monthlyEvent}
+                editing={editing}
+                onSaveMonthlyEvent={this.onSaveMonthlyEvent}
+                showNewMonthlyEvent={showNewMonthlyEvent}
+                onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
+              : null
+            }
+            {isCommentary ?
+              <Commentary
+                doc={doc}
+                editing={editing}
+                onSaveArticle={this.onSaveArticle} />
+              : null
+            }
+            {login ? <Login /> : null}
+            <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
+          </div>
+        </NavHelper>
+      </DocumentTitle>
     )
   }
 })

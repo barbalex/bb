@@ -32,6 +32,7 @@ export default React.createClass({
       browser_spellcheck: true,
       automatic_uploads: false,
       statusbar: false,
+      content_css: 'bb.1.0.0.css',
       // enable auto-saving
       setup (editor) {
         editor.on('change undo redo', (e) => {
