@@ -119,8 +119,8 @@ export default React.createClass({
         const showRemoveGlyphicon = !!window.localStorage.email
         const glyphStyle = {
           position: 'absolute',
-          right: 10,
-          top: 7,
+          right: 8,
+          top: 6,
           fontSize: 1.5 + 'em'
         }
         const panelHeadingStyle = {
