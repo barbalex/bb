@@ -2,16 +2,17 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Glyphicon } from 'react-bootstrap'
+import { PanelGroup, Glyphicon } from 'react-bootstrap'
+import _ from 'lodash'
 import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import getMonthFromEventId from '../../modules/getMonthFromEventId.js'
 
 export default React.createClass({
-  displayName: 'MonthlyEvents_Months',
+  displayName: 'MonthlyEventsOfYear',
 
   propTypes: {
-    year: React.PropTypes.number,
+    year: React.PropTypes.string,
     monthlyEvents: React.PropTypes.array,
     monthlyEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
@@ -40,9 +41,8 @@ export default React.createClass({
     console.log('remove monthlyEvent', docToRemove)
   },
 
-  render () {
-    const { year, monthlyEvent, editing, onSaveMonthlyEvent } = this.props
-    const { monthlyEvents } = this.state
+  monthlyEventsComponent (year) {
+    const { monthlyEvents, monthlyEvent, editing, onSaveMonthlyEvent } = this.props
     let monthlyEventsArray = []
     monthlyEvents.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
@@ -87,5 +87,15 @@ export default React.createClass({
       }
     })
     return monthlyEventsArray
+  },
+
+  render () {
+    const { year, monthlyEvent } = this.props
+    const activeEventId = _.has(monthlyEvent, '_id') ? monthlyEvent._id : null
+    return (
+      <PanelGroup activeKey={activeEventId} id={year} accordion>
+        {this.monthlyEventsComponent(year)}
+      </PanelGroup>
+    )
   }
 })
