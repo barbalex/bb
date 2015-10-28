@@ -5,7 +5,7 @@ import React from 'react'
 import { PanelGroup, Panel, Glyphicon } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
-import Event from './event.js'
+import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../modules/getYearFromEventId.js'
 import getMonthFromEventId from '../modules/getMonthFromEventId.js'
 
@@ -136,7 +136,7 @@ export default React.createClass({
             className='month'
             onClick={this.onClickMonthlyEvent.bind(this, doc._id)}
           >
-            {showEvent ? <Event doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
+            {showEvent ? <MonthlyEvent doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
             {showRemoveGlyphicon ?
               <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
               : null
@@ -160,7 +160,7 @@ export default React.createClass({
             </div>
             <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex}>
               <div className='panel-body'>
-                {showEvent ? <Event doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
+                {showEvent ? <MonthlyEvent doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
               </div>
             </div>
           </div>
