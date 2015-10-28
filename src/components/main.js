@@ -21,7 +21,7 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
-    event: React.PropTypes.object,
+    monthlyEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
     login: React.PropTypes.bool,
@@ -33,7 +33,7 @@ export default React.createClass({
     const email = window.localStorage.email
     return {
       doc: {},
-      event: {},
+      monthlyEvent: {},
       editing: false,
       showNewCommentary: false,
       email: email,
@@ -53,8 +53,8 @@ export default React.createClass({
     this.setState({ doc })
   },
 
-  onMonthlyEventStoreChange (event) {
-    this.setState({ event })
+  onMonthlyEventStoreChange (monthlyEvent) {
+    this.setState({ monthlyEvent })
   },
 
   onLoginStoreChange (email) {
@@ -91,14 +91,14 @@ export default React.createClass({
   },
 
   onSaveMonthlyEvent (articleEncoded) {
-    let { event } = this.state
-    event.article = articleEncoded
-    app.Actions.saveEvent(event)
+    let { monthlyEvent } = this.state
+    monthlyEvent.article = articleEncoded
+    app.Actions.saveEvent(monthlyEvent)
   },
 
   render () {
     const { login } = this.props
-    const { doc, event, editing, showNewCommentary, email, errors } = this.state
+    const { doc, monthlyEvent, editing, showNewCommentary, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
     const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
@@ -112,7 +112,7 @@ export default React.createClass({
         <Header />
         <Navbar
           doc={doc}
-          event={event}
+          monthlyEvent={monthlyEvent}
           email={email}
           editing={editing}
           onClickEdit={this.onClickEdit}
@@ -135,7 +135,7 @@ export default React.createClass({
           }
           {showMonthlyEventsPage ?
             <MonthlyEvents
-              event={event}
+              monthlyEvent={monthlyEvent}
               editing={editing}
               onSaveMonthlyEvent={this.onSaveMonthlyEvent} />
             : null

@@ -16,7 +16,7 @@ export default React.createClass({
 
   propTypes: {
     events: React.PropTypes.array,
-    event: React.PropTypes.object,
+    monthlyEvent: React.PropTypes.object,
     activeYear: React.PropTypes.number,
     editing: React.PropTypes.bool,
     onSaveMonthlyEvent: React.PropTypes.func
@@ -39,14 +39,14 @@ export default React.createClass({
   },
 
   onClickMonthlyEvent (id, e) {
-    const { event } = this.props
+    const { monthlyEvent } = this.props
     // prevent higher level panels from reacting
     e.stopPropagation()
     // make sure the heading was clicked
     const parent = e.target.parentElement
     const headingWasClicked = _.includes(parent.className, 'panel-title') || _.includes(parent.className, 'panel-heading')
     if (headingWasClicked) {
-      const idToGet = (Object.keys(event).length === 0 || event._id !== id) ? id : null
+      const idToGet = (Object.keys(monthlyEvent).length === 0 || monthlyEvent._id !== id) ? id : null
       app.Actions.getEvent(idToGet)
     }
   },
@@ -54,13 +54,13 @@ export default React.createClass({
   onRemoveMonthlyEvent (docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
-    console.log('remove event', docToRemove)
+    console.log('remove monthlyEvent', docToRemove)
   },
 
   onClickYear (activeYear) {
     this.setState({ activeYear })
-    // make sure no event is loaded
-    // i.e. if an event was loaded it is unloaded
+    // make sure no monthlyEvent is loaded
+    // i.e. if an monthlyEvent was loaded it is unloaded
     app.Actions.getEvent(null)
   },
 
@@ -99,8 +99,8 @@ export default React.createClass({
   },
 
   eventsOfYear (year) {
-    const { event } = this.props
-    const activeEventId = _.has(event, '_id') ? event._id : null
+    const { monthlyEvent } = this.props
+    const activeEventId = _.has(monthlyEvent, '_id') ? monthlyEvent._id : null
     return (
       <PanelGroup activeKey={activeEventId} id={year} accordion>
         {this.monthlyEvents(year)}
@@ -109,12 +109,12 @@ export default React.createClass({
   },
 
   monthlyEvents (year) {
-    const { event, editing, onSaveMonthlyEvent } = this.props
+    const { monthlyEvent, editing, onSaveMonthlyEvent } = this.props
     const { events } = this.state
     let monthlyEvents = []
     events.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
-        const showEvent = event ? doc._id === event._id : false
+        const showEvent = monthlyEvent ? doc._id === monthlyEvent._id : false
         const month = getMonthFromEventId(doc._id)
         const showRemoveGlyphicon = !!window.localStorage.email
         const glyphStyle = {
@@ -136,7 +136,7 @@ export default React.createClass({
             className='month'
             onClick={this.onClickMonthlyEvent.bind(this, doc._id)}
           >
-            {showEvent ? <MonthlyEvent doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
+            {showEvent ? <MonthlyEvent doc={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
             {showRemoveGlyphicon ?
               <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
               : null
@@ -160,7 +160,7 @@ export default React.createClass({
             </div>
             <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex}>
               <div className='panel-body'>
-                {showEvent ? <MonthlyEvent doc={event} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
+                {showEvent ? <MonthlyEvent doc={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} /> : null}
               </div>
             </div>
           </div>
@@ -172,10 +172,10 @@ export default React.createClass({
   },
 
   render () {
-    const { event } = this.props
+    const { monthlyEvent } = this.props
     let activeYear
-    if (_.has(event, '_id')) {
-      activeYear = getYearFromEventId(event._id)
+    if (_.has(monthlyEvent, '_id')) {
+      activeYear = getYearFromEventId(monthlyEvent._id)
     } else {
       activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()
     }

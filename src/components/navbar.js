@@ -11,7 +11,7 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
-    event: React.PropTypes.object,
+    monthlyEvent: React.PropTypes.object,
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
@@ -24,11 +24,11 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, event, email, editing, onClickEdit, onClickNewCommentary } = this.props
+    const { doc, monthlyEvent, email, editing, onClickEdit, onClickNewCommentary } = this.props
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents']
-    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(event, '_id'))
+    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(monthlyEvent, '_id'))
     const showAddCommentary = email && doc._id === 'pages_commentaries'
     const showNavbarRight = showEdit || showAddCommentary
     return (
