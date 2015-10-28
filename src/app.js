@@ -12,6 +12,8 @@ import 'expose?$!expose?jQuery!jquery'
 // make webpack import styles
 import './styles/main.styl'
 import 'bootstrap-webpack'
+// make webpack import server.js
+import 'file?name=server.js!../server.js'
 
 /**
  * set up pouchdb plugins

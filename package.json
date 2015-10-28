@@ -6,7 +6,9 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "set NODE_ENV=production&& webpack",
-    "deploy": "surge -p public -d bb.surge.sh"
+    "deployWithSurge": "surge -p public -d 46.101.159.23",
+    "deploy": "gulp sftp",
+    "yolo": "npm run build && npm run deploy"
   },
   "keywords": [
     "migration",
@@ -70,6 +72,7 @@
   },
   "devDependencies": {
     "expose-loader": "^0.7.0",
+    "gulp-sftp": "^0.1.5",
     "webpack-dev-server": "1.12.1"
   }
 }
