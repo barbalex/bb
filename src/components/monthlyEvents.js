@@ -82,7 +82,7 @@ export default React.createClass({
     return years[0]
   },
 
-  eventYears () {
+  eventYearsComponent () {
     let { monthlyEvents } = this.state
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
@@ -172,7 +172,7 @@ export default React.createClass({
       <div id='monthlyEvents'>
         <h1>Events</h1>
         <PanelGroup activeKey={activeYear} accordion>
-          {this.eventYears()}
+          {this.eventYearsComponent()}
         </PanelGroup>
       </div>
     )
