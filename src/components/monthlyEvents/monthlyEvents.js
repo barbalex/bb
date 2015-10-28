@@ -2,13 +2,11 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { PanelGroup, Panel, Glyphicon } from 'react-bootstrap'
+import { PanelGroup, Panel } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
-import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
-import getMonthFromEventId from '../../modules/getMonthFromEventId.js'
-import EventsOfYear from './eventsOfYear.js'
+import MonthlyEventsOfYear from './monthlyEventsOfYear.js'
 
 export default React.createClass({
   displayName: 'MonthlyEvents',
@@ -73,7 +71,7 @@ export default React.createClass({
       return years.map((year, yIndex) => {
         return (
           <Panel key={year} header={year} eventKey={year} className='year' onClick={this.onClickYear.bind(this, year)}>
-            <EventsOfYear year={year} monthlyEvents={monthlyEvents} monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} />
+            <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} />
           </Panel>
         )
       })
