@@ -15,7 +15,7 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    events: React.PropTypes.array,
+    monthlyEvents: React.PropTypes.array,
     monthlyEvent: React.PropTypes.object,
     activeYear: React.PropTypes.number,
     editing: React.PropTypes.bool,
@@ -24,7 +24,7 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      events: [],
+      monthlyEvents: [],
       activeYear: null
     }
   },
@@ -34,8 +34,8 @@ export default React.createClass({
     app.Actions.getMonthlyEvents()
   },
 
-  onMonthlyEventsStoreChange (events) {
-    this.setState({ events })
+  onMonthlyEventsStoreChange (monthlyEvents) {
+    this.setState({ monthlyEvents })
   },
 
   onClickMonthlyEvent (id, e) {
@@ -68,8 +68,8 @@ export default React.createClass({
   },
 
   yearsOfEvents () {
-    let { events } = this.state
-    const allYears = _.map(events, (doc) => getYearFromEventId(doc._id))
+    let { monthlyEvents } = this.state
+    const allYears = _.map(monthlyEvents, (doc) => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
       const years = _.uniq(allYears)
       return years.sort().reverse()
@@ -83,10 +83,10 @@ export default React.createClass({
   },
 
   eventYears () {
-    let { events } = this.state
+    let { monthlyEvents } = this.state
     const years = this.yearsOfEvents()
-    if (events.length > 0 && years.length > 0) {
-      events = events.sort((a, b) => {
+    if (monthlyEvents.length > 0 && years.length > 0) {
+      monthlyEvents = monthlyEvents.sort((a, b) => {
         if (a._id < b._id) return 1
         return -1
       })
@@ -118,9 +118,9 @@ export default React.createClass({
 
   monthlyEventsComponent (year) {
     const { monthlyEvent, editing, onSaveMonthlyEvent } = this.props
-    const { events } = this.state
+    const { monthlyEvents } = this.state
     let monthlyEventsArray = []
-    events.forEach((doc, dIndex) => {
+    monthlyEvents.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
         const showEvent = monthlyEvent ? doc._id === monthlyEvent._id : false
         const month = getMonthFromEventId(doc._id)
@@ -174,7 +174,7 @@ export default React.createClass({
       activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()
     }
     return (
-      <div id='events'>
+      <div id='monthlyEvents'>
         <h1>Events</h1>
         <PanelGroup activeKey={activeYear} accordion>
           {this.eventYears()}
