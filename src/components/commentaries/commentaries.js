@@ -78,8 +78,9 @@ export default React.createClass({
     const glyphStyle = {
       position: 'absolute',
       right: 10,
-      top: 10,
-      fontSize: 1.5 + 'em'
+      top: 6,
+      fontSize: 1.5 + 'em',
+      color: '#edf4f8'
     }
     return (
       <OverlayTrigger placement='top' overlay={this.removeCommentaryTooltip()}>
@@ -95,11 +96,11 @@ export default React.createClass({
 
   toggleDraftGlyph (doc) {
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
-    const color = doc.draft ? 'red' : 'green'
+    const color = doc.draft ? 'red' : '#00D000'
     const glyphStyle = {
       position: 'absolute',
       right: 40,
-      top: 10,
+      top: 6,
       fontSize: 1.5 + 'em',
       color: color
     }
@@ -126,10 +127,16 @@ export default React.createClass({
       })
       return commentaries.map((doc, index) => {
         const isCommentary = Object.keys(commentary).length > 0
-        const showCommentary = isCommentary ? doc._id === commentary._id : false
+        const isActiveCommentary = isCommentary ? doc._id === commentary._id : false
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative'
+        }
+        if (!isActiveCommentary) {
+          Object.assign(panelHeadingStyle, {
+            borderBottomRightRadius: 3,
+            borderBottomLeftRadius: 3
+          })
         }
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
@@ -150,7 +157,7 @@ export default React.createClass({
                 : null
               }
             </div>
-            {showCommentary ?
+            {isActiveCommentary ?
               <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickCommentaryCollapse}>
                 <div className='panel-body'>
                   <Commentary commentary={commentary} editing={editing} onSaveCommentary={onSaveCommentary} />
@@ -169,7 +176,6 @@ export default React.createClass({
     const { commentary, showNewCommentary, onCloseNewCommentary } = this.props
     const { docToRemove } = this.state
     const activeCommentaryId = _.has(commentary, '_id') ? commentary._id : null
-    console.log('activeCommentaryId', activeCommentaryId)
     return (
       <div className='commentaries'>
         <h1>Commentaries</h1>
