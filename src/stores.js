@@ -3,9 +3,11 @@
 import app from 'ampersand-app'
 import Reflux from 'reflux'
 import moment from 'moment'
+import { Base64 } from 'js-base64'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
+import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
 import _ from 'lodash'
 
 export default (Actions) => {
@@ -144,10 +146,11 @@ export default (Actions) => {
 
     onNewMonthlyEvent (year, month) {
       const id = `monthlyEvents_${year}_${month}`
+      const article = Base64.encode(monthlyEventTemplate)
       const monthlyEvent = {
         _id: id,
         type: 'monthlyEvents',
-        article: 'PHRhYmxlIGNsYXNzPSduZXcnPg0KICA8dGhlYWQ+DQogICAgPHRyPg0KICAgICAgPHRoPg0KICAgICAgICA8aDE+SXRhbHk8L2gxPg0KICAgICAgICA8aDE+U2ljaWx5LCBDYWxhYnJpYSwgQXB1bGlhLCBMYW1wZWR1c2E8L2gxPg0KICAgICAgPC90aD4NCiAgICAgIDx0aD4NCiAgICAgICAgPGgxPk1hbHRhPC9oMT4NCiAgICAgIDwvdGg+DQogICAgICA8dGg+DQogICAgICAgIDxoMT5UdW5pc2lhLCBMaWJ5YSwgRWd5cHQsPC9oMT4NCiAgICAgICAgPGgxPm1pc2NlbGxhbmVvdXMgaW5mbzwvaDE+DQogICAgICA8L3RoPg0KICAgICAgPHRoPg0KICAgICAgICA8aDE+VU4sIEV1cm9wZWFuIFVuaW9uPC9oMT4NCiAgICAgICAgPGgxPkRpcGxvbWFjeSwgUG9saXRpY3MsIExhdzwvaDE+DQogICAgICA8L3RoPg0KICAgIDwvdHI+DQogIDwvdGhlYWQ+DQogIDx0Ym9keT4NCiAgICA8dHI+DQogICAgICA8dGg+DQogICAgICAgIDxoMj5BcnJpdmFscyBVTkhDUjwvaDI+DQogICAgICAgIDxwIGNsYXNzPSdib2xkJz4yMDE1IG1vbi4gLi4uPC9wPg0KICAgICAgICA8cCBjbGFzcz0nYm9sZCc+MjAxNSBjdW0uIC4uLjwvcD4NCiAgICAgICAgPHA+MjAxNCBtb24uIC4uLjwvcD4NCiAgICAgICAgPHA+MjAxNCBjdW0uIC4uLjwvcD4NCiAgICAgIDwvdGg+DQogICAgICA8dGg+DQogICAgICAgIDxoMj5BcnJpdmFsczwvaDI+DQogICAgICAgIDxwIGNsYXNzPSdib2xkJz4yMDE1IG1vbi4gLi4uPC9wPg0KICAgICAgICA8cCBjbGFzcz0nYm9sZCc+MjAxNSBjdW0uIC4uLjwvcD4NCiAgICAgICAgPHA+MjAxNCBtb24uIC4uLjwvcD4NCiAgICAgICAgPHA+MjAxNCBjdW0uIC4uLjwvcD4NCiAgICAgIDwvdGg+DQogICAgICA8dGg+DQogICAgICAgIDxoMj5WaWN0aW1zPC9oMj4NCiAgICAgICAgPHAgY2xhc3M9J2JvbGQnPjIwMTUgbW9uLiAuLi48L3A+DQogICAgICAgIDxwIGNsYXNzPSdib2xkJz4yMDE1IGN1bS4gLi4uPC9wPg0KICAgICAgICA8cD4yMDE0IG1vbi4gLi4uPC9wPg0KICAgICAgICA8cD4yMDE0IGN1bS4gLi4uPC9wPg0KICAgICAgPC90aD4NCiAgICAgIDx0aD4NCiAgICAgICAgPGgyPlRvdGFsIEFycml2YWxzPC9oMj4NCiAgICAgICAgPHAgY2xhc3M9J2JvbGQnPjIwMTUgbW9uLiAuLi48L3A+DQogICAgICAgIDxwIGNsYXNzPSdib2xkJz4yMDE1IGN1bS4gLi4uPC9wPg0KICAgICAgICA8cD4yMDE0IG1vbi4gLi4uPC9wPg0KICAgICAgICA8cD4yMDE0IGN1bS4gLi4uPC9wPg0KICAgICAgPC90aD4NCiAgICA8L3RyPg0KICAgIDx0cj4NCiAgICAgIDx0aD4NCiAgICAgICAgPHA+ZXhhbXBsZSBldmVudCB3aXRoIDxhIGhyZWY9Imh0dHA6Ly9ibHVlLWJvcmRlcnMuY2giPmxpbms8L2E+PC9wPg0KICAgICAgPC90aD4NCiAgICAgIDx0aD4NCiAgICAgIDwvdGg+DQogICAgICA8dGg+DQogICAgICA8L3RoPg0KICAgICAgPHRoPg0KICAgICAgPC90aD4NCiAgICA8L3RyPg0KICA8L3Rib2R5Pg0KPC90YWJsZT4='
+        article: article
       }
       app.db.put(monthlyEvent)
         .then(() => this.onGetMonthlyEvents())
@@ -158,6 +161,17 @@ export default (Actions) => {
       app.db.remove(doc)
         .then(() => this.onGetMonthlyEvents())
         .catch((error) => app.Actions.showError({title: 'Error removing monthly event:', msg: error}))
+    },
+
+    onToggleDraftOfMonthlyEvent (doc) {
+      if (doc.draft === true) {
+        delete doc.draft
+      } else {
+        doc.draft = true
+      }
+      app.db.put(doc)
+        .then(() => this.onGetMonthlyEvents())
+        .catch((error) => app.Actions.showError({title: 'Error changing draft of monthly event:', msg: error}))
     }
   })
 
