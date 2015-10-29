@@ -16,6 +16,7 @@ export default () => {
     getCommentaries: {},
     newCommentary: {},
     removeCommentary: {},
+    toggleDraftOfCommentary: {},
     login: {},
     logout: {},
     showError: {}

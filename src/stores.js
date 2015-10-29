@@ -115,6 +115,17 @@ export default (Actions) => {
       app.db.remove(doc)
         .then(() => this.onGetCommentaries())
         .catch((error) => app.Actions.showError({title: 'Error removing commentary:', msg: error}))
+    },
+
+    onToggleDraftOfCommentary (doc) {
+      if (doc.draft === true) {
+        delete doc.draft
+      } else {
+        doc.draft = true
+      }
+      app.db.put(doc)
+        .then(() => this.onGetCommentaries())
+        .catch((error) => app.Actions.showError({title: 'Error changing draft of commentary:', msg: error}))
     }
   })
 
