@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { ListGroup, ListGroupItem, Glyphicon } from 'react-bootstrap'
+import { ListGroup, ListGroupItem, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import getPathFromDoc from '../../modules/getPathFromDoc.js'
 import NewCommentary from './newCommentary.js'
@@ -51,14 +51,26 @@ export default React.createClass({
     this.setState({ docToRemove: null })
   },
 
-  commentaries () {
-    let { docs } = this.state
+  removeCommentaryTooltip () {
+    return (<Tooltip id='removeThisCommentary'>remove this commentary</Tooltip>)
+  },
+
+  removeCommentaryGlyph (doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 10,
       top: 10,
       fontSize: 1.5 + 'em'
     }
+    return (
+      <OverlayTrigger placement='right' overlay={this.removeCommentaryTooltip()}>
+        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveCommentary.bind(this, doc)} />
+      </OverlayTrigger>
+    )
+  },
+
+  commentaries () {
+    let { docs } = this.state
     const showRemoveGlyphicon = !!window.localStorage.email
     if (docs.length > 0) {
       docs = docs.sort((a, b) => {
@@ -74,7 +86,7 @@ export default React.createClass({
           >
             {doc.title}
             {showRemoveGlyphicon ?
-              <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveCommentary.bind(this, doc)} />
+              this.removeCommentaryGlyph(doc)
               : null
             }
           </ListGroupItem>
