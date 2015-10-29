@@ -112,6 +112,10 @@ export default React.createClass({
         const panelHeadingStyle = {
           position: 'relative'
         }
+        const panelBodyStyle = {
+          maxHeight: window.innerHeight - 52,
+          overflowY: 'auto'
+        }
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         const eventComponent = (
@@ -133,7 +137,7 @@ export default React.createClass({
             </div>
             {showEvent ?
               <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex} onClick={this.onClickEventCollapse}>
-                <div className='panel-body'>
+                <div className='panel-body' style={panelBodyStyle}>
                   <MonthlyEvent monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} />
                 </div>
               </div>

@@ -20,7 +20,7 @@ export default React.createClass({
     if (editing) {
       return (
         <div className='monthlyEvent'>
-          <Editor docId={monthlyEvent._id} articleDecoded={articleDecoded} onSaveMonthlyEvent={onSaveMonthlyEvent} />
+          <Editor doc={monthlyEvent} articleDecoded={articleDecoded} onSaveMonthlyEvent={onSaveMonthlyEvent} />
         </div>
       )
     }

@@ -132,6 +132,14 @@ export default React.createClass({
         const panelHeadingStyle = {
           position: 'relative'
         }
+        const panelBodyPadding = editing ? 0 : 15
+        const panelBodyMarginTop = editing ? -1 + 'px' : 0
+        const panelBodyStyle = {
+          padding: panelBodyPadding,
+          marginTop: panelBodyMarginTop,
+          maxHeight: window.innerHeight - 52,
+          overflowY: 'auto'
+        }
         if (!isActiveCommentary) {
           Object.assign(panelHeadingStyle, {
             borderBottomRightRadius: 3,
@@ -159,7 +167,7 @@ export default React.createClass({
             </div>
             {isActiveCommentary ?
               <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickCommentaryCollapse}>
-                <div className='panel-body'>
+                <div className='panel-body' style={panelBodyStyle}>
                   <Commentary commentary={commentary} editing={editing} onSaveCommentary={onSaveCommentary} />
                 </div>
               </div>

@@ -49,7 +49,7 @@ export default React.createClass({
       return (
         <div>
           {showMeta ? <Meta doc={commentary} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor docId={commentary._id} articleDecoded={articleDecoded} onSaveCommentary={onSaveCommentary} />
+          <Editor doc={commentary} articleDecoded={articleDecoded} onSaveCommentary={onSaveCommentary} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )

@@ -7,7 +7,7 @@ export default React.createClass({
   displayName: 'Editor',
 
   propTypes: {
-    docId: React.PropTypes.string,
+    doc: React.PropTypes.object,
     articleDecoded: React.PropTypes.string,
     onSaveArticle: React.PropTypes.func,
     onSaveMonthlyEvent: React.PropTypes.func,
@@ -15,10 +15,10 @@ export default React.createClass({
   },
 
   componentDidMount () {
-    const { docId, onSaveArticle, onSaveMonthlyEvent, onSaveCommentary } = this.props
+    const { doc, onSaveArticle, onSaveMonthlyEvent, onSaveCommentary } = this.props
     // height = window - menu height - (menubar + iconbar)
     const height = window.innerHeight - 52 - 74
-    const instanceSelector = `#${docId}`
+    const instanceSelector = `#${doc._id}`
 
     window.tinymce.init({
       selector: instanceSelector,
@@ -52,9 +52,11 @@ export default React.createClass({
     })
     // scroll editor to top
     // TODO: if event, scroll event title to top
-    window.$('html, body').animate({
-      scrollTop: 140
-    }, 800)
+    if (doc.type === 'pages') {
+      window.$('html, body').animate({
+        scrollTop: 140
+      }, 800)
+    }
   },
 
   shouldComponentUpdate () {
@@ -65,16 +67,16 @@ export default React.createClass({
   componentWillUnmount () {
     // this is needed for correct behaviour, see
     // http://stackoverflow.com/questions/29169158/react-html-editor-tinymce
-    const { docId } = this.props
-    const instanceSelector = `#${docId}`
+    const { doc } = this.props
+    const instanceSelector = `#${doc._id}`
     window.tinymce.remove(instanceSelector)
   },
 
   render () {
-    const { docId, articleDecoded } = this.props
+    const { doc, articleDecoded } = this.props
     return (
       <textarea
-        id={docId}
+        id={doc._id}
         defaultValue={articleDecoded} />
     )
   }
