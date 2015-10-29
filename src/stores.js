@@ -105,6 +105,7 @@ export default (Actions) => {
       const commentary = {
         _id: id,
         title: title,
+        draft: true,
         article: 'IA==',
         type: 'commentaries'
       }
@@ -150,6 +151,7 @@ export default (Actions) => {
       const monthlyEvent = {
         _id: id,
         type: 'monthlyEvents',
+        draft: true,
         article: article
       }
       app.db.put(monthlyEvent)
