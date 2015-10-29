@@ -52,7 +52,7 @@ export default React.createClass({
   },
 
   removeCommentaryTooltip () {
-    return (<Tooltip id='removeThisCommentary'>remove this commentary</Tooltip>)
+    return (<Tooltip id='removeThisCommentary'>remove</Tooltip>)
   },
 
   removeCommentaryGlyph (doc) {
@@ -63,7 +63,7 @@ export default React.createClass({
       fontSize: 1.5 + 'em'
     }
     return (
-      <OverlayTrigger placement='right' overlay={this.removeCommentaryTooltip()}>
+      <OverlayTrigger placement='top' overlay={this.removeCommentaryTooltip()}>
         <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveCommentary.bind(this, doc)} />
       </OverlayTrigger>
     )
