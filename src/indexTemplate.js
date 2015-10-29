@@ -3,6 +3,8 @@
 // <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
 
 module.exports = () => {
+  const isDev = process.env.NODE_ENV !== 'production'
+  const jsPath = isDev ? '/app.js' : '/bb.1.0.0.js'
   return `<!doctype html>
 <head>
   <meta charset="utf-8"/>
@@ -33,6 +35,6 @@ module.exports = () => {
   <div id='content'></div>
 </body>
 <script type="text/javascript" src="./tinymce/tinymce.min.js"></script>
-<script src="/bb.1.0.0.js"></script>
+<script src="${jsPath}"></script>
 `
 }
