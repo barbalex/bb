@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Navbar, NavBrand, CollapsibleNav, NavItem, NavDropdown, Nav, MenuItem, Glyphicon } from 'react-bootstrap'
+import { Navbar, NavBrand, CollapsibleNav, NavItem, NavDropdown, Nav, MenuItem, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import _ from 'lodash'
 import AffixWrapper from './affixWrapper.js'
 
@@ -24,6 +24,28 @@ export default React.createClass({
     app.Actions.getPage(pageType, onlyLoadOtherIds)
   },
 
+  onClickLogout () {
+    app.Actions.logout()
+  },
+
+  logoutTooltip () {
+    return (<Tooltip id='logout'>log out</Tooltip>)
+  },
+
+  editTooltip () {
+    const { editing } = this.props
+    const text = editing ? 'preview' : 'edit'
+    return (<Tooltip id={text}>{text}</Tooltip>)
+  },
+
+  newCommentaryTooltip () {
+    return (<Tooltip id='newCommentary'>new Commentary</Tooltip>)
+  },
+
+  newMonthlyEventTooltip () {
+    return (<Tooltip id='newMonthlyEvent'>new monthly event</Tooltip>)
+  },
+
   render () {
     const { doc, monthlyEvent, email, editing, onClickEdit, onClickNewCommentary, onClickNewMonthlyEvent } = this.props
     const glyph = editing ? 'eye-open' : 'pencil'
@@ -32,7 +54,7 @@ export default React.createClass({
     const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(monthlyEvent, '_id'))
     const showAddCommentary = email && doc._id === 'pages_commentaries'
     const showAddMonthlyEvent = email && doc._id === 'pages_monthlyEvents'
-    const showNavbarRight = showEdit || showAddCommentary || showAddMonthlyEvent
+    const showNavbarRight = email || showEdit || showAddCommentary || showAddMonthlyEvent
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -110,32 +132,46 @@ export default React.createClass({
               {showNavbarRight ?
                 <Nav navbar right>
                   {showEdit ?
-                    <NavItem
-                      eventKey={1}
-                      onClick={onClickEdit}
-                    >
-                      <Glyphicon glyph={glyph} />
-                    </NavItem>
+                    <OverlayTrigger placement='bottom' overlay={this.editTooltip()}>
+                      <NavItem
+                        eventKey={1}
+                        onClick={onClickEdit}
+                      >
+                        <Glyphicon glyph={glyph} />
+                      </NavItem>
+                    </OverlayTrigger>
                     : null
                   }
                   {showAddCommentary ?
-                    <NavItem
-                      eventKey={2}
-                      onClick={onClickNewCommentary}
-                    >
-                      <Glyphicon glyph='plus' />
-                    </NavItem>
+                    <OverlayTrigger placement='bottom' overlay={this.newCommentaryTooltip()}>
+                      <NavItem
+                        eventKey={2}
+                        onClick={onClickNewCommentary}
+                      >
+                        <Glyphicon glyph='plus' />
+                      </NavItem>
+                    </OverlayTrigger>
                     : null
                   }
                   {showAddMonthlyEvent ?
-                    <NavItem
-                      eventKey={2}
-                      onClick={onClickNewMonthlyEvent}
-                    >
-                      <Glyphicon glyph='plus' />
-                    </NavItem>
+                    <OverlayTrigger placement='bottom' overlay={this.newMonthlyEventTooltip()}>
+                      <NavItem
+                        eventKey={3}
+                        onClick={onClickNewMonthlyEvent}
+                      >
+                        <Glyphicon glyph='plus' />
+                      </NavItem>
+                    </OverlayTrigger>
                     : null
                   }
+                  <OverlayTrigger placement='bottom' overlay={this.logoutTooltip()}>
+                    <NavItem
+                      eventKey={4}
+                      onClick={this.onClickLogout}
+                    >
+                      <Glyphicon glyph='log-out' />
+                    </NavItem>
+                  </OverlayTrigger>
                 </Nav>
                 : null
               }
