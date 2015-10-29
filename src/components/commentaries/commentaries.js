@@ -16,6 +16,7 @@ export default React.createClass({
   propTypes: {
     docs: React.PropTypes.array,
     showNewCommentary: React.PropTypes.bool,
+    email: React.PropTypes.string,
     onCloseNewCommentary: React.PropTypes.func,
     docToRemove: React.PropTypes.object
   },
@@ -33,6 +34,8 @@ export default React.createClass({
   },
 
   onCommentariesStoreChange (docs) {
+    const { email } = this.props
+    if (!email) docs = docs.filter((doc) => !doc.draft)
     this.setState({ docs })
   },
 

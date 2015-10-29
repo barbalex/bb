@@ -19,6 +19,7 @@ export default React.createClass({
     monthlyEvent: React.PropTypes.object,
     activeYear: React.PropTypes.number,
     editing: React.PropTypes.bool,
+    email: React.PropTypes.string,
     onSaveMonthlyEvent: React.PropTypes.func,
     onCloseNewMonthlyEvent: React.PropTypes.func,
     showNewMonthlyEvent: React.PropTypes.bool
@@ -37,6 +38,8 @@ export default React.createClass({
   },
 
   onMonthlyEventsStoreChange (monthlyEvents) {
+    const { email } = this.props
+    if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) => !monthlyEvent.draft)
     this.setState({ monthlyEvents })
   },
 

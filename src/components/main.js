@@ -145,6 +145,7 @@ export default React.createClass({
             }
             {isCommentariesPage ?
               <Commentaries
+                email={email}
                 showNewCommentary={showNewCommentary}
                 onCloseNewCommentary={this.onCloseNewCommentary} />
               : null
@@ -153,6 +154,7 @@ export default React.createClass({
               <MonthlyEvents
                 monthlyEvent={monthlyEvent}
                 editing={editing}
+                email={email}
                 onSaveMonthlyEvent={this.onSaveMonthlyEvent}
                 showNewMonthlyEvent={showNewMonthlyEvent}
                 onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
