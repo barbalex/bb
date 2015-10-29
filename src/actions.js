@@ -12,6 +12,7 @@ export default () => {
     getMonthlyEvent: {},
     saveMonthlyEvent: {},
     newMonthlyEvent: {},
+    toggleDraftOfMonthlyEvent: {},
     removeMonthlyEvent: {},
     getCommentaries: {},
     newCommentary: {},

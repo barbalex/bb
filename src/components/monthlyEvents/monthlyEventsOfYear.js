@@ -17,6 +17,7 @@ export default React.createClass({
     monthlyEvents: React.PropTypes.array,
     monthlyEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
+    email: React.PropTypes.string,
     onSaveMonthlyEvent: React.PropTypes.func,
     docToRemove: React.PropTypes.object
   },
@@ -72,14 +73,42 @@ export default React.createClass({
     )
   },
 
+  toggleDraftTooltip (doc) {
+    const text = doc.draft ? 'publish' : 'unpublish'
+    return <Tooltip id='toggleDraft'>{text}</Tooltip>
+  },
+
+  toggleDraftGlyph (doc) {
+    const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
+    const color = doc.draft ? 'red' : 'green'
+    const glyphStyle = {
+      position: 'absolute',
+      right: 38,
+      top: 6,
+      fontSize: 1.5 + 'em',
+      color: color
+    }
+    return (
+      <OverlayTrigger placement='top' overlay={this.toggleDraftTooltip(doc)}>
+        <Glyphicon glyph={glyph} style={glyphStyle} onClick={this.onToggleDraft.bind(this, doc)} />
+      </OverlayTrigger>
+    )
+  },
+
+  onToggleDraft (doc, event) {
+    event.preventDefault()
+    event.stopPropagation()
+    app.Actions.toggleDraftOfMonthlyEvent(doc)
+  },
+
   monthlyEventsComponent (year) {
-    const { monthlyEvents, monthlyEvent, editing, onSaveMonthlyEvent } = this.props
+    const { monthlyEvents, monthlyEvent, editing, email, onSaveMonthlyEvent } = this.props
     let monthlyEventsArray = []
     monthlyEvents.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
         const showEvent = monthlyEvent ? doc._id === monthlyEvent._id : false
         const month = getMonthFromEventId(doc._id)
-        const showRemoveGlyphicon = !!window.localStorage.email
+        const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative'
         }
@@ -93,7 +122,11 @@ export default React.createClass({
                   {month}
                 </a>
               </h4>
-              {showRemoveGlyphicon ?
+              {showEditingGlyphons ?
+                this.toggleDraftGlyph(doc)
+                : null
+              }
+              {showEditingGlyphons ?
                 this.removeMonthlyEventGlyph(doc)
                 : null
               }
