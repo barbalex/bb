@@ -1,5 +1,5 @@
 /*
- * contains ui for a login/signup modal
+ * contains ui for login
  */
 
 'use strict'
@@ -116,11 +116,11 @@ export default React.createClass({
     return (
       <form className={'form'} autoComplete='off'>
         <div className='formGroup'>
-          <Input type='email' id='email' label={'Email'} bsSize='small' className={'controls'} bsStyle={emailInputBsStyle} value={newEmail} onBlur={this.onBlurEmail} onKeyDown={this.onKeyDownEmail} required autoFocus />
+          <Input type='email' id='email' label={'Email'} bsSize='small' className={'controls'} bsStyle={emailInputBsStyle} onBlur={this.onBlurEmail} onKeyDown={this.onKeyDownEmail} required autoFocus />
           {invalidEmail ? <div className='validateDivAfterRBC'>Please check email</div> : ''}
         </div>
         <div className='formGroup'>
-          <Input type='password' id='password' label={'Password'} className={'controls'} bsStyle={passwordInputBsStyle} value={password} onBlur={this.onBlurPassword} onKeyDown={this.onKeyDownPassword} required />
+          <Input type='password' id='password' label={'Password'} className={'controls'} bsStyle={passwordInputBsStyle} onBlur={this.onBlurPassword} onKeyDown={this.onKeyDownPassword} required />
           {invalidPassword ? <div className='validateDivAfterRBC'>Please check password</div> : ''}
         </div>
         {isError ? <Alert bsStyle='danger' onDismiss={this.onAlertDismiss} style={styleAlert}>Error: {error}</Alert> : null}
