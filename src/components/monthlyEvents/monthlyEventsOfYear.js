@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { PanelGroup, Glyphicon } from 'react-bootstrap'
+import { PanelGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import _ from 'lodash'
 import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
@@ -54,6 +54,24 @@ export default React.createClass({
     this.setState({ docToRemove: null })
   },
 
+  removeMonthlyEventTooltip () {
+    return (<Tooltip id='removeThisMonthlyEvent'>remove</Tooltip>)
+  },
+
+  removeMonthlyEventGlyph (doc) {
+    const glyphStyle = {
+      position: 'absolute',
+      right: 8,
+      top: 6,
+      fontSize: 1.5 + 'em'
+    }
+    return (
+      <OverlayTrigger placement='top' overlay={this.removeMonthlyEventTooltip()}>
+        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
+      </OverlayTrigger>
+    )
+  },
+
   monthlyEventsComponent (year) {
     const { monthlyEvents, monthlyEvent, editing, onSaveMonthlyEvent } = this.props
     let monthlyEventsArray = []
@@ -62,12 +80,6 @@ export default React.createClass({
         const showEvent = monthlyEvent ? doc._id === monthlyEvent._id : false
         const month = getMonthFromEventId(doc._id)
         const showRemoveGlyphicon = !!window.localStorage.email
-        const glyphStyle = {
-          position: 'absolute',
-          right: 8,
-          top: 6,
-          fontSize: 1.5 + 'em'
-        }
         const panelHeadingStyle = {
           position: 'relative'
         }
@@ -82,7 +94,7 @@ export default React.createClass({
                 </a>
               </h4>
               {showRemoveGlyphicon ?
-                <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
+                this.removeMonthlyEventGlyph(doc)
                 : null
               }
             </div>
