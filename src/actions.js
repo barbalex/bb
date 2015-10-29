@@ -17,6 +17,7 @@ export default () => {
     newCommentary: {},
     removeCommentary: {},
     login: {},
+    logout: {},
     showError: {}
   })
   return Actions

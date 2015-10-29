@@ -12,7 +12,7 @@ import Page from './page.js'
 import Commentaries from './commentaries/commentaries.js'
 import Commentary from './commentaries/commentary.js'
 import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
-import Login from './login.js'
+import Login from './login/login.js'
 import Errors from './errors.js'
 import getPageNameFromDoc from '../modules/getPageNameFromDoc.js'
 
@@ -167,7 +167,7 @@ export default React.createClass({
                 onSaveArticle={this.onSaveArticle} />
               : null
             }
-            {login ? <Login /> : null}
+            {login ? <Login email={email} /> : null}
             <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
           </div>
         </NavHelper>

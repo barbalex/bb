@@ -175,6 +175,11 @@ export default (Actions) => {
         this.trigger(email)
         window.localStorage.email = email
       }
+    },
+
+    onLogout () {
+      delete window.localStorage.email
+      this.trigger(null)
     }
   })
 
