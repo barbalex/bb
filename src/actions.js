@@ -15,6 +15,8 @@ export default () => {
     toggleDraftOfMonthlyEvent: {},
     removeMonthlyEvent: {},
     getCommentaries: {},
+    getCommentary: {},
+    saveCommentary: {},
     newCommentary: {},
     removeCommentary: {},
     toggleDraftOfCommentary: {},

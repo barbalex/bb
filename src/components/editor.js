@@ -10,11 +10,12 @@ export default React.createClass({
     docId: React.PropTypes.string,
     articleDecoded: React.PropTypes.string,
     onSaveArticle: React.PropTypes.func,
-    onSaveMonthlyEvent: React.PropTypes.func
+    onSaveMonthlyEvent: React.PropTypes.func,
+    onSaveCommentary: React.PropTypes.func
   },
 
   componentDidMount () {
-    const { docId, onSaveArticle, onSaveMonthlyEvent } = this.props
+    const { docId, onSaveArticle, onSaveMonthlyEvent, onSaveCommentary } = this.props
     // height = window - menu height - (menubar + iconbar)
     const height = window.innerHeight - 52 - 74
     const instanceSelector = `#${docId}`
@@ -40,6 +41,7 @@ export default React.createClass({
           const articleEncoded = Base64.encode(articleDecoded)
           if (onSaveArticle) onSaveArticle(articleEncoded)
           if (onSaveMonthlyEvent) onSaveMonthlyEvent(articleEncoded)
+          if (onSaveCommentary) onSaveCommentary(articleEncoded)
         })
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4

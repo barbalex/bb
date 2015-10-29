@@ -2,9 +2,10 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { ListGroup, ListGroupItem, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
-import getPathFromDoc from '../../modules/getPathFromDoc.js'
+import _ from 'lodash'
+import Commentary from './commentary.js'
 import NewCommentary from './newCommentary.js'
 import ModalRemoveCommentary from './modalRemoveCommentary.js'
 
@@ -14,16 +15,19 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    docs: React.PropTypes.array,
-    showNewCommentary: React.PropTypes.bool,
+    commentaries: React.PropTypes.array,
+    commentary: React.PropTypes.object,
+    editing: React.PropTypes.bool,
     email: React.PropTypes.string,
+    onSaveCommentary: React.PropTypes.func,
     onCloseNewCommentary: React.PropTypes.func,
+    showNewCommentary: React.PropTypes.bool,
     docToRemove: React.PropTypes.object
   },
 
   getInitialState () {
     return {
-      docs: [],
+      commentaries: [],
       docToRemove: null
     }
   },
@@ -33,10 +37,25 @@ export default React.createClass({
     app.Actions.getCommentaries()
   },
 
-  onCommentariesStoreChange (docs) {
+  onCommentariesStoreChange (commentaries) {
     const { email } = this.props
-    if (!email) docs = docs.filter((doc) => !doc.draft)
-    this.setState({ docs })
+    if (!email) commentaries = commentaries.filter((commentary) => !commentary.draft)
+    this.setState({ commentaries })
+  },
+
+  onClickCommentary (id, e) {
+    const { commentary } = this.props
+    // prevent higher level panels from reacting
+    e.preventDefault()
+    e.stopPropagation()
+    const idToGet = (Object.keys(commentary).length === 0 || commentary._id !== id) ? id : null
+    app.Actions.getCommentary(idToGet)
+  },
+
+  onClickCommentaryCollapse (event) {
+    // prevent higher level panels from reacting
+    event.preventDefault()
+    event.stopPropagation()
   },
 
   onRemoveCommentary (docToRemove, event) {
@@ -97,32 +116,49 @@ export default React.createClass({
     app.Actions.toggleDraftOfCommentary(doc)
   },
 
-  commentaries () {
-    const { email } = this.props
-    let { docs } = this.state
-    const showEditingGlyphons = !!email
-    if (docs.length > 0) {
-      docs = docs.sort((a, b) => {
+  commentariesComponent () {
+    const { commentary, editing, email, onSaveCommentary } = this.props
+    let { commentaries } = this.state
+    if (commentaries.length > 0) {
+      commentaries = commentaries.sort((a, b) => {
         if (a._id < b._id) return 1
         return -1
       })
-      return docs.map((doc, index) => {
-        const path = getPathFromDoc(doc)
+      return commentaries.map((doc, index) => {
+        const isCommentary = Object.keys(commentary).length > 0
+        const showCommentary = isCommentary ? doc._id === commentary._id : false
+        const showEditingGlyphons = !!email
+        const panelHeadingStyle = {
+          position: 'relative'
+        }
+        // use pure bootstrap.
+        // advantage: can add edit icon to panel-heading
         return (
-          <ListGroupItem
-            key={index}
-            href={path}
-          >
-            {doc.title}
-            {showEditingGlyphons ?
-              this.toggleDraftGlyph(doc)
+          <div key={doc._id} className='panel panel-default'>
+            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickCommentary.bind(this, doc._id)} style={panelHeadingStyle}>
+              <h4 className='panel-title'>
+                <a role='button' data-toggle='collapse' data-parent='#commentariesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
+                  {doc.title}
+                </a>
+              </h4>
+              {showEditingGlyphons ?
+                this.toggleDraftGlyph(doc)
+                : null
+              }
+              {showEditingGlyphons ?
+                this.removeCommentaryGlyph(doc)
+                : null
+              }
+            </div>
+            {showCommentary ?
+              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickCommentaryCollapse}>
+                <div className='panel-body'>
+                  <Commentary commentary={commentary} editing={editing} onSaveCommentary={onSaveCommentary} />
+                </div>
+              </div>
               : null
             }
-            {showEditingGlyphons ?
-              this.removeCommentaryGlyph(doc)
-              : null
-            }
-          </ListGroupItem>
+          </div>
         )
       })
     }
@@ -130,14 +166,16 @@ export default React.createClass({
   },
 
   render () {
-    const { showNewCommentary, onCloseNewCommentary } = this.props
+    const { commentary, showNewCommentary, onCloseNewCommentary } = this.props
     const { docToRemove } = this.state
+    const activeCommentaryId = _.has(commentary, '_id') ? commentary._id : null
+    console.log('activeCommentaryId', activeCommentaryId)
     return (
       <div className='commentaries'>
         <h1>Commentaries</h1>
-        <ListGroup>
-          {this.commentaries()}
-        </ListGroup>
+        <PanelGroup activeKey={activeCommentaryId} id='commentariesAccordion' accordion>
+          {this.commentariesComponent()}
+        </PanelGroup>
         {showNewCommentary ? <NewCommentary onCloseNewCommentary={onCloseNewCommentary} /> : null}
         {docToRemove ? <ModalRemoveCommentary doc={docToRemove} removeCommentary={this.removeCommentary} /> : null}
       </div>

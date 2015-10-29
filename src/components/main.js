@@ -10,7 +10,6 @@ import Header from '../components/header.js'
 import Navbar from '../components/navbar.js'
 import Page from './page.js'
 import Commentaries from './commentaries/commentaries.js'
-import Commentary from './commentaries/commentary.js'
 import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
 import Login from './login/login.js'
 import Errors from './errors.js'
@@ -24,6 +23,7 @@ export default React.createClass({
   propTypes: {
     doc: React.PropTypes.object,
     monthlyEvent: React.PropTypes.object,
+    commentary: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
     showNewMonthlyEvent: React.PropTypes.bool,
@@ -37,6 +37,7 @@ export default React.createClass({
     return {
       doc: {},
       monthlyEvent: {},
+      commentary: {},
       editing: false,
       showNewCommentary: false,
       showNewMonthlyEvent: false,
@@ -49,6 +50,7 @@ export default React.createClass({
     // listen to stores
     this.listenTo(app.pageStore, this.onPageStoreChange)
     this.listenTo(app.monthlyEventStore, this.onMonthlyEventStoreChange)
+    this.listenTo(app.commentaryStore, this.onCommentaryStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
@@ -59,6 +61,10 @@ export default React.createClass({
 
   onMonthlyEventStoreChange (monthlyEvent) {
     this.setState({ monthlyEvent })
+  },
+
+  onCommentaryStoreChange (commentary) {
+    this.setState({ commentary })
   },
 
   onLoginStoreChange (email) {
@@ -108,14 +114,21 @@ export default React.createClass({
     app.Actions.saveMonthlyEvent(monthlyEvent)
   },
 
+  onSaveCommentary (articleEncoded) {
+    let { commentary } = this.state
+    commentary.article = articleEncoded
+    app.Actions.saveCommentary(commentary)
+  },
+
   render () {
     const { login } = this.props
-    const { doc, monthlyEvent, editing, showNewCommentary, showNewMonthlyEvent, email, errors } = this.state
+    const { doc, monthlyEvent, commentary, editing, showNewCommentary, showNewMonthlyEvent, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
     const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
     const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
     const isMonthlyEventsPage = doc.type && doc.type === 'pages' && doc._id === 'pages_monthlyEvents'
     const isCommentary = doc.type && doc.type === 'commentaries'
+    const showCommentaryPage = isCommentariesPage || isCommentary
     const isMonthlyEvent = doc.type && doc.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
     const pageName = getPageNameFromDoc(doc)
@@ -128,6 +141,7 @@ export default React.createClass({
           <Navbar
             doc={doc}
             monthlyEvent={monthlyEvent}
+            commentary={commentary}
             email={email}
             editing={editing}
             onClickEdit={this.onClickEdit}
@@ -143,9 +157,12 @@ export default React.createClass({
                 onSavePage={this.onSavePage} />
               : null
             }
-            {isCommentariesPage ?
+            {showCommentaryPage ?
               <Commentaries
+                commentary={commentary}
+                editing={editing}
                 email={email}
+                onSaveCommentary={this.onSaveCommentary}
                 showNewCommentary={showNewCommentary}
                 onCloseNewCommentary={this.onCloseNewCommentary} />
               : null
@@ -158,13 +175,6 @@ export default React.createClass({
                 onSaveMonthlyEvent={this.onSaveMonthlyEvent}
                 showNewMonthlyEvent={showNewMonthlyEvent}
                 onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
-              : null
-            }
-            {isCommentary ?
-              <Commentary
-                doc={doc}
-                editing={editing}
-                onSaveArticle={this.onSaveArticle} />
               : null
             }
             {login ? <Login email={email} /> : null}

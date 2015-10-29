@@ -64,23 +64,53 @@ export default (Actions) => {
         this.trigger({})
       } else {
         app.db.get(id, { include_docs: true })
-          .then((event) => {
-            const path = getPathFromDoc(event)
+          .then((monthlyEvent) => {
+            const path = getPathFromDoc(monthlyEvent)
             app.router.navigate('/' + path)
-            this.trigger(event)
+            this.trigger(monthlyEvent)
           })
           .catch((error) => app.Actions.showError({title: 'Error fetching monthly event ' + id + ':', msg: error}))
       }
     },
 
-    onSaveMonthlyEvent (event) {
-      app.db.put(event)
+    onSaveMonthlyEvent (monthlyEvent) {
+      app.db.put(monthlyEvent)
         .then((resp) => {
           // resp.rev is new rev
-          event._rev = resp.rev
-          this.trigger(event)
+          monthlyEvent._rev = resp.rev
+          this.trigger(monthlyEvent)
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
+    }
+  })
+
+  app.commentaryStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetCommentary (id) {
+      if (!id) {
+        app.router.navigate('/commentaries')
+        this.trigger({})
+      } else {
+        app.db.get(id, { include_docs: true })
+          .then((commentary) => {
+            const path = getPathFromDoc(commentary)
+            app.router.navigate('/' + path)
+            this.trigger(commentary)
+          })
+          .catch((error) => app.Actions.showError({title: 'Error fetching commentary ' + id + ':', msg: error}))
+      }
+    },
+
+    onSaveCommentary (commentary) {
+      app.db.put(commentary)
+        .then((resp) => {
+          // resp.rev is new rev
+          commentary._rev = resp.rev
+          this.trigger(commentary)
+        })
+        .catch((error) => app.Actions.showError({title: 'Error saving commentary:', msg: error}))
     }
   })
 

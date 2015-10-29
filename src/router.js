@@ -66,7 +66,9 @@ export default Router.extend({
 
   commentary (year, month, day, title) {
     const id = `commentaries_${year}_${month}_${day}_${title}`
-    this.render(id)
+    this.render()
+    app.Actions.getPage('pages_commentaries')
+    app.Actions.getCommentary(id)
   },
 
   monthlyEvents () {

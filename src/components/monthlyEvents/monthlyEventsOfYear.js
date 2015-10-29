@@ -106,7 +106,7 @@ export default React.createClass({
     let monthlyEventsArray = []
     monthlyEvents.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
-        const showEvent = monthlyEvent ? doc._id === monthlyEvent._id : false
+        const showEvent = monthlyEvent ? doc._id === monthlyEvent._id : false  // is this correct?
         const month = getMonthFromEventId(doc._id)
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {

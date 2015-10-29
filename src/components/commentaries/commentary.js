@@ -10,10 +10,10 @@ export default React.createClass({
   displayName: 'Commentary',
 
   propTypes: {
-    doc: React.PropTypes.object,
+    commentary: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
-    onSaveArticle: React.PropTypes.func
+    onSaveCommentary: React.PropTypes.func
   },
 
   getInitialState () {
@@ -36,9 +36,9 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, editing, onSaveArticle } = this.props
+    const { commentary, editing, onSaveCommentary } = this.props
     const { showMeta } = this.state
-    const articleEncoded = doc.article
+    const articleEncoded = commentary.article
     const articleDecoded = Base64.decode(articleEncoded)
     const metaButtonStyle = {
       position: 'fixed',
@@ -48,8 +48,8 @@ export default React.createClass({
     if (editing) {
       return (
         <div>
-          {showMeta ? <Meta doc={doc} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor docId={doc._id} articleDecoded={articleDecoded} onSaveArticle={onSaveArticle} />
+          {showMeta ? <Meta doc={commentary} onCloseMeta={this.onCloseMeta} /> : null}
+          <Editor docId={commentary._id} articleDecoded={articleDecoded} onSaveCommentary={onSaveCommentary} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )
@@ -57,7 +57,7 @@ export default React.createClass({
     const createMarkup = () => ({__html: articleDecoded})
     return (
       <div>
-        <h1>{doc.title}</h1>
+        <h1>{commentary.title}</h1>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )
