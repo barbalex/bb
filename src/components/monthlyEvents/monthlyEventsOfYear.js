@@ -2,6 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { PanelGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import _ from 'lodash'
 import MonthlyEvent from './monthlyEvent.js'
@@ -28,6 +29,20 @@ export default React.createClass({
     }
   },
 
+  componentDidMount () {
+    // somehow on first load the panel does not scroll up far enough
+    // call for more
+    this.scrollToActivePanel('more')
+  },
+
+  componentDidUpdate (prevProps) {
+    if (this.props.monthlyEvent._id !== prevProps.monthlyEvent._id) {
+      // this is later rerender
+      // only scroll into view if the active item changed last render
+      this.scrollToActivePanel()
+    }
+  },
+
   onClickMonthlyEvent (id, e) {
     const { monthlyEvent } = this.props
     // prevent higher level panels from reacting
@@ -47,6 +62,21 @@ export default React.createClass({
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
+  },
+
+  scrollToActivePanel (more) {
+    const node = ReactDOM.findDOMNode(this._activeMonthlyEventPanel)
+    if (node) {
+      const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
+      let reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 30 : 52
+      // somehow on first load the panel does not scroll up far enough
+      if (more) reduce = reduce - 5
+      if (node.offsetTop) {
+        window.$('html, body').animate({
+            scrollTop: node.offsetTop - reduce
+        }, 500)
+      }
+    }
   },
 
   removeMonthlyEvent (remove) {
@@ -106,20 +136,21 @@ export default React.createClass({
     let monthlyEventsArray = []
     monthlyEvents.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
-        const showEvent = monthlyEvent ? doc._id === monthlyEvent._id : false  // is this correct?
+        const isActiveMonthlyEvent = monthlyEvent ? doc._id === monthlyEvent._id : false  // is this correct?
         const month = getMonthFromEventId(doc._id)
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative'
         }
         const panelBodyStyle = {
-          maxHeight: window.innerHeight - 52,
+          maxHeight: window.innerHeight - 127,
           overflowY: 'auto'
         }
+        const ref = isActiveMonthlyEvent ? '_activeMonthlyEventPanel' : '_monthlyEventPanel' + doc._id
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         const eventComponent = (
-          <div key={dIndex} className='panel panel-default month'>
+          <div key={dIndex} ref={(c) => this[ref] = c} className='panel panel-default month'>
             <div className='panel-heading' role='tab' id={'heading' + dIndex} onClick={this.onClickMonthlyEvent.bind(this, doc._id)} style={panelHeadingStyle}>
               <h4 className='panel-title'>
                 <a role='button' data-toggle='collapse' data-parent={'#' + year} href={'#collapse' + dIndex} aria-expanded='false' aria-controls={'#collapse' + dIndex}>
@@ -135,7 +166,7 @@ export default React.createClass({
                 : null
               }
             </div>
-            {showEvent ?
+            {isActiveMonthlyEvent ?
               <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex} onClick={this.onClickEventCollapse}>
                 <div className='panel-body' style={panelBodyStyle}>
                   <MonthlyEvent monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} />

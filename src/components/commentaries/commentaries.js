@@ -87,7 +87,6 @@ export default React.createClass({
 
   scrollToActivePanel () {
     const node = ReactDOM.findDOMNode(this._activeCommentaryPanel)
-    console.log('active panel node', node)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
@@ -185,7 +184,7 @@ export default React.createClass({
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
-          <div key={doc._id} ref={(c) => this[ref] = c} id={isActiveCommentary ? 'activeCommentaryPanel' : null} className='panel panel-default'>
+          <div key={doc._id} ref={(c) => this[ref] = c} className='panel panel-default'>
             <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickCommentary.bind(this, doc._id)} style={panelHeadingStyle}>
               <h4 className='panel-title'>
                 <a role='button' data-toggle='collapse' data-parent='#commentariesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>

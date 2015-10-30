@@ -51,7 +51,6 @@ export default React.createClass({
       }
     })
     // scroll editor to top
-    // TODO: if event, scroll event title to top
     if (doc.type === 'pages') {
       window.$('html, body').animate({
         scrollTop: 140
