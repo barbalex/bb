@@ -164,7 +164,8 @@ export default React.createClass({
         const isActiveCommentary = isCommentary ? doc._id === commentary._id : false
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
-          position: 'relative'
+          position: 'relative',
+          cursor: 'pointer'
         }
         const panelBodyPadding = editing ? 0 : 15
         const panelBodyMarginTop = editing ? -1 + 'px' : 0
