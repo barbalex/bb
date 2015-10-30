@@ -17,16 +17,35 @@ export default React.createClass({
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
     onClickNewCommentary: React.PropTypes.func,
-    onClickNewMonthlyEvent: React.PropTypes.func
+    onClickNewMonthlyEvent: React.PropTypes.func,
+    navExpanded: React.PropTypes.bool
+  },
+
+  getInitialState () {
+    return {
+      navExpanded: false
+    }
   },
 
   onClickPage (pageType) {
     const onlyLoadOtherIds = pageType === 'pages_monthlyEvents'
     app.Actions.getPage(pageType, onlyLoadOtherIds)
+    this.onToggleNav()
+  },
+
+  onClickEdit () {
+    const { onClickEdit } = this.props
+    onClickEdit()
+    this.onToggleNav()
   },
 
   onClickLogout () {
     app.Actions.logout()
+    this.onToggleNav()
+  },
+
+  onToggleNav () {
+    this.setState({ navExpanded: !this.state.navExpanded})
   },
 
   logoutTooltip () {
@@ -48,7 +67,8 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, monthlyEvent, commentary, email, editing, onClickEdit, onClickNewCommentary, onClickNewMonthlyEvent } = this.props
+    const { doc, monthlyEvent, commentary, email, editing, onClickNewCommentary, onClickNewMonthlyEvent } = this.props
+    const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = doc && doc._id ? doc._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents']
@@ -59,7 +79,7 @@ export default React.createClass({
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
-          <Navbar inverse toggleNavKey={0}>
+          <Navbar inverse toggleNavKey={0} navExpanded={navExpanded} onToggle={this.onToggleNav}>
             <NavBrand
               onClick={this.onClickPage.bind(this, 'pages_home')}
             >
@@ -136,7 +156,7 @@ export default React.createClass({
                     <OverlayTrigger placement='bottom' overlay={this.editTooltip()}>
                       <NavItem
                         eventKey={1}
-                        onClick={onClickEdit}
+                        onClick={this.onClickEdit}
                       >
                         <Glyphicon glyph={glyph} />
                       </NavItem>
