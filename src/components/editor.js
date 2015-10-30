@@ -17,7 +17,9 @@ export default React.createClass({
   componentDidMount () {
     const { doc, onSaveArticle, onSaveMonthlyEvent, onSaveCommentary } = this.props
     // height = window - menu height - (menubar + iconbar)
-    const height = window.innerHeight - 52 - 74
+    let height = window.innerHeight - 52 - 74
+    if (onSaveMonthlyEvent) height = window.innerHeight - 52 - 74 - 76
+    if (onSaveCommentary) height = window.innerHeight - 52 - 74 - 90
     const instanceSelector = `#${doc._id}`
 
     window.tinymce.init({
