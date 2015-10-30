@@ -2,6 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
@@ -37,6 +38,26 @@ export default React.createClass({
     app.Actions.getCommentaries()
   },
 
+  componentDidUpdate (prevProps) {
+    if (this.props.commentary._id && !prevProps.commentary._id) {
+      /**
+       * this is first render
+       * componentDidUpdate and componentDidMount are actually executed
+       * BEFORE the dom elements are done being drawn,
+       * but AFTER they've been passed from React to the browser's DOM
+       */
+      window.setTimeout(() => {
+        this.scrollToActivePanel()
+      }, 200)
+      // window.requestAnimationFrame(() => this.scrollToActivePanel())
+    }
+    if (this.props.commentary._id !== prevProps.commentary._id) {
+      // this is later rerender
+      // only scroll into view if the active item changed last render
+      this.scrollToActivePanel()
+    }
+  },
+
   onCommentariesStoreChange (commentaries) {
     const { email } = this.props
     if (!email) commentaries = commentaries.filter((commentary) => !commentary.draft)
@@ -62,6 +83,20 @@ export default React.createClass({
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
+  },
+
+  scrollToActivePanel () {
+    const node = ReactDOM.findDOMNode(this._activeCommentaryPanel)
+    console.log('active panel node', node)
+    if (node) {
+      const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
+      const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
+      if (node.offsetTop) {
+        window.$('html, body').animate({
+            scrollTop: node.offsetTop - reduce
+        }, 500)
+      }
+    }
   },
 
   removeCommentary (remove) {
@@ -137,7 +172,7 @@ export default React.createClass({
         const panelBodyStyle = {
           padding: panelBodyPadding,
           marginTop: panelBodyMarginTop,
-          maxHeight: window.innerHeight - 52,
+          maxHeight: window.innerHeight - 141,
           overflowY: 'auto'
         }
         if (!isActiveCommentary) {
@@ -146,10 +181,11 @@ export default React.createClass({
             borderBottomLeftRadius: 3
           })
         }
+        const ref = isActiveCommentary ? '_activeCommentaryPanel' : '_commentaryPanel' + doc._id
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
-          <div key={doc._id} className='panel panel-default'>
+          <div key={doc._id} ref={(c) => this[ref] = c} id={isActiveCommentary ? 'activeCommentaryPanel' : null} className='panel panel-default'>
             <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickCommentary.bind(this, doc._id)} style={panelHeadingStyle}>
               <h4 className='panel-title'>
                 <a role='button' data-toggle='collapse' data-parent='#commentariesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
