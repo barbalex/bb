@@ -35,6 +35,7 @@ export default React.createClass({
       browser_spellcheck: true,
       automatic_uploads: false,
       statusbar: false,
+      // TODO: does not work
       content_css: '/bb.1.0.0.css',
       // enable auto-saving
       setup (editor) {
