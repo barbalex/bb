@@ -19,7 +19,7 @@ export default React.createClass({
     monthlyEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onSaveMonthlyEvent: React.PropTypes.func,
+    onSaveMonthlyEventArticle: React.PropTypes.func,
     docToRemove: React.PropTypes.object
   },
 
@@ -132,7 +132,7 @@ export default React.createClass({
   },
 
   monthlyEventsComponent (year) {
-    const { monthlyEvents, monthlyEvent, editing, email, onSaveMonthlyEvent } = this.props
+    const { monthlyEvents, monthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
     let monthlyEventsArray = []
     monthlyEvents.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
@@ -169,7 +169,7 @@ export default React.createClass({
             {isActiveMonthlyEvent ?
               <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex} onClick={this.onClickEventCollapse}>
                 <div className='panel-body' style={panelBodyStyle}>
-                  <MonthlyEvent monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEvent={onSaveMonthlyEvent} />
+                  <MonthlyEvent monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
                 </div>
               </div>
               : null

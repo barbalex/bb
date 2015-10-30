@@ -102,19 +102,19 @@ export default React.createClass({
     app.Actions.savePage(doc)
   },
 
-  onSaveArticle (articleEncoded) {
+  onSavePageArticle (articleEncoded) {
     let { doc } = this.state
     doc.article = articleEncoded
     app.Actions.savePage(doc)
   },
 
-  onSaveMonthlyEvent (articleEncoded) {
+  onSaveMonthlyEventArticle (articleEncoded) {
     let { monthlyEvent } = this.state
     monthlyEvent.article = articleEncoded
     app.Actions.saveMonthlyEvent(monthlyEvent)
   },
 
-  onSaveCommentary (articleEncoded) {
+  onSaveCommentaryArticle (articleEncoded) {
     let { commentary } = this.state
     commentary.article = articleEncoded
     app.Actions.saveCommentary(commentary)
@@ -153,7 +153,7 @@ export default React.createClass({
               <Page
                 doc={doc}
                 editing={editing}
-                onSaveArticle={this.onSaveArticle}
+                onSavePageArticle={this.onSavePageArticle}
                 onSavePage={this.onSavePage} />
               : null
             }
@@ -162,7 +162,7 @@ export default React.createClass({
                 commentary={commentary}
                 editing={editing}
                 email={email}
-                onSaveCommentary={this.onSaveCommentary}
+                onSaveCommentaryArticle={this.onSaveCommentaryArticle}
                 showNewCommentary={showNewCommentary}
                 onCloseNewCommentary={this.onCloseNewCommentary} />
               : null
@@ -172,7 +172,7 @@ export default React.createClass({
                 monthlyEvent={monthlyEvent}
                 editing={editing}
                 email={email}
-                onSaveMonthlyEvent={this.onSaveMonthlyEvent}
+                onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}
                 showNewMonthlyEvent={showNewMonthlyEvent}
                 onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
               : null

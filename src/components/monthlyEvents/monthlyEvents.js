@@ -20,7 +20,7 @@ export default React.createClass({
     activeYear: React.PropTypes.number,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onSaveMonthlyEvent: React.PropTypes.func,
+    onSaveMonthlyEventArticle: React.PropTypes.func,
     onCloseNewMonthlyEvent: React.PropTypes.func,
     showNewMonthlyEvent: React.PropTypes.bool
   },
@@ -66,7 +66,7 @@ export default React.createClass({
   },
 
   eventYearsComponent () {
-    const { monthlyEvent, editing, email, onSaveMonthlyEvent } = this.props
+    const { monthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
     let { monthlyEvents } = this.state
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
@@ -77,7 +77,7 @@ export default React.createClass({
       return years.map((year, yIndex) => {
         return (
           <Panel key={year} header={year} eventKey={year} className='year' onClick={this.onClickYear.bind(this, year)}>
-            <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} monthlyEvent={monthlyEvent} editing={editing} email={email} onSaveMonthlyEvent={onSaveMonthlyEvent} />
+            <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} monthlyEvent={monthlyEvent} editing={editing} email={email} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
           </Panel>
         )
       })

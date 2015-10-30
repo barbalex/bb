@@ -20,7 +20,7 @@ export default React.createClass({
     commentary: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onSaveCommentary: React.PropTypes.func,
+    onSaveCommentaryArticle: React.PropTypes.func,
     onCloseNewCommentary: React.PropTypes.func,
     showNewCommentary: React.PropTypes.bool,
     docToRemove: React.PropTypes.object
@@ -152,7 +152,7 @@ export default React.createClass({
   },
 
   commentariesComponent () {
-    const { commentary, editing, email, onSaveCommentary } = this.props
+    const { commentary, editing, email, onSaveCommentaryArticle } = this.props
     let { commentaries } = this.state
     if (commentaries.length > 0) {
       commentaries = commentaries.sort((a, b) => {
@@ -204,7 +204,7 @@ export default React.createClass({
             {isActiveCommentary ?
               <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickCommentaryCollapse}>
                 <div className='panel-body' style={panelBodyStyle}>
-                  <Commentary commentary={commentary} editing={editing} onSaveCommentary={onSaveCommentary} />
+                  <Commentary commentary={commentary} editing={editing} onSaveCommentaryArticle={onSaveCommentaryArticle} />
                 </div>
               </div>
               : null

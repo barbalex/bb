@@ -13,7 +13,7 @@ export default React.createClass({
     commentary: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
-    onSaveCommentary: React.PropTypes.func
+    onSaveCommentaryArticle: React.PropTypes.func
   },
 
   getInitialState () {
@@ -36,7 +36,7 @@ export default React.createClass({
   },
 
   render () {
-    const { commentary, editing, onSaveCommentary } = this.props
+    const { commentary, editing, onSaveCommentaryArticle } = this.props
     const { showMeta } = this.state
     const articleEncoded = commentary.article
     const articleDecoded = Base64.decode(articleEncoded)
@@ -49,7 +49,7 @@ export default React.createClass({
       return (
         <div>
           {showMeta ? <Meta doc={commentary} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={commentary} articleDecoded={articleDecoded} onSaveCommentary={onSaveCommentary} />
+          <Editor doc={commentary} articleDecoded={articleDecoded} onSaveCommentaryArticle={onSaveCommentaryArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )

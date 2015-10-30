@@ -9,17 +9,17 @@ export default React.createClass({
   propTypes: {
     doc: React.PropTypes.object,
     articleDecoded: React.PropTypes.string,
-    onSaveArticle: React.PropTypes.func,
-    onSaveMonthlyEvent: React.PropTypes.func,
-    onSaveCommentary: React.PropTypes.func
+    onSavePageArticle: React.PropTypes.func,
+    onSaveMonthlyEventArticle: React.PropTypes.func,
+    onSaveCommentaryArticle: React.PropTypes.func
   },
 
   componentDidMount () {
-    const { doc, onSaveArticle, onSaveMonthlyEvent, onSaveCommentary } = this.props
+    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSaveCommentaryArticle } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
-    if (onSaveMonthlyEvent) height = window.innerHeight - 52 - 74 - 76
-    if (onSaveCommentary) height = window.innerHeight - 52 - 74 - 90
+    if (onSaveMonthlyEventArticle) height = window.innerHeight - 52 - 74 - 76
+    if (onSaveCommentaryArticle) height = window.innerHeight - 52 - 74 - 90
     const instanceSelector = `#${doc._id}`
 
     window.tinymce.init({
@@ -42,9 +42,9 @@ export default React.createClass({
         editor.on('change undo redo', (e) => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
-          if (onSaveArticle) onSaveArticle(articleEncoded)
-          if (onSaveMonthlyEvent) onSaveMonthlyEvent(articleEncoded)
-          if (onSaveCommentary) onSaveCommentary(articleEncoded)
+          if (onSavePageArticle) onSavePageArticle(articleEncoded)
+          if (onSaveMonthlyEventArticle) onSaveMonthlyEventArticle(articleEncoded)
+          if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)
         })
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4

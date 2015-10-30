@@ -13,7 +13,7 @@ export default React.createClass({
     doc: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
-    onSaveArticle: React.PropTypes.func,
+    onSavePageArticle: React.PropTypes.func,
     onSavePage: React.PropTypes.func
   },
 
@@ -37,7 +37,7 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, editing, onSaveArticle } = this.props
+    const { doc, editing, onSavePageArticle } = this.props
     const { showMeta } = this.state
     const articleEncoded = doc.article
     const articleDecoded = Base64.decode(articleEncoded)
@@ -50,7 +50,7 @@ export default React.createClass({
       return (
         <div>
           {showMeta ? <Meta doc={doc} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={doc} articleDecoded={articleDecoded} onSaveArticle={onSaveArticle} />
+          <Editor doc={doc} articleDecoded={articleDecoded} onSavePageArticle={onSavePageArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )
