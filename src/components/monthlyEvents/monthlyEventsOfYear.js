@@ -169,7 +169,7 @@ export default React.createClass({
             {isActiveMonthlyEvent ?
               <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex} onClick={this.onClickEventCollapse}>
                 <div className='panel-body' style={panelBodyStyle}>
-                  <MonthlyEvent monthlyEvent={monthlyEvent} editing={editing} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+                  <MonthlyEvent monthlyEvent={monthlyEvent} year={year} month={month} editing={editing} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
                 </div>
               </div>
               : null
