@@ -22,12 +22,16 @@ export default React.createClass({
     email: React.PropTypes.string,
     onSaveMonthlyEventArticle: React.PropTypes.func,
     onCloseNewMonthlyEvent: React.PropTypes.func,
-    showNewMonthlyEvent: React.PropTypes.bool
+    showNewMonthlyEvent: React.PropTypes.bool,
+    maxArrivals: React.PropTypes.number,
+    maxVictims: React.PropTypes.number
   },
 
   getInitialState () {
     return {
       monthlyEvents: [],
+      maxArrivals: null,
+      maxVictims: null,
       activeYear: null
     }
   },
@@ -40,7 +44,29 @@ export default React.createClass({
   onMonthlyEventsStoreChange (monthlyEvents) {
     const { email } = this.props
     if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) => !monthlyEvent.draft)
-    this.setState({ monthlyEvents })
+    const maxArrivals = this.getMaxArrivals(monthlyEvents)
+    const maxVictims = this.getMaxVictims(monthlyEvents)
+    this.setState({ monthlyEvents, maxArrivals, maxVictims })
+    console.log('maxArrivals', maxArrivals)
+    console.log('maxVictims', maxVictims)
+  },
+
+  getMaxArrivals (monthlyEvents) {
+    let arrivalsArray = []
+    monthlyEvents.forEach((monthlyEvent) => {
+      if (monthlyEvent.arrivals) arrivalsArray.push(monthlyEvent.arrivals)
+    })
+    const maxArrivals = arrivalsArray.length > 0 ? _.max(arrivalsArray) : null
+    return maxArrivals
+  },
+
+  getMaxVictims (monthlyEvents) {
+    let victimsArray = []
+    monthlyEvents.forEach((monthlyEvent) => {
+      if (monthlyEvent.victims) victimsArray.push(monthlyEvent.victims)
+    })
+    const maxVictims = victimsArray.length > 0 ? _.max(victimsArray) : null
+    return maxVictims
   },
 
   onClickYear (activeYear) {

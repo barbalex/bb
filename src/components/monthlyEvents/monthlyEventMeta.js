@@ -50,8 +50,8 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='number' label='Arrivals' value={arrivals} onChange={this.onChangeValue.bind(this, 'arrivals')} />
-          <Input type='number' label='Victims' value={victims} onChange={this.onChangeValue.bind(this, 'victims')} />
+          <Input type='number' label='Arrivals' defaultValue={arrivals} onBlur={this.onChangeValue.bind(this, 'arrivals')} />
+          <Input type='number' label='Victims' defaultValue={victims} onBlur={this.onChangeValue.bind(this, 'victims')} />
         </Modal.Body>
 
         <Modal.Footer>
