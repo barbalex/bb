@@ -132,11 +132,11 @@ export default React.createClass({
     }
     const victimsStyle = {
       color: '#CE0000',
-      marginRight: 25
+      marginRight: 45
     }
     const arrivalsStyle = {
       color: '#0000A5',
-      marginLeft: 25
+      marginLeft: 45
     }
     return (
       <div id='monthlyEvents'>
