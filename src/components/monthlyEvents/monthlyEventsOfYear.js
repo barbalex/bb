@@ -160,13 +160,22 @@ export default React.createClass({
       }
       const hasArrivals = !!doc.arrivals
       const hasVictims = !!doc.victims
-      let arrivalsPosition = 0
-      let victimsPosition = 0
-      if (hasArrivals) arrivalsPosition = (doc.arrivals / maxArrivalsAndVictims) * panelWidth
-      if (hasVictims) victimsPosition = (doc.victims / maxArrivalsAndVictims) * panelWidth
+      let arrivalsPositionRight = 0
+      let arrivalsPositionLeft = 0
+      let victimsPositionRight = 0
+      let victimsPositionLeft = 0
+      if (hasArrivals) {
+        arrivalsPositionRight = (doc.arrivals / maxArrivalsAndVictims) >= 0.5 ? panelWidth - (doc.arrivals / maxArrivalsAndVictims) * panelWidth : 'auto'
+        arrivalsPositionLeft = (doc.arrivals / maxArrivalsAndVictims) < 0.5 ? (doc.arrivals / maxArrivalsAndVictims) * panelWidth : 'auto'
+      }
+      if (hasVictims) {
+        victimsPositionRight = (doc.victims / maxArrivalsAndVictims) >= 0.5 ? panelWidth - (doc.victims / maxArrivalsAndVictims) * panelWidth : 'auto'
+        victimsPositionLeft = (doc.victims / maxArrivalsAndVictims) < 0.5 ? (doc.victims / maxArrivalsAndVictims) * panelWidth : 'auto'
+      }
       const maxArrivalsStyle = {
         position: 'absolute',
-        right: panelWidth - arrivalsPosition,
+        right: arrivalsPositionRight,
+        left: arrivalsPositionLeft,
         top: 1,
         color: '#0000A5',
         marginBottom: 0,
@@ -176,7 +185,8 @@ export default React.createClass({
       }
       const maxVictimsStyle = {
         position: 'absolute',
-        left: victimsPosition,
+        right: victimsPositionRight,
+        left: victimsPositionLeft,
         top: 23,
         color: '#CE0000',
         marginBottom: 0,
