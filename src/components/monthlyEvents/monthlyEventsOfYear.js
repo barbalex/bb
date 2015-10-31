@@ -164,9 +164,6 @@ export default React.createClass({
       let victimsPosition = 0
       if (hasArrivals) arrivalsPosition = (doc.arrivals / maxArrivalsAndVictims) * panelWidth
       if (hasVictims) victimsPosition = (doc.victims / maxArrivalsAndVictims) * panelWidth
-      /*console.log('maxArrivals', maxArrivals)
-      console.log('maxVictims', maxVictims)
-      console.log('maxArrivalsAndVictims', maxArrivalsAndVictims)*/
       const maxArrivalsStyle = {
         position: 'absolute',
         right: panelWidth - arrivalsPosition,
