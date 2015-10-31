@@ -10,7 +10,7 @@ export default React.createClass({
   displayName: 'Page',
 
   propTypes: {
-    doc: React.PropTypes.object,
+    activePage: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
     onSavePageArticle: React.PropTypes.func,
@@ -37,9 +37,9 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, editing, onSavePageArticle } = this.props
+    const { activePage, editing, onSavePageArticle } = this.props
     const { showMeta } = this.state
-    const articleEncoded = doc.article
+    const articleEncoded = activePage.article
     const articleDecoded = Base64.decode(articleEncoded)
     const metaButtonStyle = {
       position: 'fixed',
@@ -49,17 +49,17 @@ export default React.createClass({
     if (editing) {
       return (
         <div>
-          {showMeta ? <Meta doc={doc} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={doc} articleDecoded={articleDecoded} onSavePageArticle={onSavePageArticle} />
+          {showMeta ? <Meta activePage={activePage} onCloseMeta={this.onCloseMeta} /> : null}
+          <Editor activePage={activePage} articleDecoded={articleDecoded} onSavePageArticle={onSavePageArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
-    const notHome = doc.title !== 'Home'
+    const notHome = activePage.title !== 'Home'
     return (
       <div>
-        {notHome ? <h1>{doc.title}</h1> : null}
+        {notHome ? <h1>{activePage.title}</h1> : null}
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )

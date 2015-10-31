@@ -10,7 +10,7 @@ export default React.createClass({
   displayName: 'MonthlyEvent',
 
   propTypes: {
-    monthlyEvent: React.PropTypes.object,
+    activeMonthlyEvent: React.PropTypes.object,
     year: React.PropTypes.string,
     month: React.PropTypes.string,
     editing: React.PropTypes.bool,
@@ -38,9 +38,9 @@ export default React.createClass({
   },
 
   render () {
-    const { monthlyEvent, year, month, editing, onSaveMonthlyEventArticle } = this.props
+    const { activeMonthlyEvent, year, month, editing, onSaveMonthlyEventArticle } = this.props
     const { showMeta } = this.state
-    const articleEncoded = monthlyEvent.article
+    const articleEncoded = activeMonthlyEvent.article
     const articleDecoded = Base64.decode(articleEncoded)
     const metaButtonStyle = {
       position: 'fixed',
@@ -50,8 +50,8 @@ export default React.createClass({
     if (editing) {
       return (
         <div className='monthlyEvent'>
-          {showMeta ? <MonthlyEventMeta monthlyEvent={monthlyEvent} year={year} month={month} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={monthlyEvent} articleDecoded={articleDecoded} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+          {showMeta ? <MonthlyEventMeta activeMonthlyEvent={activeMonthlyEvent} year={year} month={month} onCloseMeta={this.onCloseMeta} /> : null}
+          <Editor doc={activeMonthlyEvent} articleDecoded={articleDecoded} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>arrivals & victims</Button>
         </div>
       )

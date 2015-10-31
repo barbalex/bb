@@ -8,7 +8,7 @@ export default React.createClass({
   displayName: 'MonthlyEventMeta',
 
   propTypes: {
-    monthlyEvent: React.PropTypes.object,
+    activeMonthlyEvent: React.PropTypes.object,
     year: React.PropTypes.string,
     month: React.PropTypes.string,
     onCloseMeta: React.PropTypes.func,
@@ -17,17 +17,18 @@ export default React.createClass({
   },
 
   getInitialState () {
+    const { activeMonthlyEvent } = this.props
     return {
-      arrivals: this.props.monthlyEvent.arrivals,
-      victims: this.props.monthlyEvent.victims
+      arrivals: activeMonthlyEvent.arrivals,
+      victims: activeMonthlyEvent.victims
     }
   },
 
   onChangeValue (property, event) {
-    let { monthlyEvent } = this.props
+    let { activeMonthlyEvent } = this.props
     const value = parseInt(event.target.value, 10)
-    monthlyEvent[property] = value
-    app.Actions.saveMonthlyEvent(monthlyEvent)
+    activeMonthlyEvent[property] = value
+    app.Actions.saveMonthlyEvent(activeMonthlyEvent)
     this.setState({ [property]: value })
   },
 

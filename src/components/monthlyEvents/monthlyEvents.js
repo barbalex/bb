@@ -16,26 +16,20 @@ export default React.createClass({
 
   propTypes: {
     monthlyEvents: React.PropTypes.array,
-    monthlyEvent: React.PropTypes.object,
+    activeMonthlyEvent: React.PropTypes.object,
     activeYear: React.PropTypes.number,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onSaveMonthlyEventArticle: React.PropTypes.func,
     onCloseNewMonthlyEvent: React.PropTypes.func,
     showNewMonthlyEvent: React.PropTypes.bool,
-    maxArrivals: React.PropTypes.number,
-    maxVictims: React.PropTypes.number,
-    showMaxArrivals: React.PropTypes.bool,
-    showMaxVictims: React.PropTypes.bool
+    maxArrivalsAndVictims: React.PropTypes.number
   },
 
   getInitialState () {
     return {
       monthlyEvents: [],
-      maxArrivals: null,
-      maxVictims: null,
-      showMaxArrivals: true,
-      showMaxVictims: true,
+      maxArrivalsAndVictims: null,
       activeYear: null
     }
   },
@@ -48,27 +42,17 @@ export default React.createClass({
   onMonthlyEventsStoreChange (monthlyEvents) {
     const { email } = this.props
     if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) => !monthlyEvent.draft)
-    const maxArrivals = this.getMaxArrivals(monthlyEvents)
-    const maxVictims = this.getMaxVictims(monthlyEvents)
-    this.setState({ monthlyEvents, maxArrivals, maxVictims })
+    const maxArrivalsAndVictims = this.getMaxArrivalsAndVictims(monthlyEvents)
+    this.setState({ monthlyEvents, maxArrivalsAndVictims })
   },
 
-  getMaxArrivals (monthlyEvents) {
-    let arrivalsArray = []
+  getMaxArrivalsAndVictims (monthlyEvents) {
+    let avArray = []
     monthlyEvents.forEach((monthlyEvent) => {
-      if (monthlyEvent.arrivals) arrivalsArray.push(monthlyEvent.arrivals)
+      if (monthlyEvent.arrivals) avArray.push(monthlyEvent.arrivals)
+      if (monthlyEvent.victims) avArray.push(monthlyEvent.victims)
     })
-    const maxArrivals = arrivalsArray.length > 0 ? _.max(arrivalsArray) : 0
-    return maxArrivals
-  },
-
-  getMaxVictims (monthlyEvents) {
-    let victimsArray = []
-    monthlyEvents.forEach((monthlyEvent) => {
-      if (monthlyEvent.victims) victimsArray.push(monthlyEvent.victims)
-    })
-    const maxVictims = victimsArray.length > 0 ? _.max(victimsArray) : 0
-    return maxVictims
+    return avArray.length > 0 ? _.max(avArray) : 0
   },
 
   onClickYear (activeYear) {
@@ -93,14 +77,9 @@ export default React.createClass({
     return years[0]
   },
 
-  getMaxArrivalsVictims () {
-    const { maxArrivals, maxVictims } = this.state
-    return _.max([maxArrivals, maxVictims])
-  },
-
   eventYearsComponent (activeYear) {
-    const { monthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
-    const { maxArrivals, maxVictims, showMaxArrivals, showMaxVictims } = this.state
+    const { activeMonthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
+    const { maxArrivalsAndVictims } = this.state
     let { monthlyEvents } = this.state
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
@@ -114,7 +93,7 @@ export default React.createClass({
         // const isActiveYear = year === activeYear
         return (
           <Panel key={year} header={year} eventKey={year} className='year' onClick={this.onClickYear.bind(this, year)}>
-            <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} monthlyEvent={monthlyEvent} maxArrivals={maxArrivals} maxVictims={maxVictims} showMaxArrivals={showMaxArrivals} showMaxVictims={showMaxVictims} editing={editing} email={email} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+            <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} activeMonthlyEvent={activeMonthlyEvent} maxArrivalsAndVictims={maxArrivalsAndVictims} editing={editing} email={email} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
           </Panel>
         )
       })
@@ -123,10 +102,11 @@ export default React.createClass({
   },
 
   render () {
-    const { monthlyEvent, showNewMonthlyEvent, onCloseNewMonthlyEvent } = this.props
+    const { activeMonthlyEvent, showNewMonthlyEvent, onCloseNewMonthlyEvent } = this.props
+    const { maxArrivalsAndVictims } = this.state
     let activeYear
-    if (_.has(monthlyEvent, '_id')) {
-      activeYear = getYearFromEventId(monthlyEvent._id)
+    if (_.has(activeMonthlyEvent, '_id')) {
+      activeYear = getYearFromEventId(activeMonthlyEvent._id)
     } else {
       activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()
     }
@@ -164,7 +144,7 @@ export default React.createClass({
         <div style={numbersDivStyle}>
           <p style={minStyle}>&#60;&#32;0</p>
           <p style={textStyle}><span style={victimsStyle}>victims</span><span style={arrivalsStyle}>arrivals</span></p>
-          <p style={maxStyle}>{this.getMaxArrivalsVictims()}&#32;&#62;</p>
+          <p style={maxStyle}>{maxArrivalsAndVictims}&#32;&#62;</p>
         </div>
         <PanelGroup activeKey={activeYear} accordion>
           {this.eventYearsComponent(activeYear)}

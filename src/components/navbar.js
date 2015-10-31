@@ -10,8 +10,8 @@ export default React.createClass({
   displayName: 'Header',
 
   propTypes: {
-    doc: React.PropTypes.object,
-    monthlyEvent: React.PropTypes.object,
+    activePage: React.PropTypes.object,
+    activeMonthlyEvent: React.PropTypes.object,
     commentary: React.PropTypes.object,
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
@@ -67,14 +67,14 @@ export default React.createClass({
   },
 
   render () {
-    const { doc, monthlyEvent, commentary, email, editing, onClickNewCommentary, onClickNewMonthlyEvent } = this.props
+    const { activePage, activeMonthlyEvent, commentary, email, editing, onClickNewCommentary, onClickNewMonthlyEvent } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
-    const id = doc && doc._id ? doc._id : null
+    const id = activePage && activePage._id ? activePage._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents']
-    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(monthlyEvent, '_id') || _.has(commentary, '_id'))
-    const showAddCommentary = email && doc._id === 'pages_commentaries'
-    const showAddMonthlyEvent = email && doc._id === 'pages_monthlyEvents'
+    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(commentary, '_id'))
+    const showAddCommentary = email && activePage._id === 'pages_commentaries'
+    const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
     const showNavbarRight = email || showEdit || showAddCommentary || showAddMonthlyEvent
     return (
       <div>

@@ -21,8 +21,8 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    doc: React.PropTypes.object,
-    monthlyEvent: React.PropTypes.object,
+    activePage: React.PropTypes.object,
+    activeMonthlyEvent: React.PropTypes.object,
     commentary: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
@@ -35,8 +35,8 @@ export default React.createClass({
   getInitialState () {
     const email = window.localStorage.email
     return {
-      doc: {},
-      monthlyEvent: {},
+      activePage: {},
+      activeMonthlyEvent: {},
       commentary: {},
       editing: false,
       showNewCommentary: false,
@@ -55,12 +55,12 @@ export default React.createClass({
     this.listenTo(app.errorStore, this.onError)
   },
 
-  onPageStoreChange (doc) {
-    this.setState({ doc })
+  onPageStoreChange (activePage) {
+    this.setState({ activePage })
   },
 
-  onMonthlyEventStoreChange (monthlyEvent) {
-    this.setState({ monthlyEvent })
+  onMonthlyEventStoreChange (activeMonthlyEvent) {
+    this.setState({ activeMonthlyEvent })
   },
 
   onCommentaryStoreChange (commentary) {
@@ -98,20 +98,20 @@ export default React.createClass({
     this.setState({ showNewMonthlyEvent: false })
   },
 
-  onSavePage (doc) {
-    app.Actions.savePage(doc)
+  onSavePage (activePage) {
+    app.Actions.savePage(activePage)
   },
 
   onSavePageArticle (articleEncoded) {
-    let { doc } = this.state
-    doc.article = articleEncoded
-    app.Actions.savePage(doc)
+    let { activePage } = this.state
+    activePage.article = articleEncoded
+    app.Actions.savePage(activePage)
   },
 
   onSaveMonthlyEventArticle (articleEncoded) {
-    let { monthlyEvent } = this.state
-    monthlyEvent.article = articleEncoded
-    app.Actions.saveMonthlyEvent(monthlyEvent)
+    let { activeMonthlyEvent } = this.state
+    activeMonthlyEvent.article = articleEncoded
+    app.Actions.saveMonthlyEvent(activeMonthlyEvent)
   },
 
   onSaveCommentaryArticle (articleEncoded) {
@@ -122,16 +122,16 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { doc, monthlyEvent, commentary, editing, showNewCommentary, showNewMonthlyEvent, email, errors } = this.state
+    const { activePage, activeMonthlyEvent, commentary, editing, showNewCommentary, showNewMonthlyEvent, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents']
-    const isSimplePage = doc.type && doc.type === 'pages' && !_.includes(nonSimplePages, doc._id)
-    const isCommentariesPage = doc.type && doc.type === 'pages' && doc._id === 'pages_commentaries'
-    const isMonthlyEventsPage = doc.type && doc.type === 'pages' && doc._id === 'pages_monthlyEvents'
-    const isCommentary = doc.type && doc.type === 'commentaries'
+    const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
+    const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
+    const isMonthlyEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_monthlyEvents'
+    const isCommentary = activePage.type && activePage.type === 'commentaries'
     const showCommentaryPage = isCommentariesPage || isCommentary
-    const isMonthlyEvent = doc.type && doc.type === 'monthlyEvents'
+    const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
-    const pageName = getPageNameFromDoc(doc)
+    const pageName = getPageNameFromDoc(activePage)
     const pageTitle = `blue-borders | ${pageName}`
 
     return (
@@ -139,8 +139,8 @@ export default React.createClass({
         <NavHelper>
           <Header />
           <Navbar
-            doc={doc}
-            monthlyEvent={monthlyEvent}
+            activePage={activePage}
+            activeMonthlyEvent={activeMonthlyEvent}
             commentary={commentary}
             email={email}
             editing={editing}
@@ -151,7 +151,7 @@ export default React.createClass({
             <Errors errors={errors} />
             {isSimplePage ?
               <Page
-                doc={doc}
+                activePage={activePage}
                 editing={editing}
                 onSavePageArticle={this.onSavePageArticle}
                 onSavePage={this.onSavePage} />
@@ -169,7 +169,7 @@ export default React.createClass({
             }
             {showMonthlyEventsPage ?
               <MonthlyEvents
-                monthlyEvent={monthlyEvent}
+                activeMonthlyEvent={activeMonthlyEvent}
                 editing={editing}
                 email={email}
                 onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}

@@ -16,16 +16,13 @@ export default React.createClass({
   propTypes: {
     year: React.PropTypes.string,
     monthlyEvents: React.PropTypes.array,
-    monthlyEvent: React.PropTypes.object,
-    maxArrivals: React.PropTypes.number,
-    maxVictims: React.PropTypes.number,
-    showMaxArrivals: React.PropTypes.bool,
-    showMaxVictims: React.PropTypes.bool,
-    panelWidth: React.PropTypes.number,
+    activeMonthlyEvent: React.PropTypes.object,
+    maxArrivalsAndVictims: React.PropTypes.number,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onSaveMonthlyEventArticle: React.PropTypes.func,
-    docToRemove: React.PropTypes.object
+    docToRemove: React.PropTypes.object,
+    panelWidth: React.PropTypes.number
   },
 
   getInitialState () {
@@ -43,7 +40,7 @@ export default React.createClass({
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.monthlyEvent._id !== prevProps.monthlyEvent._id) {
+    if (this.props.activeMonthlyEvent._id !== prevProps.activeMonthlyEvent._id) {
       // this is later rerender
       // only scroll into view if the active item changed last render
       this.scrollToActivePanel()
@@ -52,11 +49,11 @@ export default React.createClass({
   },
 
   onClickMonthlyEvent (id, e) {
-    const { monthlyEvent } = this.props
+    const { activeMonthlyEvent } = this.props
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (Object.keys(monthlyEvent).length === 0 || monthlyEvent._id !== id) ? id : null
+    const idToGet = (Object.keys(activeMonthlyEvent).length === 0 || activeMonthlyEvent._id !== id) ? id : null
     app.Actions.getMonthlyEvent(idToGet)
   },
 
@@ -89,7 +86,7 @@ export default React.createClass({
 
   getPanelWidth () {
     const node = ReactDOM.findDOMNode(this[this.props.year])
-    return node.offsetWidth
+    return node.offsetWidth || 1140
   },
 
   removeMonthlyEvent (remove) {
@@ -99,7 +96,7 @@ export default React.createClass({
   },
 
   removeMonthlyEventTooltip () {
-    return (<Tooltip id='removeThisMonthlyEvent'>remove</Tooltip>)
+    return <Tooltip id='removeThisMonthlyEvent'>remove</Tooltip>
   },
 
   removeMonthlyEventGlyph (doc) {
@@ -144,101 +141,121 @@ export default React.createClass({
     app.Actions.toggleDraftOfMonthlyEvent(doc)
   },
 
-  getMaxArrivalsVictims () {
-    const { maxArrivals, maxVictims } = this.props
-    return _.max([maxArrivals, maxVictims])
-  },
-
   monthlyEventsComponent (year) {
-    const { monthlyEvents, monthlyEvent, maxArrivals, maxVictims, showMaxArrivals, showMaxVictims, editing, email, onSaveMonthlyEventArticle } = this.props
+    const { activeMonthlyEvent, maxArrivalsAndVictims, editing, email, onSaveMonthlyEventArticle } = this.props
+    let { monthlyEvents } = this.props
     const { panelWidth } = this.state
-    let monthlyEventsArray = []
-    monthlyEvents.forEach((doc, dIndex) => {
-      if (getYearFromEventId(doc._id) === year) {
-        const isActiveMonthlyEvent = _.has(monthlyEvent, '_id') ? doc._id === monthlyEvent._id : false
-        const month = getMonthFromEventId(doc._id)
-        const showEditingGlyphons = !!email
-        const panelHeadingStyle = {
-          position: 'relative'
-        }
-        const panelBodyStyle = {
-          maxHeight: window.innerHeight - 127,
-          overflowY: 'auto'
-        }
-        const isArrivals = !!doc.arrivals
-        const isVictims = !!doc.victims
-        let arrivalsPosition = 0
-        let victimsPosition = 0
-        if (isArrivals) arrivalsPosition = doc.arrivals / this.getMaxArrivalsVictims() * panelWidth
-        if (isVictims) victimsPosition = doc.victims / this.getMaxArrivalsVictims() * panelWidth
-        const maxArrivalsStyle = {
-          position: 'absolute',
-          right: panelWidth - arrivalsPosition,
-          top: 1,
-          color: '#0000A5',
-          marginBottom: 0,
-          fontSize: 0.7 + 'em',
-          fontWeight: 'bold',
-          zIndex: 2
-        }
-        const maxVictimsStyle = {
-          position: 'absolute',
-          left: victimsPosition,
-          top: 23,
-          color: '#CE0000',
-          marginBottom: 0,
-          fontSize: 0.7 + 'em',
-          fontWeight: 'bold',
-          zIndex: 1
-        }
-        const ref = isActiveMonthlyEvent ? '_activeMonthlyEventPanel' : '_monthlyEventPanel' + doc._id
-        // use pure bootstrap.
-        // advantage: can add edit icon to panel-heading
-        const eventComponent = (
-          <div key={dIndex} ref={(c) => this[ref] = c} className='panel panel-default month'>
-            <div className='panel-heading' role='tab' id={'heading' + dIndex} onClick={this.onClickMonthlyEvent.bind(this, doc._id)} style={panelHeadingStyle}>
-              <h4 className='panel-title'>
-                <a role='button' data-toggle='collapse' data-parent={'#' + year} href={'#collapse' + dIndex} aria-expanded='false' aria-controls={'#collapse' + dIndex}>
-                  {month}
-                </a>
-              </h4>
-              {showMaxVictims && isVictims ?
-                <p style={maxVictimsStyle}>{doc.victims}</p>
-                : null
-              }
-              {showMaxArrivals && isArrivals ?
-                <p style={maxArrivalsStyle}>{doc.arrivals}</p>
-                : null
-              }
-              {showEditingGlyphons ?
-                this.toggleDraftGlyph(doc)
-                : null
-              }
-              {showEditingGlyphons ?
-                this.removeMonthlyEventGlyph(doc)
-                : null
-              }
-            </div>
-            {isActiveMonthlyEvent ?
-              <div id={'#collapse' + dIndex} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + dIndex} onClick={this.onClickEventCollapse}>
-                <div className='panel-body' style={panelBodyStyle}>
-                  <MonthlyEvent monthlyEvent={monthlyEvent} year={year} month={month} editing={editing} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
-                </div>
-              </div>
+    // filter only events of current year
+    monthlyEvents = monthlyEvents.filter((monthlyEvent) => getYearFromEventId(monthlyEvent._id) === year)
+    return monthlyEvents.map((doc, dIndex) => {
+      const isActiveMonthlyEvent = _.has(activeMonthlyEvent, '_id') ? doc._id === activeMonthlyEvent._id : false
+      const month = getMonthFromEventId(doc._id)
+      const showEditingGlyphons = !!email
+      const panelHeadingStyle = {
+        position: 'relative'
+      }
+      const panelBodyStyle = {
+        maxHeight: window.innerHeight - 127,
+        overflowY: 'auto'
+      }
+      const hasArrivals = !!doc.arrivals
+      const hasVictims = !!doc.victims
+      let arrivalsPosition = 0
+      let victimsPosition = 0
+      if (hasArrivals) arrivalsPosition = (doc.arrivals / maxArrivalsAndVictims) * panelWidth
+      if (hasVictims) victimsPosition = (doc.victims / maxArrivalsAndVictims) * panelWidth
+      /*console.log('maxArrivals', maxArrivals)
+      console.log('maxVictims', maxVictims)
+      console.log('maxArrivalsAndVictims', maxArrivalsAndVictims)*/
+      const maxArrivalsStyle = {
+        position: 'absolute',
+        right: panelWidth - arrivalsPosition,
+        top: 1,
+        color: '#0000A5',
+        marginBottom: 0,
+        fontSize: 0.7 + 'em',
+        fontWeight: 'bold',
+        zIndex: 2
+      }
+      const maxVictimsStyle = {
+        position: 'absolute',
+        left: victimsPosition,
+        top: 23,
+        color: '#CE0000',
+        marginBottom: 0,
+        fontSize: 0.7 + 'em',
+        fontWeight: 'bold',
+        zIndex: 1
+      }
+      const ref = isActiveMonthlyEvent ? '_activeMonthlyEventPanel' : '_monthlyEventPanel' + doc._id
+      // use pure bootstrap.
+      // advantage: can add edit icon to panel-heading
+      return (
+        <div key={dIndex} ref={(c) => this[ref] = c} className='panel panel-default month'>
+          <div
+            className='panel-heading'
+            role='tab'
+            id={'heading' + dIndex}
+            onClick={this.onClickMonthlyEvent.bind(this, doc._id)}
+            style={panelHeadingStyle}
+          >
+            <h4 className='panel-title'>
+              <a
+                role='button'
+                data-toggle='collapse'
+                data-parent={'#' + year}
+                href={'#collapse' + dIndex}
+                aria-expanded='false'
+                aria-controls={'#collapse' + dIndex}
+              >
+                {month}
+              </a>
+            </h4>
+            {hasVictims ?
+              <p style={maxVictimsStyle}>{doc.victims}</p>
+              : null
+            }
+            {hasArrivals ?
+              <p style={maxArrivalsStyle}>{doc.arrivals}</p>
+              : null
+            }
+            {showEditingGlyphons ?
+              this.toggleDraftGlyph(doc)
+              : null
+            }
+            {showEditingGlyphons ?
+              this.removeMonthlyEventGlyph(doc)
               : null
             }
           </div>
-        )
-        monthlyEventsArray.push(eventComponent)
-      }
+          {isActiveMonthlyEvent ?
+            <div
+              id={'#collapse' + dIndex}
+              className='panel-collapse collapse in'
+              role='tabpanel'
+              aria-labelledby={'heading' + dIndex}
+              onClick={this.onClickEventCollapse}>
+              <div className='panel-body' style={panelBodyStyle}>
+                <MonthlyEvent
+                  activeMonthlyEvent={activeMonthlyEvent}
+                  year={year}
+                  month={month}
+                  editing={editing}
+                  onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
+                />
+              </div>
+            </div>
+            : null
+          }
+        </div>
+      )
     })
-    return monthlyEventsArray
   },
 
   render () {
-    const { year, monthlyEvent } = this.props
+    const { year, activeMonthlyEvent } = this.props
     const { docToRemove } = this.state
-    const activeEventId = _.has(monthlyEvent, '_id') ? monthlyEvent._id : null
+    const activeEventId = _.has(activeMonthlyEvent, '_id') ? activeMonthlyEvent._id : null
     return (
       <PanelGroup activeKey={activeEventId} id={year} ref={(c) => this[year] = c} accordion>
         {this.monthlyEventsComponent(year)}
