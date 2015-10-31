@@ -69,7 +69,7 @@ export default React.createClass({
 
   onLoginStoreChange (email) {
     this.setState({ email })
-    app.Actions.getPage('pages_home')
+    if (email) app.Actions.getPage('pages_home')
   },
 
   onError (errors) {
