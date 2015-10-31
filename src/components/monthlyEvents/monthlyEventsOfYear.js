@@ -17,6 +17,11 @@ export default React.createClass({
     year: React.PropTypes.string,
     monthlyEvents: React.PropTypes.array,
     monthlyEvent: React.PropTypes.object,
+    maxArrivals: React.PropTypes.number,
+    maxVictims: React.PropTypes.number,
+    showMaxArrivals: React.PropTypes.bool,
+    showMaxVictims: React.PropTypes.bool,
+    panelWidth: React.PropTypes.number,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onSaveMonthlyEventArticle: React.PropTypes.func,
@@ -25,7 +30,8 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      docToRemove: null
+      docToRemove: null,
+      panelWidth: 1140
     }
   },
 
@@ -33,6 +39,7 @@ export default React.createClass({
     // somehow on first load the panel does not scroll up far enough
     // call for more
     this.scrollToActivePanel('more')
+    this.setState({ panelWidth: this.getPanelWidth() })
   },
 
   componentDidUpdate (prevProps) {
@@ -41,6 +48,7 @@ export default React.createClass({
       // only scroll into view if the active item changed last render
       this.scrollToActivePanel()
     }
+    // this.setState({ panelWidth: this.getPanelWidth() })
   },
 
   onClickMonthlyEvent (id, e) {
@@ -77,6 +85,11 @@ export default React.createClass({
         }, 500)
       }
     }
+  },
+
+  getPanelWidth () {
+    const node = ReactDOM.findDOMNode(this[this.props.year])
+    return node.offsetWidth
   },
 
   removeMonthlyEvent (remove) {
@@ -131,12 +144,18 @@ export default React.createClass({
     app.Actions.toggleDraftOfMonthlyEvent(doc)
   },
 
+  getMaxArrivalsVictims () {
+    const { maxArrivals, maxVictims } = this.props
+    return _.max([maxArrivals, maxVictims])
+  },
+
   monthlyEventsComponent (year) {
-    const { monthlyEvents, monthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
+    const { monthlyEvents, monthlyEvent, maxArrivals, maxVictims, showMaxArrivals, showMaxVictims, editing, email, onSaveMonthlyEventArticle } = this.props
+    const { panelWidth } = this.state
     let monthlyEventsArray = []
     monthlyEvents.forEach((doc, dIndex) => {
       if (getYearFromEventId(doc._id) === year) {
-        const isActiveMonthlyEvent = monthlyEvent ? doc._id === monthlyEvent._id : false  // is this correct?
+        const isActiveMonthlyEvent = _.has(monthlyEvent, '_id') ? doc._id === monthlyEvent._id : false
         const month = getMonthFromEventId(doc._id)
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
@@ -145,6 +164,32 @@ export default React.createClass({
         const panelBodyStyle = {
           maxHeight: window.innerHeight - 127,
           overflowY: 'auto'
+        }
+        const isArrivals = !!doc.arrivals
+        const isVictims = !!doc.victims
+        let arrivalsPosition = 0
+        let victimsPosition = 0
+        if (isArrivals) arrivalsPosition = doc.arrivals / this.getMaxArrivalsVictims() * panelWidth
+        if (isVictims) victimsPosition = doc.victims / this.getMaxArrivalsVictims() * panelWidth
+        const maxArrivalsStyle = {
+          position: 'absolute',
+          right: panelWidth - arrivalsPosition,
+          top: 1,
+          color: 'blue',
+          marginBottom: 0,
+          fontSize: 0.8 + 'em',
+          fontWeight: 'bold',
+          zIndex: 2
+        }
+        const maxVictimsStyle = {
+          position: 'absolute',
+          left: victimsPosition,
+          top: 23,
+          color: 'red',
+          marginBottom: 0,
+          fontSize: 0.8 + 'em',
+          fontWeight: 'bold',
+          zIndex: 1
         }
         const ref = isActiveMonthlyEvent ? '_activeMonthlyEventPanel' : '_monthlyEventPanel' + doc._id
         // use pure bootstrap.
@@ -157,6 +202,14 @@ export default React.createClass({
                   {month}
                 </a>
               </h4>
+              {showMaxVictims && isVictims ?
+                <p style={maxVictimsStyle}>{doc.victims}</p>
+                : null
+              }
+              {showMaxArrivals && isArrivals ?
+                <p style={maxArrivalsStyle}>{doc.arrivals}</p>
+                : null
+              }
               {showEditingGlyphons ?
                 this.toggleDraftGlyph(doc)
                 : null
@@ -187,7 +240,7 @@ export default React.createClass({
     const { docToRemove } = this.state
     const activeEventId = _.has(monthlyEvent, '_id') ? monthlyEvent._id : null
     return (
-      <PanelGroup activeKey={activeEventId} id={year} accordion>
+      <PanelGroup activeKey={activeEventId} id={year} ref={(c) => this[year] = c} accordion>
         {this.monthlyEventsComponent(year)}
         {docToRemove ? <ModalRemoveMonthlyEvent doc={docToRemove} removeMonthlyEvent={this.removeMonthlyEvent} /> : null}
       </PanelGroup>

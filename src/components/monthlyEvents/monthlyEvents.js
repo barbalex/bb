@@ -24,7 +24,9 @@ export default React.createClass({
     onCloseNewMonthlyEvent: React.PropTypes.func,
     showNewMonthlyEvent: React.PropTypes.bool,
     maxArrivals: React.PropTypes.number,
-    maxVictims: React.PropTypes.number
+    maxVictims: React.PropTypes.number,
+    showMaxArrivals: React.PropTypes.bool,
+    showMaxVictims: React.PropTypes.bool
   },
 
   getInitialState () {
@@ -32,6 +34,8 @@ export default React.createClass({
       monthlyEvents: [],
       maxArrivals: null,
       maxVictims: null,
+      showMaxArrivals: true,
+      showMaxVictims: true,
       activeYear: null
     }
   },
@@ -47,8 +51,6 @@ export default React.createClass({
     const maxArrivals = this.getMaxArrivals(monthlyEvents)
     const maxVictims = this.getMaxVictims(monthlyEvents)
     this.setState({ monthlyEvents, maxArrivals, maxVictims })
-    console.log('maxArrivals', maxArrivals)
-    console.log('maxVictims', maxVictims)
   },
 
   getMaxArrivals (monthlyEvents) {
@@ -56,7 +58,7 @@ export default React.createClass({
     monthlyEvents.forEach((monthlyEvent) => {
       if (monthlyEvent.arrivals) arrivalsArray.push(monthlyEvent.arrivals)
     })
-    const maxArrivals = arrivalsArray.length > 0 ? _.max(arrivalsArray) : null
+    const maxArrivals = arrivalsArray.length > 0 ? _.max(arrivalsArray) : 0
     return maxArrivals
   },
 
@@ -65,7 +67,7 @@ export default React.createClass({
     monthlyEvents.forEach((monthlyEvent) => {
       if (monthlyEvent.victims) victimsArray.push(monthlyEvent.victims)
     })
-    const maxVictims = victimsArray.length > 0 ? _.max(victimsArray) : null
+    const maxVictims = victimsArray.length > 0 ? _.max(victimsArray) : 0
     return maxVictims
   },
 
@@ -91,8 +93,14 @@ export default React.createClass({
     return years[0]
   },
 
-  eventYearsComponent () {
+  getMaxArrivalsVictims () {
+    const { maxArrivals, maxVictims } = this.state
+    return _.max([maxArrivals, maxVictims])
+  },
+
+  eventYearsComponent (activeYear) {
     const { monthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
+    const { maxArrivals, maxVictims, showMaxArrivals, showMaxVictims } = this.state
     let { monthlyEvents } = this.state
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
@@ -101,9 +109,12 @@ export default React.createClass({
         return -1
       })
       return years.map((year, yIndex) => {
+        // wanted to only build MonthlyEventsOfYear if isActiveYear
+        // but opening a year was way to hideous
+        // const isActiveYear = year === activeYear
         return (
           <Panel key={year} header={year} eventKey={year} className='year' onClick={this.onClickYear.bind(this, year)}>
-            <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} monthlyEvent={monthlyEvent} editing={editing} email={email} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+            <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} monthlyEvent={monthlyEvent} maxArrivals={maxArrivals} maxVictims={maxVictims} showMaxArrivals={showMaxArrivals} showMaxVictims={showMaxVictims} editing={editing} email={email} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
           </Panel>
         )
       })
@@ -119,11 +130,41 @@ export default React.createClass({
     } else {
       activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()
     }
+    const numbersDivStyle = {
+      position: 'relative'
+    }
+    const minStyle = {
+      position: 'absolute',
+      top: 0,
+      left: 0
+    }
+    const textStyle = {
+      width: 100 + '%',
+      textAlign: 'center'
+    }
+    const maxStyle = {
+      position: 'absolute',
+      top: 0,
+      right: 0
+    }
+    const victimsStyle = {
+      color: 'red',
+      marginRight: 8
+    }
+    const arrivalsStyle = {
+      color: 'blue',
+      marginLeft: 8
+    }
     return (
       <div id='monthlyEvents'>
         <h1>Events</h1>
+        <div style={numbersDivStyle}>
+          <p style={minStyle}>0</p>
+          <p style={textStyle}><span style={victimsStyle}>victims</span><span style={arrivalsStyle}>arrivals</span></p>
+          <p style={maxStyle}>{this.getMaxArrivalsVictims()}</p>
+        </div>
         <PanelGroup activeKey={activeYear} accordion>
-          {this.eventYearsComponent()}
+          {this.eventYearsComponent(activeYear)}
         </PanelGroup>
         {showNewMonthlyEvent ? <NewMonthlyEvent onCloseNewMonthlyEvent={onCloseNewMonthlyEvent} /> : null}
       </div>
