@@ -139,18 +139,19 @@ export default React.createClass({
     }
     const victimsStyle = {
       color: '#CE0000',
-      marginRight: 45
+      marginRight: 5
     }
     const arrivalsStyle = {
       color: '#0000A5',
-      marginLeft: 45
+      marginLeft: 5,
+      marginRight: 5
     }
     return (
       <div id='monthlyEvents'>
         <h1>Events</h1>
         <div style={numbersDivStyle}>
           <p style={minStyle}>&#60;&#32;0</p>
-          <p style={textStyle}><span style={victimsStyle}>victims</span><span style={arrivalsStyle}>arrivals</span></p>
+          <p style={textStyle}><span style={victimsStyle}>victims</span> & <span style={arrivalsStyle}>arrivals</span> per month</p>
           <p style={maxStyle}>{maxArrivalsAndVictims}&#32;&#62;</p>
         </div>
         <PanelGroup activeKey={activeYear} accordion>
