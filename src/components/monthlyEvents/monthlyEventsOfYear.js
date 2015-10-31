@@ -21,14 +21,12 @@ export default React.createClass({
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onSaveMonthlyEventArticle: React.PropTypes.func,
-    docToRemove: React.PropTypes.object,
-    panelWidth: React.PropTypes.number
+    docToRemove: React.PropTypes.object
   },
 
   getInitialState () {
     return {
-      docToRemove: null,
-      panelWidth: 1140
+      docToRemove: null
     }
   },
 
@@ -36,7 +34,6 @@ export default React.createClass({
     // somehow on first load the panel does not scroll up far enough
     // call for more
     this.scrollToActivePanel('more')
-    this.setState({ panelWidth: this.getPanelWidth() })
   },
 
   componentDidUpdate (prevProps) {
@@ -45,7 +42,6 @@ export default React.createClass({
       // only scroll into view if the active item changed last render
       this.scrollToActivePanel()
     }
-    // this.setState({ panelWidth: this.getPanelWidth() })
   },
 
   onClickMonthlyEvent (id, e) {
@@ -144,7 +140,6 @@ export default React.createClass({
   monthlyEventsComponent (year) {
     const { activeMonthlyEvent, maxArrivalsAndVictims, editing, email, onSaveMonthlyEventArticle } = this.props
     let { monthlyEvents } = this.props
-    const { panelWidth } = this.state
     // filter only events of current year
     monthlyEvents = monthlyEvents.filter((monthlyEvent) => getYearFromEventId(monthlyEvent._id) === year)
     return monthlyEvents.map((doc, dIndex) => {
@@ -165,12 +160,14 @@ export default React.createClass({
       let victimsPositionRight = 0
       let victimsPositionLeft = 0
       if (hasArrivals) {
-        arrivalsPositionRight = (doc.arrivals / maxArrivalsAndVictims) >= 0.5 ? panelWidth - (doc.arrivals / maxArrivalsAndVictims) * panelWidth : 'auto'
-        arrivalsPositionLeft = (doc.arrivals / maxArrivalsAndVictims) < 0.5 ? (doc.arrivals / maxArrivalsAndVictims) * panelWidth : 'auto'
+        const arrivalFraction = doc.arrivals / maxArrivalsAndVictims
+        arrivalsPositionRight = arrivalFraction >= 0.5 ? (1 - arrivalFraction) * 100 + '%' : 'auto'
+        arrivalsPositionLeft = arrivalFraction < 0.5 ? arrivalFraction * 100 + '%' : 'auto'
       }
       if (hasVictims) {
-        victimsPositionRight = (doc.victims / maxArrivalsAndVictims) >= 0.5 ? panelWidth - (doc.victims / maxArrivalsAndVictims) * panelWidth : 'auto'
-        victimsPositionLeft = (doc.victims / maxArrivalsAndVictims) < 0.5 ? (doc.victims / maxArrivalsAndVictims) * panelWidth : 'auto'
+        const victimsFraction = doc.victims / maxArrivalsAndVictims
+        victimsPositionRight = victimsFraction >= 0.5 ? (1 - victimsFraction) * 100 + '%' : 'auto'
+        victimsPositionLeft = victimsFraction < 0.5 ? victimsFraction * 100 + '%' : 'auto'
       }
       const maxArrivalsStyle = {
         position: 'absolute',
