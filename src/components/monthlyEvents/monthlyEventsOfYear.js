@@ -175,9 +175,9 @@ export default React.createClass({
           position: 'absolute',
           right: panelWidth - arrivalsPosition,
           top: 1,
-          color: 'blue',
+          color: '#0000A5',
           marginBottom: 0,
-          fontSize: 0.8 + 'em',
+          fontSize: 0.7 + 'em',
           fontWeight: 'bold',
           zIndex: 2
         }
@@ -185,9 +185,9 @@ export default React.createClass({
           position: 'absolute',
           left: victimsPosition,
           top: 23,
-          color: 'red',
+          color: '#CE0000',
           marginBottom: 0,
-          fontSize: 0.8 + 'em',
+          fontSize: 0.7 + 'em',
           fontWeight: 'bold',
           zIndex: 1
         }

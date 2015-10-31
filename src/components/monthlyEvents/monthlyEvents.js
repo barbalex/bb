@@ -136,32 +136,35 @@ export default React.createClass({
     const minStyle = {
       position: 'absolute',
       top: 0,
-      left: 0
+      left: 0,
+      marginBottom: 0
     }
     const textStyle = {
       width: 100 + '%',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginBottom: 0
     }
     const maxStyle = {
       position: 'absolute',
       top: 0,
-      right: 0
+      right: 0,
+      marginBottom: 0
     }
     const victimsStyle = {
-      color: 'red',
-      marginRight: 8
+      color: '#CE0000',
+      marginRight: 25
     }
     const arrivalsStyle = {
-      color: 'blue',
-      marginLeft: 8
+      color: '#0000A5',
+      marginLeft: 25
     }
     return (
       <div id='monthlyEvents'>
         <h1>Events</h1>
         <div style={numbersDivStyle}>
-          <p style={minStyle}>0</p>
+          <p style={minStyle}>&#60;&#32;0</p>
           <p style={textStyle}><span style={victimsStyle}>victims</span><span style={arrivalsStyle}>arrivals</span></p>
-          <p style={maxStyle}>{this.getMaxArrivalsVictims()}</p>
+          <p style={maxStyle}>{this.getMaxArrivalsVictims()}&#32;&#62;</p>
         </div>
         <PanelGroup activeKey={activeYear} accordion>
           {this.eventYearsComponent(activeYear)}
