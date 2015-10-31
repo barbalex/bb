@@ -178,7 +178,8 @@ export default React.createClass({
         marginBottom: 0,
         fontSize: 0.7 + 'em',
         fontWeight: 'bold',
-        zIndex: 2
+        textShadow: 'white 1px 1px 0px',
+        zIndex: 1
       }
       const maxVictimsStyle = {
         position: 'absolute',
@@ -189,6 +190,7 @@ export default React.createClass({
         marginBottom: 0,
         fontSize: 0.7 + 'em',
         fontWeight: 'bold',
+        textShadow: 'white -1px -1px 0px',
         zIndex: 1
       }
       const ref = isActiveMonthlyEvent ? '_activeMonthlyEventPanel' : '_monthlyEventPanel' + doc._id
