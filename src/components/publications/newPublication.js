@@ -57,7 +57,8 @@ export default React.createClass({
 
   categoryOptions () {
     const { categories } = this.props
-    const options = Object.keys(categories).map((key, index) => <option key={index} value={key}>{categories[key]}</option>)
+    let options = categories.map((category, index) => <option key={index + 1} value={category}>{category}</option>)
+    options.unshift(<option key={0} value={null}></option>)
     return options
   },
 

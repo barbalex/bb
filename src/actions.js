@@ -25,6 +25,7 @@ export default () => {
     savePublication: {},
     newPublication: {},
     toggleDraftOfPublication: {},
+    removePublication: {},
     login: {},
     logout: {},
     showError: {}

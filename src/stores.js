@@ -261,6 +261,8 @@ export default (Actions) => {
         _id: id,
         type: 'publications',
         draft: true,
+        category: category,
+        title: title,
         article: article
       }
       app.db.put(publication)
