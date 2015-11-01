@@ -13,13 +13,14 @@ export default Router.extend({
     'sources': 'sources',
     'aboutUs': 'aboutUs',
     'actors': 'actors',
-    'academic-publications': 'academicPublications',
     'european-union-publications': 'europeanUnionPublications',
     'io-and-ngo-publications': 'ioAndNgoPublications',
     'commentaries': 'commentaries',
     'commentaries/:year/:month/:day/:title': 'commentary',
     'monthlyEvents': 'monthlyEvents',
     'monthlyEvents/:year/:month': 'monthlyEvent',
+    'publications': 'publications',
+    'publications/:category/:title': 'publication',
     'login': 'login',
     '*path': 'home'
   },
@@ -41,21 +42,6 @@ export default Router.extend({
 
   actors () {
     const id = 'pages_actors'
-    this.render(id)
-  },
-
-  academicPublications () {
-    const id = 'pages_academic-publications'
-    this.render(id)
-  },
-
-  europeanUnionPublications () {
-    const id = 'pages_european-union-publications'
-    this.render(id)
-  },
-
-  ioAndNgoPublications () {
-    const id = 'pages_io-and-ngo-publications'
     this.render(id)
   },
 
@@ -81,6 +67,18 @@ export default Router.extend({
     this.render()
     app.Actions.getPage('pages_monthlyEvents')
     app.Actions.getMonthlyEvent(id)
+  },
+
+  publications () {
+    const id = 'pages_publications'
+    this.render(id)
+  },
+
+  publication (category, title) {
+    const id = `publications_${category}_${title}`
+    this.render()
+    app.Actions.getPage('pages_publications')
+    app.Actions.getPublication(id)
   },
 
   login () {

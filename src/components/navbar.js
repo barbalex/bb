@@ -12,12 +12,14 @@ export default React.createClass({
   propTypes: {
     activePage: React.PropTypes.object,
     activeMonthlyEvent: React.PropTypes.object,
+    activePublication: React.PropTypes.object,
     commentary: React.PropTypes.object,
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
     onClickNewCommentary: React.PropTypes.func,
     onClickNewMonthlyEvent: React.PropTypes.func,
+    onClickNewPublication: React.PropTypes.func,
     navExpanded: React.PropTypes.bool
   },
 
@@ -28,8 +30,7 @@ export default React.createClass({
   },
 
   onClickPage (pageType) {
-    const onlyLoadOtherIds = pageType === 'pages_monthlyEvents'
-    app.Actions.getPage(pageType, onlyLoadOtherIds)
+    app.Actions.getPage(pageType)
     this.onToggleNav()
   },
 
@@ -49,32 +50,37 @@ export default React.createClass({
   },
 
   logoutTooltip () {
-    return (<Tooltip id='logout'>log out</Tooltip>)
+    return <Tooltip id='logout'>log out</Tooltip>
   },
 
   editTooltip () {
     const { editing } = this.props
     const text = editing ? 'preview' : 'edit'
-    return (<Tooltip id={text}>{text}</Tooltip>)
+    return <Tooltip id={text}>{text}</Tooltip>
   },
 
   newCommentaryTooltip () {
-    return (<Tooltip id='newCommentary'>new Commentary</Tooltip>)
+    return <Tooltip id='newCommentary'>new Commentary</Tooltip>
   },
 
   newMonthlyEventTooltip () {
-    return (<Tooltip id='newMonthlyEvent'>new monthly event</Tooltip>)
+    return <Tooltip id='newMonthlyEvent'>new monthly event</Tooltip>
+  },
+
+  newPublicationTooltip () {
+    return <Tooltip id='newPublication'>new publication</Tooltip>
   },
 
   render () {
-    const { activePage, activeMonthlyEvent, commentary, email, editing, onClickNewCommentary, onClickNewMonthlyEvent } = this.props
+    const { activePage, activeMonthlyEvent, activePublication, commentary, email, editing, onClickNewCommentary, onClickNewMonthlyEvent, onClickNewPublication } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = activePage && activePage._id ? activePage._id : null
-    const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents']
-    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(commentary, '_id'))
+    const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
+    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(commentary, '_id') || _.has(activePublication, '_id'))
     const showAddCommentary = email && activePage._id === 'pages_commentaries'
     const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
+    const showAddPublication = email && activePage._id === 'pages_publications'
     const showNavbarRight = email || showEdit || showAddCommentary || showAddMonthlyEvent
     return (
       <div>
@@ -115,33 +121,13 @@ export default React.createClass({
                 >
                   Actors
                 </NavItem>
-                <NavDropdown
+                <NavItem
                   eventKey={4}
-                  title='Publications'
-                  id='publications'
+                  active={id === 'pages_publications'}
+                  onClick={this.onClickPage.bind(this, 'pages_publications')}
                 >
-                  <MenuItem
-                    eventKey='1'
-                    active={id === 'pages_academic-publications'}
-                    onClick={this.onClickPage.bind(this, 'pages_academic-publications')}
-                  >
-                    Academic
-                  </MenuItem>
-                  <MenuItem
-                    eventKey='2'
-                    active={id === 'pages_european-union-publications'}
-                    onClick={this.onClickPage.bind(this, 'pages_european-union-publications')}
-                  >
-                    European Union
-                  </MenuItem>
-                  <MenuItem
-                    eventKey='3'
-                    active={id === 'pages_io-and-ngo-publications'}
-                    onClick={this.onClickPage.bind(this, 'pages_io-and-ngo-publications')}
-                  >
-                    IO & NGO
-                  </MenuItem>
-                </NavDropdown>
+                  Publications
+                </NavItem>
                 <NavItem
                   eventKey={5}
                   active={id === 'pages_aboutUs'}
@@ -185,9 +171,20 @@ export default React.createClass({
                     </OverlayTrigger>
                     : null
                   }
+                  {showAddPublication ?
+                    <OverlayTrigger placement='bottom' overlay={this.newPublicationTooltip()}>
+                      <NavItem
+                        eventKey={4}
+                        onClick={onClickNewPublication}
+                      >
+                        <Glyphicon glyph='plus' />
+                      </NavItem>
+                    </OverlayTrigger>
+                    : null
+                  }
                   <OverlayTrigger placement='bottom' overlay={this.logoutTooltip()}>
                     <NavItem
-                      eventKey={4}
+                      eventKey={5}
                       onClick={this.onClickLogout}
                     >
                       <Glyphicon glyph='log-out' />

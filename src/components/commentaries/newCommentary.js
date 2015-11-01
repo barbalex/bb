@@ -88,7 +88,7 @@ export default React.createClass({
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>New Commentary</Modal.Title>
+          <Modal.Title>New commentary</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>

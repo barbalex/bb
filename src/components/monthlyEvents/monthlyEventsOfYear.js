@@ -80,11 +80,6 @@ export default React.createClass({
     }
   },
 
-  getPanelWidth () {
-    const node = ReactDOM.findDOMNode(this[this.props.year])
-    return node.offsetWidth || 1140
-  },
-
   removeMonthlyEvent (remove) {
     const { docToRemove } = this.state
     if (remove) app.Actions.removeMonthlyEvent(docToRemove)

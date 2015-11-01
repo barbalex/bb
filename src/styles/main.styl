@@ -68,24 +68,20 @@ body .navbar
 	border-radius 0
 	a
 		color #EDF4F8 !important
-.navbar .dropdown-menu a
-  color #5C5E5F !important
-.navbar .dropdown-menu .active a {
-	background-color: #3E474F !important
-  color: #EDF4F8 !important
-} 
 
 .navbar-inverse
 	background-image url('../../images/oceanDark.jpg')
 
 .year.panel,
+.category > .panel-heading,
 .commentaries .panel-heading
   background-image url('../../images/oceanDark.jpg')
   
-.panel-group .year > .panel-heading
+.panel-group .year > .panel-heading,
   background-color transparent
 
 .year > .panel-heading a,
+.category > .panel-heading a,
 .commentaries .panel-heading a
   color #EDF4F8
   font-weight bold
@@ -131,27 +127,37 @@ body .navbar
 .tab-content .actors
 	margin-top 20px
 
-#monthlyEvents .panel-body
+#monthlyEvents .panel-body,
+#publications .category > .panel-collapse > .panel-body
   padding 0 0
-#monthlyEvents .panel-group
+#monthlyEvents .panel-group,
+#publications .panel-group
   margin-bottom 0
-#monthlyEvents .panel.month
+#monthlyEvents .panel.month,
+#publications .panel.month
   margin-top 0
   border-radius 0
   border-top-width 0
   border-right-width 0
   border-left-width 0
-#monthlyEvents .panel.month .panel-heading:hover
+#monthlyEvents .panel.month > .panel-heading,
+#publications .panel.month .panel-heading
+  background-color transparent
+#monthlyEvents .panel.month .panel-heading:hover,
+#publications .panel.month .panel-heading:hover
   background-color #f5f5f5
-#monthlyEvents .panel-heading
+#monthlyEvents .panel-heading,
+#publications .panel-heading
   cursor pointer
-#monthlyEvents .panel.month > .panel-heading h4
+#monthlyEvents .panel.month > .panel-heading h4,
+#publications .panel.month > .panel-heading h4
   font-weight bold
   z-index 0
-#monthlyEvents .panel.month:last-of-type
+#monthlyEvents .panel.month:last-of-type,
+#publications .panel.month:last-of-type
   border-bottom-width 0
-#monthlyEvents .panel.month > .panel-heading
-  background-color transparent
+/*#publications .panel.month .panel-body
+  padding 5*/
 #monthlyEvents .panel.month .panel-body table
   margin-left 0 !important
   width 100% !important

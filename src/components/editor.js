@@ -11,14 +11,15 @@ export default React.createClass({
     articleDecoded: React.PropTypes.string,
     onSavePageArticle: React.PropTypes.func,
     onSaveMonthlyEventArticle: React.PropTypes.func,
+    onSavePublicationArticle: React.PropTypes.func,
     onSaveCommentaryArticle: React.PropTypes.func
   },
 
   componentDidMount () {
-    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSaveCommentaryArticle } = this.props
+    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
-    if (onSaveMonthlyEventArticle) height = window.innerHeight - 52 - 74 - 76
+    if (onSaveMonthlyEventArticle || onSavePublicationArticle) height = window.innerHeight - 52 - 74 - 76
     if (onSaveCommentaryArticle) height = window.innerHeight - 52 - 74 - 90
     const instanceSelector = `#${doc._id}`
 
@@ -44,6 +45,7 @@ export default React.createClass({
           const articleEncoded = Base64.encode(articleDecoded)
           if (onSavePageArticle) onSavePageArticle(articleEncoded)
           if (onSaveMonthlyEventArticle) onSaveMonthlyEventArticle(articleEncoded)
+          if (onSavePublicationArticle) onSavePublicationArticle(articleEncoded)
           if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)
         })
       },

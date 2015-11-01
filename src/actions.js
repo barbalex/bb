@@ -20,6 +20,11 @@ export default () => {
     newCommentary: {},
     removeCommentary: {},
     toggleDraftOfCommentary: {},
+    getPublications: {},
+    getPublication: {},
+    savePublication: {},
+    newPublication: {},
+    toggleDraftOfPublication: {},
     login: {},
     logout: {},
     showError: {}

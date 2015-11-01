@@ -4,10 +4,13 @@ import app from 'ampersand-app'
 import Reflux from 'reflux'
 import moment from 'moment'
 import { Base64 } from 'js-base64'
+import slug from 'slug'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
+import getPublications from './modules/getPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
+import publicationTemplate from 'html!./components/publications/publicationTemplate.html'
 import _ from 'lodash'
 
 export default (Actions) => {
@@ -17,7 +20,7 @@ export default (Actions) => {
 
     doc: null,
 
-    onGetPage (id, onlyLoadOtherIds) {
+    onGetPage (id) {
       const get = !this.doc || (this.doc._id && this.doc._id !== id)
       if (get) {
         app.db.get(id, { include_docs: true })
@@ -81,6 +84,51 @@ export default (Actions) => {
           this.trigger(monthlyEvent)
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
+    }
+  })
+
+  app.monthlyEventsStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetMonthlyEvents () {
+      getMonthlyEvents()
+        .then((result) => {
+          const docs = _.pluck(result.rows, 'doc')
+          this.trigger(docs)
+        })
+        .catch((error) => app.Actions.showError({msg: error}))
+    },
+
+    onNewMonthlyEvent (year, month) {
+      const id = `monthlyEvents_${year}_${month}`
+      const article = Base64.encode(monthlyEventTemplate)
+      const monthlyEvent = {
+        _id: id,
+        type: 'monthlyEvents',
+        draft: true,
+        article: article
+      }
+      app.db.put(monthlyEvent)
+        .then(() => this.onGetMonthlyEvents())
+        .catch((error) => app.Actions.showError({title: 'Error creating new monthly event:', msg: error}))
+    },
+
+    onRemoveMonthlyEvent (doc) {
+      app.db.remove(doc)
+        .then(() => this.onGetMonthlyEvents())
+        .catch((error) => app.Actions.showError({title: 'Error removing monthly event:', msg: error}))
+    },
+
+    onToggleDraftOfMonthlyEvent (doc) {
+      if (doc.draft === true) {
+        delete doc.draft
+      } else {
+        doc.draft = true
+      }
+      app.db.put(doc)
+        .then(() => this.onGetMonthlyEvents())
+        .catch((error) => app.Actions.showError({title: 'Error changing draft of monthly event:', msg: error}))
     }
   })
 
@@ -162,12 +210,42 @@ export default (Actions) => {
     }
   })
 
-  app.monthlyEventsStore = Reflux.createStore({
+  app.publicationStore = Reflux.createStore({
 
     listenables: Actions,
 
-    onGetMonthlyEvents () {
-      getMonthlyEvents()
+    onGetPublication (id) {
+      if (!id) {
+        app.router.navigate('/publications')
+        this.trigger({})
+      } else {
+        app.db.get(id, { include_docs: true })
+          .then((publication) => {
+            const path = getPathFromDoc(publication)
+            app.router.navigate('/' + path)
+            this.trigger(publication)
+          })
+          .catch((error) => app.Actions.showError({title: 'Error fetching monthly event ' + id + ':', msg: error}))
+      }
+    },
+
+    onSavePublication (publication) {
+      app.db.put(publication)
+        .then((resp) => {
+          // resp.rev is new rev
+          publication._rev = resp.rev
+          this.trigger(publication)
+        })
+        .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
+    }
+  })
+
+  app.publicationsStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetPublications () {
+      getPublications()
         .then((result) => {
           const docs = _.pluck(result.rows, 'doc')
           this.trigger(docs)
@@ -175,35 +253,36 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewMonthlyEvent (year, month) {
-      const id = `monthlyEvents_${year}_${month}`
-      const article = Base64.encode(monthlyEventTemplate)
-      const monthlyEvent = {
+    onNewPublication (category, title) {
+      const titleSlugified = slug(title)
+      const id = `publications_${category}_${titleSlugified}`
+      const article = Base64.encode(publicationTemplate)
+      const publication = {
         _id: id,
-        type: 'monthlyEvents',
+        type: 'publications',
         draft: true,
         article: article
       }
-      app.db.put(monthlyEvent)
-        .then(() => this.onGetMonthlyEvents())
-        .catch((error) => app.Actions.showError({title: 'Error creating new monthly event:', msg: error}))
+      app.db.put(publication)
+        .then(() => this.onGetPublications())
+        .catch((error) => app.Actions.showError({title: 'Error creating new publication:', msg: error}))
     },
 
-    onRemoveMonthlyEvent (doc) {
+    onRemovePublication (doc) {
       app.db.remove(doc)
-        .then(() => this.onGetMonthlyEvents())
-        .catch((error) => app.Actions.showError({title: 'Error removing monthly event:', msg: error}))
+        .then(() => this.onGetPublications())
+        .catch((error) => app.Actions.showError({title: 'Error removing publication:', msg: error}))
     },
 
-    onToggleDraftOfMonthlyEvent (doc) {
+    onToggleDraftOfPublication (doc) {
       if (doc.draft === true) {
         delete doc.draft
       } else {
         doc.draft = true
       }
       app.db.put(doc)
-        .then(() => this.onGetMonthlyEvents())
-        .catch((error) => app.Actions.showError({title: 'Error changing draft of monthly event:', msg: error}))
+        .then(() => this.onGetPublications())
+        .catch((error) => app.Actions.showError({title: 'Error changing draft of publication:', msg: error}))
     }
   })
 
