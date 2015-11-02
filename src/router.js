@@ -10,7 +10,6 @@ export default Router.extend({
   routes: {
     '': 'home',
     'home': 'home',
-    'sources': 'sources',
     'aboutUs': 'aboutUs',
     'actors': 'actors',
     'european-union-publications': 'europeanUnionPublications',
@@ -21,17 +20,14 @@ export default Router.extend({
     'monthlyEvents/:year/:month': 'monthlyEvent',
     'publications': 'publications',
     'publications/:category/:title': 'publication',
+    'sources': 'sources',
+    'sources/:category': 'sourceCategory',
     'login': 'login',
     '*path': 'home'
   },
 
   home () {
     const id = 'pages_home'
-    this.render(id)
-  },
-
-  sources () {
-    const id = 'pages_sources'
     this.render(id)
   },
 
@@ -79,6 +75,18 @@ export default Router.extend({
     this.render()
     app.Actions.getPage('pages_publications')
     app.Actions.getPublication(id)
+  },
+
+  sources () {
+    const id = 'pages_sources'
+    this.render(id)
+  },
+
+  sourceCategory (category) {
+    const id = `sources_${category}`
+    this.render()
+    app.Actions.getPage('pages_sources')
+    app.Actions.getSourceCategory(id)
   },
 
   login () {

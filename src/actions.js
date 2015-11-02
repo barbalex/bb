@@ -26,6 +26,12 @@ export default () => {
     newPublication: {},
     toggleDraftOfPublication: {},
     removePublication: {},
+    getSourceCategories: {},
+    getSourceCategory: {},
+    saveSourceCategory: {},
+    newSourceCategory: {},
+    removeSourceCategory: {},
+    toggleDraftOfSourceCategory: {},
     login: {},
     logout: {},
     showError: {}

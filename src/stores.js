@@ -7,6 +7,7 @@ import { Base64 } from 'js-base64'
 import slug from 'slug'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
+import getSourceCategories from './modules/getSourceCategories.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import getPublications from './modules/getPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
@@ -286,6 +287,81 @@ export default (Actions) => {
       app.db.put(doc)
         .then(() => this.onGetPublications())
         .catch((error) => app.Actions.showError({title: 'Error changing draft of publication:', msg: error}))
+    }
+  })
+
+  app.sourceCategoryStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetSourceCategory (id) {
+      if (!id) {
+        app.router.navigate('/sources')
+        this.trigger({})
+      } else {
+        app.db.get(id, { include_docs: true })
+          .then((sourceCategory) => {
+            const path = getPathFromDoc(sourceCategory)
+            app.router.navigate('/' + path)
+            this.trigger(sourceCategory)
+          })
+          .catch((error) => app.Actions.showError({title: 'Error fetching source category ' + id + ':', msg: error}))
+      }
+    },
+
+    onSaveSourceCategory (sourceCategory) {
+      app.db.put(sourceCategory)
+        .then((resp) => {
+          // resp.rev is new rev
+          sourceCategory._rev = resp.rev
+          this.trigger(sourceCategory)
+        })
+        .catch((error) => app.Actions.showError({title: 'Error saving source category:', msg: error}))
+    }
+  })
+
+  app.sourceCategoriesStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetSourceCategories () {
+      getSourceCategories()
+        .then((result) => {
+          const docs = _.pluck(result.rows, 'doc')
+          this.trigger(docs)
+        })
+        .catch((error) => app.Actions.showError({msg: error}))
+    },
+
+    onNewSourceCategory (category) {
+      const id = `sources_${category}`
+      const sourceCategory = {
+        _id: id,
+        category: category,
+        draft: true,
+        article: 'IA==',
+        type: 'sources'
+      }
+      app.db.put(sourceCategory)
+        .then(() => this.getSourceCategories())
+        .catch((error) => app.Actions.showError({title: 'Error creating new source category:', msg: error}))
+    },
+
+    onRemoveSourceCategory (doc) {
+      app.db.remove(doc)
+        .then(() => this.getSourceCategories())
+        .catch((error) => app.Actions.showError({title: 'Error removing source category:', msg: error}))
+    },
+
+    onToggleDraftOfSourceCategory (doc) {
+      if (doc.draft === true) {
+        delete doc.draft
+      } else {
+        doc.draft = true
+      }
+      app.db.put(doc)
+        .then(() => this.getSourceCategories())
+        .catch((error) => app.Actions.showError({title: 'Error changing draft of source category:', msg: error}))
     }
   })
 

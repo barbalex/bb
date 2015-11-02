@@ -6,18 +6,18 @@ import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
-import Commentary from './commentary.js'
-import NewCommentary from './newCommentary.js'
-import ModalRemoveCommentary from './modalRemoveCommentary.js'
+import Source from './source.js'
+import NewSourceCategory from './newSourceCategory.js'
+import ModalRemoveSourceCategory from './modalRemoveSourceCategory.js'
 
 export default React.createClass({
-  displayName: 'Commentaries',
+  displayName: 'SourceCategories',
 
   mixins: [ListenerMixin],
 
   propTypes: {
     commentaries: React.PropTypes.array,
-    activeCommentary: React.PropTypes.object,
+    commentary: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onSaveCommentaryArticle: React.PropTypes.func,
@@ -39,7 +39,7 @@ export default React.createClass({
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.activeCommentary._id && !prevProps.activeCommentary._id) {
+    if (this.props.commentary._id && !prevProps.commentary._id) {
       /**
        * this is first render
        * componentDidUpdate and componentDidMount are actually executed
@@ -51,7 +51,7 @@ export default React.createClass({
       }, 200)
       // window.requestAnimationFrame(() => this.scrollToActivePanel())
     }
-    if (this.props.activeCommentary._id !== prevProps.activeCommentary._id) {
+    if (this.props.commentary._id !== prevProps.commentary._id) {
       // this is later rerender
       // only scroll into view if the active item changed last render
       this.scrollToActivePanel()
@@ -65,11 +65,11 @@ export default React.createClass({
   },
 
   onClickCommentary (id, e) {
-    const { activeCommentary } = this.props
+    const { commentary } = this.props
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (Object.keys(activeCommentary).length === 0 || activeCommentary._id !== id) ? id : null
+    const idToGet = (Object.keys(commentary).length === 0 || commentary._id !== id) ? id : null
     app.Actions.getCommentary(idToGet)
   },
 
@@ -152,7 +152,7 @@ export default React.createClass({
   },
 
   commentariesComponent () {
-    const { activeCommentary, editing, email, onSaveCommentaryArticle } = this.props
+    const { commentary, editing, email, onSaveCommentaryArticle } = this.props
     let { commentaries } = this.state
     if (commentaries.length > 0) {
       commentaries = commentaries.sort((a, b) => {
@@ -160,8 +160,8 @@ export default React.createClass({
         return -1
       })
       return commentaries.map((doc, index) => {
-        const isCommentary = Object.keys(activeCommentary).length > 0
-        const isActiveCommentary = isCommentary ? doc._id === activeCommentary._id : false
+        const isCommentary = Object.keys(commentary).length > 0
+        const isActiveCommentary = isCommentary ? doc._id === commentary._id : false
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative',
@@ -204,7 +204,7 @@ export default React.createClass({
             {isActiveCommentary ?
               <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickCommentaryCollapse}>
                 <div className='panel-body' style={panelBodyStyle}>
-                  <Commentary activeCommentary={activeCommentary} editing={editing} onSaveCommentaryArticle={onSaveCommentaryArticle} />
+                  <Source commentary={commentary} editing={editing} onSaveCommentaryArticle={onSaveCommentaryArticle} />
                 </div>
               </div>
               : null
@@ -217,17 +217,17 @@ export default React.createClass({
   },
 
   render () {
-    const { activeCommentary, showNewCommentary, onCloseNewCommentary } = this.props
+    const { commentary, showNewCommentary, onCloseNewCommentary } = this.props
     const { docToRemove } = this.state
-    const activeCommentaryId = _.has(activeCommentary, '_id') ? activeCommentary._id : null
+    const activeCommentaryId = _.has(commentary, '_id') ? commentary._id : null
     return (
       <div className='commentaries'>
         <h1>Commentaries</h1>
         <PanelGroup activeKey={activeCommentaryId} id='commentariesAccordion' accordion>
           {this.commentariesComponent()}
         </PanelGroup>
-        {showNewCommentary ? <NewCommentary onCloseNewCommentary={onCloseNewCommentary} /> : null}
-        {docToRemove ? <ModalRemoveCommentary doc={docToRemove} removeCommentary={this.removeCommentary} /> : null}
+        {showNewCommentary ? <NewSourceCategory onCloseNewCommentary={onCloseNewCommentary} /> : null}
+        {docToRemove ? <ModalRemoveSourceCategory doc={docToRemove} removeCommentary={this.removeCommentary} /> : null}
       </div>
     )
   }

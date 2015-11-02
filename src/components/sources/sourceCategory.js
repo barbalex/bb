@@ -7,10 +7,10 @@ import Editor from '../editor.js'
 import Meta from '../pages/pageMeta.js'
 
 export default React.createClass({
-  displayName: 'Commentary',
+  displayName: 'Source',
 
   propTypes: {
-    activeCommentary: React.PropTypes.object,
+    commentary: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
     onSaveCommentaryArticle: React.PropTypes.func
@@ -36,9 +36,9 @@ export default React.createClass({
   },
 
   render () {
-    const { activeCommentary, editing, onSaveCommentaryArticle } = this.props
+    const { commentary, editing, onSaveCommentaryArticle } = this.props
     const { showMeta } = this.state
-    const articleEncoded = activeCommentary.article
+    const articleEncoded = commentary.article
     const articleDecoded = Base64.decode(articleEncoded)
     const metaButtonStyle = {
       position: 'fixed',
@@ -48,8 +48,8 @@ export default React.createClass({
     if (editing) {
       return (
         <div className='commentary'>
-          {showMeta ? <Meta doc={activeCommentary} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={activeCommentary} articleDecoded={articleDecoded} onSaveCommentaryArticle={onSaveCommentaryArticle} />
+          {showMeta ? <Meta doc={commentary} onCloseMeta={this.onCloseMeta} /> : null}
+          <Editor doc={commentary} articleDecoded={articleDecoded} onSaveCommentaryArticle={onSaveCommentaryArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )
@@ -57,7 +57,7 @@ export default React.createClass({
     const createMarkup = () => ({__html: articleDecoded})
     return (
       <div className='commentary'>
-        <h1>{activeCommentary.title}</h1>
+        <h1>{commentary.title}</h1>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )

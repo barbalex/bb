@@ -10,6 +10,7 @@ import Header from '../components/header.js'
 import Navbar from '../components/navbar.js'
 import Page from './pages/page.js'
 import Commentaries from './commentaries/commentaries.js'
+import SourceCategories from './sources/sourceCategories.js'
 import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
 import Publications from './publications/publications.js'
 import Login from './login/login.js'
@@ -26,7 +27,7 @@ export default React.createClass({
     activeMonthlyEvent: React.PropTypes.object,
     activePublication: React.PropTypes.object,
     // TODO: rename to activeCommentary
-    commentary: React.PropTypes.object,
+    activeCommentary: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
     showNewMonthlyEvent: React.PropTypes.bool,
@@ -42,7 +43,7 @@ export default React.createClass({
       activePage: {},
       activeMonthlyEvent: {},
       activePublication: {},
-      commentary: {},
+      activeCommentary: {},
       editing: false,
       showNewCommentary: false,
       showNewMonthlyEvent: false,
@@ -74,8 +75,8 @@ export default React.createClass({
     this.setState({ activePublication })
   },
 
-  onCommentaryStoreChange (commentary) {
-    this.setState({ commentary })
+  onCommentaryStoreChange (activeCommentary) {
+    this.setState({ activeCommentary })
   },
 
   onLoginStoreChange (email) {
@@ -140,21 +141,30 @@ export default React.createClass({
   },
 
   onSaveCommentaryArticle (articleEncoded) {
-    let { commentary } = this.state
-    commentary.article = articleEncoded
-    app.Actions.saveCommentary(commentary)
+    let { activeCommentary } = this.state
+    activeCommentary.article = articleEncoded
+    app.Actions.saveCommentary(activeCommentary)
+  },
+
+  onSaveSouceCategoryArticle (articleEncoded) {
+    let { sourceCategory } = this.state
+    sourceCategory.article = articleEncoded
+    app.Actions.saveSourceCategory(sourceCategory)
   },
 
   render () {
     const { login } = this.props
-    const { activePage, activeMonthlyEvent, activePublication, commentary, editing, showNewCommentary, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, editing, showNewCommentary, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
+    const isSourceCategoryPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_sources'
     const isMonthlyEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_monthlyEvents'
     const isPublicationsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_publications'
     const isCommentary = activePage.type && activePage.type === 'commentaries'
+    const isSourceCategory = activePage.type && activePage.type === 'sources'
     const showCommentaryPage = isCommentariesPage || isCommentary
+    const showSourceCategoryPage = isSourceCategoryPage || isSourceCategory
     const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
     const isPublication = activePage.type && activePage.type === 'publications'
@@ -170,7 +180,7 @@ export default React.createClass({
             activePage={activePage}
             activeMonthlyEvent={activeMonthlyEvent}
             activePublication={activePublication}
-            commentary={commentary}
+            activeCommentary={activeCommentary}
             email={email}
             editing={editing}
             onClickEdit={this.onClickEdit}
@@ -189,10 +199,20 @@ export default React.createClass({
             }
             {showCommentaryPage ?
               <Commentaries
-                commentary={commentary}
+                activeCommentary={activeCommentary}
                 editing={editing}
                 email={email}
                 onSaveCommentaryArticle={this.onSaveCommentaryArticle}
+                showNewCommentary={showNewCommentary}
+                onCloseNewCommentary={this.onCloseNewCommentary} />
+              : null
+            }
+            {showSourceCategoryPage ?
+              <SourceCategories
+                sourceCategory={sourceCategory}
+                editing={editing}
+                email={email}
+                onSaveSouceCategoryArticle={this.onSaveSouceCategoryArticle}
                 showNewCommentary={showNewCommentary}
                 onCloseNewCommentary={this.onCloseNewCommentary} />
               : null
