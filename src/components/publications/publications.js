@@ -5,7 +5,6 @@ import React from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
-import getCategoryFromPublicationId from './getCategoryFromPublicationId.js'
 import PublicationsOfCategory from './publicationsOfCategory.js'
 import NewPublication from './newPublication.js'
 
@@ -59,7 +58,7 @@ export default React.createClass({
   },
 
   categoriesOfPublications (publications) {
-    const allCategories = _.map(publications, (doc) => getCategoryFromPublicationId(doc._id))
+    const allCategories = _.map(publications, (doc) => doc.category)
     if (allCategories.length > 0) {
       const categories = _.uniq(allCategories)
       return categories.sort()
@@ -99,7 +98,7 @@ export default React.createClass({
     const { categories } = this.state
     let activeCategory
     if (_.has(activePublication, '_id')) {
-      activeCategory = getCategoryFromPublicationId(activePublication._id)
+      activeCategory = activePublication.category
     } else {
       activeCategory = this.state.activeCategory ? this.state.activeCategory : this.firstCategory()
     }
