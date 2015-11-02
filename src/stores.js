@@ -334,7 +334,9 @@ export default (Actions) => {
     },
 
     onNewSourceCategory (category) {
-      const id = `sources_${category}`
+      const categorySlugified = slug(category, {lower: true})
+      console.log('categorySlugified', categorySlugified)
+      const id = `sources_${categorySlugified}`
       const sourceCategory = {
         _id: id,
         category: category,
@@ -343,13 +345,13 @@ export default (Actions) => {
         type: 'sources'
       }
       app.db.put(sourceCategory)
-        .then(() => this.getSourceCategories())
+        .then(() => this.onGetSourceCategories())
         .catch((error) => app.Actions.showError({title: 'Error creating new source category:', msg: error}))
     },
 
     onRemoveSourceCategory (doc) {
       app.db.remove(doc)
-        .then(() => this.getSourceCategories())
+        .then(() => this.onGetSourceCategories())
         .catch((error) => app.Actions.showError({title: 'Error removing source category:', msg: error}))
     },
 
@@ -360,7 +362,7 @@ export default (Actions) => {
         doc.draft = true
       }
       app.db.put(doc)
-        .then(() => this.getSourceCategories())
+        .then(() => this.onGetSourceCategories())
         .catch((error) => app.Actions.showError({title: 'Error changing draft of source category:', msg: error}))
     }
   })

@@ -7,13 +7,13 @@ import Editor from '../editor.js'
 import Meta from '../pages/pageMeta.js'
 
 export default React.createClass({
-  displayName: 'Source',
+  displayName: 'SourceCategory',
 
   propTypes: {
-    commentary: React.PropTypes.object,
+    activeSourceCategory: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
-    onSaveCommentaryArticle: React.PropTypes.func
+    onSaveSourceCategoryArticle: React.PropTypes.func
   },
 
   getInitialState () {
@@ -36,9 +36,9 @@ export default React.createClass({
   },
 
   render () {
-    const { commentary, editing, onSaveCommentaryArticle } = this.props
+    const { activeSourceCategory, editing, onSaveSourceCategoryArticle } = this.props
     const { showMeta } = this.state
-    const articleEncoded = commentary.article
+    const articleEncoded = activeSourceCategory.article
     const articleDecoded = Base64.decode(articleEncoded)
     const metaButtonStyle = {
       position: 'fixed',
@@ -47,17 +47,16 @@ export default React.createClass({
     }
     if (editing) {
       return (
-        <div className='commentary'>
-          {showMeta ? <Meta doc={commentary} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={commentary} articleDecoded={articleDecoded} onSaveCommentaryArticle={onSaveCommentaryArticle} />
+        <div className='sourceCategory'>
+          {showMeta ? <Meta doc={activeSourceCategory} onCloseMeta={this.onCloseMeta} /> : null}
+          <Editor doc={activeSourceCategory} articleDecoded={articleDecoded} onSaveSourceCategoryArticle={onSaveSourceCategoryArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
-      <div className='commentary'>
-        <h1>{commentary.title}</h1>
+      <div className='sourceCategory col400'>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )

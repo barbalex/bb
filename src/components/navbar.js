@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Navbar, NavBrand, CollapsibleNav, NavItem, NavDropdown, Nav, MenuItem, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { Navbar, NavBrand, CollapsibleNav, NavItem, Nav, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import _ from 'lodash'
 import AffixWrapper from './affixWrapper.js'
 
@@ -14,10 +14,12 @@ export default React.createClass({
     activeMonthlyEvent: React.PropTypes.object,
     activePublication: React.PropTypes.object,
     activeCommentary: React.PropTypes.object,
+    activeSourceCategory: React.PropTypes.object,
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
     onClickNewCommentary: React.PropTypes.func,
+    onClickNewSourceCategory: React.PropTypes.func,
     onClickNewMonthlyEvent: React.PropTypes.func,
     onClickNewPublication: React.PropTypes.func,
     navExpanded: React.PropTypes.bool
@@ -29,9 +31,10 @@ export default React.createClass({
     }
   },
 
-  onClickPage (pageType) {
-    app.Actions.getPage(pageType)
-    this.onToggleNav()
+  onClickPage (id) {
+    app.Actions.getPage(id)
+    // if home was clicked, do not toggle nav
+    if (id !== 'pages_home') this.onToggleNav()
   },
 
   onClickEdit () {
@@ -46,7 +49,14 @@ export default React.createClass({
   },
 
   onToggleNav () {
-    this.setState({ navExpanded: !this.state.navExpanded})
+    const navIsMobile = this.isNavMobile()
+    // toggle only if nav is in mobile mode
+    if (navIsMobile) this.setState({ navExpanded: !this.state.navExpanded})
+  },
+
+  isNavMobile () {
+    const documentWidth = document.getElementById('content').clientWidth
+    return documentWidth <= 750
   },
 
   logoutTooltip () {
@@ -60,7 +70,11 @@ export default React.createClass({
   },
 
   newCommentaryTooltip () {
-    return <Tooltip id='newCommentary'>new Commentary</Tooltip>
+    return <Tooltip id='newCommentary'>new commentary</Tooltip>
+  },
+
+  newSourceCategoryTooltip () {
+    return <Tooltip id='newSourceCategory'>new source category</Tooltip>
   },
 
   newMonthlyEventTooltip () {
@@ -72,16 +86,17 @@ export default React.createClass({
   },
 
   render () {
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, email, editing, onClickNewCommentary, onClickNewMonthlyEvent, onClickNewPublication } = this.props
+    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSourceCategory, email, editing, onClickNewCommentary, onClickNewSourceCategory, onClickNewMonthlyEvent, onClickNewPublication } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = activePage && activePage._id ? activePage._id : null
-    const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
-    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activePublication, '_id'))
+    const nonEditableIds = ['pages_commentaries', 'pages_sources', 'pages_monthlyEvents', 'pages_publications']
+    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeSourceCategory, '_id') || _.has(activePublication, '_id'))
     const showAddCommentary = email && activePage._id === 'pages_commentaries'
+    const showAddSourceCategory = email && activePage._id === 'pages_sources'
     const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
     const showAddPublication = email && activePage._id === 'pages_publications'
-    const showNavbarRight = email || showEdit || showAddCommentary || showAddMonthlyEvent
+    const showNavbarRight = email || showEdit || showAddCommentary || showAddSourceCategory || showAddMonthlyEvent
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -160,10 +175,21 @@ export default React.createClass({
                     </OverlayTrigger>
                     : null
                   }
+                  {showAddSourceCategory ?
+                    <OverlayTrigger placement='bottom' overlay={this.newSourceCategoryTooltip()}>
+                      <NavItem
+                        eventKey={3}
+                        onClick={onClickNewSourceCategory}
+                      >
+                        <Glyphicon glyph='plus' />
+                      </NavItem>
+                    </OverlayTrigger>
+                    : null
+                  }
                   {showAddMonthlyEvent ?
                     <OverlayTrigger placement='bottom' overlay={this.newMonthlyEventTooltip()}>
                       <NavItem
-                        eventKey={3}
+                        eventKey={4}
                         onClick={onClickNewMonthlyEvent}
                       >
                         <Glyphicon glyph='plus' />
@@ -174,7 +200,7 @@ export default React.createClass({
                   {showAddPublication ?
                     <OverlayTrigger placement='bottom' overlay={this.newPublicationTooltip()}>
                       <NavItem
-                        eventKey={4}
+                        eventKey={5}
                         onClick={onClickNewPublication}
                       >
                         <Glyphicon glyph='plus' />
@@ -184,7 +210,7 @@ export default React.createClass({
                   }
                   <OverlayTrigger placement='bottom' overlay={this.logoutTooltip()}>
                     <NavItem
-                      eventKey={5}
+                      eventKey={6}
                       onClick={this.onClickLogout}
                     >
                       <Glyphicon glyph='log-out' />

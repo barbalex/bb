@@ -12,15 +12,16 @@ export default React.createClass({
     onSavePageArticle: React.PropTypes.func,
     onSaveMonthlyEventArticle: React.PropTypes.func,
     onSavePublicationArticle: React.PropTypes.func,
-    onSaveCommentaryArticle: React.PropTypes.func
+    onSaveCommentaryArticle: React.PropTypes.func,
+    onSaveSourceCategoryArticle: React.PropTypes.func
   },
 
   componentDidMount () {
-    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle } = this.props
+    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle, onSaveSourceCategoryArticle } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
     if (onSaveMonthlyEventArticle || onSavePublicationArticle) height = window.innerHeight - 52 - 74 - 76
-    if (onSaveCommentaryArticle) height = window.innerHeight - 52 - 74 - 90
+    if (onSaveCommentaryArticle || onSaveSourceCategoryArticle) height = window.innerHeight - 52 - 74 - 90
     const instanceSelector = `#${doc._id}`
 
     window.tinymce.init({
@@ -47,6 +48,7 @@ export default React.createClass({
           if (onSaveMonthlyEventArticle) onSaveMonthlyEventArticle(articleEncoded)
           if (onSavePublicationArticle) onSavePublicationArticle(articleEncoded)
           if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)
+          if (onSaveSourceCategoryArticle) onSaveSourceCategoryArticle(articleEncoded)
         })
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4

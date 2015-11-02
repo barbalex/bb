@@ -3,112 +3,68 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
-import DateTimeField from 'react-bootstrap-datetimepicker'
-import moment from 'moment'
 
 export default React.createClass({
-  displayName: 'NewSource',
+  displayName: 'NewSourceCategory',
 
   propTypes: {
-    onCloseNewCommentary: React.PropTypes.func,
-    title: React.PropTypes.string,
-    date: React.PropTypes.number,
+    onCloseNewSourceCategory: React.PropTypes.func,
+    category: React.PropTypes.string,
     error: React.PropTypes.string
   },
 
   getInitialState () {
     return {
-      title: null,
-      date: moment(),
+      category: null,
       error: null
     }
   },
 
-  onChangeTitle (event) {
-    const title = event.target.value
-    this.setState({ title })
+  onChangeCategory (event) {
+    const category = event.target.value
+    this.setState({ category })
   },
 
-  onChangeDate (date) {
-    this.setState({ date })
-  },
-
-  createNewCommentary () {
-    const { onCloseNewCommentary } = this.props
-    const { title, date } = this.state
-    if (title && date) {
-      app.Actions.newCommentary(title, date)
-      onCloseNewCommentary()
+  createNewSourceCategory () {
+    const { onCloseNewSourceCategory } = this.props
+    const { category } = this.state
+    if (category) {
+      app.Actions.newSourceCategory(category)
+      onCloseNewSourceCategory()
     } else {
-      let error = 'Please choose a date'
-      if (!title) error = 'Please add a title'
+      const error = 'Please choose a category'
       this.setState({ error })
     }
   },
 
   close () {
-    const { onCloseNewCommentary } = this.props
-    onCloseNewCommentary()
+    const { onCloseNewSourceCategory } = this.props
+    onCloseNewSourceCategory()
   },
 
   onHide () {
     // seems that this method is needed ???
   },
 
-  handleDateTimeFieldFocus (e) {
-    const parent = e.target.parentElement
-    const children = parent.childNodes
-    for (let i = 0; i < children.length; i++) {
-      if (children[i].tagName.toLowerCase() === 'span') {
-        children[i].click()
-        return
-      }
-    }
-  },
-
   render () {
-    const { title, date, error } = this.state
-    const that = this
-    const dateTimeFieldInputProps = {
-      onFocus (e) {
-        that.handleDateTimeFieldFocus(e)
-      }
-    }
+    const { category, error } = this.state
     const alertStyle = {
       marginBottom: 10
     }
-    const dateLabelStyle = {
-      fontWeight: 'bold',
-      marginBottom: 5
-    }
-    const dtfStyle = {
-      marginBottom: 20
-    }
-    console.log('date', date)
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>New commentary</Modal.Title>
+          <Modal.Title>New source category</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='text' label='Title' value={title} onChange={this.onChangeTitle} autoFocus />
-          <div style={dateLabelStyle}>Date</div>
-          <div style={dtfStyle}>
-            <DateTimeField
-              dateTime={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
-              format='DD.MM.YYYY'
-              inputFormat ='DD.MM.YYYY'
-              mode='date'
-              inputProps={dateTimeFieldInputProps}
-              onChange={this.onChangeDate} />
-          </div>
+          <Input type='text' label='Category' value={category} onChange={this.onChangeCategory} autoFocus />
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>
 
         <Modal.Footer>
           <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewCommentary}>create new commentary</Button>
+          <Button bsStyle='primary' onClick={this.createNewSourceCategory}>create new source category</Button>
         </Modal.Footer>
 
       </Modal>

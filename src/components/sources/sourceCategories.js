@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
-import Source from './source.js'
+import SourceCategory from './sourceCategory.js'
 import NewSourceCategory from './newSourceCategory.js'
 import ModalRemoveSourceCategory from './modalRemoveSourceCategory.js'
 
@@ -16,30 +16,30 @@ export default React.createClass({
   mixins: [ListenerMixin],
 
   propTypes: {
-    commentaries: React.PropTypes.array,
-    commentary: React.PropTypes.object,
+    sourceCategories: React.PropTypes.array,
+    activeSourceCategory: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onSaveCommentaryArticle: React.PropTypes.func,
-    onCloseNewCommentary: React.PropTypes.func,
-    showNewCommentary: React.PropTypes.bool,
+    onSaveSourceCategoryArticle: React.PropTypes.func,
+    onCloseNewSourceCategory: React.PropTypes.func,
+    showNewSourceCategory: React.PropTypes.bool,
     docToRemove: React.PropTypes.object
   },
 
   getInitialState () {
     return {
-      commentaries: [],
+      sourceCategories: [],
       docToRemove: null
     }
   },
 
   componentDidMount () {
-    this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
-    app.Actions.getCommentaries()
+    this.listenTo(app.sourceCategoriesStore, this.onSourceCategoriesStoreChange)
+    app.Actions.getSourceCategories()
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.commentary._id && !prevProps.commentary._id) {
+    if (this.props.activeSourceCategory._id && !prevProps.activeSourceCategory._id) {
       /**
        * this is first render
        * componentDidUpdate and componentDidMount are actually executed
@@ -51,42 +51,42 @@ export default React.createClass({
       }, 200)
       // window.requestAnimationFrame(() => this.scrollToActivePanel())
     }
-    if (this.props.commentary._id !== prevProps.commentary._id) {
+    if (this.props.activeSourceCategory._id !== prevProps.activeSourceCategory._id) {
       // this is later rerender
       // only scroll into view if the active item changed last render
       this.scrollToActivePanel()
     }
   },
 
-  onCommentariesStoreChange (commentaries) {
+  onSourceCategoriesStoreChange (sourceCategories) {
     const { email } = this.props
-    if (!email) commentaries = commentaries.filter((commentary) => !commentary.draft)
-    this.setState({ commentaries })
+    if (!email) sourceCategories = sourceCategories.filter((sourceCategory) => !sourceCategory.draft)
+    this.setState({ sourceCategories })
   },
 
-  onClickCommentary (id, e) {
-    const { commentary } = this.props
+  onClickSourceCategory (id, e) {
+    const { activeSourceCategory } = this.props
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (Object.keys(commentary).length === 0 || commentary._id !== id) ? id : null
-    app.Actions.getCommentary(idToGet)
+    const idToGet = (Object.keys(activeSourceCategory).length === 0 || activeSourceCategory._id !== id) ? id : null
+    app.Actions.getSourceCategory(idToGet)
   },
 
-  onClickCommentaryCollapse (event) {
+  onClickSourceCategoryCollapse (event) {
     // prevent higher level panels from reacting
     event.preventDefault()
     event.stopPropagation()
   },
 
-  onRemoveCommentary (docToRemove, event) {
+  onRemoveSourceCategory (docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
   },
 
   scrollToActivePanel () {
-    const node = ReactDOM.findDOMNode(this._activeCommentaryPanel)
+    const node = ReactDOM.findDOMNode(this._activeSourceCategoryPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
@@ -98,17 +98,17 @@ export default React.createClass({
     }
   },
 
-  removeCommentary (remove) {
+  removeSourceCategory (remove) {
     const { docToRemove } = this.state
-    if (remove) app.Actions.removeCommentary(docToRemove)
+    if (remove) app.Actions.removeSourceCategory(docToRemove)
     this.setState({ docToRemove: null })
   },
 
-  removeCommentaryTooltip () {
-    return <Tooltip id='removeThisCommentary'>remove</Tooltip>
+  removeSourceCategoryTooltip () {
+    return <Tooltip id='removeThisSourceCategory'>remove</Tooltip>
   },
 
-  removeCommentaryGlyph (doc) {
+  removeSourceCategoryGlyph (doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 10,
@@ -117,8 +117,8 @@ export default React.createClass({
       color: '#edf4f8'
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.removeCommentaryTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveCommentary.bind(this, doc)} />
+      <OverlayTrigger placement='top' overlay={this.removeSourceCategoryTooltip()}>
+        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveSourceCategory.bind(this, doc)} />
       </OverlayTrigger>
     )
   },
@@ -148,20 +148,20 @@ export default React.createClass({
   onToggleDraft (doc, event) {
     event.preventDefault()
     event.stopPropagation()
-    app.Actions.toggleDraftOfCommentary(doc)
+    app.Actions.toggleDraftOfSourceCategory(doc)
   },
 
-  commentariesComponent () {
-    const { commentary, editing, email, onSaveCommentaryArticle } = this.props
-    let { commentaries } = this.state
-    if (commentaries.length > 0) {
-      commentaries = commentaries.sort((a, b) => {
-        if (a._id < b._id) return 1
-        return -1
+  sourceCategoriesComponent () {
+    const { activeSourceCategory, editing, email, onSaveSourceCategoryArticle } = this.props
+    let { sourceCategories } = this.state
+    if (sourceCategories.length > 0) {
+      sourceCategories = sourceCategories.sort((a, b) => {
+        if (a._id < b._id) return -1
+        return 1
       })
-      return commentaries.map((doc, index) => {
-        const isCommentary = Object.keys(commentary).length > 0
-        const isActiveCommentary = isCommentary ? doc._id === commentary._id : false
+      return sourceCategories.map((doc, index) => {
+        const isSourceCategory = Object.keys(activeSourceCategory).length > 0
+        const isActiveSourceCategory = isSourceCategory ? doc._id === activeSourceCategory._id : false
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative',
@@ -175,21 +175,21 @@ export default React.createClass({
           maxHeight: window.innerHeight - 141,
           overflowY: 'auto'
         }
-        if (!isActiveCommentary) {
+        if (!isActiveSourceCategory) {
           Object.assign(panelHeadingStyle, {
             borderBottomRightRadius: 3,
             borderBottomLeftRadius: 3
           })
         }
-        const ref = isActiveCommentary ? '_activeCommentaryPanel' : '_commentaryPanel' + doc._id
+        const ref = isActiveSourceCategory ? '_activeSourceCategoryPanel' : '_sourceCategoryPanel' + doc._id
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
           <div key={doc._id} ref={(c) => this[ref] = c} className='panel panel-default'>
-            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickCommentary.bind(this, doc._id)} style={panelHeadingStyle}>
+            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickSourceCategory.bind(this, doc._id)} style={panelHeadingStyle}>
               <h4 className='panel-title'>
-                <a role='button' data-toggle='collapse' data-parent='#commentariesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
-                  {doc.title}
+                <a role='button' data-toggle='collapse' data-parent='#sourceCategoriesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
+                  {doc.category}
                 </a>
               </h4>
               {showEditingGlyphons ?
@@ -197,14 +197,14 @@ export default React.createClass({
                 : null
               }
               {showEditingGlyphons ?
-                this.removeCommentaryGlyph(doc)
+                this.removeSourceCategoryGlyph(doc)
                 : null
               }
             </div>
-            {isActiveCommentary ?
-              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickCommentaryCollapse}>
+            {isActiveSourceCategory ?
+              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickSourceCategoryCollapse}>
                 <div className='panel-body' style={panelBodyStyle}>
-                  <Source commentary={commentary} editing={editing} onSaveCommentaryArticle={onSaveCommentaryArticle} />
+                  <SourceCategory activeSourceCategory={activeSourceCategory} editing={editing} onSaveSourceCategoryArticle={onSaveSourceCategoryArticle} />
                 </div>
               </div>
               : null
@@ -217,17 +217,16 @@ export default React.createClass({
   },
 
   render () {
-    const { commentary, showNewCommentary, onCloseNewCommentary } = this.props
+    const { activeSourceCategory, showNewSourceCategory, onCloseNewSourceCategory } = this.props
     const { docToRemove } = this.state
-    const activeCommentaryId = _.has(commentary, '_id') ? commentary._id : null
+    const activeId = _.has(activeSourceCategory, '_id') ? activeSourceCategory._id : null
     return (
-      <div className='commentaries'>
-        <h1>Commentaries</h1>
-        <PanelGroup activeKey={activeCommentaryId} id='commentariesAccordion' accordion>
-          {this.commentariesComponent()}
+      <div className='sourceCategories'>
+        <PanelGroup activeKey={activeId} id='sourceCategoriesAccordion' accordion>
+          {this.sourceCategoriesComponent()}
         </PanelGroup>
-        {showNewCommentary ? <NewSourceCategory onCloseNewCommentary={onCloseNewCommentary} /> : null}
-        {docToRemove ? <ModalRemoveSourceCategory doc={docToRemove} removeCommentary={this.removeCommentary} /> : null}
+        {showNewSourceCategory ? <NewSourceCategory onCloseNewSourceCategory={onCloseNewSourceCategory} /> : null}
+        {docToRemove ? <ModalRemoveSourceCategory doc={docToRemove} removeSourceCategory={this.removeSourceCategory} /> : null}
       </div>
     )
   }
