@@ -32,6 +32,12 @@ export default () => {
     newSourceCategory: {},
     removeSourceCategory: {},
     toggleDraftOfSourceCategory: {},
+    getActorCategories: {},
+    getActorCategory: {},
+    saveActorCategory: {},
+    newActorCategory: {},
+    removeActorCategory: {},
+    toggleDraftOfActorCategory: {},
     login: {},
     logout: {},
     showError: {}

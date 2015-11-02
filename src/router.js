@@ -11,7 +11,6 @@ export default Router.extend({
     '': 'home',
     'home': 'home',
     'aboutUs': 'aboutUs',
-    'actors': 'actors',
     'european-union-publications': 'europeanUnionPublications',
     'io-and-ngo-publications': 'ioAndNgoPublications',
     'commentaries': 'commentaries',
@@ -19,10 +18,11 @@ export default Router.extend({
     'monthlyEvents': 'monthlyEvents',
     'monthlyEvents/:year/:month': 'monthlyEvent',
     'publications': 'publications',
-    'publications/:category': 'publicationCategory',
     'publications/:category/:title': 'publication',
     'sources': 'sources',
     'sources/:category': 'sourceCategory',
+    'actors': 'actors',
+    'actors/:category': 'actorCategory',
     'login': 'login',
     '*path': 'home'
   },
@@ -34,11 +34,6 @@ export default Router.extend({
 
   aboutUs () {
     const id = 'pages_aboutUs'
-    this.render(id)
-  },
-
-  actors () {
-    const id = 'pages_actors'
     this.render(id)
   },
 
@@ -71,14 +66,6 @@ export default Router.extend({
     this.render(id)
   },
 
-  publicationCategory (category) {
-    // TODO: need an active publicationsCategory state object to pass here
-    ReactDOM.render(
-      <Main />, document.getElementById('content')
-    )
-    app.Actions.getPage('pages_publications')
-  },
-
   publication (category, title) {
     const id = `publications_${category}_${title}`
     this.render()
@@ -96,6 +83,18 @@ export default Router.extend({
     this.render()
     app.Actions.getPage('pages_sources')
     app.Actions.getSourceCategory(id)
+  },
+
+  actors () {
+    const id = 'pages_actors'
+    this.render(id)
+  },
+
+  actorCategory (category) {
+    const id = `actors_${category}`
+    this.render()
+    app.Actions.getPage('pages_actors')
+    app.Actions.getActorCategory(id)
   },
 
   login () {

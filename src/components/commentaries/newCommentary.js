@@ -84,7 +84,6 @@ export default React.createClass({
     const dtfStyle = {
       marginBottom: 20
     }
-    console.log('date', date)
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>

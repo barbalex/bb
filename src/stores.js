@@ -8,6 +8,7 @@ import slug from 'slug'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
 import getSourceCategories from './modules/getSourceCategories.js'
+import getActorCategories from './modules/getActorCategories.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import getPublications from './modules/getPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
@@ -83,6 +84,7 @@ export default (Actions) => {
           // resp.rev is new rev
           monthlyEvent._rev = resp.rev
           this.trigger(monthlyEvent)
+          Actions.getMonthlyEvents()
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
     }
@@ -110,9 +112,7 @@ export default (Actions) => {
         draft: true,
         article: article
       }
-      app.db.put(monthlyEvent)
-        .then(() => this.onGetMonthlyEvents())
-        .catch((error) => app.Actions.showError({title: 'Error creating new monthly event:', msg: error}))
+      Actions.saveMonthlyEvent(monthlyEvent)
     },
 
     onRemoveMonthlyEvent (doc) {
@@ -127,9 +127,7 @@ export default (Actions) => {
       } else {
         doc.draft = true
       }
-      app.db.put(doc)
-        .then(() => this.onGetMonthlyEvents())
-        .catch((error) => app.Actions.showError({title: 'Error changing draft of monthly event:', msg: error}))
+      Actions.saveMonthlyEvent(doc)
     }
   })
 
@@ -158,6 +156,7 @@ export default (Actions) => {
           // resp.rev is new rev
           commentary._rev = resp.rev
           this.trigger(commentary)
+          Actions.getCommentaries()
         })
         .catch((error) => app.Actions.showError({title: 'Error saving commentary:', msg: error}))
     }
@@ -188,9 +187,7 @@ export default (Actions) => {
         article: 'IA==',
         type: 'commentaries'
       }
-      app.db.put(commentary)
-        .then(() => this.onGetCommentaries())
-        .catch((error) => app.Actions.showError({title: 'Error creating new commentary:', msg: error}))
+      Actions.saveCommentary(commentary)
     },
 
     onRemoveCommentary (doc) {
@@ -205,9 +202,7 @@ export default (Actions) => {
       } else {
         doc.draft = true
       }
-      app.db.put(doc)
-        .then(() => this.onGetCommentaries())
-        .catch((error) => app.Actions.showError({title: 'Error changing draft of commentary:', msg: error}))
+      Actions.saveCommentary(doc)
     }
   })
 
@@ -239,6 +234,7 @@ export default (Actions) => {
           // resp.rev is new rev
           publication._rev = resp.rev
           this.trigger(publication)
+          Actions.getPublications()
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
     }
@@ -270,9 +266,7 @@ export default (Actions) => {
         title: title,
         article: article
       }
-      app.db.put(publication)
-        .then(() => this.onGetPublications())
-        .catch((error) => app.Actions.showError({title: 'Error creating new publication:', msg: error}))
+      Actions.savePublication(publication)
     },
 
     onRemovePublication (doc) {
@@ -287,9 +281,7 @@ export default (Actions) => {
       } else {
         doc.draft = true
       }
-      app.db.put(doc)
-        .then(() => this.onGetPublications())
-        .catch((error) => app.Actions.showError({title: 'Error changing draft of publication:', msg: error}))
+      Actions.savePublication(doc)
     }
   })
 
@@ -318,6 +310,7 @@ export default (Actions) => {
           // resp.rev is new rev
           sourceCategory._rev = resp.rev
           this.trigger(sourceCategory)
+          Actions.getSourceCategories()
         })
         .catch((error) => app.Actions.showError({title: 'Error saving source category:', msg: error}))
     }
@@ -338,7 +331,6 @@ export default (Actions) => {
 
     onNewSourceCategory (category) {
       const categorySlugified = slug(category, {lower: true})
-      console.log('categorySlugified', categorySlugified)
       const id = `sources_${categorySlugified}`
       const sourceCategory = {
         _id: id,
@@ -347,9 +339,7 @@ export default (Actions) => {
         article: 'IA==',
         type: 'sources'
       }
-      app.db.put(sourceCategory)
-        .then(() => this.onGetSourceCategories())
-        .catch((error) => app.Actions.showError({title: 'Error creating new source category:', msg: error}))
+      Actions.saveSourceCategory(sourceCategory)
     },
 
     onRemoveSourceCategory (doc) {
@@ -364,9 +354,80 @@ export default (Actions) => {
       } else {
         doc.draft = true
       }
-      app.db.put(doc)
-        .then(() => this.onGetSourceCategories())
-        .catch((error) => app.Actions.showError({title: 'Error changing draft of source category:', msg: error}))
+      Actions.saveSourceCategory(doc)
+    }
+  })
+
+  app.actorCategoryStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetActorCategory (id) {
+      if (!id) {
+        app.router.navigate('/actors')
+        this.trigger({})
+      } else {
+        app.db.get(id, { include_docs: true })
+          .then((actorCategory) => {
+            const path = getPathFromDoc(actorCategory)
+            app.router.navigate('/' + path)
+            this.trigger(actorCategory)
+          })
+          .catch((error) => app.Actions.showError({title: 'Error fetching actor category ' + id + ':', msg: error}))
+      }
+    },
+
+    onSaveActorCategory (actorCategory) {
+      app.db.put(actorCategory)
+        .then((resp) => {
+          // resp.rev is new rev
+          actorCategory._rev = resp.rev
+          this.trigger(actorCategory)
+          Actions.getActorCategories()
+        })
+        .catch((error) => app.Actions.showError({title: 'Error saving actor category:', msg: error}))
+    }
+  })
+
+  app.actorCategoriesStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    onGetActorCategories () {
+      getActorCategories()
+        .then((result) => {
+          const docs = _.pluck(result.rows, 'doc')
+          this.trigger(docs)
+        })
+        .catch((error) => app.Actions.showError({msg: error}))
+    },
+
+    onNewActorCategory (category) {
+      const categorySlugified = slug(category, {lower: true})
+      const id = `actors_${categorySlugified}`
+      const actorCategory = {
+        _id: id,
+        category: category,
+        draft: true,
+        article: 'IA==',
+        type: 'actors'
+      }
+      Actions.saveActorCategory(actorCategory)
+    },
+
+    onRemoveActorCategory (doc) {
+      app.db.remove(doc)
+        .then(() => this.onGetActorCategories())
+        .catch((error) => app.Actions.showError({title: 'Error removing actor category:', msg: error}))
+    },
+
+    onToggleDraftOfActorCategory (doc) {
+      if (doc.draft === true) {
+        delete doc.draft
+      } else {
+        doc.draft = true
+      }
+      Actions.saveActorCategory(doc)
     }
   })
 

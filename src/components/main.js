@@ -11,6 +11,7 @@ import Navbar from '../components/navbar.js'
 import Page from './pages/page.js'
 import Commentaries from './commentaries/commentaries.js'
 import SourceCategories from './sources/sourceCategories.js'
+import ActorCategories from './actors/actorCategories.js'
 import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
 import Publications from './publications/publications.js'
 import Login from './login/login.js'
@@ -28,9 +29,11 @@ export default React.createClass({
     activePublication: React.PropTypes.object,
     activeCommentary: React.PropTypes.object,
     activeSourceCategory: React.PropTypes.object,
+    activeActorCategory: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
     showNewSourceCategory: React.PropTypes.bool,
+    showNewActorCategory: React.PropTypes.bool,
     showNewMonthlyEvent: React.PropTypes.bool,
     showNewPublication: React.PropTypes.bool,
     login: React.PropTypes.bool,
@@ -46,9 +49,11 @@ export default React.createClass({
       activePublication: {},
       activeCommentary: {},
       activeSourceCategory: {},
+      activeActorCategory: {},
       editing: false,
       showNewCommentary: false,
       showNewSourceCategory: false,
+      showNewActorCategory: false,
       showNewMonthlyEvent: false,
       showNewPublication: false,
       email: email,
@@ -63,6 +68,7 @@ export default React.createClass({
     this.listenTo(app.publicationStore, this.onPublicationStoreChange)
     this.listenTo(app.commentaryStore, this.onCommentaryStoreChange)
     this.listenTo(app.sourceCategoryStore, this.onSourceCategoryStoreChange)
+    this.listenTo(app.actorCategoryStore, this.onActorCategoryStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
@@ -85,6 +91,10 @@ export default React.createClass({
 
   onSourceCategoryStoreChange (activeSourceCategory) {
     this.setState({ activeSourceCategory })
+  },
+
+  onActorCategoryStoreChange (activeActorCategory) {
+    this.setState({ activeActorCategory })
   },
 
   onLoginStoreChange (email) {
@@ -110,6 +120,10 @@ export default React.createClass({
     this.setState({ showNewSourceCategory: true })
   },
 
+  onClickNewActorCategory () {
+    this.setState({ showNewActorCategory: true })
+  },
+
   onClickNewMonthlyEvent () {
     this.setState({ showNewMonthlyEvent: true })
   },
@@ -124,6 +138,10 @@ export default React.createClass({
 
   onCloseNewSourceCategory () {
     this.setState({ showNewSourceCategory: false })
+  },
+
+  onCloseNewActorCategory () {
+    this.setState({ showNewActorCategory: false })
   },
 
   onCloseNewMonthlyEvent () {
@@ -168,19 +186,28 @@ export default React.createClass({
     app.Actions.saveSourceCategory(activeSourceCategory)
   },
 
+  onSaveActorCategoryArticle (articleEncoded) {
+    let { activeActorCategory } = this.state
+    activeActorCategory.article = articleEncoded
+    app.Actions.saveActorCategory(activeActorCategory)
+  },
+
   render () {
     const { login } = this.props
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSourceCategory, editing, showNewCommentary, showNewSourceCategory, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSourceCategory, activeActorCategory, editing, showNewCommentary, showNewSourceCategory, showNewActorCategory, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
     const isSourceCategoryPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_sources'
+    const isActorCategoryPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_actors'
     const isMonthlyEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_monthlyEvents'
     const isPublicationsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_publications'
     const isCommentary = activePage.type && activePage.type === 'commentaries'
     const isSourceCategory = activePage.type && activePage.type === 'sources'
+    const isActorCategory = activePage.type && activePage.type === 'actors'
     const showCommentaryPage = isCommentariesPage || isCommentary
     const showSourceCategoryPage = isSourceCategoryPage || isSourceCategory
+    const showActorCategoryPage = isActorCategoryPage || isActorCategory
     const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
     const isPublication = activePage.type && activePage.type === 'publications'
@@ -198,11 +225,13 @@ export default React.createClass({
             activePublication={activePublication}
             activeCommentary={activeCommentary}
             activeSourceCategory={activeSourceCategory}
+            activeActorCategory={activeActorCategory}
             email={email}
             editing={editing}
             onClickEdit={this.onClickEdit}
             onClickNewCommentary={this.onClickNewCommentary}
             onClickNewSourceCategory={this.onClickNewSourceCategory}
+            onClickNewActorCategory={this.onClickNewActorCategory}
             onClickNewMonthlyEvent={this.onClickNewMonthlyEvent}
             onClickNewPublication={this.onClickNewPublication} />
           <div className='container'>
@@ -233,6 +262,16 @@ export default React.createClass({
                 onSaveSourceCategoryArticle={this.onSaveSourceCategoryArticle}
                 showNewSourceCategory={showNewSourceCategory}
                 onCloseNewSourceCategory={this.onCloseNewSourceCategory} />
+              : null
+            }
+            {showActorCategoryPage ?
+              <ActorCategories
+                activeActorCategory={activeActorCategory}
+                editing={editing}
+                email={email}
+                onSaveActorCategoryArticle={this.onSaveActorCategoryArticle}
+                showNewActorCategory={showNewActorCategory}
+                onCloseNewActorCategory={this.onCloseNewActorCategory} />
               : null
             }
             {showMonthlyEventsPage ?
