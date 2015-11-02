@@ -55,8 +55,7 @@ export default React.createClass({
     this.setState({ activeCategory })
     // make sure no publication is loaded
     // i.e. if a publication was loaded it is unloaded
-    // but pass the active category for routing
-    app.Actions.getPublication(null, activeCategory)
+    app.Actions.getPublication(null)
   },
 
   categoriesOfPublications (publications) {
