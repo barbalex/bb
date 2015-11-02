@@ -80,11 +80,12 @@ export default React.createClass({
         return -1
       })
       return categories.map((category, yIndex) => {
+        const className = category === activeCategory ? 'category active' : 'category not-active'
         // wanted to only build publicationsOfCategory if isActiveYear
         // but opening a category was way to hideous
         // const isActiveYear = category === activeCategory
         return (
-          <Panel key={category} header={category} eventKey={category} className='category' onClick={this.onClickCategory.bind(this, category)}>
+          <Panel key={category} header={category} eventKey={category} className={className} onClick={this.onClickCategory.bind(this, category)}>
             <PublicationsOfCategory category={category} publications={publications} activePublication={activePublication} editing={editing} email={email} onSavePublicationArticle={onSavePublicationArticle} />
           </Panel>
         )

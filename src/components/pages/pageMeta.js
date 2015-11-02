@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import AttachedImages from './attachedImages.js'
+import AttachedImages from '../attachedImages.js'
 
 export default React.createClass({
   displayName: 'PageMeta',

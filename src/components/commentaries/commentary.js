@@ -4,7 +4,7 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
 import Editor from '../editor.js'
-import Meta from '../pageMeta.js'
+import Meta from '../pages/pageMeta.js'
 
 export default React.createClass({
   displayName: 'Commentary',
@@ -47,7 +47,7 @@ export default React.createClass({
     }
     if (editing) {
       return (
-        <div>
+        <div className='commentary'>
           {showMeta ? <Meta doc={commentary} onCloseMeta={this.onCloseMeta} /> : null}
           <Editor doc={commentary} articleDecoded={articleDecoded} onSaveCommentaryArticle={onSaveCommentaryArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
@@ -56,7 +56,7 @@ export default React.createClass({
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
-      <div>
+      <div className='commentary'>
         <h1>{commentary.title}</h1>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
