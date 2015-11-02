@@ -95,11 +95,15 @@ export default React.createClass({
         return -1
       })
       return years.map((year, yIndex) => {
+        console.log('year', year)
+        console.log('activeYear', activeYear)
+        let className = 'year not-active'
+        if (year === activeYear) className = 'year active'
         // wanted to only build MonthlyEventsOfYear if isActiveYear
         // but opening a year was way to hideous
         // const isActiveYear = year === activeYear
         return (
-          <Panel key={year} header={year} eventKey={year} className='year' onClick={this.onClickYear.bind(this, year)}>
+          <Panel key={year} header={year} eventKey={year} className={className} onClick={this.onClickYear.bind(this, year)}>
             <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} activeMonthlyEvent={activeMonthlyEvent} maxArrivalsAndVictims={maxArrivalsAndVictims} editing={editing} email={email} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
           </Panel>
         )
