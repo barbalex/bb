@@ -255,7 +255,8 @@ export default (Actions) => {
 
     onNewPublication (category, title) {
       const titleSlugified = slug(title)
-      const id = `publications_${category}_${titleSlugified}`
+      const categorySlugified = slug(category)
+      const id = `publications_${categorySlugified}_${titleSlugified}`
       const article = Base64.encode(publicationTemplate)
       const publication = {
         _id: id,
