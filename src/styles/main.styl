@@ -77,6 +77,9 @@ body .navbar
 .commentaries .panel-heading
   background-image url('../../images/oceanDark.jpg')
   
+.category.not-active > .panel-heading
+  border-radius 3px
+  
 .panel-group .year > .panel-heading,
   background-color transparent
 
@@ -124,6 +127,13 @@ body .navbar
 		margin-top 40px
 		margin-bottom 20px
 
+.publication
+  h2
+    font-size medium
+    font-weight 700
+    margin-top 30px
+    margin-bottom 10px 
+
 .tab-content .actors
 	margin-top 20px
 
@@ -158,8 +168,7 @@ body .navbar
 #monthlyEvents .panel.month:last-of-type,
 #publications .panel.month:last-of-type
   border-bottom-width 0
-/*#publications .panel.month .panel-body
-  padding 5*/
+
 #monthlyEvents .panel.month .panel-body table
   margin-left 0 !important
   width 100% !important
