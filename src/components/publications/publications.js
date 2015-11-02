@@ -4,6 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
+import slug from 'slug'
 import _ from 'lodash'
 import PublicationsOfCategory from './publicationsOfCategory.js'
 import NewPublication from './newPublication.js'
@@ -54,7 +55,8 @@ export default React.createClass({
     this.setState({ activeCategory })
     // make sure no publication is loaded
     // i.e. if a publication was loaded it is unloaded
-    app.Actions.getPublication(null)
+    // but pass the active category for routing
+    app.Actions.getPublication(null, activeCategory)
   },
 
   categoriesOfPublications (publications) {
@@ -64,11 +66,6 @@ export default React.createClass({
       return categories.sort()
     }
     return []
-  },
-
-  firstCategory () {
-    const { categories } = this.state
-    return categories[0]
   },
 
   categoriesComponent (activeCategory) {
@@ -95,14 +92,8 @@ export default React.createClass({
   },
 
   render () {
-    const { activePublication, showNewPublication, onCloseNewPublication } = this.props
-    const { categories } = this.state
-    let activeCategory
-    if (_.has(activePublication, '_id')) {
-      activeCategory = activePublication.category
-    } else {
-      activeCategory = this.state.activeCategory ? this.state.activeCategory : this.firstCategory()
-    }
+    const { showNewPublication, onCloseNewPublication } = this.props
+    const { categories, activeCategory } = this.state
     return (
       <div id='publications'>
         <h1>Publications</h1>

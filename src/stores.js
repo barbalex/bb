@@ -215,9 +215,12 @@ export default (Actions) => {
 
     listenables: Actions,
 
-    onGetPublication (id) {
+    onGetPublication (id, activeCategory) {
       if (!id) {
-        app.router.navigate('/publications')
+        const path = activeCategory ? '/publications/' + slug(activeCategory, {lower: true}) : '/publications'
+        console.log('path', path)
+        app.router.navigate(path)
+        // app.router.navigate('/publications')
         this.trigger({})
       } else {
         app.db.get(id, { include_docs: true })

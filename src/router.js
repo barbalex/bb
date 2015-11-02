@@ -19,6 +19,7 @@ export default Router.extend({
     'monthlyEvents': 'monthlyEvents',
     'monthlyEvents/:year/:month': 'monthlyEvent',
     'publications': 'publications',
+    'publications/:category': 'publicationCategory',
     'publications/:category/:title': 'publication',
     'sources': 'sources',
     'sources/:category': 'sourceCategory',
@@ -68,6 +69,14 @@ export default Router.extend({
   publications () {
     const id = 'pages_publications'
     this.render(id)
+  },
+
+  publicationCategory (category) {
+    // TODO: need an active publicationsCategory state object to pass here
+    ReactDOM.render(
+      <Main />, document.getElementById('content')
+    )
+    app.Actions.getPage('pages_publications')
   },
 
   publication (category, title) {
