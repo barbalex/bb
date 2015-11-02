@@ -1,5 +1,5 @@
 {
-  "_id": "publications_category_titleSlugified",
+  "_id": "publications_categorySlugified_titleSlugified",
   "type": "publications",
   "category": "xxx",
   "title": "xxx",
