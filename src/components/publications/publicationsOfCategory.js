@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom'
 import { PanelGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import _ from 'lodash'
 import Publication from './publication.js'
-import getCategoryFromPublicationId from './getCategoryFromPublicationId.js'
 import ModalRemovePublication from './modalRemovePublication.js'
 
 export default React.createClass({
@@ -134,7 +133,11 @@ export default React.createClass({
     const { activePublication, editing, email, onSavePublicationArticle } = this.props
     let { publications } = this.props
     // filter only publication of current category
-    publications = publications.filter((publication) => getCategoryFromPublicationId(publication._id) === category)
+    publications = publications.filter((publication) => publication.category === category)
+    publications = publications.sort((a, b) => {
+      if (a.title < b.title) return -1
+      return 1
+    })
     return publications.map((doc, dIndex) => {
       const isActivePublication = _.has(activePublication, '_id') ? doc._id === activePublication._id : false
       const showEditingGlyphons = !!email
