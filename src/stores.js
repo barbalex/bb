@@ -537,6 +537,7 @@ export default (Actions) => {
         this.errors = []
         this.trigger([])
       } else {
+        if (error.msg && error.msg.message) error.msg = error.msg.message
         this.errors.unshift(error)
         this.trigger(this.errors)
         setTimeout(() => {
