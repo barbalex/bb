@@ -528,14 +528,14 @@ export default (Actions) => {
 
     errors: [],
 
-    // this is how long the error will be shown
+    // how long the error will be shown
     duration: 10000,
 
     onShowError (error) {
       if (!error) {
         // user wants to remove error messages
         this.errors = []
-        this.trigger(this.errors)
+        this.trigger([])
       } else {
         this.errors.unshift(error)
         this.trigger(this.errors)

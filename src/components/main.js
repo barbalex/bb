@@ -70,7 +70,7 @@ export default React.createClass({
     this.listenTo(app.activeSourceStore, this.onActiveSourceStoreChange)
     this.listenTo(app.activeActorStore, this.onActiveActorStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
-    this.listenTo(app.errorStore, this.onError)
+    this.listenTo(app.errorStore, this.onErrorStoreChange)
   },
 
   onActivePageStoreChange (activePage) {
@@ -102,7 +102,7 @@ export default React.createClass({
     if (email) app.Actions.getPage('pages_home')
   },
 
-  onError (errors) {
+  onErrorStoreChange (errors) {
     this.setState({ errors })
   },
 
