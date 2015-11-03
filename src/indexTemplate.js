@@ -34,7 +34,7 @@ module.exports = () => {
 <body>
   <div id='content'></div>
 </body>
-<script type="text/javascript" src="./tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
 <script src="${jsPath}"></script>
 `
 }
