@@ -40,7 +40,7 @@ export default React.createClass({
         data: file
       }
     })
-    app.Actions.addActivePageAttachments(doc, attachments)
+    app.Actions.addPageAttachments(doc, attachments)
   },
 
   render () {

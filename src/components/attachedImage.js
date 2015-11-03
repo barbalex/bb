@@ -23,7 +23,7 @@ export default React.createClass({
 
   removeImage () {
     const { doc, attName } = this.props
-    app.Actions.removeActivePageAttachment(doc, attName)
+    app.Actions.removePageAttachment(doc, attName)
   },
 
   render () {

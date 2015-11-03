@@ -4,10 +4,10 @@ import Reflux from 'reflux'
 
 export default () => {
   let Actions = Reflux.createActions({
-    getActivePage: {},
-    saveActivePage: {},
-    addActivePageAttachments: {},
-    removeActivePageAttachment: {},
+    getPage: {},
+    savePage: {},
+    addPageAttachments: {},
+    removePageAttachment: {},
     getMonthlyEvents: {},
     getMonthlyEvent: {},
     saveMonthlyEvent: {},

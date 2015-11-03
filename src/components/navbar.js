@@ -34,7 +34,7 @@ export default React.createClass({
   },
 
   onClickPage (id) {
-    app.Actions.getActivePage(id)
+    app.Actions.getPage(id)
     // if home was clicked, do not toggle nav
     if (id !== 'pages_home') this.onToggleNav()
   },

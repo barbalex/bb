@@ -16,13 +16,13 @@ import publicationTemplate from 'html!./components/publications/publicationTempl
 import _ from 'lodash'
 
 export default (Actions) => {
-  app.activePageStore = Reflux.createStore({
+  app.pageStore = Reflux.createStore({
 
     listenables: Actions,
 
     doc: null,
 
-    onGetActivePage (id) {
+    onGetPage (id) {
       const get = !this.doc || (this.doc._id && this.doc._id !== id)
       if (get) {
         app.db.get(id, { include_docs: true })
@@ -33,32 +33,29 @@ export default (Actions) => {
             this.trigger(doc)
           })
           .catch((error) => app.Actions.showError({title: 'Error loading ' + id + ':', msg: error}))
-      } else {
-        this.trigger(this.doc)
       }
     },
 
-    onSaveActivePage (doc) {
+    onSavePage (doc) {
       app.db.put(doc)
         .then((resp) => {
           // resp.rev is new rev
           doc._rev = resp.rev
-          this.doc = doc
           this.trigger(doc)
         })
-        .catch((error) => app.Actions.showError({title: 'Error in activePageStore, onSaveActivePage:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error in pageStore, onSavePage:', msg: error}))
     },
 
     // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
-    onAddActivePageAttachments (doc, attachments) {
+    onAddPageAttachments (doc, attachments) {
       doc._attachments = Object.assign(doc._attachments, attachments)
-      this.onSaveActivePage(doc)
+      this.onSavePage(doc)
     },
 
-    onRemoveActivePageAttachment (doc, attachmentId) {
-      console.log('activePageStore removing attachment', attachmentId)
+    onRemovePageAttachment (doc, attachmentId) {
+      console.log('pageStore removing attachment', attachmentId)
       delete doc._attachments[attachmentId]
-      this.onSaveActivePage(doc)
+      this.onSavePage(doc)
     }
   })
 

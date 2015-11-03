@@ -45,7 +45,7 @@ export default Router.extend({
   commentary (year, month, day, title) {
     const id = `commentaries_${year}_${month}_${day}_${title}`
     this.render()
-    app.Actions.getActivePage('pages_commentaries')
+    app.Actions.getPage('pages_commentaries')
     app.Actions.getCommentary(id)
   },
 
@@ -57,7 +57,7 @@ export default Router.extend({
   monthlyEvent (year, month, day, title) {
     const id = `monthlyEvents_${year}_${month}`
     this.render()
-    app.Actions.getActivePage('pages_monthlyEvents')
+    app.Actions.getPage('pages_monthlyEvents')
     app.Actions.getMonthlyEvent(id)
   },
 
@@ -69,7 +69,7 @@ export default Router.extend({
   publication (category, title) {
     const id = `publications_${category}_${title}`
     this.render()
-    app.Actions.getActivePage('pages_publications')
+    app.Actions.getPage('pages_publications')
     app.Actions.getPublication(id)
   },
 
@@ -81,7 +81,7 @@ export default Router.extend({
   sourceCategory (category) {
     const id = `sources_${category}`
     this.render()
-    app.Actions.getActivePage('pages_sources')
+    app.Actions.getPage('pages_sources')
     app.Actions.getSourceCategory(id)
   },
 
@@ -93,7 +93,7 @@ export default Router.extend({
   actorCategory (category) {
     const id = `actors_${category}`
     this.render()
-    app.Actions.getActivePage('pages_actors')
+    app.Actions.getPage('pages_actors')
     app.Actions.getActorCategory(id)
   },
 
@@ -107,6 +107,6 @@ export default Router.extend({
     ReactDOM.render(
       <Main />, document.getElementById('content')
     )
-    if (id) app.Actions.getActivePage(id)
+    if (id) app.Actions.getPage(id)
   }
 })
