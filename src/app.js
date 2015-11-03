@@ -9,6 +9,8 @@ import actions from './actions.js'
 import stores from './stores'
 import couchUrl from './modules/getCouchUrl.js'
 import 'expose?$!expose?jQuery!jquery'
+// need this polyfill to transform promise.all
+// without it IE 11 and lower bark
 import 'babel-polyfill'
 // make webpack import styles
 import './styles/main.styl'
