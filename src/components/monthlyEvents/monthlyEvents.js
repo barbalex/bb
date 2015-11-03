@@ -35,12 +35,12 @@ export default React.createClass({
   },
 
   componentDidMount () {
-    this.listenTo(app.monthlyEventStore, this.onMonthlyEventStoreChange)
+    this.listenTo(app.activeMonthlyEventStore, this.onActiveMonthlyEventStoreChange)
     this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
     app.Actions.getMonthlyEvents()
   },
 
-  onMonthlyEventStoreChange (activeMonthlyEvent) {
+  onActiveMonthlyEventStoreChange (activeMonthlyEvent) {
     // need to requery monthly events
     // so new / changed arrivals and victims are shown
     app.Actions.getMonthlyEvents()

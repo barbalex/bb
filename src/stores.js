@@ -16,18 +16,18 @@ import publicationTemplate from 'html!./components/publications/publicationTempl
 import _ from 'lodash'
 
 export default (Actions) => {
-  app.pageStore = Reflux.createStore({
+  app.activePageStore = Reflux.createStore({
 
     listenables: Actions,
 
-    doc: null,
+    activePage: null,
 
     onGetPage (id) {
-      const get = !this.doc || (this.doc._id && this.doc._id !== id)
+      const get = !this.activePage || (this.activePage._id && this.activePage._id !== id)
       if (get) {
         app.db.get(id, { include_docs: true })
           .then((doc) => {
-            this.doc = doc
+            this.activePage = doc
             const path = getPathFromDoc(doc)
             app.router.navigate('/' + path)
             this.trigger(doc)
@@ -41,9 +41,10 @@ export default (Actions) => {
         .then((resp) => {
           // resp.rev is new rev
           doc._rev = resp.rev
+          this.activePage = doc
           this.trigger(doc)
         })
-        .catch((error) => app.Actions.showError({title: 'Error in pageStore, onSavePage:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error in activePageStore, onSavePage:', msg: error}))
     },
 
     // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
@@ -53,26 +54,30 @@ export default (Actions) => {
     },
 
     onRemovePageAttachment (doc, attachmentId) {
-      console.log('pageStore removing attachment', attachmentId)
+      console.log('activePageStore removing attachment', attachmentId)
       delete doc._attachments[attachmentId]
       this.onSavePage(doc)
     }
   })
 
-  app.monthlyEventStore = Reflux.createStore({
+  app.activeMonthlyEventStore = Reflux.createStore({
 
     listenables: Actions,
+
+    activeMonthlyEvent: null,
 
     onGetMonthlyEvent (id) {
       if (!id) {
         app.router.navigate('/monthlyEvents')
         this.trigger({})
+        this.activeMonthlyEvent = null
       } else {
         app.db.get(id, { include_docs: true })
           .then((monthlyEvent) => {
             const path = getPathFromDoc(monthlyEvent)
             app.router.navigate('/' + path)
             this.trigger(monthlyEvent)
+            this.activeMonthlyEvent = monthlyEvent
           })
           .catch((error) => app.Actions.showError({title: 'Error fetching monthly event ' + id + ':', msg: error}))
       }
@@ -85,6 +90,7 @@ export default (Actions) => {
           monthlyEvent._rev = resp.rev
           this.trigger(monthlyEvent)
           Actions.getMonthlyEvents()
+          if (monthlyEvent._id === this.activeMonthlyEvent._id) this.activeMonthlyEvent = monthlyEvent
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
     }
@@ -117,7 +123,11 @@ export default (Actions) => {
 
     onRemoveMonthlyEvent (doc) {
       app.db.remove(doc)
-        .then(() => this.onGetMonthlyEvents())
+        .then(() => {
+          this.onGetMonthlyEvents()
+          const activeMonthlyEvent = app.activeMonthlyEventStore.activeMonthlyEvent
+          if (activeMonthlyEvent && activeMonthlyEvent._id === doc._id) Actions.getMonthlyEvent(null)
+        })
         .catch((error) => app.Actions.showError({title: 'Error removing monthly event:', msg: error}))
     },
 
@@ -131,20 +141,24 @@ export default (Actions) => {
     }
   })
 
-  app.commentaryStore = Reflux.createStore({
+  app.activeCommentaryStore = Reflux.createStore({
 
     listenables: Actions,
+
+    activeCommentary: null,
 
     onGetCommentary (id) {
       if (!id) {
         app.router.navigate('/commentaries')
         this.trigger({})
+        this.activeCommentary = null
       } else {
         app.db.get(id, { include_docs: true })
           .then((commentary) => {
             const path = getPathFromDoc(commentary)
             app.router.navigate('/' + path)
             this.trigger(commentary)
+            this.activeCommentary = commentary
           })
           .catch((error) => app.Actions.showError({title: 'Error fetching commentary ' + id + ':', msg: error}))
       }
@@ -157,6 +171,7 @@ export default (Actions) => {
           commentary._rev = resp.rev
           this.trigger(commentary)
           Actions.getCommentaries()
+          if (this.activeCommentary._id === commentary._id) this.activeCommentary = commentary
         })
         .catch((error) => app.Actions.showError({title: 'Error saving commentary:', msg: error}))
     }
@@ -192,7 +207,11 @@ export default (Actions) => {
 
     onRemoveCommentary (doc) {
       app.db.remove(doc)
-        .then(() => this.onGetCommentaries())
+        .then(() => {
+          this.onGetCommentaries()
+          const activeCommentary = app.activeCommentaryStore.activeCommentary
+          if (activeCommentary && activeCommentary._id === doc._id) Actions.getCommentary(null)
+        })
         .catch((error) => app.Actions.showError({title: 'Error removing commentary:', msg: error}))
     },
 
@@ -206,20 +225,24 @@ export default (Actions) => {
     }
   })
 
-  app.publicationStore = Reflux.createStore({
+  app.activePublicationStore = Reflux.createStore({
 
     listenables: Actions,
+
+    activePublication: null,
 
     onGetPublication (id) {
       if (!id) {
         app.router.navigate('/publications')
         this.trigger({})
+        this.activePublication = null
       } else {
         app.db.get(id, { include_docs: true })
           .then((publication) => {
             const path = getPathFromDoc(publication)
             app.router.navigate('/' + path)
             this.trigger(publication)
+            this.activePublication = publication
           })
           .catch((error) => app.Actions.showError({title: 'Error fetching monthly event ' + id + ':', msg: error}))
       }
@@ -232,6 +255,7 @@ export default (Actions) => {
           publication._rev = resp.rev
           this.trigger(publication)
           Actions.getPublications()
+          if (this.activePublication && this.activePublication._id === publication._id) this.activePublication = publication
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
     }
@@ -268,7 +292,11 @@ export default (Actions) => {
 
     onRemovePublication (doc) {
       app.db.remove(doc)
-        .then(() => this.onGetPublications())
+        .then(() => {
+          this.onGetPublications()
+          const activePublication = app.activePublicationStore.activePublication
+          if (activePublication && activePublication._id === doc._id) Actions.getPublication(null)
+        })
         .catch((error) => app.Actions.showError({title: 'Error removing publication:', msg: error}))
     },
 

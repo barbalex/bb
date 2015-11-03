@@ -63,29 +63,29 @@ export default React.createClass({
 
   componentDidMount () {
     // listen to stores
-    this.listenTo(app.pageStore, this.onPageStoreChange)
-    this.listenTo(app.monthlyEventStore, this.onMonthlyEventStoreChange)
-    this.listenTo(app.publicationStore, this.onPublicationStoreChange)
-    this.listenTo(app.commentaryStore, this.onCommentaryStoreChange)
+    this.listenTo(app.activePageStore, this.onActivePageStoreChange)
+    this.listenTo(app.activeMonthlyEventStore, this.onActiveMonthlyEventStoreChange)
+    this.listenTo(app.activePublicationStore, this.onActivePublicationStoreChange)
+    this.listenTo(app.activeCommentaryStore, this.onActiveCommentaryStoreChange)
     this.listenTo(app.sourceCategoryStore, this.onSourceCategoryStoreChange)
     this.listenTo(app.actorCategoryStore, this.onActorCategoryStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
 
-  onPageStoreChange (activePage) {
+  onActivePageStoreChange (activePage) {
     this.setState({ activePage })
   },
 
-  onMonthlyEventStoreChange (activeMonthlyEvent) {
+  onActiveMonthlyEventStoreChange (activeMonthlyEvent) {
     this.setState({ activeMonthlyEvent })
   },
 
-  onPublicationStoreChange (activePublication) {
+  onActivePublicationStoreChange (activePublication) {
     this.setState({ activePublication })
   },
 
-  onCommentaryStoreChange (activeCommentary) {
+  onActiveCommentaryStoreChange (activeCommentary) {
     this.setState({ activeCommentary })
   },
 

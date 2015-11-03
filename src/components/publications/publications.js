@@ -35,12 +35,12 @@ export default React.createClass({
   },
 
   componentDidMount () {
-    this.listenTo(app.publicationStore, this.onPublicationStoreChange)
+    this.listenTo(app.activePublicationStore, this.onActivePublicationStoreChange)
     this.listenTo(app.publicationsStore, this.onPublicationsStoreChange)
     app.Actions.getPublications()
   },
 
-  onPublicationStoreChange (activePublication) {
+  onActivePublicationStoreChange (activePublication) {
     app.Actions.getPublications()
   },
 
