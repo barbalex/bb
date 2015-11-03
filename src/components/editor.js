@@ -59,7 +59,7 @@ export default React.createClass({
         indentOnInit: true
       }
     })
-    // scroll editor to top
+    // scroll editor to top in pages
     if (doc.type === 'pages') {
       window.$('html, body').animate({
         scrollTop: 140
