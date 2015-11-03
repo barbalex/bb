@@ -9,7 +9,7 @@ export default React.createClass({
   propTypes: {
     doc: React.PropTypes.object,
     articleDecoded: React.PropTypes.string,
-    onSavePageArticle: React.PropTypes.func,
+    onSaveActivePageArticle: React.PropTypes.func,
     onSaveMonthlyEventArticle: React.PropTypes.func,
     onSavePublicationArticle: React.PropTypes.func,
     onSaveCommentaryArticle: React.PropTypes.func,
@@ -18,7 +18,7 @@ export default React.createClass({
   },
 
   componentDidMount () {
-    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle, onSaveSourceCategoryArticle, onSaveActorCategoryArticle } = this.props
+    const { doc, onSaveActivePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle, onSaveSourceCategoryArticle, onSaveActorCategoryArticle } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
     if (onSaveMonthlyEventArticle || onSavePublicationArticle) height = window.innerHeight - 52 - 74 - 76
@@ -45,7 +45,7 @@ export default React.createClass({
         editor.on('change undo redo', (e) => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
-          if (onSavePageArticle) onSavePageArticle(articleEncoded)
+          if (onSaveActivePageArticle) onSaveActivePageArticle(articleEncoded)
           if (onSaveMonthlyEventArticle) onSaveMonthlyEventArticle(articleEncoded)
           if (onSavePublicationArticle) onSavePublicationArticle(articleEncoded)
           if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)

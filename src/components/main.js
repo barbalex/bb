@@ -63,7 +63,7 @@ export default React.createClass({
 
   componentDidMount () {
     // listen to stores
-    this.listenTo(app.pageStore, this.onPageStoreChange)
+    this.listenTo(app.activePageStore, this.onActivePageStoreChange)
     this.listenTo(app.monthlyEventStore, this.onMonthlyEventStoreChange)
     this.listenTo(app.publicationStore, this.onPublicationStoreChange)
     this.listenTo(app.commentaryStore, this.onCommentaryStoreChange)
@@ -73,7 +73,7 @@ export default React.createClass({
     this.listenTo(app.errorStore, this.onError)
   },
 
-  onPageStoreChange (activePage) {
+  onActivePageStoreChange (activePage) {
     this.setState({ activePage })
   },
 
@@ -99,7 +99,7 @@ export default React.createClass({
 
   onLoginStoreChange (email) {
     this.setState({ email })
-    if (email) app.Actions.getPage('pages_home')
+    if (email) app.Actions.getActivePage('pages_home')
   },
 
   onError (errors) {
@@ -152,14 +152,14 @@ export default React.createClass({
     this.setState({ showNewPublication: false })
   },
 
-  onSavePage (activePage) {
-    app.Actions.savePage(activePage)
+  onSaveActivePage (activePage) {
+    app.Actions.saveActivePage(activePage)
   },
 
-  onSavePageArticle (articleEncoded) {
+  onSaveActivePageArticle (articleEncoded) {
     let { activePage } = this.state
     activePage.article = articleEncoded
-    app.Actions.savePage(activePage)
+    app.Actions.saveActivePage(activePage)
   },
 
   onSaveMonthlyEventArticle (articleEncoded) {
@@ -240,8 +240,8 @@ export default React.createClass({
               <Page
                 activePage={activePage}
                 editing={editing}
-                onSavePageArticle={this.onSavePageArticle}
-                onSavePage={this.onSavePage} />
+                onSaveActivePageArticle={this.onSaveActivePageArticle}
+                onSaveActivePage={this.onSaveActivePage} />
               : null
             }
             {showCommentaryPage ?
