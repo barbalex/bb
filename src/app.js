@@ -9,6 +9,7 @@ import actions from './actions.js'
 import stores from './stores'
 import couchUrl from './modules/getCouchUrl.js'
 import 'expose?$!expose?jQuery!jquery'
+import 'babel-polyfill'
 // make webpack import styles
 import './styles/main.styl'
 import 'bootstrap-webpack'
