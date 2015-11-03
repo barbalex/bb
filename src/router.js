@@ -22,7 +22,7 @@ export default Router.extend({
     'sources': 'sources',
     'sources/:category': 'source',
     'actors': 'actors',
-    'actors/:category': 'actorCategory',
+    'actors/:category': 'actor',
     'login': 'login',
     '*path': 'home'
   },
@@ -90,11 +90,11 @@ export default Router.extend({
     this.render(id)
   },
 
-  actorCategory (category) {
+  actor (category) {
     const id = `actors_${category}`
     this.render()
     app.Actions.getPage('pages_actors')
-    app.Actions.getActorCategory(id)
+    app.Actions.getActor(id)
   },
 
   login () {

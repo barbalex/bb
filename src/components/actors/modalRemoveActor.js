@@ -4,11 +4,11 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 
 export default React.createClass({
-  displayName: 'ModalRemoveActorCategory',
+  displayName: 'ModalRemoveActor',
 
   propTypes: {
     doc: React.PropTypes.object,
-    removeActorCategory: React.PropTypes.func
+    removeActor: React.PropTypes.func
   },
 
   onHide () {
@@ -16,13 +16,13 @@ export default React.createClass({
   },
 
   onClickRemove () {
-    const { removeActorCategory } = this.props
-    removeActorCategory(true)
+    const { removeActor } = this.props
+    removeActor(true)
   },
 
   close () {
-    const { removeActorCategory } = this.props
-    removeActorCategory(false)
+    const { removeActor } = this.props
+    removeActor(false)
   },
 
   render () {
@@ -32,10 +32,10 @@ export default React.createClass({
       <div className='static-modal'>
         <Modal.Dialog onHide={this.onHide}>
           <Modal.Header>
-            <Modal.Title>Remove actor category "{doc.category}"</Modal.Title>
+            <Modal.Title>Remove actor "{doc.category}"</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure, you want to remove actor category "{doc.category}"?</p>
+            <p>Are you sure, you want to remove actor "{doc.category}"?</p>
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle='danger' onClick={this.onClickRemove}>yes, remove!</Button>

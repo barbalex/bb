@@ -8,7 +8,7 @@ export default React.createClass({
   displayName: 'NewActorCategory',
 
   propTypes: {
-    onCloseNewActorCategory: React.PropTypes.func,
+    onCloseNewActor: React.PropTypes.func,
     category: React.PropTypes.string,
     error: React.PropTypes.string
   },
@@ -25,12 +25,12 @@ export default React.createClass({
     this.setState({ category })
   },
 
-  createNewActorCategory () {
-    const { onCloseNewActorCategory } = this.props
+  createNewActor () {
+    const { onCloseNewActor } = this.props
     const { category } = this.state
     if (category) {
-      app.Actions.newActorCategory(category)
-      onCloseNewActorCategory()
+      app.Actions.newActor(category)
+      onCloseNewActor()
     } else {
       const error = 'Please choose a category'
       this.setState({ error })
@@ -38,8 +38,8 @@ export default React.createClass({
   },
 
   close () {
-    const { onCloseNewActorCategory } = this.props
-    onCloseNewActorCategory()
+    const { onCloseNewActor } = this.props
+    onCloseNewActor()
   },
 
   onHide () {
@@ -64,7 +64,7 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewActorCategory}>create new actor category</Button>
+          <Button bsStyle='primary' onClick={this.createNewActor}>create new actor</Button>
         </Modal.Footer>
 
       </Modal>

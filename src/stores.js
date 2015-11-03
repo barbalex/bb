@@ -8,7 +8,7 @@ import slug from 'slug'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
 import getSources from './modules/getSources.js'
-import getActorCategories from './modules/getActorCategories.js'
+import getActors from './modules/getActors.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import getPublications from './modules/getPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
@@ -383,43 +383,43 @@ export default (Actions) => {
     }
   })
 
-  app.actorCategoryStore = Reflux.createStore({
+  app.actorStore = Reflux.createStore({
 
     listenables: Actions,
 
-    onGetActorCategory (id) {
+    onGetActor (id) {
       if (!id) {
         app.router.navigate('/actors')
         this.trigger({})
       } else {
         app.db.get(id, { include_docs: true })
-          .then((actorCategory) => {
-            const path = getPathFromDoc(actorCategory)
+          .then((actor) => {
+            const path = getPathFromDoc(actor)
             app.router.navigate('/' + path)
-            this.trigger(actorCategory)
+            this.trigger(actor)
           })
-          .catch((error) => app.Actions.showError({title: 'Error fetching actor category ' + id + ':', msg: error}))
+          .catch((error) => app.Actions.showError({title: 'Error fetching actor ' + id + ':', msg: error}))
       }
     },
 
-    onSaveActorCategory (actorCategory) {
-      app.db.put(actorCategory)
+    onSaveActor (actor) {
+      app.db.put(actor)
         .then((resp) => {
           // resp.rev is new rev
-          actorCategory._rev = resp.rev
-          this.trigger(actorCategory)
-          Actions.getActorCategories()
+          actor._rev = resp.rev
+          this.trigger(actor)
+          Actions.getActors()
         })
-        .catch((error) => app.Actions.showError({title: 'Error saving actor category:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error saving actor:', msg: error}))
     }
   })
 
-  app.actorCategoriesStore = Reflux.createStore({
+  app.actorsStore = Reflux.createStore({
 
     listenables: Actions,
 
-    onGetActorCategories () {
-      getActorCategories()
+    onGetActors () {
+      getActors()
         .then((result) => {
           const docs = _.pluck(result.rows, 'doc')
           this.trigger(docs)
@@ -427,32 +427,32 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewActorCategory (category) {
+    onNewActor (category) {
       const categorySlugified = slug(category, {lower: true})
       const id = `actors_${categorySlugified}`
-      const actorCategory = {
+      const actor = {
         _id: id,
         category: category,
         draft: true,
         article: 'IA==',
         type: 'actors'
       }
-      Actions.saveActorCategory(actorCategory)
+      Actions.saveActor(actor)
     },
 
-    onRemoveActorCategory (doc) {
+    onRemoveActor (doc) {
       app.db.remove(doc)
-        .then(() => this.onGetActorCategories())
-        .catch((error) => app.Actions.showError({title: 'Error removing actor category:', msg: error}))
+        .then(() => this.onGetActors())
+        .catch((error) => app.Actions.showError({title: 'Error removing actor:', msg: error}))
     },
 
-    onToggleDraftOfActorCategory (doc) {
+    onToggleDraftOfActor (doc) {
       if (doc.draft === true) {
         delete doc.draft
       } else {
         doc.draft = true
       }
-      Actions.saveActorCategory(doc)
+      Actions.saveActor(doc)
     }
   })
 

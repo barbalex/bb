@@ -11,7 +11,7 @@ import Navbar from '../components/navbar.js'
 import Page from './pages/page.js'
 import Commentaries from './commentaries/commentaries.js'
 import Sources from './sources/sources.js'
-import ActorCategories from './actors/actorCategories.js'
+import Actors from './actors/actors.js'
 import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
 import Publications from './publications/publications.js'
 import Login from './login/login.js'
@@ -29,11 +29,11 @@ export default React.createClass({
     activePublication: React.PropTypes.object,
     activeCommentary: React.PropTypes.object,
     activeSource: React.PropTypes.object,
-    activeActorCategory: React.PropTypes.object,
+    activeActor: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
     showNewSource: React.PropTypes.bool,
-    showNewActorCategory: React.PropTypes.bool,
+    showNewActor: React.PropTypes.bool,
     showNewMonthlyEvent: React.PropTypes.bool,
     showNewPublication: React.PropTypes.bool,
     login: React.PropTypes.bool,
@@ -49,11 +49,11 @@ export default React.createClass({
       activePublication: {},
       activeCommentary: {},
       activeSource: {},
-      activeActorCategory: {},
+      activeActor: {},
       editing: false,
       showNewCommentary: false,
       showNewSource: false,
-      showNewActorCategory: false,
+      showNewActor: false,
       showNewMonthlyEvent: false,
       showNewPublication: false,
       email: email,
@@ -68,7 +68,7 @@ export default React.createClass({
     this.listenTo(app.activePublicationStore, this.onActivePublicationStoreChange)
     this.listenTo(app.activeCommentaryStore, this.onActiveCommentaryStoreChange)
     this.listenTo(app.activeSourceStore, this.onActiveSourceStoreChange)
-    this.listenTo(app.actorCategoryStore, this.onActorCategoryStoreChange)
+    this.listenTo(app.actorStore, this.onActorStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
@@ -93,8 +93,8 @@ export default React.createClass({
     this.setState({ activeSource })
   },
 
-  onActorCategoryStoreChange (activeActorCategory) {
-    this.setState({ activeActorCategory })
+  onActorStoreChange (activeActor) {
+    this.setState({ activeActor })
   },
 
   onLoginStoreChange (email) {
@@ -120,8 +120,8 @@ export default React.createClass({
     this.setState({ showNewSource: true })
   },
 
-  onClickNewActorCategory () {
-    this.setState({ showNewActorCategory: true })
+  onClickNewActor () {
+    this.setState({ showNewActor: true })
   },
 
   onClickNewMonthlyEvent () {
@@ -140,8 +140,8 @@ export default React.createClass({
     this.setState({ showNewSource: false })
   },
 
-  onCloseNewActorCategory () {
-    this.setState({ showNewActorCategory: false })
+  onCloseNewActor () {
+    this.setState({ showNewActor: false })
   },
 
   onCloseNewMonthlyEvent () {
@@ -186,28 +186,28 @@ export default React.createClass({
     app.Actions.saveSource(activeSource)
   },
 
-  onSaveActorCategoryArticle (articleEncoded) {
-    let { activeActorCategory } = this.state
-    activeActorCategory.article = articleEncoded
-    app.Actions.saveActorCategory(activeActorCategory)
+  onSaveActorArticle (articleEncoded) {
+    let { activeActor } = this.state
+    activeActor.article = articleEncoded
+    app.Actions.saveActor(activeActor)
   },
 
   render () {
     const { login } = this.props
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActorCategory, editing, showNewCommentary, showNewSource, showNewActorCategory, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActor, editing, showNewCommentary, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
     const isSourcePage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_sources'
-    const isActorCategoryPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_actors'
+    const isActorPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_actors'
     const isMonthlyEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_monthlyEvents'
     const isPublicationsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_publications'
     const isCommentary = activePage.type && activePage.type === 'commentaries'
     const isSource = activePage.type && activePage.type === 'sources'
-    const isActorCategory = activePage.type && activePage.type === 'actors'
+    const isActor = activePage.type && activePage.type === 'actors'
     const showCommentaryPage = isCommentariesPage || isCommentary
     const showSourcePage = isSourcePage || isSource
-    const showActorCategoryPage = isActorCategoryPage || isActorCategory
+    const showActorPage = isActorPage || isActor
     const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
     const isPublication = activePage.type && activePage.type === 'publications'
@@ -225,13 +225,13 @@ export default React.createClass({
             activePublication={activePublication}
             activeCommentary={activeCommentary}
             activeSource={activeSource}
-            activeActorCategory={activeActorCategory}
+            activeActor={activeActor}
             email={email}
             editing={editing}
             onClickEdit={this.onClickEdit}
             onClickNewCommentary={this.onClickNewCommentary}
             onClickNewSource={this.onClickNewSource}
-            onClickNewActorCategory={this.onClickNewActorCategory}
+            onClickNewActor={this.onClickNewActor}
             onClickNewMonthlyEvent={this.onClickNewMonthlyEvent}
             onClickNewPublication={this.onClickNewPublication} />
           <div className='container'>
@@ -264,14 +264,14 @@ export default React.createClass({
                 onCloseNewSource={this.onCloseNewSource} />
               : null
             }
-            {showActorCategoryPage ?
-              <ActorCategories
-                activeActorCategory={activeActorCategory}
+            {showActorPage ?
+              <Actors
+                activeActor={activeActor}
                 editing={editing}
                 email={email}
-                onSaveActorCategoryArticle={this.onSaveActorCategoryArticle}
-                showNewActorCategory={showNewActorCategory}
-                onCloseNewActorCategory={this.onCloseNewActorCategory} />
+                onSaveActorArticle={this.onSaveActorArticle}
+                showNewActor={showNewActor}
+                onCloseNewActor={this.onCloseNewActor} />
               : null
             }
             {showMonthlyEventsPage ?

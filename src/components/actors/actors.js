@@ -6,40 +6,40 @@ import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
-import ActorCategory from './actorCategory.js'
-import NewActorCategory from './newActorCategory.js'
-import ModalRemoveActorCategory from './modalRemoveActorCategory.js'
+import Actor from './actor.js'
+import NewActor from './newActor.js'
+import ModalRemoveActor from './modalRemoveActor.js'
 
 export default React.createClass({
-  displayName: 'ActorCategories',
+  displayName: 'Actors',
 
   mixins: [ListenerMixin],
 
   propTypes: {
-    actorCategories: React.PropTypes.array,
-    activeActorCategory: React.PropTypes.object,
+    actors: React.PropTypes.array,
+    activeActor: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onSaveActorCategoryArticle: React.PropTypes.func,
-    onCloseNewActorCategory: React.PropTypes.func,
-    showNewActorCategory: React.PropTypes.bool,
+    onSaveActorArticle: React.PropTypes.func,
+    onCloseNewActor: React.PropTypes.func,
+    showNewActor: React.PropTypes.bool,
     docToRemove: React.PropTypes.object
   },
 
   getInitialState () {
     return {
-      actorCategories: [],
+      actors: [],
       docToRemove: null
     }
   },
 
   componentDidMount () {
-    this.listenTo(app.actorCategoriesStore, this.onActorCategoriesStoreChange)
-    app.Actions.getActorCategories()
+    this.listenTo(app.actorsStore, this.onActorsStoreChange)
+    app.Actions.getActors()
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.activeActorCategory._id && !prevProps.activeActorCategory._id) {
+    if (this.props.activeActor._id && !prevProps.activeActor._id) {
       /**
        * this is first render
        * componentDidUpdate and componentDidMount are actually executed
@@ -51,42 +51,42 @@ export default React.createClass({
       }, 200)
       // window.requestAnimationFrame(() => this.scrollToActivePanel())
     }
-    if (this.props.activeActorCategory._id !== prevProps.activeActorCategory._id) {
+    if (this.props.activeActor._id !== prevProps.activeActor._id) {
       // this is later rerender
       // only scroll into view if the active item changed last render
       this.scrollToActivePanel()
     }
   },
 
-  onActorCategoriesStoreChange (actorCategories) {
+  onActorsStoreChange (actors) {
     const { email } = this.props
-    if (!email) actorCategories = actorCategories.filter((actorCategory) => !actorCategory.draft)
-    this.setState({ actorCategories })
+    if (!email) actors = actors.filter((actor) => !actor.draft)
+    this.setState({ actors })
   },
 
-  onClickActorCategory (id, e) {
-    const { activeActorCategory } = this.props
+  onClickActor (id, e) {
+    const { activeActor } = this.props
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (Object.keys(activeActorCategory).length === 0 || activeActorCategory._id !== id) ? id : null
-    app.Actions.getActorCategory(idToGet)
+    const idToGet = (Object.keys(activeActor).length === 0 || activeActor._id !== id) ? id : null
+    app.Actions.getActor(idToGet)
   },
 
-  onClickActorCategoryCollapse (event) {
+  onClickActorCollapse (event) {
     // prevent higher level panels from reacting
     event.preventDefault()
     event.stopPropagation()
   },
 
-  onRemoveActorCategory (docToRemove, event) {
+  onRemoveActor (docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
   },
 
   scrollToActivePanel () {
-    const node = ReactDOM.findDOMNode(this._activeActorCategoryPanel)
+    const node = ReactDOM.findDOMNode(this._activeActorPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
@@ -98,17 +98,17 @@ export default React.createClass({
     }
   },
 
-  removeActorCategory (remove) {
+  removeActor (remove) {
     const { docToRemove } = this.state
-    if (remove) app.Actions.removeActorCategory(docToRemove)
+    if (remove) app.Actions.removeActor(docToRemove)
     this.setState({ docToRemove: null })
   },
 
-  removeActorCategoryTooltip () {
-    return <Tooltip id='removeThisActorCategory'>remove</Tooltip>
+  removeActorTooltip () {
+    return <Tooltip id='removeThisActor'>remove</Tooltip>
   },
 
-  removeActorCategoryGlyph (doc) {
+  removeActorGlyph (doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 10,
@@ -117,8 +117,8 @@ export default React.createClass({
       color: '#edf4f8'
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.removeActorCategoryTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveActorCategory.bind(this, doc)} />
+      <OverlayTrigger placement='top' overlay={this.removeActorTooltip()}>
+        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveActor.bind(this, doc)} />
       </OverlayTrigger>
     )
   },
@@ -148,20 +148,20 @@ export default React.createClass({
   onToggleDraft (doc, event) {
     event.preventDefault()
     event.stopPropagation()
-    app.Actions.toggleDraftOfActorCategory(doc)
+    app.Actions.toggleDraftOfActor(doc)
   },
 
-  actorCategoriesComponent () {
-    const { activeActorCategory, editing, email, onSaveActorCategoryArticle } = this.props
-    let { actorCategories } = this.state
-    if (actorCategories.length > 0) {
-      actorCategories = actorCategories.sort((a, b) => {
+  actorsComponent () {
+    const { activeActor, editing, email, onSaveActorArticle } = this.props
+    let { actors } = this.state
+    if (actors.length > 0) {
+      actors = actors.sort((a, b) => {
         if (a._id < b._id) return -1
         return 1
       })
-      return actorCategories.map((doc, index) => {
-        const isActorCategory = Object.keys(activeActorCategory).length > 0
-        const isActiveActorCategory = isActorCategory ? doc._id === activeActorCategory._id : false
+      return actors.map((doc, index) => {
+        const isActor = Object.keys(activeActor).length > 0
+        const isActiveActor = isActor ? doc._id === activeActor._id : false
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative',
@@ -175,20 +175,20 @@ export default React.createClass({
           maxHeight: window.innerHeight - 141,
           overflowY: 'auto'
         }
-        if (!isActiveActorCategory) {
+        if (!isActiveActor) {
           Object.assign(panelHeadingStyle, {
             borderBottomRightRadius: 3,
             borderBottomLeftRadius: 3
           })
         }
-        const ref = isActiveActorCategory ? '_activeActorCategoryPanel' : '_actorCategoryPanel' + doc._id
+        const ref = isActiveActor ? '_activeActorPanel' : '_actorPanel' + doc._id
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
           <div key={doc._id} ref={(c) => this[ref] = c} className='panel panel-default'>
-            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickActorCategory.bind(this, doc._id)} style={panelHeadingStyle}>
+            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickActor.bind(this, doc._id)} style={panelHeadingStyle}>
               <h4 className='panel-title'>
-                <a role='button' data-toggle='collapse' data-parent='#actorCategoriesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
+                <a role='button' data-toggle='collapse' data-parent='#actorsAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
                   {doc.category}
                 </a>
               </h4>
@@ -197,14 +197,14 @@ export default React.createClass({
                 : null
               }
               {showEditingGlyphons ?
-                this.removeActorCategoryGlyph(doc)
+                this.removeActorGlyph(doc)
                 : null
               }
             </div>
-            {isActiveActorCategory ?
-              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickActorCategoryCollapse}>
+            {isActiveActor ?
+              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickActorCollapse}>
                 <div className='panel-body' style={panelBodyStyle}>
-                  <ActorCategory activeActorCategory={activeActorCategory} editing={editing} onSaveActorCategoryArticle={onSaveActorCategoryArticle} />
+                  <Actor activeActor={activeActor} editing={editing} onSaveActorArticle={onSaveActorArticle} />
                 </div>
               </div>
               : null
@@ -217,16 +217,16 @@ export default React.createClass({
   },
 
   render () {
-    const { activeActorCategory, showNewActorCategory, onCloseNewActorCategory } = this.props
+    const { activeActor, showNewActor, onCloseNewActor } = this.props
     const { docToRemove } = this.state
-    const activeId = _.has(activeActorCategory, '_id') ? activeActorCategory._id : null
+    const activeId = _.has(activeActor, '_id') ? activeActor._id : null
     return (
-      <div className='actorCategories'>
-        <PanelGroup activeKey={activeId} id='actorCategoriesAccordion' accordion>
-          {this.actorCategoriesComponent()}
+      <div className='actors'>
+        <PanelGroup activeKey={activeId} id='actorsAccordion' accordion>
+          {this.actorsComponent()}
         </PanelGroup>
-        {showNewActorCategory ? <NewActorCategory onCloseNewActorCategory={onCloseNewActorCategory} /> : null}
-        {docToRemove ? <ModalRemoveActorCategory doc={docToRemove} removeActorCategory={this.removeActorCategory} /> : null}
+        {showNewActor ? <NewActor onCloseNewActor={onCloseNewActor} /> : null}
+        {docToRemove ? <ModalRemoveActor doc={docToRemove} removeActor={this.removeActor} /> : null}
       </div>
     )
   }
