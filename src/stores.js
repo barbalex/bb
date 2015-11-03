@@ -255,7 +255,8 @@ export default (Actions) => {
           publication._rev = resp.rev
           this.trigger(publication)
           Actions.getPublications()
-          if (this.activePublication && this.activePublication._id === publication._id) this.activePublication = publication
+          let activePublication = this.activePublication
+          if (activePublication && activePublication._id === publication._id) activePublication = publication
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
     }
@@ -314,16 +315,20 @@ export default (Actions) => {
 
     listenables: Actions,
 
+    activeSource: null,
+
     onGetSource (id) {
       if (!id) {
         app.router.navigate('/sources')
         this.trigger({})
+        this.activeSource = null
       } else {
         app.db.get(id, { include_docs: true })
           .then((source) => {
             const path = getPathFromDoc(source)
             app.router.navigate('/' + path)
             this.trigger(source)
+            this.activeSource = source
           })
           .catch((error) => app.Actions.showError({title: 'Error fetching source ' + id + ':', msg: error}))
       }
@@ -332,10 +337,11 @@ export default (Actions) => {
     onSaveSource (source) {
       app.db.put(source)
         .then((resp) => {
-          // resp.rev is new rev
           source._rev = resp.rev
           this.trigger(source)
           Actions.getSources()
+          let activeSource = this.activeSource
+          if (activeSource && activeSource._id === source._id) activeSource = source
         })
         .catch((error) => app.Actions.showError({title: 'Error saving source:', msg: error}))
     }
@@ -369,7 +375,11 @@ export default (Actions) => {
 
     onRemoveSource (doc) {
       app.db.remove(doc)
-        .then(() => this.onGetSources())
+        .then(() => {
+          this.onGetSources()
+          const activeSource = app.activeSourceStore.activeSource
+          if (activeSource && activeSource._id === doc._id) Actions.getSource(null)
+        })
         .catch((error) => app.Actions.showError({title: 'Error removing source:', msg: error}))
     },
 
@@ -383,20 +393,24 @@ export default (Actions) => {
     }
   })
 
-  app.actorStore = Reflux.createStore({
+  app.activeActorStore = Reflux.createStore({
 
     listenables: Actions,
+
+    activeActor: null,
 
     onGetActor (id) {
       if (!id) {
         app.router.navigate('/actors')
         this.trigger({})
+        this.activeActor = null
       } else {
         app.db.get(id, { include_docs: true })
           .then((actor) => {
             const path = getPathFromDoc(actor)
             app.router.navigate('/' + path)
             this.trigger(actor)
+            this.activeActor = actor
           })
           .catch((error) => app.Actions.showError({title: 'Error fetching actor ' + id + ':', msg: error}))
       }
@@ -409,6 +423,8 @@ export default (Actions) => {
           actor._rev = resp.rev
           this.trigger(actor)
           Actions.getActors()
+          let activeActor = this.activeActor
+          if (activeActor && activeActor._id === actor._id) activeActor = actor
         })
         .catch((error) => app.Actions.showError({title: 'Error saving actor:', msg: error}))
     }
@@ -442,7 +458,11 @@ export default (Actions) => {
 
     onRemoveActor (doc) {
       app.db.remove(doc)
-        .then(() => this.onGetActors())
+        .then(() => {
+          this.onGetActors()
+          const activeActor = app.activeActorStore.activeActor
+          if (activeActor && activeActor._id === doc._id) Actions.getActor(null)
+        })
         .catch((error) => app.Actions.showError({title: 'Error removing actor:', msg: error}))
     },
 

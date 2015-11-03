@@ -68,7 +68,7 @@ export default React.createClass({
     this.listenTo(app.activePublicationStore, this.onActivePublicationStoreChange)
     this.listenTo(app.activeCommentaryStore, this.onActiveCommentaryStoreChange)
     this.listenTo(app.activeSourceStore, this.onActiveSourceStoreChange)
-    this.listenTo(app.actorStore, this.onActorStoreChange)
+    this.listenTo(app.activeActorStore, this.onActiveActorStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onError)
   },
@@ -93,7 +93,7 @@ export default React.createClass({
     this.setState({ activeSource })
   },
 
-  onActorStoreChange (activeActor) {
+  onActiveActorStoreChange (activeActor) {
     this.setState({ activeActor })
   },
 
