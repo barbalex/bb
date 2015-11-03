@@ -5,10 +5,10 @@ import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
 
 export default React.createClass({
-  displayName: 'NewSourceCategory',
+  displayName: 'NewSource',
 
   propTypes: {
-    onCloseNewSourceCategory: React.PropTypes.func,
+    onCloseNewSource: React.PropTypes.func,
     category: React.PropTypes.string,
     error: React.PropTypes.string
   },
@@ -25,12 +25,12 @@ export default React.createClass({
     this.setState({ category })
   },
 
-  createNewSourceCategory () {
-    const { onCloseNewSourceCategory } = this.props
+  createNewSource () {
+    const { onCloseNewSource } = this.props
     const { category } = this.state
     if (category) {
-      app.Actions.newSourceCategory(category)
-      onCloseNewSourceCategory()
+      app.Actions.newSource(category)
+      onCloseNewSource()
     } else {
       const error = 'Please choose a category'
       this.setState({ error })
@@ -38,8 +38,8 @@ export default React.createClass({
   },
 
   close () {
-    const { onCloseNewSourceCategory } = this.props
-    onCloseNewSourceCategory()
+    const { onCloseNewSource } = this.props
+    onCloseNewSource()
   },
 
   onHide () {
@@ -54,7 +54,7 @@ export default React.createClass({
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>New source category</Modal.Title>
+          <Modal.Title>New source</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -64,7 +64,7 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewSourceCategory}>create new source category</Button>
+          <Button bsStyle='primary' onClick={this.createNewSource}>create new source</Button>
         </Modal.Footer>
 
       </Modal>

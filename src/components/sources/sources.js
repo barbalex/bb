@@ -6,40 +6,40 @@ import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
-import SourceCategory from './sourceCategory.js'
-import NewSourceCategory from './newSourceCategory.js'
-import ModalRemoveSourceCategory from './modalRemoveSourceCategory.js'
+import Source from './source.js'
+import NewSource from './newSource.js'
+import ModalRemoveSource from './modalRemoveSource.js'
 
 export default React.createClass({
-  displayName: 'SourceCategories',
+  displayName: 'Sources',
 
   mixins: [ListenerMixin],
 
   propTypes: {
-    sourceCategories: React.PropTypes.array,
-    activeSourceCategory: React.PropTypes.object,
+    sources: React.PropTypes.array,
+    activeSource: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onSaveSourceCategoryArticle: React.PropTypes.func,
-    onCloseNewSourceCategory: React.PropTypes.func,
-    showNewSourceCategory: React.PropTypes.bool,
+    onSaveSourceArticle: React.PropTypes.func,
+    onCloseNewSource: React.PropTypes.func,
+    showNewSource: React.PropTypes.bool,
     docToRemove: React.PropTypes.object
   },
 
   getInitialState () {
     return {
-      sourceCategories: [],
+      sources: [],
       docToRemove: null
     }
   },
 
   componentDidMount () {
-    this.listenTo(app.sourceCategoriesStore, this.onSourceCategoriesStoreChange)
-    app.Actions.getSourceCategories()
+    this.listenTo(app.sourcesStore, this.onSourcesStoreChange)
+    app.Actions.getSources()
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.activeSourceCategory._id && !prevProps.activeSourceCategory._id) {
+    if (this.props.activeSource._id && !prevProps.activeSource._id) {
       /**
        * this is first render
        * componentDidUpdate and componentDidMount are actually executed
@@ -51,42 +51,42 @@ export default React.createClass({
       }, 200)
       // window.requestAnimationFrame(() => this.scrollToActivePanel())
     }
-    if (this.props.activeSourceCategory._id !== prevProps.activeSourceCategory._id) {
+    if (this.props.activeSource._id !== prevProps.activeSource._id) {
       // this is later rerender
       // only scroll into view if the active item changed last render
       this.scrollToActivePanel()
     }
   },
 
-  onSourceCategoriesStoreChange (sourceCategories) {
+  onSourcesStoreChange (sources) {
     const { email } = this.props
-    if (!email) sourceCategories = sourceCategories.filter((sourceCategory) => !sourceCategory.draft)
-    this.setState({ sourceCategories })
+    if (!email) sources = sources.filter((source) => !source.draft)
+    this.setState({ sources })
   },
 
-  onClickSourceCategory (id, e) {
-    const { activeSourceCategory } = this.props
+  onClickSource (id, e) {
+    const { activeSource } = this.props
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (Object.keys(activeSourceCategory).length === 0 || activeSourceCategory._id !== id) ? id : null
-    app.Actions.getSourceCategory(idToGet)
+    const idToGet = (Object.keys(activeSource).length === 0 || activeSource._id !== id) ? id : null
+    app.Actions.getSource(idToGet)
   },
 
-  onClickSourceCategoryCollapse (event) {
+  onClickSourceCollapse (event) {
     // prevent higher level panels from reacting
     event.preventDefault()
     event.stopPropagation()
   },
 
-  onRemoveSourceCategory (docToRemove, event) {
+  onRemoveSource (docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
   },
 
   scrollToActivePanel () {
-    const node = ReactDOM.findDOMNode(this._activeSourceCategoryPanel)
+    const node = ReactDOM.findDOMNode(this._activeSourcePanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
@@ -98,17 +98,17 @@ export default React.createClass({
     }
   },
 
-  removeSourceCategory (remove) {
+  removeSource (remove) {
     const { docToRemove } = this.state
-    if (remove) app.Actions.removeSourceCategory(docToRemove)
+    if (remove) app.Actions.removeSource(docToRemove)
     this.setState({ docToRemove: null })
   },
 
-  removeSourceCategoryTooltip () {
-    return <Tooltip id='removeThisSourceCategory'>remove</Tooltip>
+  removeSourceTooltip () {
+    return <Tooltip id='removeThisSource'>remove</Tooltip>
   },
 
-  removeSourceCategoryGlyph (doc) {
+  removeSourceGlyph (doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 10,
@@ -117,8 +117,8 @@ export default React.createClass({
       color: '#edf4f8'
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.removeSourceCategoryTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveSourceCategory.bind(this, doc)} />
+      <OverlayTrigger placement='top' overlay={this.removeSourceTooltip()}>
+        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveSource.bind(this, doc)} />
       </OverlayTrigger>
     )
   },
@@ -148,20 +148,20 @@ export default React.createClass({
   onToggleDraft (doc, event) {
     event.preventDefault()
     event.stopPropagation()
-    app.Actions.toggleDraftOfSourceCategory(doc)
+    app.Actions.toggleDraftOfSource(doc)
   },
 
-  sourceCategoriesComponent () {
-    const { activeSourceCategory, editing, email, onSaveSourceCategoryArticle } = this.props
-    let { sourceCategories } = this.state
-    if (sourceCategories.length > 0) {
-      sourceCategories = sourceCategories.sort((a, b) => {
+  sourcesComponent () {
+    const { activeSource, editing, email, onSaveSourceArticle } = this.props
+    let { sources } = this.state
+    if (sources.length > 0) {
+      sources = sources.sort((a, b) => {
         if (a._id < b._id) return -1
         return 1
       })
-      return sourceCategories.map((doc, index) => {
-        const isSourceCategory = Object.keys(activeSourceCategory).length > 0
-        const isActiveSourceCategory = isSourceCategory ? doc._id === activeSourceCategory._id : false
+      return sources.map((doc, index) => {
+        const isSource = Object.keys(activeSource).length > 0
+        const isActiveSource = isSource ? doc._id === activeSource._id : false
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative',
@@ -175,20 +175,20 @@ export default React.createClass({
           maxHeight: window.innerHeight - 141,
           overflowY: 'auto'
         }
-        if (!isActiveSourceCategory) {
+        if (!isActiveSource) {
           Object.assign(panelHeadingStyle, {
             borderBottomRightRadius: 3,
             borderBottomLeftRadius: 3
           })
         }
-        const ref = isActiveSourceCategory ? '_activeSourceCategoryPanel' : '_sourceCategoryPanel' + doc._id
+        const ref = isActiveSource ? '_activeSourcePanel' : '_sourcePanel' + doc._id
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
           <div key={doc._id} ref={(c) => this[ref] = c} className='panel panel-default'>
-            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickSourceCategory.bind(this, doc._id)} style={panelHeadingStyle}>
+            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickSource.bind(this, doc._id)} style={panelHeadingStyle}>
               <h4 className='panel-title'>
-                <a role='button' data-toggle='collapse' data-parent='#sourceCategoriesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
+                <a role='button' data-toggle='collapse' data-parent='#sourcesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
                   {doc.category}
                 </a>
               </h4>
@@ -197,14 +197,14 @@ export default React.createClass({
                 : null
               }
               {showEditingGlyphons ?
-                this.removeSourceCategoryGlyph(doc)
+                this.removeSourceGlyph(doc)
                 : null
               }
             </div>
-            {isActiveSourceCategory ?
-              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickSourceCategoryCollapse}>
+            {isActiveSource ?
+              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickSourceCollapse}>
                 <div className='panel-body' style={panelBodyStyle}>
-                  <SourceCategory activeSourceCategory={activeSourceCategory} editing={editing} onSaveSourceCategoryArticle={onSaveSourceCategoryArticle} />
+                  <Source activeSource={activeSource} editing={editing} onSaveSourceArticle={onSaveSourceArticle} />
                 </div>
               </div>
               : null
@@ -217,16 +217,16 @@ export default React.createClass({
   },
 
   render () {
-    const { activeSourceCategory, showNewSourceCategory, onCloseNewSourceCategory } = this.props
+    const { activeSource, showNewSource, onCloseNewSource } = this.props
     const { docToRemove } = this.state
-    const activeId = _.has(activeSourceCategory, '_id') ? activeSourceCategory._id : null
+    const activeId = _.has(activeSource, '_id') ? activeSource._id : null
     return (
-      <div className='sourceCategories'>
-        <PanelGroup activeKey={activeId} id='sourceCategoriesAccordion' accordion>
-          {this.sourceCategoriesComponent()}
+      <div className='sources'>
+        <PanelGroup activeKey={activeId} id='sourcesAccordion' accordion>
+          {this.sourcesComponent()}
         </PanelGroup>
-        {showNewSourceCategory ? <NewSourceCategory onCloseNewSourceCategory={onCloseNewSourceCategory} /> : null}
-        {docToRemove ? <ModalRemoveSourceCategory doc={docToRemove} removeSourceCategory={this.removeSourceCategory} /> : null}
+        {showNewSource ? <NewSource onCloseNewSource={onCloseNewSource} /> : null}
+        {docToRemove ? <ModalRemoveSource doc={docToRemove} removeSource={this.removeSource} /> : null}
       </div>
     )
   }

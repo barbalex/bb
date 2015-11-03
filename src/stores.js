@@ -7,7 +7,7 @@ import { Base64 } from 'js-base64'
 import slug from 'slug'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
-import getSourceCategories from './modules/getSourceCategories.js'
+import getSources from './modules/getSources.js'
 import getActorCategories from './modules/getActorCategories.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import getPublications from './modules/getPublications.js'
@@ -310,43 +310,43 @@ export default (Actions) => {
     }
   })
 
-  app.sourceCategoryStore = Reflux.createStore({
+  app.activeSourceStore = Reflux.createStore({
 
     listenables: Actions,
 
-    onGetSourceCategory (id) {
+    onGetSource (id) {
       if (!id) {
         app.router.navigate('/sources')
         this.trigger({})
       } else {
         app.db.get(id, { include_docs: true })
-          .then((sourceCategory) => {
-            const path = getPathFromDoc(sourceCategory)
+          .then((source) => {
+            const path = getPathFromDoc(source)
             app.router.navigate('/' + path)
-            this.trigger(sourceCategory)
+            this.trigger(source)
           })
-          .catch((error) => app.Actions.showError({title: 'Error fetching source category ' + id + ':', msg: error}))
+          .catch((error) => app.Actions.showError({title: 'Error fetching source ' + id + ':', msg: error}))
       }
     },
 
-    onSaveSourceCategory (sourceCategory) {
-      app.db.put(sourceCategory)
+    onSaveSource (source) {
+      app.db.put(source)
         .then((resp) => {
           // resp.rev is new rev
-          sourceCategory._rev = resp.rev
-          this.trigger(sourceCategory)
-          Actions.getSourceCategories()
+          source._rev = resp.rev
+          this.trigger(source)
+          Actions.getSources()
         })
-        .catch((error) => app.Actions.showError({title: 'Error saving source category:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error saving source:', msg: error}))
     }
   })
 
-  app.sourceCategoriesStore = Reflux.createStore({
+  app.sourcesStore = Reflux.createStore({
 
     listenables: Actions,
 
-    onGetSourceCategories () {
-      getSourceCategories()
+    onGetSources () {
+      getSources()
         .then((result) => {
           const docs = _.pluck(result.rows, 'doc')
           this.trigger(docs)
@@ -354,32 +354,32 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewSourceCategory (category) {
+    onNewSource (category) {
       const categorySlugified = slug(category, {lower: true})
       const id = `sources_${categorySlugified}`
-      const sourceCategory = {
+      const source = {
         _id: id,
         category: category,
         draft: true,
         article: 'IA==',
         type: 'sources'
       }
-      Actions.saveSourceCategory(sourceCategory)
+      Actions.saveSource(source)
     },
 
-    onRemoveSourceCategory (doc) {
+    onRemoveSource (doc) {
       app.db.remove(doc)
-        .then(() => this.onGetSourceCategories())
-        .catch((error) => app.Actions.showError({title: 'Error removing source category:', msg: error}))
+        .then(() => this.onGetSources())
+        .catch((error) => app.Actions.showError({title: 'Error removing source:', msg: error}))
     },
 
-    onToggleDraftOfSourceCategory (doc) {
+    onToggleDraftOfSource (doc) {
       if (doc.draft === true) {
         delete doc.draft
       } else {
         doc.draft = true
       }
-      Actions.saveSourceCategory(doc)
+      Actions.saveSource(doc)
     }
   })
 

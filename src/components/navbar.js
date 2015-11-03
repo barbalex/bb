@@ -14,13 +14,13 @@ export default React.createClass({
     activeMonthlyEvent: React.PropTypes.object,
     activePublication: React.PropTypes.object,
     activeCommentary: React.PropTypes.object,
-    activeSourceCategory: React.PropTypes.object,
+    activeSource: React.PropTypes.object,
     activeActorCategory: React.PropTypes.object,
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
     onClickNewCommentary: React.PropTypes.func,
-    onClickNewSourceCategory: React.PropTypes.func,
+    onClickNewSource: React.PropTypes.func,
     onClickNewActorCategory: React.PropTypes.func,
     onClickNewMonthlyEvent: React.PropTypes.func,
     onClickNewPublication: React.PropTypes.func,
@@ -75,8 +75,8 @@ export default React.createClass({
     return <Tooltip id='newCommentary'>new commentary</Tooltip>
   },
 
-  newSourceCategoryTooltip () {
-    return <Tooltip id='newSourceCategory'>new source category</Tooltip>
+  newSourceTooltip () {
+    return <Tooltip id='newSource'>new source</Tooltip>
   },
 
   newActorCategoryTooltip () {
@@ -92,18 +92,18 @@ export default React.createClass({
   },
 
   render () {
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSourceCategory, activeActorCategory, email, editing, onClickNewCommentary, onClickNewSourceCategory, onClickNewActorCategory, onClickNewMonthlyEvent, onClickNewPublication } = this.props
+    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActorCategory, email, editing, onClickNewCommentary, onClickNewSource, onClickNewActorCategory, onClickNewMonthlyEvent, onClickNewPublication } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = activePage && activePage._id ? activePage._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_sources', 'pages_monthlyEvents', 'pages_publications', 'pages_actors']
-    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeSourceCategory, '_id') || _.has(activeActorCategory, '_id') || _.has(activePublication, '_id'))
+    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeSource, '_id') || _.has(activeActorCategory, '_id') || _.has(activePublication, '_id'))
     const showAddCommentary = email && activePage._id === 'pages_commentaries'
-    const showAddSourceCategory = email && activePage._id === 'pages_sources'
+    const showAddSource = email && activePage._id === 'pages_sources'
     const showAddActorCategory = email && activePage._id === 'pages_actors'
     const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
     const showAddPublication = email && activePage._id === 'pages_publications'
-    const showNavbarRight = email || showEdit || showAddCommentary || showAddSourceCategory || showAddActorCategory || showAddMonthlyEvent
+    const showNavbarRight = email || showEdit || showAddCommentary || showAddSource || showAddActorCategory || showAddMonthlyEvent
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -182,11 +182,11 @@ export default React.createClass({
                     </OverlayTrigger>
                     : null
                   }
-                  {showAddSourceCategory ?
-                    <OverlayTrigger placement='bottom' overlay={this.newSourceCategoryTooltip()}>
+                  {showAddSource ?
+                    <OverlayTrigger placement='bottom' overlay={this.newSourceTooltip()}>
                       <NavItem
                         eventKey={3}
-                        onClick={onClickNewSourceCategory}
+                        onClick={onClickNewSource}
                       >
                         <Glyphicon glyph='plus' />
                       </NavItem>

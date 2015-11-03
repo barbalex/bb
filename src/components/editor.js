@@ -13,16 +13,16 @@ export default React.createClass({
     onSaveMonthlyEventArticle: React.PropTypes.func,
     onSavePublicationArticle: React.PropTypes.func,
     onSaveCommentaryArticle: React.PropTypes.func,
-    onSaveSourceCategoryArticle: React.PropTypes.func,
+    onSaveSourceArticle: React.PropTypes.func,
     onSaveActorCategoryArticle: React.PropTypes.func
   },
 
   componentDidMount () {
-    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle, onSaveSourceCategoryArticle, onSaveActorCategoryArticle } = this.props
+    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle, onSaveSourceArticle, onSaveActorCategoryArticle } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
     if (onSaveMonthlyEventArticle || onSavePublicationArticle) height = window.innerHeight - 52 - 74 - 76
-    if (onSaveCommentaryArticle || onSaveSourceCategoryArticle || onSaveActorCategoryArticle) height = window.innerHeight - 52 - 74 - 90
+    if (onSaveCommentaryArticle || onSaveSourceArticle || onSaveActorCategoryArticle) height = window.innerHeight - 52 - 74 - 90
     const instanceSelector = `#${doc._id}`
 
     window.tinymce.init({
@@ -49,7 +49,7 @@ export default React.createClass({
           if (onSaveMonthlyEventArticle) onSaveMonthlyEventArticle(articleEncoded)
           if (onSavePublicationArticle) onSavePublicationArticle(articleEncoded)
           if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)
-          if (onSaveSourceCategoryArticle) onSaveSourceCategoryArticle(articleEncoded)
+          if (onSaveSourceArticle) onSaveSourceArticle(articleEncoded)
           if (onSaveActorCategoryArticle) onSaveActorCategoryArticle(articleEncoded)
         })
       },
