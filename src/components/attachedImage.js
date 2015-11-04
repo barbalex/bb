@@ -56,7 +56,7 @@ export default React.createClass({
     return (
       <div key={id} style={divStyle}>
         <div className='media-left' style={mediaLeftStyle}>
-          <img src={url} className='media-object' style={imgStyle} />
+          <img src={url} className='media-object' alt={attName} style={imgStyle} />
           <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.removeImage} />
         </div>
         <div className='media-body media-middle'>
