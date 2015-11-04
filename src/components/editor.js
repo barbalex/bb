@@ -24,6 +24,14 @@ export default React.createClass({
     if (onSaveMonthlyEventArticle || onSavePublicationArticle) height = window.innerHeight - 52 - 74 - 76
     if (onSaveCommentaryArticle || onSaveSourceArticle || onSaveActorArticle) height = window.innerHeight - 52 - 74 - 90
     const instanceSelector = `#${doc._id}`
+    // need to add specific classes to the iframe body because my css will not apply otherwise
+    let bodyClass = ''
+    if (onSavePageArticle) bodyClass = ''
+    if (onSaveMonthlyEventArticle) bodyClass = 'monthlyEvent'
+    if (onSavePublicationArticle) bodyClass = 'publication'
+    if (onSaveCommentaryArticle) bodyClass = 'commentary'
+    if (onSaveSourceArticle) bodyClass = 'source'
+    if (onSaveActorArticle) bodyClass = 'actor'
 
     window.tinymce.init({
       selector: instanceSelector,
@@ -38,7 +46,7 @@ export default React.createClass({
       browser_spellcheck: true,
       automatic_uploads: false,
       statusbar: false,
-      // TODO: does not work
+      body_class: bodyClass,
       content_css: '/bb.1.0.0.css',
       // enable auto-saving
       setup (editor) {
