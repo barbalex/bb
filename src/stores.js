@@ -143,7 +143,7 @@ export default (Actions) => {
     }
   })
 
-  app.EventsStore = Reflux.createStore({
+  app.eventsStore = Reflux.createStore({
 
     listenables: Actions,
 
@@ -163,8 +163,8 @@ export default (Actions) => {
     onNewEvent (year, month, day, title, eventType, tags) {
       const id = `events_${year}_${month}_${day}_${title}`
       const type = 'events'
-      const monthlyEvent = { _id, type, title, eventType, tags }
-      this.saveEvent(monthlyEvent)
+      const event = { _id, type, title, eventType, tags }
+      this.saveEvent(event)
     },
 
     onGetEvent (id) {
@@ -186,6 +186,7 @@ export default (Actions) => {
         .then((resp) => {
           // resp.rev is new rev
           event._rev = resp.rev
+          // replace event in cache
           
           this.trigger(monthlyEvent)
           Actions.getMonthlyEvents()
@@ -193,7 +194,7 @@ export default (Actions) => {
           if (isActiveMonthlyEvent) this.activeMonthlyEvent = monthlyEvent
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
-    }
+    },
 
     onRemoveMonthlyEvent (doc) {
       app.db.remove(doc)
