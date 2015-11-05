@@ -25,6 +25,7 @@ export default React.createClass({
 
   propTypes: {
     activePage: React.PropTypes.object,
+    monthlyEvents: React.PropTypes.array,
     activeMonthlyEvent: React.PropTypes.object,
     activePublication: React.PropTypes.object,
     activeCommentary: React.PropTypes.object,
@@ -46,6 +47,7 @@ export default React.createClass({
     return {
       activePage: {},
       activeMonthlyEvent: {},
+      monthlyEvents: [],
       activePublication: {},
       activeCommentary: {},
       activeSource: {},
@@ -64,6 +66,7 @@ export default React.createClass({
   componentDidMount () {
     // listen to stores
     this.listenTo(app.activePageStore, this.onActivePageStoreChange)
+    this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
     this.listenTo(app.activeMonthlyEventStore, this.onActiveMonthlyEventStoreChange)
     this.listenTo(app.activePublicationStore, this.onActivePublicationStoreChange)
     this.listenTo(app.activeCommentaryStore, this.onActiveCommentaryStoreChange)
@@ -75,6 +78,12 @@ export default React.createClass({
 
   onActivePageStoreChange (activePage) {
     this.setState({ activePage })
+  },
+
+  onMonthlyEventsStoreChange (monthlyEvents) {
+    const { email } = this.props
+    if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) => !monthlyEvent.draft)
+    this.setState({ monthlyEvents })
   },
 
   onActiveMonthlyEventStoreChange (activeMonthlyEvent) {
@@ -194,7 +203,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActor, editing, showNewCommentary, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const { activePage, monthlyEvents, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActor, editing, showNewCommentary, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
@@ -276,6 +285,7 @@ export default React.createClass({
             }
             {showMonthlyEventsPage ?
               <MonthlyEvents
+                monthlyEvents={monthlyEvents}
                 activeMonthlyEvent={activeMonthlyEvent}
                 editing={editing}
                 email={email}

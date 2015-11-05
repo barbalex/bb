@@ -3,7 +3,6 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
-import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import MonthlyEventsOfYear from './monthlyEventsOfYear.js'
@@ -11,8 +10,6 @@ import NewMonthlyEvent from './newMonthlyEvent.js'
 
 export default React.createClass({
   displayName: 'MonthlyEvents',
-
-  mixins: [ListenerMixin],
 
   propTypes: {
     monthlyEvents: React.PropTypes.array,
@@ -27,27 +24,12 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      monthlyEvents: [],
       activeYear: null
     }
   },
 
   componentDidMount () {
-    this.listenTo(app.activeMonthlyEventStore, this.onActiveMonthlyEventStoreChange)
-    this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
     app.Actions.getMonthlyEvents()
-  },
-
-  onActiveMonthlyEventStoreChange (activeMonthlyEvent) {
-    // need to requery monthly events
-    // so new / changed arrivals and victims are shown
-    app.Actions.getMonthlyEvents()
-  },
-
-  onMonthlyEventsStoreChange (monthlyEvents) {
-    const { email } = this.props
-    if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) => !monthlyEvent.draft)
-    this.setState({ monthlyEvents })
   },
 
   onClickYear (activeYear) {
@@ -58,7 +40,7 @@ export default React.createClass({
   },
 
   yearsOfEvents () {
-    let { monthlyEvents } = this.state
+    let { monthlyEvents } = this.props
     const allYears = _.map(monthlyEvents, (doc) => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
       const years = _.uniq(allYears)
@@ -73,8 +55,7 @@ export default React.createClass({
   },
 
   eventYearsComponent (activeYear) {
-    const { activeMonthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
-    let { monthlyEvents } = this.state
+    const { monthlyEvents, activeMonthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
       monthlyEvents = monthlyEvents.sort((a, b) => {
