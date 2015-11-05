@@ -46,7 +46,7 @@ export default React.createClass({
     const email = window.localStorage.email
     return {
       activePage: {},
-      activeMonthlyEvent: {},
+      activeMonthlyEvent: null,
       monthlyEvents: [],
       activePublication: {},
       activeCommentary: {},
@@ -67,7 +67,6 @@ export default React.createClass({
     // listen to stores
     this.listenTo(app.activePageStore, this.onActivePageStoreChange)
     this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
-    this.listenTo(app.activeMonthlyEventStore, this.onActiveMonthlyEventStoreChange)
     this.listenTo(app.activePublicationStore, this.onActivePublicationStoreChange)
     this.listenTo(app.activeCommentaryStore, this.onActiveCommentaryStoreChange)
     this.listenTo(app.activeSourceStore, this.onActiveSourceStoreChange)
@@ -80,14 +79,10 @@ export default React.createClass({
     this.setState({ activePage })
   },
 
-  onMonthlyEventsStoreChange (monthlyEvents) {
-    const { email } = this.props
+  onMonthlyEventsStoreChange (monthlyEvents, activeMonthlyEvent) {
+    const { email } = this.state
     if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) => !monthlyEvent.draft)
-    this.setState({ monthlyEvents })
-  },
-
-  onActiveMonthlyEventStoreChange (activeMonthlyEvent) {
-    this.setState({ activeMonthlyEvent })
+    this.setState({ monthlyEvents, activeMonthlyEvent })
   },
 
   onActivePublicationStoreChange (activePublication) {

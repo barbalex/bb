@@ -36,10 +36,13 @@ export default React.createClass({
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.activeMonthlyEvent._id !== prevProps.activeMonthlyEvent._id) {
-      // this is later rerender
-      // only scroll into view if the active item changed last render
-      this.scrollToActivePanel()
+    if (this.props.activeMonthlyEvent) {
+      const activeMonthlyEventChanged = !prevProps.activeMonthlyEvent || this.props.activeMonthlyEvent._id !== prevProps.activeMonthlyEvent._id
+      if (activeMonthlyEventChanged) {
+        // this is later rerender
+        // only scroll into view if the active item changed last render
+        this.scrollToActivePanel()
+      }
     }
   },
 
@@ -48,7 +51,7 @@ export default React.createClass({
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (Object.keys(activeMonthlyEvent).length === 0 || activeMonthlyEvent._id !== id) ? id : null
+    const idToGet = (!activeMonthlyEvent || activeMonthlyEvent._id && activeMonthlyEvent._id !== id) ? id : null
     app.Actions.getMonthlyEvent(idToGet)
   },
 

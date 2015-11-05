@@ -1,6 +1,8 @@
 'use strict'
 
 import app from 'ampersand-app'
+import _ from 'lodash'
+import sortMonthlyEvents from './sortMonthlyEvents.js'
 
 export default () => {
   return new Promise((resolve, reject) => {
@@ -10,7 +12,11 @@ export default () => {
       endkey: 'monthlyEvents_\uffff'
     }
     app.db.allDocs(options)
-      .then((docs) => resolve(docs))
+      .then((result) => {
+        let monthlyEvents = _.pluck(result.rows, 'doc')
+        monthlyEvents = sortMonthlyEvents(monthlyEvents)
+        resolve(monthlyEvents)
+      })
       .catch((error) => reject('Error fetching monthly events:', error))
   })
 }

@@ -10,6 +10,7 @@ import getCommentaries from './modules/getCommentaries.js'
 import getSources from './modules/getSources.js'
 import getActors from './modules/getActors.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
+import sortMonthlyEvents from './modules/sortMonthlyEvents.js'
 import getEvents from './modules/getEvents.js'
 import sortEvents from './modules/sortEvents.js'
 import getPublications from './modules/getPublications.js'
@@ -66,81 +67,121 @@ export default (Actions) => {
 
     listenables: Actions,
 
-    activeMonthlyEvent: null,
-
-    onGetMonthlyEvent (id) {
-      if (!id) {
-        app.router.navigate('/monthlyEvents')
-        this.trigger({})
-        this.activeMonthlyEvent = null
-      } else {
-        app.db.get(id, { include_docs: true })
-          .then((monthlyEvent) => {
-            const path = getPathFromDoc(monthlyEvent)
-            app.router.navigate('/' + path)
-            this.trigger(monthlyEvent)
-            this.activeMonthlyEvent = monthlyEvent
-          })
-          .catch((error) => app.Actions.showError({title: 'Error fetching monthly event ' + id + ':', msg: error}))
-      }
-    },
-
-    onSaveMonthlyEvent (monthlyEvent) {
-      app.db.put(monthlyEvent)
-        .then((resp) => {
-          // resp.rev is new rev
-          monthlyEvent._rev = resp.rev
-          this.trigger(monthlyEvent)
-          Actions.getMonthlyEvents()
-          const isActiveMonthlyEvent = this.activeMonthlyEvent && monthlyEvent._id === this.activeMonthlyEvent._id
-          if (isActiveMonthlyEvent) this.activeMonthlyEvent = monthlyEvent
-        })
-        .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
-    }
+    activeMonthlyEvent: null
   })
 
   app.monthlyEventsStore = Reflux.createStore({
 
     listenables: Actions,
 
+    monthlyEvents: [],
+
+    activeMonthlyEvent: null,
+
     onGetMonthlyEvents () {
       getMonthlyEvents()
-        .then((result) => {
-          const docs = _.pluck(result.rows, 'doc')
-          this.trigger(docs)
+        .then((monthlyEvents) => {
+          this.monthlyEvents = monthlyEvents
+          this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
     onNewMonthlyEvent (year, month) {
-      const id = `monthlyEvents_${year}_${month}`
+      const _id = `monthlyEvents_${year}_${month}`
+      const type = 'monthlyEvents'
+      const draft = true
       const article = Base64.encode(monthlyEventTemplate)
-      const monthlyEvent = {
-        _id: id,
-        type: 'monthlyEvents',
-        draft: true,
-        article: article
-      }
-      Actions.saveMonthlyEvent(monthlyEvent)
+      const monthlyEvent = { _id, type, draft, article }
+      this.onSaveMonthlyEvent(monthlyEvent)
     },
 
-    onRemoveMonthlyEvent (doc) {
-      app.db.remove(doc)
-        .then(() => {
-          this.onGetMonthlyEvents()
-          const activeMonthlyEvent = app.activeMonthlyEventStore.activeMonthlyEvent
-          if (activeMonthlyEvent && activeMonthlyEvent._id === doc._id) Actions.getMonthlyEvent(null)
-        })
-        .catch((error) => app.Actions.showError({title: 'Error removing monthly event:', msg: error}))
-    },
-
-    onToggleDraftOfMonthlyEvent (doc) {
-      if (doc.draft === true) {
-        delete doc.draft
+    onGetMonthlyEvent (id) {
+      if (!id) {
+        app.router.navigate('/monthlyEvents')
+        this.activeMonthlyEvent = null
+        this.triggerStore()
       } else {
-        doc.draft = true
+        const monthlyEvent = this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === id)
+        const path = getPathFromDoc(monthlyEvent)
+        app.router.navigate('/' + path)
+        this.activeMonthlyEvent = monthlyEvent
+        this.triggerStore()
       }
-      Actions.saveMonthlyEvent(doc)
+    },
+
+    updateMonthlyEventInCache (monthlyEvent) {
+      // first update the monthlyEvent in this.monthlyEvents
+      this.monthlyEvents = this.monthlyEvents.filter((thisMonthlyEvent) => thisMonthlyEvent._id !== monthlyEvent._id)
+      this.monthlyEvents.push(monthlyEvent)
+      this.monthlyEvents = sortMonthlyEvents(this.monthlyEvents)
+      // now update it in this.activeMonthlyEvent if it is the active monthlyEvent
+      const isActiveMonthlyEvent = this.activeMonthlyEvent && this.activeMonthlyEvent._id === monthlyEvent._id
+      if (isActiveMonthlyEvent) this.activeMonthlyEvent = monthlyEvent
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    revertCache (oldMonthlyEvents, oldActiveMonthlyEvent) {
+      this.monthlyEvents = oldMonthlyEvents
+      this.activeMonthlyEvent = oldActiveMonthlyEvent
+      this.triggerStore()
+    },
+
+    onSaveMonthlyEvent (monthlyEvent) {
+      // keep old cache in case of error
+      const oldMonthlyEvents = this.monthlyEvents
+      const oldActiveMonthlyEvent = this.activeMonthlyEvent
+      // optimistically update in cache
+      this.updateMonthlyEventInCache(monthlyEvent)
+      app.db.put(monthlyEvent)
+        .then((resp) => {
+          monthlyEvent._rev = resp.rev
+          // definitely update in cache
+          this.updateMonthlyEventInCache(monthlyEvent)
+        })
+        .catch((error) => {
+          this.revertCache(oldMonthlyEvents, oldActiveMonthlyEvent)
+          app.Actions.showError({title: 'Error saving monthly event:', msg: error})
+        })
+    },
+
+    removeMonthlyEventFromCache (monthlyEvent) {
+      // first update the monthlyEvent in this.monthlyEvents
+      this.monthlyEvents = this.monthlyEvents.filter((thisMonthlyEvent) => thisMonthlyEvent._id !== monthlyEvent._id)
+      this.monthlyEvents = sortMonthlyEvents(this.monthlyEvents)
+      // now update it in this.activeMonthlyEvent if it is the active monthlyEvent
+      const isActiveMonthlyEvent = this.activeMonthlyEvent && this.activeMonthlyEvent._id === monthlyEvent._id
+      if (isActiveMonthlyEvent) this.activeMonthlyEvent = null
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    onRemoveMonthlyEvent (monthlyEvent) {
+      // keep old cache in case of error
+      const oldMonthlyEvents = this.monthlyEvents
+      const oldActiveMonthlyEvent = this.activeMonthlyEvent
+      // optimistically remove monthlyEvent from cache
+      this.removeMonthlyEventFromCache(monthlyEvent)
+      app.db.remove(monthlyEvent)
+        .catch((error) => {
+          // oops. Revert optimistic removal
+          this.revertCache(oldMonthlyEvents, oldActiveMonthlyEvent)
+          app.Actions.showError({title: 'Error removing monthly event:', msg: error})
+        })
+    },
+
+    onToggleDraftOfMonthlyEvent (monthlyEvent) {
+      if (monthlyEvent.draft === true) {
+        delete monthlyEvent.draft
+      } else {
+        monthlyEvent.draft = true
+      }
+      this.onSaveMonthlyEvent(monthlyEvent)
+    },
+
+    triggerStore () {
+      this.trigger(this.monthlyEvents, this.activeMonthlyEvent)
     }
   })
 
@@ -165,7 +206,7 @@ export default (Actions) => {
       const _id = `events_${year}_${month}_${day}_${title}`
       const type = 'events'
       const event = { _id, type, title, eventType, tags }
-      this.saveEvent(event)
+      this.onSaveEvent(event)
     },
 
     onGetEvent (id) {
@@ -194,17 +235,28 @@ export default (Actions) => {
       this.triggerStore()
     },
 
+    revertCache (oldEvents, oldActiveEvent) {
+      this.events = oldEvents
+      this.activeEvent = oldActiveEvent
+      this.triggerStore()
+    },
+
     onSaveEvent (event) {
+      // keep old cache in case of error
+      const oldEvents = this.events
+      const oldActiveEvent = this.activeEvent
       // optimistically update in cache
       this.updateEventInCache(event)
       app.db.put(event)
         .then((resp) => {
-          // resp.rev is new rev
           event._rev = resp.rev
-          // update in cache
+          // definitely update in cache
           this.updateEventInCache(event)
         })
-        .catch((error) => app.Actions.showError({title: 'Error saving event:', msg: error}))
+        .catch((error) => {
+          this.revertCache(oldEvents, oldActiveEvent)
+          app.Actions.showError({title: 'Error saving event:', msg: error})
+        })
     },
 
     removeEventFromCache (event) {
@@ -219,12 +271,15 @@ export default (Actions) => {
     },
 
     onRemoveEvent (event) {
+      // keep old cache in case of error
+      const oldEvents = this.events
+      const oldActiveEvent = this.activeEvent
       // optimistically remove event from cache
       this.removeEventFromCache(event)
       app.db.remove(event)
         .catch((error) => {
           // oops. Revert optimistic removal
-          this.updateEventInCache(event)
+          this.revertCache(oldEvents, oldActiveEvent)
           app.Actions.showError({title: 'Error removing event:', msg: error})
         })
     },

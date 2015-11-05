@@ -55,13 +55,10 @@ export default React.createClass({
   },
 
   eventYearsComponent (activeYear) {
-    const { monthlyEvents, activeMonthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
+    const { activeMonthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
+    let { monthlyEvents } = this.props
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
-      monthlyEvents = monthlyEvents.sort((a, b) => {
-        if (a._id < b._id) return 1
-        return -1
-      })
       return years.map((year, yIndex) => {
         const className = year === activeYear ? 'year active' : 'year not-active'
         // wanted to only build MonthlyEventsOfYear if isActiveYear
@@ -84,6 +81,7 @@ export default React.createClass({
     } else {
       activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()
     }
+
     return (
       <div id='monthlyEvents'>
         <h1>Events</h1>
