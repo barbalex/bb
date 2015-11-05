@@ -17,7 +17,6 @@ export default React.createClass({
     year: React.PropTypes.string,
     monthlyEvents: React.PropTypes.array,
     activeMonthlyEvent: React.PropTypes.object,
-    maxArrivalsAndVictims: React.PropTypes.number,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onSaveMonthlyEventArticle: React.PropTypes.func,
@@ -133,7 +132,7 @@ export default React.createClass({
   },
 
   monthlyEventsComponent (year) {
-    const { activeMonthlyEvent, maxArrivalsAndVictims, editing, email, onSaveMonthlyEventArticle } = this.props
+    const { activeMonthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
     let { monthlyEvents } = this.props
     // filter only events of current year
     monthlyEvents = monthlyEvents.filter((monthlyEvent) => getYearFromEventId(monthlyEvent._id) === year)
@@ -147,44 +146,6 @@ export default React.createClass({
       const panelBodyStyle = {
         maxHeight: window.innerHeight - 127,
         overflowY: 'auto'
-      }
-      const hasArrivals = !!doc.arrivals
-      const hasVictims = !!doc.victims
-      let arrivalsPositionRight = 0
-      let arrivalsPositionLeft = 0
-      let victimsPositionRight = 0
-      let victimsPositionLeft = 0
-      if (hasArrivals) {
-        const arrivalFraction = doc.arrivals / maxArrivalsAndVictims
-        arrivalsPositionRight = arrivalFraction >= 0.5 ? (1 - arrivalFraction) * 100 + '%' : 'auto'
-        arrivalsPositionLeft = arrivalFraction < 0.5 ? arrivalFraction * 100 + '%' : 'auto'
-      }
-      if (hasVictims) {
-        const victimsFraction = doc.victims / maxArrivalsAndVictims
-        victimsPositionRight = victimsFraction >= 0.5 ? (1 - victimsFraction) * 100 + '%' : 'auto'
-        victimsPositionLeft = victimsFraction < 0.5 ? victimsFraction * 100 + '%' : 'auto'
-      }
-      const maxArrivalsStyle = {
-        position: 'absolute',
-        right: arrivalsPositionRight,
-        left: arrivalsPositionLeft,
-        top: 1,
-        color: '#0000A5',
-        marginBottom: 0,
-        fontSize: 0.7 + 'em',
-        fontWeight: 'bold',
-        textShadow: 'white 1px 1px 0px'
-      }
-      const maxVictimsStyle = {
-        position: 'absolute',
-        right: victimsPositionRight,
-        left: victimsPositionLeft,
-        top: 23,
-        color: '#CE0000',
-        marginBottom: 0,
-        fontSize: 0.7 + 'em',
-        fontWeight: 'bold',
-        textShadow: 'white -1px -1px 0px'
       }
       const ref = isActiveMonthlyEvent ? '_activeMonthlyEventPanel' : '_monthlyEventPanel' + doc._id
       // use pure bootstrap.
@@ -210,14 +171,6 @@ export default React.createClass({
                 {month}
               </a>
             </h4>
-            {hasVictims ?
-              <p style={maxVictimsStyle}>{doc.victims}</p>
-              : null
-            }
-            {hasArrivals ?
-              <p style={maxArrivalsStyle}>{doc.arrivals}</p>
-              : null
-            }
             {showEditingGlyphons ?
               this.toggleDraftGlyph(doc)
               : null
