@@ -10,6 +10,7 @@ import getCommentaries from './modules/getCommentaries.js'
 import getSources from './modules/getSources.js'
 import getActors from './modules/getActors.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
+import getEvents from './modules/getEvents.js'
 import getPublications from './modules/getPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
 import publicationTemplate from 'html!./components/publications/publicationTemplate.html'
@@ -84,7 +85,6 @@ export default (Actions) => {
     },
 
     onSaveMonthlyEvent (monthlyEvent) {
-      console.log('monthlyEvent 1', monthlyEvent)
       app.db.put(monthlyEvent)
         .then((resp) => {
           // resp.rev is new rev
@@ -122,6 +122,77 @@ export default (Actions) => {
       }
       Actions.saveMonthlyEvent(monthlyEvent)
     },
+
+    onRemoveMonthlyEvent (doc) {
+      app.db.remove(doc)
+        .then(() => {
+          this.onGetMonthlyEvents()
+          const activeMonthlyEvent = app.activeMonthlyEventStore.activeMonthlyEvent
+          if (activeMonthlyEvent && activeMonthlyEvent._id === doc._id) Actions.getMonthlyEvent(null)
+        })
+        .catch((error) => app.Actions.showError({title: 'Error removing monthly event:', msg: error}))
+    },
+
+    onToggleDraftOfMonthlyEvent (doc) {
+      if (doc.draft === true) {
+        delete doc.draft
+      } else {
+        doc.draft = true
+      }
+      Actions.saveMonthlyEvent(doc)
+    }
+  })
+
+  app.EventsStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    events: [],
+
+    activeEvent: null,
+
+    onGetEvents () {
+      getEvents()
+        .then((events) => {
+          this.events = events
+          this.trigger(this.events, this.activeEvent)
+        })
+        .catch((error) => app.Actions.showError({msg: error}))
+    },
+
+    onNewEvent (year, month, day, title, eventType, tags) {
+      const id = `events_${year}_${month}_${day}_${title}`
+      const type = 'events'
+      const monthlyEvent = { _id, type, title, eventType, tags }
+      this.saveEvent(monthlyEvent)
+    },
+
+    onGetEvent (id) {
+      if (!id) {
+        app.router.navigate('/events')
+        this.activeEvent = null
+        this.trigger(this.events, this.activeEvent)
+      } else {
+        const event = this.events.find((event) => event._id === id)
+        const path = getPathFromDoc(event)
+        app.router.navigate('/' + path)
+        this.activeEvent = event
+        this.trigger(this.events, this.activeEvent)
+      }
+    },
+
+    onSaveEvent (event) {
+      app.db.put(monthlyEvent)
+        .then((resp) => {
+          // resp.rev is new rev
+          monthlyEvent._rev = resp.rev
+          this.trigger(monthlyEvent)
+          Actions.getMonthlyEvents()
+          const isActiveMonthlyEvent = this.activeMonthlyEvent && monthlyEvent._id === this.activeMonthlyEvent._id
+          if (isActiveMonthlyEvent) this.activeMonthlyEvent = monthlyEvent
+        })
+        .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
+    }
 
     onRemoveMonthlyEvent (doc) {
       app.db.remove(doc)
