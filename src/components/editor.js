@@ -38,16 +38,26 @@ export default React.createClass({
       plugins: [
         'advlist autolink link image lists charmap print hr anchor pagebreak',
         'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
-        'save table contextmenu directionality emoticons template paste textcolor autosave codemirror'
+        'save table contextmenu directionality template paste textcolor autosave codemirror'
       ],
       menubar: 'edit insert view format table tools',
-      toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | emoticons print code fullscreen',
+      toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
       height: height,
       browser_spellcheck: true,
       automatic_uploads: false,
       statusbar: false,
       body_class: bodyClass,
       content_css: '/bb.1.0.0.css',
+      // try to stop tinymce from changing html on the server
+      // sadly did not work
+      /*entity_encoding: 'raw',
+      verify_html: false,
+      cleanup_on_startup: false,
+      cleanup_on_save: false,
+      trim_span_elements: false,
+      convert_urls: false,
+      extended_valid_elements: 'table[th]',
+      valid_elements: '*[*]',*/
       // enable auto-saving
       setup (editor) {
         editor.on('change undo redo', (e) => {
@@ -63,7 +73,7 @@ export default React.createClass({
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4
       codemirror: {
-        path: 'http://localhost:3000/tinymce/plugins/codemirror/codemirror-4.8',
+        path: 'http://46.101.159.23/tinymce/plugins/codemirror/codemirror-4.8',
         indentOnInit: true
       }
     })
