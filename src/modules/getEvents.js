@@ -1,9 +1,8 @@
 'use strict'
 
+import app from 'ampersand-app'
 import _ from 'lodash'
 import sortEvents from './sortEvents.js'
-
-import app from 'ampersand-app'
 
 export default () => {
   return new Promise((resolve, reject) => {

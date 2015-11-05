@@ -4,7 +4,6 @@ import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
-import { ListenerMixin } from 'reflux'
 import _ from 'lodash'
 import Commentary from './commentary.js'
 import NewCommentary from './newCommentary.js'
@@ -12,8 +11,6 @@ import ModalRemoveCommentary from './modalRemoveCommentary.js'
 
 export default React.createClass({
   displayName: 'Commentaries',
-
-  mixins: [ListenerMixin],
 
   propTypes: {
     commentaries: React.PropTypes.array,
@@ -28,40 +25,33 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      commentaries: [],
       docToRemove: null
     }
   },
 
   componentDidMount () {
-    this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
     app.Actions.getCommentaries()
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.activeCommentary._id && !prevProps.activeCommentary._id) {
-      /**
-       * this is first render
-       * componentDidUpdate and componentDidMount are actually executed
-       * BEFORE the dom elements are done being drawn,
-       * but AFTER they've been passed from React to the browser's DOM
-       */
-      window.setTimeout(() => {
+    if (this.props.activeCommentary) {
+      if (!prevProps.activeCommentary) {
+        /**
+         * this is first render
+         * componentDidUpdate and componentDidMount are actually executed
+         * BEFORE the dom elements are done being drawn,
+         * but AFTER they've been passed from React to the browser's DOM
+         */
+        window.setTimeout(() => {
+          this.scrollToActivePanel()
+        }, 200)
+      }
+      if (!prevProps.activeCommentary || this.props.activeCommentary._id !== prevProps.activeCommentary._id) {
+        // this is later rerender
+        // only scroll into view if the active item changed last render
         this.scrollToActivePanel()
-      }, 200)
-      // window.requestAnimationFrame(() => this.scrollToActivePanel())
+      }
     }
-    if (this.props.activeCommentary._id !== prevProps.activeCommentary._id) {
-      // this is later rerender
-      // only scroll into view if the active item changed last render
-      this.scrollToActivePanel()
-    }
-  },
-
-  onCommentariesStoreChange (commentaries) {
-    const { email } = this.props
-    if (!email) commentaries = commentaries.filter((commentary) => !commentary.draft)
-    this.setState({ commentaries })
   },
 
   onClickCommentary (id, e) {
@@ -69,7 +59,7 @@ export default React.createClass({
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (Object.keys(activeCommentary).length === 0 || activeCommentary._id !== id) ? id : null
+    const idToGet = (!activeCommentary || activeCommentary._id !== id) ? id : null
     app.Actions.getCommentary(idToGet)
   },
 
@@ -152,15 +142,11 @@ export default React.createClass({
   },
 
   commentariesComponent () {
-    const { activeCommentary, editing, email, onSaveCommentaryArticle } = this.props
-    let { commentaries } = this.state
+    const { commentaries, activeCommentary, editing, email, onSaveCommentaryArticle } = this.props
+
     if (commentaries.length > 0) {
-      commentaries = commentaries.sort((a, b) => {
-        if (a._id < b._id) return 1
-        return -1
-      })
       return commentaries.map((doc, index) => {
-        const isCommentary = Object.keys(activeCommentary).length > 0
+        const isCommentary = !!activeCommentary
         const isActiveCommentary = isCommentary ? doc._id === activeCommentary._id : false
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {

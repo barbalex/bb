@@ -7,6 +7,7 @@ import { Base64 } from 'js-base64'
 import slug from 'slug'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
+import sortCommentaries from './modules/sortCommentaries.js'
 import getSources from './modules/getSources.js'
 import getActors from './modules/getActors.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
@@ -289,52 +290,19 @@ export default (Actions) => {
     }
   })
 
-  app.activeCommentaryStore = Reflux.createStore({
-
-    listenables: Actions,
-
-    activeCommentary: null,
-
-    onGetCommentary (id) {
-      if (!id) {
-        app.router.navigate('/commentaries')
-        this.trigger({})
-        this.activeCommentary = null
-      } else {
-        app.db.get(id, { include_docs: true })
-          .then((commentary) => {
-            const path = getPathFromDoc(commentary)
-            app.router.navigate('/' + path)
-            this.trigger(commentary)
-            this.activeCommentary = commentary
-          })
-          .catch((error) => app.Actions.showError({title: 'Error fetching commentary ' + id + ':', msg: error}))
-      }
-    },
-
-    onSaveCommentary (commentary) {
-      app.db.put(commentary)
-        .then((resp) => {
-          // resp.rev is new rev
-          commentary._rev = resp.rev
-          this.trigger(commentary)
-          Actions.getCommentaries()
-          const isActiveCommentary = this.activeCommentary && this.activeCommentary._id === commentary._id
-          if (isActiveCommentary) this.activeCommentary = commentary
-        })
-        .catch((error) => app.Actions.showError({title: 'Error saving commentary:', msg: error}))
-    }
-  })
-
   app.commentariesStore = Reflux.createStore({
 
     listenables: Actions,
 
+    commentaries: [],
+
+    activeCommentary: null,
+
     onGetCommentaries () {
       getCommentaries()
-        .then((result) => {
-          const docs = _.pluck(result.rows, 'doc')
-          this.trigger(docs)
+        .then((commentaries) => {
+          this.commentaries = commentaries
+          this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
     },
@@ -343,34 +311,101 @@ export default (Actions) => {
       const year = moment(date).year()
       const month = moment(date).format('MM')
       const day = moment(date).format('DD')
-      const id = `commentaries_${year}_${month}_${day}_${title}`
-      const commentary = {
-        _id: id,
-        title: title,
-        draft: true,
-        article: 'IA==',
-        type: 'commentaries'
-      }
-      Actions.saveCommentary(commentary)
+      const _id = `commentaries_${year}_${month}_${day}_${title}`
+      const draft = true
+      const article = 'IA=='
+      const type = 'commentaries'
+      const commentary = { _id, title, draft, article, type }
+      this.onSaveCommentary(commentary)
     },
 
-    onRemoveCommentary (doc) {
-      app.db.remove(doc)
-        .then(() => {
-          this.onGetCommentaries()
-          const activeCommentary = app.activeCommentaryStore.activeCommentary
-          if (activeCommentary && activeCommentary._id === doc._id) Actions.getCommentary(null)
-        })
-        .catch((error) => app.Actions.showError({title: 'Error removing commentary:', msg: error}))
-    },
-
-    onToggleDraftOfCommentary (doc) {
-      if (doc.draft === true) {
-        delete doc.draft
+    onGetCommentary (id) {
+      if (!id) {
+        app.router.navigate('/commentaries')
+        this.activeCommentary = null
+        this.triggerStore()
       } else {
-        doc.draft = true
+        const commentary = this.commentaries.find((commentary) => commentary._id === id)
+        const path = getPathFromDoc(commentary)
+        app.router.navigate('/' + path)
+        this.activeCommentary = commentary
+        this.triggerStore()
       }
-      Actions.saveCommentary(doc)
+    },
+
+    updateCommentaryInCache (commentary) {
+      // first update the commentary in this.commentaries
+      this.commentaries = this.commentaries.filter((thisCommentary) => thisCommentary._id !== commentary._id)
+      this.commentaries.push(commentary)
+      this.commentaries = sortCommentaries(this.commentaries)
+      // now update it in this.activeCommentary if it is the active commentary
+      const isActiveCommentary = this.activeCommentary && this.activeCommentary._id === commentary._id
+      if (isActiveCommentary) this.activeCommentary = commentary
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    revertCache (oldCommentaries, oldActiveCommentary) {
+      this.commentaries = oldCommentaries
+      this.activeCommentary = oldActiveCommentary
+      this.triggerStore()
+    },
+
+    onSaveCommentary (commentary) {
+      // keep old cache in case of error
+      const oldCommentaries = this.commentaries
+      const oldActiveCommentary = this.activeCommentary
+      // optimistically update in cache
+      this.updateCommentaryInCache(commentary)
+      app.db.put(commentary)
+        .then((resp) => {
+          // resp.rev is new rev
+          commentary._rev = resp.rev
+          // definitely update in cache
+          this.updateCommentaryInCache(commentary)
+        })
+        .catch((error) => {
+          this.revertCache(oldCommentaries, oldActiveCommentary)
+          app.Actions.showError({title: 'Error saving commentary:', msg: error})
+        })
+    },
+
+    removeCommentaryFromCache (commentary) {
+      // first update the commentary in this.commentaries
+      this.commentaries = this.commentaries.filter((thisCommentary) => thisCommentary._id !== commentary._id)
+      this.commentaries = sortCommentaries(this.commentaries)
+      // now update it in this.activeCommentary if it is the active commentary
+      const isActiveCommentary = this.activeCommentary && this.activeCommentary._id === commentary._id
+      if (isActiveCommentary) this.activeCommentary = null
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    onRemoveCommentary (commentary) {
+      // keep old cache in case of error
+      const oldCommentaries = this.commentaries
+      const oldActiveCommentary = this.activeCommentary
+      // optimistically remove event from cache
+      this.removeCommentaryFromCache(commentary)
+      app.db.remove(commentary)
+        .catch((error) => {
+          // oops. Revert optimistic removal
+          this.revertCache(oldCommentaries, oldActiveCommentary)
+          app.Actions.showError({title: 'Error removing commentary:', msg: error})
+        })
+    },
+
+    onToggleDraftOfCommentary (commentary) {
+      if (commentary.draft === true) {
+        delete commentary.draft
+      } else {
+        commentary.draft = true
+      }
+      this.onSaveCommentary(commentary)
+    },
+
+    triggerStore () {
+      this.trigger(this.commentaries, this.activeCommentary)
     }
   })
 

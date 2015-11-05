@@ -28,6 +28,7 @@ export default React.createClass({
     monthlyEvents: React.PropTypes.array,
     activeMonthlyEvent: React.PropTypes.object,
     activePublication: React.PropTypes.object,
+    commentaries: React.PropTypes.array,
     activeCommentary: React.PropTypes.object,
     activeSource: React.PropTypes.object,
     activeActor: React.PropTypes.object,
@@ -49,7 +50,8 @@ export default React.createClass({
       activeMonthlyEvent: null,
       monthlyEvents: [],
       activePublication: {},
-      activeCommentary: {},
+      activeCommentary: null,
+      commentaries: [],
       activeSource: {},
       activeActor: {},
       editing: false,
@@ -68,7 +70,7 @@ export default React.createClass({
     this.listenTo(app.activePageStore, this.onActivePageStoreChange)
     this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
     this.listenTo(app.activePublicationStore, this.onActivePublicationStoreChange)
-    this.listenTo(app.activeCommentaryStore, this.onActiveCommentaryStoreChange)
+    this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
     this.listenTo(app.activeSourceStore, this.onActiveSourceStoreChange)
     this.listenTo(app.activeActorStore, this.onActiveActorStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
@@ -89,8 +91,10 @@ export default React.createClass({
     this.setState({ activePublication })
   },
 
-  onActiveCommentaryStoreChange (activeCommentary) {
-    this.setState({ activeCommentary })
+  onCommentariesStoreChange (commentaries, activeCommentary) {
+    const { email } = this.state
+    if (!email) commentaries = commentaries.filter((commentary) => !commentary.draft)
+    this.setState({ commentaries, activeCommentary })
   },
 
   onActiveSourceStoreChange (activeSource) {
@@ -198,7 +202,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActor, editing, showNewCommentary, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const { activePage, monthlyEvents, activeMonthlyEvent, activePublication, commentaries, activeCommentary, activeSource, activeActor, editing, showNewCommentary, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
@@ -250,6 +254,7 @@ export default React.createClass({
             }
             {showCommentaryPage ?
               <Commentaries
+                commentaries={commentaries}
                 activeCommentary={activeCommentary}
                 editing={editing}
                 email={email}
