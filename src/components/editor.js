@@ -47,7 +47,7 @@ export default React.createClass({
       automatic_uploads: false,
       statusbar: false,
       body_class: bodyClass,
-      content_css: '/bb.1.0.0.css',
+      content_css: '/tinymce.css',
       // try to stop tinymce from changing html on the server
       // sadly did not work
       /*entity_encoding: 'raw',

@@ -14,6 +14,7 @@ import 'expose?$!expose?jQuery!jquery'
 import 'babel-polyfill'
 // make webpack import styles
 import './styles/main.styl'
+import 'file?name=tinymce.css!./styles/tinymce.css'
 import 'bootstrap-webpack'
 // make webpack import server.js
 import 'file?name=server.js!../server.js'
