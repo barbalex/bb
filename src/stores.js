@@ -11,6 +11,7 @@ import getSources from './modules/getSources.js'
 import getActors from './modules/getActors.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import getEvents from './modules/getEvents.js'
+import sortEvents from './modules/sortEvents.js'
 import getPublications from './modules/getPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
 import publicationTemplate from 'html!./components/publications/publicationTemplate.html'
@@ -155,13 +156,13 @@ export default (Actions) => {
       getEvents()
         .then((events) => {
           this.events = events
-          this.trigger(this.events, this.activeEvent)
+          this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
     onNewEvent (year, month, day, title, eventType, tags) {
-      const id = `events_${year}_${month}_${day}_${title}`
+      const _id = `events_${year}_${month}_${day}_${title}`
       const type = 'events'
       const event = { _id, type, title, eventType, tags }
       this.saveEvent(event)
@@ -171,48 +172,65 @@ export default (Actions) => {
       if (!id) {
         app.router.navigate('/events')
         this.activeEvent = null
-        this.trigger(this.events, this.activeEvent)
+        this.triggerStore()
       } else {
         const event = this.events.find((event) => event._id === id)
         const path = getPathFromDoc(event)
         app.router.navigate('/' + path)
         this.activeEvent = event
-        this.trigger(this.events, this.activeEvent)
+        this.triggerStore()
       }
     },
 
+    updateEventInCache (event) {
+      // first update the event in this.events
+      this.events = this.events.filter((thisEvent) => thisEvent._id !== event._id)
+      this.events.push(event)
+      this.events = sortEvents(this.events)
+      // now update it in this.activeEvent if it is the active event
+      const isActiveEvent = this.activeEvent && this.activeEvent._id === event._id
+      if (isActiveEvent) this.activeEvent = event
+      // now tell every one!
+      this.triggerStore()
+    },
+
     onSaveEvent (event) {
+      // optimistically update in cache
+      this.updateEventInCache(event)
       app.db.put(event)
         .then((resp) => {
           // resp.rev is new rev
           event._rev = resp.rev
-          // replace event in cache
-          
-          this.trigger(monthlyEvent)
-          Actions.getMonthlyEvents()
-          const isActiveMonthlyEvent = this.activeMonthlyEvent && monthlyEvent._id === this.activeMonthlyEvent._id
-          if (isActiveMonthlyEvent) this.activeMonthlyEvent = monthlyEvent
+          // update in cache
+          this.updateEventInCache(event)
         })
-        .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
+        .catch((error) => app.Actions.showError({title: 'Error saving event:', msg: error}))
     },
 
-    onRemoveMonthlyEvent (doc) {
-      app.db.remove(doc)
-        .then(() => {
-          this.onGetMonthlyEvents()
-          const activeMonthlyEvent = app.activeMonthlyEventStore.activeMonthlyEvent
-          if (activeMonthlyEvent && activeMonthlyEvent._id === doc._id) Actions.getMonthlyEvent(null)
-        })
-        .catch((error) => app.Actions.showError({title: 'Error removing monthly event:', msg: error}))
+    removeEventFromCache (event) {
+      // first update the event in this.events
+      this.events = this.events.filter((thisEvent) => thisEvent._id !== event._id)
+      this.events = sortEvents(this.events)
+      // now update it in this.activeEvent if it is the active event
+      const isActiveEvent = this.activeEvent && this.activeEvent._id === event._id
+      if (isActiveEvent) this.activeEvent = null
+      // now tell every one!
+      this.triggerStore()
     },
 
-    onToggleDraftOfMonthlyEvent (doc) {
-      if (doc.draft === true) {
-        delete doc.draft
-      } else {
-        doc.draft = true
-      }
-      Actions.saveMonthlyEvent(doc)
+    onRemoveEvent (event) {
+      // optimistically remove event from cache
+      this.removeEventFromCache(event)
+      app.db.remove(event)
+        .catch((error) => {
+          // oops. Revert optimistic removal
+          this.updateEventInCache(event)
+          app.Actions.showError({title: 'Error removing event:', msg: error})
+        })
+    },
+
+    triggerStore () {
+      this.trigger(this.events, this.activeEvent)
     }
   })
 
