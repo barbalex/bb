@@ -84,13 +84,15 @@ export default (Actions) => {
     },
 
     onSaveMonthlyEvent (monthlyEvent) {
+      console.log('monthlyEvent 1', monthlyEvent)
       app.db.put(monthlyEvent)
         .then((resp) => {
           // resp.rev is new rev
           monthlyEvent._rev = resp.rev
           this.trigger(monthlyEvent)
           Actions.getMonthlyEvents()
-          if (monthlyEvent._id === this.activeMonthlyEvent._id) this.activeMonthlyEvent = monthlyEvent
+          const isActiveMonthlyEvent = this.activeMonthlyEvent && monthlyEvent._id === this.activeMonthlyEvent._id
+          if (isActiveMonthlyEvent) this.activeMonthlyEvent = monthlyEvent
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
     }
@@ -171,7 +173,8 @@ export default (Actions) => {
           commentary._rev = resp.rev
           this.trigger(commentary)
           Actions.getCommentaries()
-          if (this.activeCommentary._id === commentary._id) this.activeCommentary = commentary
+          const isActiveCommentary = this.activeCommentary && this.activeCommentary._id === commentary._id
+          if (isActiveCommentary) this.activeCommentary = commentary
         })
         .catch((error) => app.Actions.showError({title: 'Error saving commentary:', msg: error}))
     }
@@ -255,8 +258,8 @@ export default (Actions) => {
           publication._rev = resp.rev
           this.trigger(publication)
           Actions.getPublications()
-          let activePublication = this.activePublication
-          if (activePublication && activePublication._id === publication._id) activePublication = publication
+          const isActivePublication = this.activePublication && this.activePublication._id === publication._id
+          if (isActivePublication) this.activePublication = publication
         })
         .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
     }
@@ -340,8 +343,8 @@ export default (Actions) => {
           source._rev = resp.rev
           this.trigger(source)
           Actions.getSources()
-          let activeSource = this.activeSource
-          if (activeSource && activeSource._id === source._id) activeSource = source
+          const isActiveSource = this.activeSource && this.activeSource._id === source._id
+          if (isActiveSource) this.activeSource = source
         })
         .catch((error) => app.Actions.showError({title: 'Error saving source:', msg: error}))
     }
@@ -423,8 +426,8 @@ export default (Actions) => {
           actor._rev = resp.rev
           this.trigger(actor)
           Actions.getActors()
-          let activeActor = this.activeActor
-          if (activeActor && activeActor._id === actor._id) activeActor = actor
+          const isActiveActor = this.activeActor && this.activeActor._id === actor._id
+          if (isActiveActor) this.activeActor = actor
         })
         .catch((error) => app.Actions.showError({title: 'Error saving actor:', msg: error}))
     }
