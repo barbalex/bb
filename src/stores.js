@@ -182,10 +182,11 @@ export default (Actions) => {
     },
 
     onSaveEvent (event) {
-      app.db.put(monthlyEvent)
+      app.db.put(event)
         .then((resp) => {
           // resp.rev is new rev
-          monthlyEvent._rev = resp.rev
+          event._rev = resp.rev
+          
           this.trigger(monthlyEvent)
           Actions.getMonthlyEvents()
           const isActiveMonthlyEvent = this.activeMonthlyEvent && monthlyEvent._id === this.activeMonthlyEvent._id
