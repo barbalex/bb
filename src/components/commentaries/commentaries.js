@@ -45,8 +45,7 @@ export default React.createClass({
         window.setTimeout(() => {
           this.scrollToActivePanel()
         }, 200)
-      }
-      if (!prevProps.activeCommentary || this.props.activeCommentary._id !== prevProps.activeCommentary._id) {
+      } else if (this.props.activeCommentary._id !== prevProps.activeCommentary._id) {
         // this is later rerender
         // only scroll into view if the active item changed last render
         this.scrollToActivePanel()

@@ -9,6 +9,7 @@ import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
 import sortCommentaries from './modules/sortCommentaries.js'
 import getSources from './modules/getSources.js'
+import sortSources from './modules/sortSources.js'
 import getActors from './modules/getActors.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import sortMonthlyEvents from './modules/sortMonthlyEvents.js'
@@ -527,85 +528,119 @@ export default (Actions) => {
     }
   })
 
-  app.activeSourceStore = Reflux.createStore({
-
-    listenables: Actions,
-
-    activeSource: null,
-
-    onGetSource (id) {
-      if (!id) {
-        app.router.navigate('/sources')
-        this.trigger({})
-        this.activeSource = null
-      } else {
-        app.db.get(id, { include_docs: true })
-          .then((source) => {
-            const path = getPathFromDoc(source)
-            app.router.navigate('/' + path)
-            this.trigger(source)
-            this.activeSource = source
-          })
-          .catch((error) => app.Actions.showError({title: 'Error fetching source ' + id + ':', msg: error}))
-      }
-    },
-
-    onSaveSource (source) {
-      app.db.put(source)
-        .then((resp) => {
-          source._rev = resp.rev
-          this.trigger(source)
-          Actions.getSources()
-          const isActiveSource = this.activeSource && this.activeSource._id === source._id
-          if (isActiveSource) this.activeSource = source
-        })
-        .catch((error) => app.Actions.showError({title: 'Error saving source:', msg: error}))
-    }
-  })
-
   app.sourcesStore = Reflux.createStore({
 
     listenables: Actions,
 
+    sources: [],
+
+    activeSource: null,
+
     onGetSources () {
       getSources()
-        .then((result) => {
-          const docs = _.pluck(result.rows, 'doc')
-          this.trigger(docs)
+        .then((sources) => {
+          this.sources = sources
+          this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
     onNewSource (category) {
       const categorySlugified = slug(category, {lower: true})
-      const id = `sources_${categorySlugified}`
-      const source = {
-        _id: id,
-        category: category,
-        draft: true,
-        article: 'IA==',
-        type: 'sources'
-      }
-      Actions.saveSource(source)
+      const _id = `sources_${categorySlugified}`
+      const draft = true
+      const article = 'IA=='
+      const type = 'sources'
+      const source = { _id, category, draft, article, type }
+      this.onSaveSource(source)
     },
 
-    onRemoveSource (doc) {
-      app.db.remove(doc)
-        .then(() => {
-          this.onGetSources()
-          const activeSource = app.activeSourceStore.activeSource
-          if (activeSource && activeSource._id === doc._id) Actions.getSource(null)
-        })
-        .catch((error) => app.Actions.showError({title: 'Error removing source:', msg: error}))
-    },
-
-    onToggleDraftOfSource (doc) {
-      if (doc.draft === true) {
-        delete doc.draft
+    onGetSource (id) {
+      if (!id) {
+        app.router.navigate('/sources')
+        this.activeSource = null
+        this.triggerStore()
       } else {
-        doc.draft = true
+        const source = this.sources.find((source) => source._id === id)
+        const path = getPathFromDoc(source)
+        app.router.navigate('/' + path)
+        this.activeSource = source
+        this.triggerStore()
       }
-      Actions.saveSource(doc)
+    },
+
+    updateSourceInCache (source) {
+      // first update the source in this.sources
+      this.sources = this.sources.filter((thisSource) => thisSource._id !== source._id)
+      this.sources.push(source)
+      this.sources = sortSources(this.sources)
+      // now update it in this.activeSource if it is the active source
+      const isActiveSource = this.activeSource && this.activeSource._id === source._id
+      if (isActiveSource) this.activeSource = source
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    revertCache (oldSources, oldActiveSource) {
+      this.sources = oldSources
+      this.activeSource = oldActiveSource
+      this.triggerStore()
+    },
+
+    onSaveSource (source) {
+      // keep old cache in case of error
+      const oldSources = this.sources
+      const oldActiveSource = this.activeSource
+      // optimistically update in cache
+      this.updateSourceInCache(source)
+      app.db.put(source)
+        .then((resp) => {
+          source._rev = resp.rev
+          // definitely update in cache
+          this.updateSourceInCache(source)
+        })
+        .catch((error) => {
+          this.revertCache(oldSources, oldActiveSource)
+          app.Actions.showError({title: 'Error saving source:', msg: error})
+        })
+    },
+
+    removeSourceFromCache (source) {
+      // first update the source in this.sources
+      this.sources = this.sources.filter((thisSource) => thisSource._id !== source._id)
+      this.sources = sortSources(this.sources)
+      // now update it in this.activeSource if it is the active source
+      const isActiveSource = this.activeSource && this.activeSource._id === source._id
+      if (isActiveSource) this.activeSource = null
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    onRemoveSource (source) {
+      // keep old cache in case of error
+      const oldSources = this.sources
+      const oldActiveSource = this.activeSource
+      // optimistically remove event from cache
+      this.removeSourceFromCache(source)
+      app.db.remove(source)
+        .catch((error) => {
+          // oops. Revert optimistic removal
+          this.revertCache(oldSources, oldActiveSource)
+          app.Actions.showError({title: 'Error removing source:', msg: error})
+        })
+    },
+
+    onToggleDraftOfSource (source) {
+      if (source.draft === true) {
+        delete source.draft
+      } else {
+        source.draft = true
+      }
+      this.onSaveSource(source)
+    },
+
+    triggerStore () {
+      this.trigger(this.sources, this.activeSource)
     }
   })
 
