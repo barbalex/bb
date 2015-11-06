@@ -7,9 +7,10 @@ import _ from 'lodash'
 import EventTableRow from './eventTableRow.js'
 import NewEvent from './newEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
+import getDatesSinceOldestEvent from '../../modules/getDatesSinceOldestEvent.js'
 
 export default React.createClass({
-  displayName: 'Commentaries',
+  displayName: 'Events',
 
   propTypes: {
     events: React.PropTypes.array,
@@ -28,7 +29,9 @@ export default React.createClass({
   },
 
   componentDidMount () {
+    const { events } = this.props
     app.Actions.getEvents()
+    getDatesSinceOldestEvent(events)
   },
 
   onClickEvent (id, e) {
