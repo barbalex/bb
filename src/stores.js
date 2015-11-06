@@ -619,12 +619,25 @@ export default (Actions) => {
 
     sources: [],
 
-    activeSource: null,
+    // cache the id, not the entire doc
+    // advantage: on first load sources is empty so no activeSource can be gotten
+    // but if id is used, this can be cached
+    activeSourceId: null,
+
+    activeSource () {
+      return this.sources.find((source) => source._id === this.activeSourceId)
+    },
+
+    getSourcesCallback: null,
 
     onGetSources () {
       getSources()
         .then((sources) => {
           this.sources = sources
+          if (this.getSourcesCallback) {
+            this.getSourcesCallback()
+            this.getSourcesCallback = null
+          }
           this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
@@ -643,14 +656,24 @@ export default (Actions) => {
     onGetSource (id) {
       if (!id) {
         app.router.navigate('/sources')
-        this.activeSource = null
+        this.activeSourceId = null
         this.triggerStore()
       } else {
-        const source = this.sources.find((source) => source._id === id)
-        const path = getPathFromDoc(source)
-        app.router.navigate('/' + path)
-        this.activeSource = source
-        this.triggerStore()
+        this.activeSourceId = id
+        if (this.sources.length === 0) {
+          // on first load sources is empty
+          // need to wait until onGetSources fires
+          this.getSourcesCallback = () => {
+            const source = this.sources.find((source) => source._id === id)
+            const path = getPathFromDoc(source)
+            app.router.navigate('/' + path)
+          }
+        } else {
+          const source = this.sources.find((source) => source._id === id)
+          const path = getPathFromDoc(source)
+          app.router.navigate('/' + path)
+          this.triggerStore()
+        }
       }
     },
 
@@ -659,23 +682,20 @@ export default (Actions) => {
       this.sources = this.sources.filter((thisSource) => thisSource._id !== source._id)
       this.sources.push(source)
       this.sources = sortSources(this.sources)
-      // now update it in this.activeSource if it is the active source
-      const isActiveSource = this.activeSource && this.activeSource._id === source._id
-      if (isActiveSource) this.activeSource = source
       // now tell every one!
       this.triggerStore()
     },
 
-    revertCache (oldSources, oldActiveSource) {
+    revertCache (oldSources, oldActiveSourceId) {
       this.sources = oldSources
-      this.activeSource = oldActiveSource
+      this.activeSourceId = oldActiveSourceId
       this.triggerStore()
     },
 
     onSaveSource (source) {
       // keep old cache in case of error
       const oldSources = this.sources
-      const oldActiveSource = this.activeSource
+      const oldActiveSourceId = this.activeSourceId
       // optimistically update in cache
       this.updateSourceInCache(source)
       app.db.put(source)
@@ -685,7 +705,7 @@ export default (Actions) => {
           this.updateSourceInCache(source)
         })
         .catch((error) => {
-          this.revertCache(oldSources, oldActiveSource)
+          this.revertCache(oldSources, oldActiveSourceId)
           app.Actions.showError({title: 'Error saving source:', msg: error})
         })
     },
@@ -694,9 +714,9 @@ export default (Actions) => {
       // first update the source in this.sources
       this.sources = this.sources.filter((thisSource) => thisSource._id !== source._id)
       this.sources = sortSources(this.sources)
-      // now update it in this.activeSource if it is the active source
-      const isActiveSource = this.activeSource && this.activeSource._id === source._id
-      if (isActiveSource) this.activeSource = null
+      // now update this.activeSourceId if it is the active source's _id
+      const isActiveSource = this.activeSourceId === source._id
+      if (isActiveSource) this.activeSourceId = null
       // now tell every one!
       this.triggerStore()
     },
@@ -704,13 +724,13 @@ export default (Actions) => {
     onRemoveSource (source) {
       // keep old cache in case of error
       const oldSources = this.sources
-      const oldActiveSource = this.activeSource
+      const oldActiveSourceId = this.activeSourceId
       // optimistically remove event from cache
       this.removeSourceFromCache(source)
       app.db.remove(source)
         .catch((error) => {
           // oops. Revert optimistic removal
-          this.revertCache(oldSources, oldActiveSource)
+          this.revertCache(oldSources, oldActiveSourceId)
           app.Actions.showError({title: 'Error removing source:', msg: error})
         })
     },
@@ -725,7 +745,7 @@ export default (Actions) => {
     },
 
     triggerStore () {
-      this.trigger(this.sources, this.activeSource)
+      this.trigger(this.sources, this.activeSource())
     }
   })
 
