@@ -12,40 +12,35 @@ export default React.createClass({
   propTypes: {
     publications: React.PropTypes.array,
     activePublication: React.PropTypes.object,
-    activeCategory: React.PropTypes.number,
+    activePublicationCategory: React.PropTypes.string,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
+    onClickPublicationCategory: React.PropTypes.func,
     onSavePublicationArticle: React.PropTypes.func,
     onCloseNewPublication: React.PropTypes.func,
     showNewPublication: React.PropTypes.bool
-  },
-
-  getInitialState () {
-    return {
-      activeCategory: null
-    }
   },
 
   componentDidMount () {
     app.Actions.getPublications()
   },
 
-  onClickCategory (activeCategory) {
-    this.setState({ activeCategory })
-    // make sure no publication is loaded
-    // i.e. if a publication was loaded it is unloaded
-    app.Actions.getPublication(null)
+  onClickCategory (activePublicationCategory) {
+    this.props.onClickPublicationCategory(activePublicationCategory)
   },
 
-  publicationCategoriesComponent (activeCategory) {
+  publicationCategoriesComponent (activePublicationCategory) {
     const { publications, activePublication, editing, email, onSavePublicationArticle } = this.props
     const publicationCategories = app.publicationsStore.getPublicationCategories()
+
+    console.log('publications.js, activePublication', activePublication)
+
     if (publications.length > 0 && publicationCategories.length > 0) {
       return publicationCategories.map((category, yIndex) => {
-        const className = category === activeCategory ? 'category active' : 'category not-active'
+        const className = category === activePublicationCategory ? 'category active' : 'category not-active'
         // wanted to only build publicationsOfCategory if isActiveYear
         // but opening a category was way to hideous
-        // const isActiveYear = category === activeCategory
+        // const isActiveYear = category === activePublicationCategory
         return (
           <Panel key={category} header={category} eventKey={category} className={className} onClick={this.onClickCategory.bind(this, category)}>
             <PublicationsOfCategory category={category} publications={publications} activePublication={activePublication} editing={editing} email={email} onSavePublicationArticle={onSavePublicationArticle} />
@@ -57,13 +52,15 @@ export default React.createClass({
   },
 
   render () {
-    const { showNewPublication, onCloseNewPublication } = this.props
-    const { activeCategory } = this.state
+    const { activePublicationCategory, showNewPublication, onCloseNewPublication } = this.props
+
+    console.log('publications.js, activePublicationCategory', activePublicationCategory)
+
     return (
       <div id='publications'>
         <h1>Publications</h1>
-        <PanelGroup activeKey={activeCategory} accordion>
-          {this.publicationCategoriesComponent(activeCategory)}
+        <PanelGroup activeKey={activePublicationCategory} accordion>
+          {this.publicationCategoriesComponent(activePublicationCategory)}
         </PanelGroup>
         {showNewPublication ? <NewPublication onCloseNewPublication={onCloseNewPublication} /> : null}
       </div>

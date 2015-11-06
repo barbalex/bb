@@ -43,6 +43,9 @@ export default React.createClass({
   },
 
   onClickPublication (id, e) {
+
+    console.log('PublicationOfCategory, onClickPublication, id', id)
+
     const { activePublication } = this.props
     // prevent higher level panels from reacting
     e.preventDefault()

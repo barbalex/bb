@@ -28,6 +28,7 @@ export default React.createClass({
     monthlyEvents: React.PropTypes.array,
     activeMonthlyEvent: React.PropTypes.object,
     publications: React.PropTypes.array,
+    activePublicationCategory: React.PropTypes.string,
     activePublication: React.PropTypes.object,
     commentaries: React.PropTypes.array,
     activeCommentary: React.PropTypes.object,
@@ -54,6 +55,7 @@ export default React.createClass({
       monthlyEvents: [],
       activePublication: null,
       publications: [],
+      activePublicationCategory: null,
       activeCommentary: null,
       commentaries: [],
       activeSource: null,
@@ -96,7 +98,8 @@ export default React.createClass({
   onPublicationsStoreChange (publications, activePublication) {
     const { email } = this.state
     if (!email) publications = publications.filter((publication) => !publication.draft)
-    this.setState({ publications, activePublication })
+    const activePublicationCategory = activePublication ? activePublication.category : null
+    this.setState({ publications, activePublication, activePublicationCategory })
   },
 
   onCommentariesStoreChange (commentaries, activeCommentary) {
@@ -124,6 +127,13 @@ export default React.createClass({
 
   onErrorStoreChange (errors) {
     this.setState({ errors })
+  },
+
+  onClickPublicationCategory (activePublicationCategory) {
+    this.setState({ activePublicationCategory })
+    // make sure no publication is loaded
+    // i.e. if a publication was loaded it is unloaded
+    app.Actions.getPublication(null)
   },
 
   onClickEdit () {
@@ -214,7 +224,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublication, commentaries, activeCommentary, sources, activeSource, actors, activeActor, editing, showNewCommentary, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, commentaries, activeCommentary, sources, activeSource, actors, activeActor, editing, showNewCommentary, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
@@ -311,9 +321,11 @@ export default React.createClass({
             {showPublicationsPage ?
               <Publications
                 publications={publications}
+                activePublicationCategory={activePublicationCategory}
                 activePublication={activePublication}
                 editing={editing}
                 email={email}
+                onClickPublicationCategory={this.onClickPublicationCategory}
                 onSavePublicationArticle={this.onSavePublicationArticle}
                 showNewPublication={showNewPublication}
                 onCloseNewPublication={this.onCloseNewPublication} />

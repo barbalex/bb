@@ -67,6 +67,9 @@ export default Router.extend({
   },
 
   publication (category, title) {
+
+    console.log('router.js, publication')
+
     const id = `publications_${category}_${title}`
     this.render()
     app.Actions.getPage('pages_publications')

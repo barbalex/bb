@@ -376,6 +376,7 @@ export default (Actions) => {
         this.activeCommentaryId = null
         this.triggerStore()
       } else {
+        this.activeCommentaryId = id
         if (this.commentaries.length === 0) {
           // on first load commentaries is empty
           // need to wait until onGetCommentaries fires
@@ -383,13 +384,11 @@ export default (Actions) => {
             const commentary = this.commentaries.find((commentary) => commentary._id === id)
             const path = getPathFromDoc(commentary)
             app.router.navigate('/' + path)
-            this.activeCommentaryId = id
           }
         } else {
           const commentary = this.commentaries.find((commentary) => commentary._id === id)
           const path = getPathFromDoc(commentary)
           app.router.navigate('/' + path)
-          this.activeCommentaryId = id
           this.triggerStore()
         }
       }
@@ -433,7 +432,7 @@ export default (Actions) => {
       // first update the commentary in this.commentaries
       this.commentaries = this.commentaries.filter((thisCommentary) => thisCommentary._id !== commentary._id)
       this.commentaries = sortCommentaries(this.commentaries)
-      // now update it in this.activeCommentaryId if it is the active commentary's _id
+      // now update this.activeCommentaryId if it is the active commentary's _id
       const isActiveCommentary = this.activeCommentaryId === commentary._id
       if (isActiveCommentary) this.activeCommentaryId = null
       // now tell every one!
@@ -474,12 +473,25 @@ export default (Actions) => {
 
     publications: [],
 
-    activePublication: null,
+    activePublicationId: null,
+
+    activePublication () {
+      return this.publications.find((publication) => publication._id === this.activePublicationId)
+    },
+
+    getPublicationsCallback: null,
 
     onGetPublications () {
       getPublications()
         .then((publications) => {
           this.publications = publications
+
+          console.log('got publications')
+
+          if (this.getPublicationsCallback) {
+            this.getPublicationsCallback()
+            this.getPublicationsCallback = null
+          }
           this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
@@ -499,14 +511,26 @@ export default (Actions) => {
     onGetPublication (id) {
       if (!id) {
         app.router.navigate('/publications')
-        this.activePublication = null
+        this.activePublicationId = null
         this.triggerStore()
       } else {
-        const publication = this.publications.find((publication) => publication._id === id)
-        const path = getPathFromDoc(publication)
-        app.router.navigate('/' + path)
-        this.activePublication = publication
-        this.triggerStore()
+        this.activePublicationId = id
+        if (this.publications.length === 0) {
+          console.log('onGetPublication, 1')
+          // on first load publications is empty
+          // need to wait until onGetPublications fires
+          this.getPublicationsCallback = () => {
+            const publication = this.publications.find((publication) => publication._id === id)
+            const path = getPathFromDoc(publication)
+            app.router.navigate('/' + path)
+          }
+        } else {
+          console.log('onGetPublication, 2')
+          const publication = this.publications.find((publication) => publication._id === id)
+          const path = getPathFromDoc(publication)
+          app.router.navigate('/' + path)
+          this.triggerStore()
+        }
       }
     },
 
@@ -515,23 +539,20 @@ export default (Actions) => {
       this.publications = this.publications.filter((thisPublication) => thisPublication._id !== publication._id)
       this.publications.push(publication)
       this.publications = sortPublications(this.publications)
-      // now update it in this.activePublication if it is the active publication
-      const isActivePublication = this.activePublication && this.activePublication._id === publication._id
-      if (isActivePublication) this.activePublication = publication
       // now tell every one!
       this.triggerStore()
     },
 
-    revertCache (oldPublications, oldActivePublication) {
+    revertCache (oldPublications, oldActivePublicationId) {
       this.publications = oldPublications
-      this.activePublication = oldActivePublication
+      this.activePublicationId = oldActivePublicationId
       this.triggerStore()
     },
 
     onSavePublication (publication) {
       // keep old cache in case of error
       const oldPublications = this.publications
-      const oldActivePublication = this.activePublication
+      const oldActivePublicationId = this.activePublicationId
       // optimistically update in cache
       this.updatePublicationInCache(publication)
       app.db.put(publication)
@@ -542,7 +563,7 @@ export default (Actions) => {
           this.updatePublicationInCache(publication)
         })
         .catch((error) => {
-          this.revertCache(oldPublications, oldActivePublication)
+          this.revertCache(oldPublications, oldActivePublicationId)
           app.Actions.showError({title: 'Error saving publication:', msg: error})
         })
     },
@@ -551,9 +572,9 @@ export default (Actions) => {
       // first update the publication in this.publications
       this.publications = this.publications.filter((thisPublication) => thisPublication._id !== publication._id)
       this.publications = sortPublications(this.publications)
-      // now update it in this.activePublication if it is the active publication
-      const isActivePublication = this.activePublication && this.activePublication._id === publication._id
-      if (isActivePublication) this.activePublication = null
+      // now update this.activePublicationId if it is the active publication's _id
+      const isActivePublication = this.activePublicationId === publication._id
+      if (isActivePublication) this.activePublicationId = null
       // now tell every one!
       this.triggerStore()
     },
@@ -561,13 +582,13 @@ export default (Actions) => {
     onRemovePublication (publication) {
       // keep old cache in case of error
       const oldPublications = this.publications
-      const oldActivePublication = this.activePublication
+      const oldActivePublicationId = this.activePublicationId
       // optimistically remove publication from cache
       this.removePublicationFromCache(publication)
       app.db.remove(publication)
         .catch((error) => {
           // oops. Revert optimistic removal
-          this.revertCache(oldPublications, oldActivePublication)
+          this.revertCache(oldPublications, oldActivePublicationId)
           app.Actions.showError({title: 'Error removing publication:', msg: error})
         })
     },
@@ -588,7 +609,7 @@ export default (Actions) => {
     },
 
     triggerStore () {
-      this.trigger(this.publications, this.activePublication)
+      this.trigger(this.publications, this.activePublication())
     }
   })
 
