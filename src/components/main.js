@@ -9,6 +9,7 @@ import NavHelper from '../components/navHelper.js'
 import Header from '../components/header.js'
 import Navbar from '../components/navbar.js'
 import Page from './pages/page.js'
+import Events from './events/events.js'
 import Commentaries from './commentaries/commentaries.js'
 import Sources from './sources/sources.js'
 import Actors from './actors/actors.js'
@@ -32,12 +33,15 @@ export default React.createClass({
     activePublication: React.PropTypes.object,
     commentaries: React.PropTypes.array,
     activeCommentary: React.PropTypes.object,
+    events: React.PropTypes.array,
+    activeEvent: React.PropTypes.object,
     sources: React.PropTypes.array,
     activeSource: React.PropTypes.object,
     actors: React.PropTypes.array,
     activeActor: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
+    showNewEvent: React.PropTypes.bool,
     showNewSource: React.PropTypes.bool,
     showNewActor: React.PropTypes.bool,
     showNewMonthlyEvent: React.PropTypes.bool,
@@ -58,12 +62,15 @@ export default React.createClass({
       activePublicationCategory: null,
       activeCommentary: null,
       commentaries: [],
+      activeEvent: null,
+      events: [],
       activeSource: null,
       sources: [],
       activeActor: null,
       actors: [],
       editing: false,
       showNewCommentary: false,
+      showNewEvent: false,
       showNewSource: false,
       showNewActor: false,
       showNewMonthlyEvent: false,
@@ -79,6 +86,7 @@ export default React.createClass({
     this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
     this.listenTo(app.publicationsStore, this.onPublicationsStoreChange)
     this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
+    this.listenTo(app.eventsStore, this.onEventsStoreChange)
     this.listenTo(app.sourcesStore, this.onSourcesStoreChange)
     this.listenTo(app.actorsStore, this.onActorsStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
@@ -106,6 +114,10 @@ export default React.createClass({
     const { email } = this.state
     if (!email) commentaries = commentaries.filter((commentary) => !commentary.draft)
     this.setState({ commentaries, activeCommentary })
+  },
+
+  onEventsStoreChange (events, activeEvent) {
+    this.setState({ events, activeEvent })
   },
 
   onSourcesStoreChange (sources, activeSource) {
@@ -146,6 +158,10 @@ export default React.createClass({
     this.setState({ showNewCommentary: true })
   },
 
+  onClickNewEvent () {
+    this.setState({ showNewEvent: true })
+  },
+
   onClickNewSource () {
     this.setState({ showNewSource: true })
   },
@@ -164,6 +180,10 @@ export default React.createClass({
 
   onCloseNewCommentary () {
     this.setState({ showNewCommentary: false })
+  },
+
+  onCloseNewEvent () {
+    this.setState({ showNewEvent: false })
   },
 
   onCloseNewSource () {
@@ -224,11 +244,12 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, commentaries, activeCommentary, sources, activeSource, actors, activeActor, editing, showNewCommentary, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
-    const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications']
+    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, sources, activeSource, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
     const isSourcePage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_sources'
+    const isEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_events'
     const isActorPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_actors'
     const isMonthlyEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_monthlyEvents'
     const isPublicationsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_publications'
@@ -237,6 +258,7 @@ export default React.createClass({
     const isActor = activePage.type && activePage.type === 'actors'
     const showCommentaryPage = isCommentariesPage || isCommentary
     const showSourcePage = isSourcePage || isSource
+    const showEventsPage = isEventsPage
     const showActorPage = isActorPage || isActor
     const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
@@ -272,6 +294,15 @@ export default React.createClass({
                 editing={editing}
                 onSavePageArticle={this.onSavePageArticle}
                 onSavePage={this.onSavePage} />
+              : null
+            }
+            {showEventsPage ?
+              <Events
+                events={events}
+                editing={editing}
+                email={email}
+                showNewEvent={showNewEvent}
+                onCloseNewEvent={this.onCloseNewEvent} />
               : null
             }
             {showCommentaryPage ?

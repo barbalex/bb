@@ -10,6 +10,7 @@ export default Router.extend({
   routes: {
     '': 'home',
     'home': 'home',
+    'events': 'events',
     'aboutUs': 'aboutUs',
     'european-union-publications': 'europeanUnionPublications',
     'io-and-ngo-publications': 'ioAndNgoPublications',
@@ -78,6 +79,11 @@ export default Router.extend({
 
   sources () {
     const id = 'pages_sources'
+    this.render(id)
+  },
+
+  events () {
+    const id = 'pages_events'
     this.render(id)
   },
 
