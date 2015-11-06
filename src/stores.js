@@ -218,10 +218,16 @@ export default (Actions) => {
       return this.events.find((event) => event._id === this.activeEventId)
     },
 
+    getEventsCallback: null,
+
     onGetEvents () {
       getEvents()
         .then((events) => {
           this.events = events
+          if (this.getEventsCallback) {
+            this.getEventsCallback()
+            this.getEventsCallback = null
+          }
           this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
@@ -240,14 +246,22 @@ export default (Actions) => {
         this.activeEventId = null
         this.triggerStore()
       } else {
-        const event = this.events.find((event) => event._id === id)
-        // on first load events was empty, so no path to get and nowhere to navigate
-        if (event) {
+        if (this.events.length === 0) {
+          // on first load events is empty
+          // need to wait until onGetEvents fires
+          this.getEventsCallback = () => {
+            const event = this.events.find((event) => event._id === id)
+            const path = getPathFromDoc(event)
+            app.router.navigate('/' + path)
+            this.activeEventId = id
+          }
+        } else {
+          const event = this.events.find((event) => event._id === id)
           const path = getPathFromDoc(event)
           app.router.navigate('/' + path)
+          this.activeEventId = id
+          this.triggerStore()
         }
-        this.activeEventId = id
-        this.triggerStore()
       }
     },
 
