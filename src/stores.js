@@ -764,10 +764,16 @@ export default (Actions) => {
       return this.actors.find((actor) => actor._id === this.activeActorId)
     },
 
+    getActorsCallback: null,
+
     onGetActors () {
       getActors()
         .then((actors) => {
           this.actors = actors
+          if (this.getActorsCallback) {
+            this.getActorsCallback()
+            this.getActorsCallback = null
+          }
           this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
@@ -789,14 +795,21 @@ export default (Actions) => {
         this.activeActorId = null
         this.triggerStore()
       } else {
-        const actor = this.actors.find((actor) => actor._id === id)
-        // on first load actors was empty, so no path to get and nowhere to navigate
-        if (actor) {
+        this.activeActorId = id
+        if (this.actors.length === 0) {
+          // on first load actors is empty
+          // need to wait until onGetActors fires
+          this.getActorsCallback = () => {
+            const actor = this.actors.find((actor) => actor._id === id)
+            const path = getPathFromDoc(actor)
+            app.router.navigate('/' + path)
+          }
+        } else {
+          const actor = this.actors.find((actor) => actor._id === id)
           const path = getPathFromDoc(actor)
           app.router.navigate('/' + path)
+          this.triggerStore()
         }
-        this.activeActorId = id
-        this.triggerStore()
       }
     },
 
