@@ -71,15 +71,12 @@ export default React.createClass({
     )
   },
 
-  eventsRows () {
-    const { events, activeEvent, editing, email } = this.props
-
-    if (events.length > 0) {
-      return events.map((doc, index) => {
-        
-      })
-    }
-    return null
+  eventRows () {
+    const { events } = this.props
+    // TODO: add a row for every calendar day
+    return events.map((event, index) => {
+      <EventTableRow key={index} event={event} />
+    })
   },
 
   render () {
@@ -98,6 +95,7 @@ export default React.createClass({
             </tr>
           </thead>
           <tbody>
+            {this.eventRows()}
           </tbody>
         </Table>
         {showNewEvent ? <NewEvent onCloseNewEvent={onCloseNewEvent} /> : null}
