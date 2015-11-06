@@ -1,6 +1,8 @@
 'use strict'
 
 import app from 'ampersand-app'
+import _ from 'lodash'
+import sortPublications from './sortPublications.js'
 
 export default () => {
   return new Promise((resolve, reject) => {
@@ -10,7 +12,11 @@ export default () => {
       endkey: 'publications_\uffff'
     }
     app.db.allDocs(options)
-      .then((docs) => resolve(docs))
+      .then((result) => {
+        let publications = _.pluck(result.rows, 'doc')
+        publications = sortPublications(publications)
+        resolve(publications)
+      })
       .catch((error) => reject('Error fetching publications:', error))
   })
 }

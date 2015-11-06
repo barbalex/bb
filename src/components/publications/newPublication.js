@@ -8,7 +8,6 @@ export default React.createClass({
   displayName: 'NewMonthlyEvent',
 
   propTypes: {
-    categories: React.PropTypes.array,
     onCloseNewPublication: React.PropTypes.func,
     title: React.PropTypes.string,
     category: React.PropTypes.string,
@@ -56,8 +55,8 @@ export default React.createClass({
   },
 
   categoryOptions () {
-    const { categories } = this.props
-    let options = categories.map((category, index) => <option key={index + 1} value={category}>{category}</option>)
+    const publicationCategories = app.publicationsStore.getPublicationCategories()
+    let options = publicationCategories.map((category, index) => <option key={index + 1} value={category}>{category}</option>)
     options.unshift(<option key={0} value={null}></option>)
     return options
   },

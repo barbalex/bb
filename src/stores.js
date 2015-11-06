@@ -15,6 +15,7 @@ import sortMonthlyEvents from './modules/sortMonthlyEvents.js'
 import getEvents from './modules/getEvents.js'
 import sortEvents from './modules/sortEvents.js'
 import getPublications from './modules/getPublications.js'
+import sortPublications from './modules/sortPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
 import publicationTemplate from 'html!./components/publications/publicationTemplate.html'
 import _ from 'lodash'
@@ -62,13 +63,6 @@ export default (Actions) => {
       delete doc._attachments[attachmentId]
       this.onSavePage(doc)
     }
-  })
-
-  app.activeMonthlyEventStore = Reflux.createStore({
-
-    listenables: Actions,
-
-    activeMonthlyEvent: null
   })
 
   app.monthlyEventsStore = Reflux.createStore({
@@ -409,52 +403,19 @@ export default (Actions) => {
     }
   })
 
-  app.activePublicationStore = Reflux.createStore({
-
-    listenables: Actions,
-
-    activePublication: null,
-
-    onGetPublication (id) {
-      if (!id) {
-        app.router.navigate('/publications')
-        this.trigger({})
-        this.activePublication = null
-      } else {
-        app.db.get(id, { include_docs: true })
-          .then((publication) => {
-            const path = getPathFromDoc(publication)
-            app.router.navigate('/' + path)
-            this.trigger(publication)
-            this.activePublication = publication
-          })
-          .catch((error) => app.Actions.showError({title: 'Error fetching monthly event ' + id + ':', msg: error}))
-      }
-    },
-
-    onSavePublication (publication) {
-      app.db.put(publication)
-        .then((resp) => {
-          // resp.rev is new rev
-          publication._rev = resp.rev
-          this.trigger(publication)
-          Actions.getPublications()
-          const isActivePublication = this.activePublication && this.activePublication._id === publication._id
-          if (isActivePublication) this.activePublication = publication
-        })
-        .catch((error) => app.Actions.showError({title: 'Error saving monthly event:', msg: error}))
-    }
-  })
-
   app.publicationsStore = Reflux.createStore({
 
     listenables: Actions,
 
+    publications: [],
+
+    activePublication: null,
+
     onGetPublications () {
       getPublications()
-        .then((result) => {
-          const docs = _.pluck(result.rows, 'doc')
-          this.trigger(docs)
+        .then((publications) => {
+          this.publications = publications
+          this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
     },
@@ -462,36 +423,107 @@ export default (Actions) => {
     onNewPublication (category, title) {
       const titleSlugified = slug(title)
       const categorySlugified = slug(category)
-      const id = `publications_${categorySlugified}_${titleSlugified}`
+      const _id = `publications_${categorySlugified}_${titleSlugified}`
+      const type = 'publications'
+      const draft = true
       const article = Base64.encode(publicationTemplate)
-      const publication = {
-        _id: id,
-        type: 'publications',
-        draft: true,
-        category: category,
-        title: title,
-        article: article
-      }
-      Actions.savePublication(publication)
+      const publication = { _id, type, draft, category, title, article }
+      this.onSavePublication(publication)
     },
 
-    onRemovePublication (doc) {
-      app.db.remove(doc)
-        .then(() => {
-          this.onGetPublications()
-          const activePublication = app.activePublicationStore.activePublication
-          if (activePublication && activePublication._id === doc._id) Actions.getPublication(null)
-        })
-        .catch((error) => app.Actions.showError({title: 'Error removing publication:', msg: error}))
-    },
-
-    onToggleDraftOfPublication (doc) {
-      if (doc.draft === true) {
-        delete doc.draft
+    onGetPublication (id) {
+      if (!id) {
+        app.router.navigate('/publications')
+        this.activePublication = null
+        this.triggerStore()
       } else {
-        doc.draft = true
+        const publication = this.publications.find((publication) => publication._id === id)
+        const path = getPathFromDoc(publication)
+        app.router.navigate('/' + path)
+        this.activePublication = publication
+        this.triggerStore()
       }
-      Actions.savePublication(doc)
+    },
+
+    updatePublicationInCache (publication) {
+      // first update the publication in this.publications
+      this.publications = this.publications.filter((thisPublication) => thisPublication._id !== publication._id)
+      this.publications.push(publication)
+      this.publications = sortPublications(this.publications)
+      // now update it in this.activePublication if it is the active publication
+      const isActivePublication = this.activePublication && this.activePublication._id === publication._id
+      if (isActivePublication) this.activePublication = publication
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    revertCache (oldPublications, oldActivePublication) {
+      this.publications = oldPublications
+      this.activePublication = oldActivePublication
+      this.triggerStore()
+    },
+
+    onSavePublication (publication) {
+      // keep old cache in case of error
+      const oldPublications = this.publications
+      const oldActivePublication = this.activePublication
+      // optimistically update in cache
+      this.updatePublicationInCache(publication)
+      app.db.put(publication)
+        .then((resp) => {
+          // resp.rev is new rev
+          publication._rev = resp.rev
+          // definitely update in cache
+          this.updatePublicationInCache(publication)
+        })
+        .catch((error) => {
+          this.revertCache(oldPublications, oldActivePublication)
+          app.Actions.showError({title: 'Error saving publication:', msg: error})
+        })
+    },
+
+    removePublicationFromCache (publication) {
+      // first update the publication in this.publications
+      this.publications = this.publications.filter((thisPublication) => thisPublication._id !== publication._id)
+      this.publications = sortPublications(this.publications)
+      // now update it in this.activePublication if it is the active publication
+      const isActivePublication = this.activePublication && this.activePublication._id === publication._id
+      if (isActivePublication) this.activePublication = null
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    onRemovePublication (publication) {
+      // keep old cache in case of error
+      const oldPublications = this.publications
+      const oldActivePublication = this.activePublication
+      // optimistically remove publication from cache
+      this.removePublicationFromCache(publication)
+      app.db.remove(publication)
+        .catch((error) => {
+          // oops. Revert optimistic removal
+          this.revertCache(oldPublications, oldActivePublication)
+          app.Actions.showError({title: 'Error removing publication:', msg: error})
+        })
+    },
+
+    onToggleDraftOfPublication (publication) {
+      if (publication.draft === true) {
+        delete publication.draft
+      } else {
+        publication.draft = true
+      }
+      this.onSavePublication(publication)
+    },
+
+    getPublicationCategories () {
+      const allCategories = _.map(this.publications, (publication) => publication.category)
+      const publicationCategories = _.uniq(allCategories)
+      return publicationCategories.sort()
+    },
+
+    triggerStore () {
+      this.trigger(this.publications, this.activePublication)
     }
   })
 

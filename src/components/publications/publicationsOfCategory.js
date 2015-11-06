@@ -4,7 +4,6 @@ import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { PanelGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import _ from 'lodash'
 import Publication from './publication.js'
 import ModalRemovePublication from './modalRemovePublication.js'
 
@@ -34,10 +33,12 @@ export default React.createClass({
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.activePublication._id !== prevProps.activePublication._id) {
-      // this is later rerender
-      // only scroll into view if the active item changed last render
-      this.scrollToActivePanel()
+    if (this.props.activePublication) {
+      if (!prevProps.activePublication || this.props.activePublication._id !== prevProps.activePublication._id) {
+        // this is later rerender
+        // only scroll into view if the active item changed last render
+        this.scrollToActivePanel()
+      }
     }
   },
 
@@ -46,7 +47,7 @@ export default React.createClass({
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (Object.keys(activePublication).length === 0 || activePublication._id !== id) ? id : null
+    const idToGet = (!activePublication || activePublication._id !== id) ? id : null
     app.Actions.getPublication(idToGet)
   },
 
@@ -139,7 +140,7 @@ export default React.createClass({
       return 1
     })
     return publications.map((doc, dIndex) => {
-      const isActivePublication = _.has(activePublication, '_id') ? doc._id === activePublication._id : false
+      const isActivePublication = activePublication ? doc._id === activePublication._id : false
       const showEditingGlyphons = !!email
       const panelHeadingStyle = {
         position: 'relative'
@@ -206,7 +207,7 @@ export default React.createClass({
   render () {
     const { category, activePublication } = this.props
     const { docToRemove } = this.state
-    const activePublicationId = _.has(activePublication, '_id') ? activePublication._id : null
+    const activePublicationId = activePublication ? activePublication._id : null
     return (
       <PanelGroup activeKey={activePublicationId} id={category} ref={(c) => this[category] = c} accordion>
         {this.publicationsComponent(category)}
