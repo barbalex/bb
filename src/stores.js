@@ -82,10 +82,16 @@ export default (Actions) => {
       return this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === this.activeMonthlyEventId)
     },
 
+    getMonthlyEventsCallback: null,
+
     onGetMonthlyEvents () {
       getMonthlyEvents()
         .then((monthlyEvents) => {
           this.monthlyEvents = monthlyEvents
+          if (this.getMonthlyEventsCallback) {
+            this.getMonthlyEventsCallback()
+            this.getMonthlyEventsCallback = null
+          }
           this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
@@ -106,14 +112,22 @@ export default (Actions) => {
         this.activeMonthlyEventId = null
         this.triggerStore()
       } else {
-        const monthlyEvent = this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === id)
-        // on first load monthlyEvents was empty, so no path to get and nowhere to navigate
-        if (monthlyEvent) {
+        if (this.monthlyEvents.length === 0) {
+          // on first load monthlyEvents is empty
+          // need to wait until onGetMonthlyEvents fires
+          this.getMonthlyEventsCallback = () => {
+            const monthlyEvent = this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === id)
+            const path = getPathFromDoc(monthlyEvent)
+            app.router.navigate('/' + path)
+            this.activeMonthlyEventId = id
+          }
+        } else {
+          const monthlyEvent = this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === id)
           const path = getPathFromDoc(monthlyEvent)
           app.router.navigate('/' + path)
+          this.activeMonthlyEventId = id
+          this.triggerStore()
         }
-        this.activeMonthlyEventId = id
-        this.triggerStore()
       }
     },
 
