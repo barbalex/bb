@@ -4,15 +4,12 @@ import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
-import { ListenerMixin } from 'reflux'
 import Source from './source.js'
 import NewSource from './newSource.js'
 import ModalRemoveSource from './modalRemoveSource.js'
 
 export default React.createClass({
   displayName: 'Sources',
-
-  mixins: [ListenerMixin],
 
   propTypes: {
     sources: React.PropTypes.array,

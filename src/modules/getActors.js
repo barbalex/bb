@@ -1,6 +1,8 @@
 'use strict'
 
 import app from 'ampersand-app'
+import _ from 'lodash'
+import sortActors from './sortActors.js'
 
 export default () => {
   return new Promise((resolve, reject) => {
@@ -10,7 +12,11 @@ export default () => {
       endkey: 'actors_\uffff'
     }
     app.db.allDocs(options)
-      .then((docs) => resolve(docs))
+      .then((result) => {
+        let actors = _.pluck(result.rows, 'doc')
+        actors = sortActors(actors)
+        resolve(actors)
+      })
       .catch((error) => reject('Error fetching actors:', error))
   })
 }

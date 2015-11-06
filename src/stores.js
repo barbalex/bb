@@ -11,6 +11,7 @@ import sortCommentaries from './modules/sortCommentaries.js'
 import getSources from './modules/getSources.js'
 import sortSources from './modules/sortSources.js'
 import getActors from './modules/getActors.js'
+import sortActors from './modules/sortActors.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import sortMonthlyEvents from './modules/sortMonthlyEvents.js'
 import getEvents from './modules/getEvents.js'
@@ -72,7 +73,14 @@ export default (Actions) => {
 
     monthlyEvents: [],
 
-    activeMonthlyEvent: null,
+    // cache the id, not the entire doc
+    // advantage: on first load monthlyEvents is empty so no activeMonthlyEvent can be gotten
+    // but if id is used, this can be cached
+    activeMonthlyEventId: null,
+
+    activeMonthlyEvent () {
+      return this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === this.activeMonthlyEventId)
+    },
 
     onGetMonthlyEvents () {
       getMonthlyEvents()
@@ -95,49 +103,49 @@ export default (Actions) => {
     onGetMonthlyEvent (id) {
       if (!id) {
         app.router.navigate('/monthlyEvents')
-        this.activeMonthlyEvent = null
+        this.activeMonthlyEventId = null
         this.triggerStore()
       } else {
         const monthlyEvent = this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === id)
-        const path = getPathFromDoc(monthlyEvent)
-        app.router.navigate('/' + path)
-        this.activeMonthlyEvent = monthlyEvent
+        // on first load monthlyEvents was empty, so no path to get and nowhere to navigate
+        if (monthlyEvent) {
+          const path = getPathFromDoc(monthlyEvent)
+          app.router.navigate('/' + path)
+        }
+        this.activeMonthlyEventId = id
         this.triggerStore()
       }
     },
 
-    updateMonthlyEventInCache (monthlyEvent) {
+    updateMonthlyEventsInCache (monthlyEvent) {
       // first update the monthlyEvent in this.monthlyEvents
       this.monthlyEvents = this.monthlyEvents.filter((thisMonthlyEvent) => thisMonthlyEvent._id !== monthlyEvent._id)
       this.monthlyEvents.push(monthlyEvent)
       this.monthlyEvents = sortMonthlyEvents(this.monthlyEvents)
-      // now update it in this.activeMonthlyEvent if it is the active monthlyEvent
-      const isActiveMonthlyEvent = this.activeMonthlyEvent && this.activeMonthlyEvent._id === monthlyEvent._id
-      if (isActiveMonthlyEvent) this.activeMonthlyEvent = monthlyEvent
       // now tell every one!
       this.triggerStore()
     },
 
-    revertCache (oldMonthlyEvents, oldActiveMonthlyEvent) {
+    revertCache (oldMonthlyEvents, oldActiveMonthlyEventId) {
       this.monthlyEvents = oldMonthlyEvents
-      this.activeMonthlyEvent = oldActiveMonthlyEvent
+      this.activeMonthlyEventId = oldActiveMonthlyEventId
       this.triggerStore()
     },
 
     onSaveMonthlyEvent (monthlyEvent) {
       // keep old cache in case of error
       const oldMonthlyEvents = this.monthlyEvents
-      const oldActiveMonthlyEvent = this.activeMonthlyEvent
+      const oldActiveMonthlyEventId = this.activeMonthlyEventId
       // optimistically update in cache
-      this.updateMonthlyEventInCache(monthlyEvent)
+      this.updateMonthlyEventsInCache(monthlyEvent)
       app.db.put(monthlyEvent)
         .then((resp) => {
           monthlyEvent._rev = resp.rev
           // definitely update in cache
-          this.updateMonthlyEventInCache(monthlyEvent)
+          this.updateMonthlyEventsInCache(monthlyEvent)
         })
         .catch((error) => {
-          this.revertCache(oldMonthlyEvents, oldActiveMonthlyEvent)
+          this.revertCache(oldMonthlyEvents, oldActiveMonthlyEventId)
           app.Actions.showError({title: 'Error saving monthly event:', msg: error})
         })
     },
@@ -146,9 +154,9 @@ export default (Actions) => {
       // first update the monthlyEvent in this.monthlyEvents
       this.monthlyEvents = this.monthlyEvents.filter((thisMonthlyEvent) => thisMonthlyEvent._id !== monthlyEvent._id)
       this.monthlyEvents = sortMonthlyEvents(this.monthlyEvents)
-      // now update it in this.activeMonthlyEvent if it is the active monthlyEvent
-      const isActiveMonthlyEvent = this.activeMonthlyEvent && this.activeMonthlyEvent._id === monthlyEvent._id
-      if (isActiveMonthlyEvent) this.activeMonthlyEvent = null
+      // now update this.activeMonthlyEventId if it is the active monthlyEvent's _id
+      const isActiveMonthlyEvent = this.activeMonthlyEventId === monthlyEvent._id
+      if (isActiveMonthlyEvent) this.activeMonthlyEventId = null
       // now tell every one!
       this.triggerStore()
     },
@@ -156,13 +164,13 @@ export default (Actions) => {
     onRemoveMonthlyEvent (monthlyEvent) {
       // keep old cache in case of error
       const oldMonthlyEvents = this.monthlyEvents
-      const oldActiveMonthlyEvent = this.activeMonthlyEvent
+      const oldActiveMonthlyEventId = this.activeMonthlyEventId
       // optimistically remove monthlyEvent from cache
       this.removeMonthlyEventFromCache(monthlyEvent)
       app.db.remove(monthlyEvent)
         .catch((error) => {
           // oops. Revert optimistic removal
-          this.revertCache(oldMonthlyEvents, oldActiveMonthlyEvent)
+          this.revertCache(oldMonthlyEvents, oldActiveMonthlyEventId)
           app.Actions.showError({title: 'Error removing monthly event:', msg: error})
         })
     },
@@ -177,7 +185,7 @@ export default (Actions) => {
     },
 
     triggerStore () {
-      this.trigger(this.monthlyEvents, this.activeMonthlyEvent)
+      this.trigger(this.monthlyEvents, this.activeMonthlyEvent())
     }
   })
 
@@ -187,7 +195,14 @@ export default (Actions) => {
 
     events: [],
 
-    activeEvent: null,
+    // cache the id, not the entire doc
+    // advantage: on first load events is empty so no activeEvent can be gotten
+    // but if id is used, this can be cached
+    activeEventId: null,
+
+    activeEvent () {
+      return this.events.find((event) => event._id === this.activeEventId)
+    },
 
     onGetEvents () {
       getEvents()
@@ -208,49 +223,49 @@ export default (Actions) => {
     onGetEvent (id) {
       if (!id) {
         app.router.navigate('/events')
-        this.activeEvent = null
+        this.activeEventId = null
         this.triggerStore()
       } else {
         const event = this.events.find((event) => event._id === id)
-        const path = getPathFromDoc(event)
-        app.router.navigate('/' + path)
-        this.activeEvent = event
+        // on first load events was empty, so no path to get and nowhere to navigate
+        if (event) {
+          const path = getPathFromDoc(event)
+          app.router.navigate('/' + path)
+        }
+        this.activeEventId = id
         this.triggerStore()
       }
     },
 
-    updateEventInCache (event) {
+    updateEventsInCache (event) {
       // first update the event in this.events
       this.events = this.events.filter((thisEvent) => thisEvent._id !== event._id)
       this.events.push(event)
       this.events = sortEvents(this.events)
-      // now update it in this.activeEvent if it is the active event
-      const isActiveEvent = this.activeEvent && this.activeEvent._id === event._id
-      if (isActiveEvent) this.activeEvent = event
       // now tell every one!
       this.triggerStore()
     },
 
-    revertCache (oldEvents, oldActiveEvent) {
+    revertCache (oldEvents, oldActiveEventId) {
       this.events = oldEvents
-      this.activeEvent = oldActiveEvent
+      this.activeEventId = oldActiveEventId
       this.triggerStore()
     },
 
     onSaveEvent (event) {
       // keep old cache in case of error
       const oldEvents = this.events
-      const oldActiveEvent = this.activeEvent
+      const oldActiveEventId = this.activeEventId
       // optimistically update in cache
-      this.updateEventInCache(event)
+      this.updateEventsInCache(event)
       app.db.put(event)
         .then((resp) => {
           event._rev = resp.rev
           // definitely update in cache
-          this.updateEventInCache(event)
+          this.updateEventsInCache(event)
         })
         .catch((error) => {
-          this.revertCache(oldEvents, oldActiveEvent)
+          this.revertCache(oldEvents, oldActiveEventId)
           app.Actions.showError({title: 'Error saving event:', msg: error})
         })
     },
@@ -260,8 +275,8 @@ export default (Actions) => {
       this.events = this.events.filter((thisEvent) => thisEvent._id !== event._id)
       this.events = sortEvents(this.events)
       // now update it in this.activeEvent if it is the active event
-      const isActiveEvent = this.activeEvent && this.activeEvent._id === event._id
-      if (isActiveEvent) this.activeEvent = null
+      const isActiveEvent = this.activeEventId === event._id
+      if (isActiveEvent) this.activeEventId = null
       // now tell every one!
       this.triggerStore()
     },
@@ -269,19 +284,19 @@ export default (Actions) => {
     onRemoveEvent (event) {
       // keep old cache in case of error
       const oldEvents = this.events
-      const oldActiveEvent = this.activeEvent
+      const oldActiveEventId = this.activeEventId
       // optimistically remove event from cache
       this.removeEventFromCache(event)
       app.db.remove(event)
         .catch((error) => {
           // oops. Revert optimistic removal
-          this.revertCache(oldEvents, oldActiveEvent)
+          this.revertCache(oldEvents, oldActiveEventId)
           app.Actions.showError({title: 'Error removing event:', msg: error})
         })
     },
 
     triggerStore () {
-      this.trigger(this.events, this.activeEvent)
+      this.trigger(this.events, this.activeEvent())
     }
   })
 
@@ -291,12 +306,25 @@ export default (Actions) => {
 
     commentaries: [],
 
-    activeCommentary: null,
+    // cache the id, not the entire doc
+    // advantage: on first load commentaries is empty so no activeCommentary can be gotten
+    // but if id is used, this can be cached
+    activeCommentaryId: null,
+
+    activeCommentary () {
+      return this.commentaries.find((commentary) => commentary._id === this.activeCommentaryId)
+    },
+
+    getCommentariesCallback: null,
 
     onGetCommentaries () {
       getCommentaries()
         .then((commentaries) => {
           this.commentaries = commentaries
+          if (this.getCommentariesCallback) {
+            this.getCommentariesCallback()
+            this.getCommentariesCallback = null
+          }
           this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
@@ -317,50 +345,58 @@ export default (Actions) => {
     onGetCommentary (id) {
       if (!id) {
         app.router.navigate('/commentaries')
-        this.activeCommentary = null
+        this.activeCommentaryId = null
         this.triggerStore()
       } else {
-        const commentary = this.commentaries.find((commentary) => commentary._id === id)
-        const path = getPathFromDoc(commentary)
-        app.router.navigate('/' + path)
-        this.activeCommentary = commentary
-        this.triggerStore()
+        if (this.commentaries.length === 0) {
+          // on first load commentaries is empty
+          // need to wait until onGetCommentaries fires
+          this.getCommentariesCallback = () => {
+            const commentary = this.commentaries.find((commentary) => commentary._id === id)
+            const path = getPathFromDoc(commentary)
+            app.router.navigate('/' + path)
+            this.activeCommentaryId = id
+          }
+        } else {
+          const commentary = this.commentaries.find((commentary) => commentary._id === id)
+          const path = getPathFromDoc(commentary)
+          app.router.navigate('/' + path)
+          this.activeCommentaryId = id
+          this.triggerStore()
+        }
       }
     },
 
-    updateCommentaryInCache (commentary) {
+    updateCommentariesInCache (commentary) {
       // first update the commentary in this.commentaries
       this.commentaries = this.commentaries.filter((thisCommentary) => thisCommentary._id !== commentary._id)
       this.commentaries.push(commentary)
       this.commentaries = sortCommentaries(this.commentaries)
-      // now update it in this.activeCommentary if it is the active commentary
-      const isActiveCommentary = this.activeCommentary && this.activeCommentary._id === commentary._id
-      if (isActiveCommentary) this.activeCommentary = commentary
       // now tell every one!
       this.triggerStore()
     },
 
-    revertCache (oldCommentaries, oldActiveCommentary) {
+    revertCache (oldCommentaries, oldActiveCommentaryId) {
       this.commentaries = oldCommentaries
-      this.activeCommentary = oldActiveCommentary
+      this.activeCommentaryId = oldActiveCommentaryId
       this.triggerStore()
     },
 
     onSaveCommentary (commentary) {
       // keep old cache in case of error
       const oldCommentaries = this.commentaries
-      const oldActiveCommentary = this.activeCommentary
+      const oldActiveCommentaryId = this.activeCommentaryId
       // optimistically update in cache
-      this.updateCommentaryInCache(commentary)
+      this.updateCommentariesInCache(commentary)
       app.db.put(commentary)
         .then((resp) => {
           // resp.rev is new rev
           commentary._rev = resp.rev
           // definitely update in cache
-          this.updateCommentaryInCache(commentary)
+          this.updateCommentariesInCache(commentary)
         })
         .catch((error) => {
-          this.revertCache(oldCommentaries, oldActiveCommentary)
+          this.revertCache(oldCommentaries, oldActiveCommentaryId)
           app.Actions.showError({title: 'Error saving commentary:', msg: error})
         })
     },
@@ -369,9 +405,9 @@ export default (Actions) => {
       // first update the commentary in this.commentaries
       this.commentaries = this.commentaries.filter((thisCommentary) => thisCommentary._id !== commentary._id)
       this.commentaries = sortCommentaries(this.commentaries)
-      // now update it in this.activeCommentary if it is the active commentary
-      const isActiveCommentary = this.activeCommentary && this.activeCommentary._id === commentary._id
-      if (isActiveCommentary) this.activeCommentary = null
+      // now update it in this.activeCommentaryId if it is the active commentary's _id
+      const isActiveCommentary = this.activeCommentaryId === commentary._id
+      if (isActiveCommentary) this.activeCommentaryId = null
       // now tell every one!
       this.triggerStore()
     },
@@ -379,13 +415,13 @@ export default (Actions) => {
     onRemoveCommentary (commentary) {
       // keep old cache in case of error
       const oldCommentaries = this.commentaries
-      const oldActiveCommentary = this.activeCommentary
+      const oldActiveCommentaryId = this.activeCommentaryId
       // optimistically remove event from cache
       this.removeCommentaryFromCache(commentary)
       app.db.remove(commentary)
         .catch((error) => {
           // oops. Revert optimistic removal
-          this.revertCache(oldCommentaries, oldActiveCommentary)
+          this.revertCache(oldCommentaries, oldActiveCommentaryId)
           app.Actions.showError({title: 'Error removing commentary:', msg: error})
         })
     },
@@ -400,7 +436,7 @@ export default (Actions) => {
     },
 
     triggerStore () {
-      this.trigger(this.commentaries, this.activeCommentary)
+      this.trigger(this.commentaries, this.activeCommentary())
     }
   })
 
@@ -644,86 +680,127 @@ export default (Actions) => {
     }
   })
 
-  app.activeActorStore = Reflux.createStore({
-
-    listenables: Actions,
-
-    activeActor: null,
-
-    onGetActor (id) {
-      if (!id) {
-        app.router.navigate('/actors')
-        this.trigger({})
-        this.activeActor = null
-      } else {
-        app.db.get(id, { include_docs: true })
-          .then((actor) => {
-            const path = getPathFromDoc(actor)
-            app.router.navigate('/' + path)
-            this.trigger(actor)
-            this.activeActor = actor
-          })
-          .catch((error) => app.Actions.showError({title: 'Error fetching actor ' + id + ':', msg: error}))
-      }
-    },
-
-    onSaveActor (actor) {
-      app.db.put(actor)
-        .then((resp) => {
-          // resp.rev is new rev
-          actor._rev = resp.rev
-          this.trigger(actor)
-          Actions.getActors()
-          const isActiveActor = this.activeActor && this.activeActor._id === actor._id
-          if (isActiveActor) this.activeActor = actor
-        })
-        .catch((error) => app.Actions.showError({title: 'Error saving actor:', msg: error}))
-    }
-  })
-
   app.actorsStore = Reflux.createStore({
 
     listenables: Actions,
 
+    actors: [],
+
+    // cache the id, not the entire doc
+    // advantage: on first load actors is empty so no activeActor can be gotten
+    // but if id is used, this can be cached
+    activeActorId: null,
+
+    activeActor () {
+      return this.actors.find((actor) => actor._id === this.activeActorId)
+    },
+
     onGetActors () {
       getActors()
-        .then((result) => {
-          const docs = _.pluck(result.rows, 'doc')
-          this.trigger(docs)
+        .then((actors) => {
+          this.actors = actors
+          this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
     onNewActor (category) {
       const categorySlugified = slug(category, {lower: true})
-      const id = `actors_${categorySlugified}`
-      const actor = {
-        _id: id,
-        category: category,
-        draft: true,
-        article: 'IA==',
-        type: 'actors'
+      const _id = `actors_${categorySlugified}`
+      const draft = true
+      const article = 'IA=='
+      const type = 'actors'
+      const actor = { _id, category, draft, article, type }
+      this.onSaveActor(actor)
+    },
+
+    onGetActor (id) {
+      if (!id) {
+        app.router.navigate('/actors')
+        this.activeActorId = null
+        this.triggerStore()
+      } else {
+        const actor = this.actors.find((actor) => actor._id === id)
+        // on first load actors was empty, so no path to get and nowhere to navigate
+        if (actor) {
+          const path = getPathFromDoc(actor)
+          app.router.navigate('/' + path)
+        }
+        this.activeActorId = id
+        this.triggerStore()
+      }
+    },
+
+    updateActorsInCache (actor) {
+      // first update the actor in this.actors
+      this.actors = this.actors.filter((thisActor) => thisActor._id !== actor._id)
+      this.actors.push(actor)
+      this.actors = sortActors(this.actors)
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    revertCache (oldActors, oldActiveActorId) {
+      this.actors = oldActors
+      this.activeActorId = oldActiveActorId
+      this.triggerStore()
+    },
+
+    onSaveActor (actor) {
+      // keep old cache in case of error
+      const oldActors = this.actors
+      const oldActiveActorId = this.activeActorId
+      // optimistically update in cache
+      this.updateActorsInCache(actor)
+      app.db.put(actor)
+        .then((resp) => {
+          // resp.rev is new rev
+          actor._rev = resp.rev
+          // definitely update in cache
+          this.updateActorsInCache(actor)
+        })
+        .catch((error) => {
+          this.revertCache(oldActors, oldActiveActorId)
+          app.Actions.showError({title: 'Error saving actor:', msg: error})
+        })
+    },
+
+    removeActorFromCache (actor) {
+      // first update the actor in this.actors
+      this.actors = this.actors.filter((thisActor) => thisActor._id !== actor._id)
+      this.actors = sortActors(this.actors)
+      // now update this.activeActorId if it is the active actor's _id
+      const isActiveActor = this.activeActorId === actor._id
+      if (isActiveActor) this.activeActorId = null
+      // now tell every one!
+      this.triggerStore()
+    },
+
+    onRemoveActor (actor) {
+      // keep old cache in case of error
+      const oldActors = this.actors
+      const oldActiveActorId = this.activeActorId
+      // optimistically remove event from cache
+      this.removeActorFromCache(actor)
+      app.db.remove(actor)
+        .catch((error) => {
+          // oops. Revert optimistic removal
+          this.revertCache(oldActors, oldActiveActorId)
+          app.Actions.showError({title: 'Error removing actor:', msg: error})
+        })
+    },
+
+    onToggleDraftOfActor (actor) {
+      if (actor.draft === true) {
+        delete actor.draft
+      } else {
+        actor.draft = true
       }
       Actions.saveActor(actor)
     },
 
-    onRemoveActor (doc) {
-      app.db.remove(doc)
-        .then(() => {
-          this.onGetActors()
-          const activeActor = app.activeActorStore.activeActor
-          if (activeActor && activeActor._id === doc._id) Actions.getActor(null)
-        })
-        .catch((error) => app.Actions.showError({title: 'Error removing actor:', msg: error}))
-    },
-
-    onToggleDraftOfActor (doc) {
-      if (doc.draft === true) {
-        delete doc.draft
-      } else {
-        doc.draft = true
-      }
-      Actions.saveActor(doc)
+    triggerStore () {
+      this.trigger(this.actors, this.activeActor())
     }
   })
 
