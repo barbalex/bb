@@ -221,11 +221,16 @@ body .navbar
 .monthlyEvent .new p.bold
   font-weight bold
 
+.events table
+  margin-bottom 0
 .events table tr td
-  border-top 1px solid #EFEFEF !important
+  border-top 1px solid #ECECEC !important
 .events .migration,
 .events .politics
-  //width 50%
+  width 50%
+.events th.migration {
+  width: 48%
+}
 .events th.year,
 .events td.year
   width 52px
@@ -238,7 +243,26 @@ body .navbar
   text-align right
 .events td p
   margin-bottom 0
- 
+  
+// fix header
+.events
+  position: relative
+#eventsTableContainer
+  overflow auto
+  height calc(100vh - 150px)
+  margin-top 30px
+  border-top 1px solid #ECECEC
+  border-bottom 1px solid #ECECEC
+#eventsTableContainer thead
+  position absolute
+  top 40px
+// correct for slight offsets
+.events th.day
+  padding-left 20px
+.events th.politics
+  padding-left -15px
+  
+
 // validate div after react bootstrap component
 .validateDivAfterRBC
   color: #a94442

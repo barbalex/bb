@@ -83,28 +83,25 @@ export default React.createClass({
     const { showNewEvent, onCloseNewEvent } = this.props
     const { docToRemove } = this.state
 
-    const theadStyle = {
-      position: 'absolute',
-      top: 250
-    }
-
     return (
       <div className='events'>
         <h1>Events</h1>
-        <Table responsive condensed hover>
-          <thead style={theadStyle}>
-            <tr>
-              <th className='year'>Year</th>
-              <th className='month'>Month</th>
-              <th className='day'>Day</th>
-              <th className='migration'>Migration</th>
-              <th className='politics'>Politics</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.dateRows()}
-          </tbody>
-        </Table>
+        <div id='eventsTableContainer'>
+          <Table condensed hover>
+            <thead>
+              <tr>
+                <th className='year'>Year</th>
+                <th className='month'>Month</th>
+                <th className='day'>Day</th>
+                <th className='migration'>Migration</th>
+                <th className='politics'>Politics</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.dateRows()}
+            </tbody>
+          </Table>
+        </div>
         {showNewEvent ? <NewEvent onCloseNewEvent={onCloseNewEvent} /> : null}
         {docToRemove ? <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} /> : null}
       </div>
