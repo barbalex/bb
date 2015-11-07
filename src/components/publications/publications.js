@@ -50,9 +50,12 @@ export default React.createClass({
 
   render () {
     const { activePublicationCategory, showNewPublication, onCloseNewPublication } = this.props
+    const divStyle = {
+      marginBottom: 20
+    }
 
     return (
-      <div id='publications'>
+      <div id='publications' style={divStyle}>
         <h1>Publications</h1>
         <PanelGroup activeKey={activePublicationCategory} accordion>
           {this.publicationCategoriesComponent(activePublicationCategory)}

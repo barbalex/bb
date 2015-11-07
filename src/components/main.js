@@ -258,6 +258,8 @@ export default React.createClass({
     const showPublicationsPage = isPublicationsPage || isPublication
     const pageName = getPageNameFromDoc(activePage)
     const pageTitle = `blue-borders | ${pageName}`
+    const pagesWitCopyright = ['pages_commentaries', 'pages_home']
+    const showCopyright = activePage.type && activePage.type === 'pages' && _.includes(pagesWitCopyright, activePage._id)
 
     return (
       <DocumentTitle title={pageTitle}>
@@ -354,7 +356,7 @@ export default React.createClass({
               : null
             }
             {login ? <Login email={email} /> : null}
-            <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p>
+            {showCopyright ? <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p> : null}
           </div>
         </NavHelper>
       </DocumentTitle>

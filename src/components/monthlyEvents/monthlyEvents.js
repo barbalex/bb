@@ -81,9 +81,12 @@ export default React.createClass({
     } else {
       activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()
     }
+    const divStyle = {
+      marginBottom: 20
+    }
 
     return (
-      <div id='monthlyEvents'>
+      <div id='monthlyEvents' style={divStyle}>
         <h1>Events Archive</h1>
         <PanelGroup activeKey={activeYear} accordion>
           {this.eventYearsComponent(activeYear)}
