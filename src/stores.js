@@ -473,10 +473,12 @@ export default (Actions) => {
 
     publications: [],
 
+    activePublicationCategory: null,
+
     activePublicationId: null,
 
     activePublication () {
-      return this.publications.find((publication) => publication._id === this.activePublicationId)
+      return this.publications.find((publication) => publication._id === this.activePublicationId) || null
     },
 
     getPublicationsCallback: null,
@@ -502,6 +504,7 @@ export default (Actions) => {
       const draft = true
       const article = Base64.encode(publicationTemplate)
       const publication = { _id, type, draft, category, title, article }
+      this.activePublicationCategory = category
       this.onSavePublication(publication)
     },
 
@@ -513,17 +516,17 @@ export default (Actions) => {
       } else {
         this.activePublicationId = id
         if (this.publications.length === 0) {
-          console.log('onGetPublication, 1')
           // on first load publications is empty
           // need to wait until onGetPublications fires
           this.getPublicationsCallback = () => {
             const publication = this.publications.find((publication) => publication._id === id)
+            this.activePublicationCategory = publication.category
             const path = getPathFromDoc(publication)
             app.router.navigate('/' + path)
           }
         } else {
-          console.log('onGetPublication, 2')
           const publication = this.publications.find((publication) => publication._id === id)
+          this.activePublicationCategory = publication.category
           const path = getPathFromDoc(publication)
           app.router.navigate('/' + path)
           this.triggerStore()
@@ -540,9 +543,10 @@ export default (Actions) => {
       this.triggerStore()
     },
 
-    revertCache (oldPublications, oldActivePublicationId) {
+    revertCache (oldPublications, oldActivePublicationId, oldActivePublicationCategory) {
       this.publications = oldPublications
       this.activePublicationId = oldActivePublicationId
+      this.activePublicationCategory = oldActivePublicationCategory
       this.triggerStore()
     },
 
@@ -550,6 +554,7 @@ export default (Actions) => {
       // keep old cache in case of error
       const oldPublications = this.publications
       const oldActivePublicationId = this.activePublicationId
+      const oldActivePublicationCategory = this.activePublicationCategory
       // optimistically update in cache
       this.updatePublicationInCache(publication)
       app.db.put(publication)
@@ -560,7 +565,7 @@ export default (Actions) => {
           this.updatePublicationInCache(publication)
         })
         .catch((error) => {
-          this.revertCache(oldPublications, oldActivePublicationId)
+          this.revertCache(oldPublications, oldActivePublicationId, oldActivePublicationCategory)
           app.Actions.showError({title: 'Error saving publication:', msg: error})
         })
     },
@@ -580,12 +585,13 @@ export default (Actions) => {
       // keep old cache in case of error
       const oldPublications = this.publications
       const oldActivePublicationId = this.activePublicationId
+      const oldActivePublicationCategory = this.activePublicationCategory
       // optimistically remove publication from cache
       this.removePublicationFromCache(publication)
       app.db.remove(publication)
         .catch((error) => {
           // oops. Revert optimistic removal
-          this.revertCache(oldPublications, oldActivePublicationId)
+          this.revertCache(oldPublications, oldActivePublicationId, oldActivePublicationCategory)
           app.Actions.showError({title: 'Error removing publication:', msg: error})
         })
     },
@@ -605,8 +611,16 @@ export default (Actions) => {
       return publicationCategories.sort()
     },
 
+    onSetPublicationCategory (category) {
+      if (this.activePublicationCategory !== category) this.activePublicationId = null
+      this.activePublicationCategory = category
+      const categorySlugified = slug(category)
+      app.router.navigate(`/publications/${categorySlugified}`)
+      this.triggerStore()
+    },
+
     triggerStore () {
-      this.trigger(this.publications, this.activePublication())
+      this.trigger(this.publications, this.activePublicationCategory, this.activePublication())
     }
   })
 

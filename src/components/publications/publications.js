@@ -15,7 +15,6 @@ export default React.createClass({
     activePublicationCategory: React.PropTypes.string,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onClickPublicationCategory: React.PropTypes.func,
     onSavePublicationArticle: React.PropTypes.func,
     onCloseNewPublication: React.PropTypes.func,
     showNewPublication: React.PropTypes.bool
@@ -26,7 +25,7 @@ export default React.createClass({
   },
 
   onClickCategory (activePublicationCategory) {
-    this.props.onClickPublicationCategory(activePublicationCategory)
+    app.Actions.setPublicationCategory(activePublicationCategory)
   },
 
   publicationCategoriesComponent (activePublicationCategory) {

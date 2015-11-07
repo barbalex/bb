@@ -103,11 +103,10 @@ export default React.createClass({
     this.setState({ monthlyEvents, activeMonthlyEvent })
   },
 
-  onPublicationsStoreChange (publications, activePublication) {
+  onPublicationsStoreChange (publications, activePublicationCategory, activePublication) {
     const { email } = this.state
     if (!email) publications = publications.filter((publication) => !publication.draft)
-    const activePublicationCategory = activePublication ? activePublication.category : null
-    this.setState({ publications, activePublication, activePublicationCategory })
+    this.setState({ publications, activePublicationCategory, activePublication })
   },
 
   onCommentariesStoreChange (commentaries, activeCommentary) {
@@ -139,13 +138,6 @@ export default React.createClass({
 
   onErrorStoreChange (errors) {
     this.setState({ errors })
-  },
-
-  onClickPublicationCategory (activePublicationCategory) {
-    this.setState({ activePublicationCategory })
-    // make sure no publication is loaded
-    // i.e. if a publication was loaded it is unloaded
-    app.Actions.getPublication(null)
   },
 
   onClickEdit () {
@@ -356,7 +348,6 @@ export default React.createClass({
                 activePublication={activePublication}
                 editing={editing}
                 email={email}
-                onClickPublicationCategory={this.onClickPublicationCategory}
                 onSavePublicationArticle={this.onSavePublicationArticle}
                 showNewPublication={showNewPublication}
                 onCloseNewPublication={this.onCloseNewPublication} />

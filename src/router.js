@@ -19,6 +19,7 @@ export default Router.extend({
     'monthlyEvents': 'monthlyEvents',
     'monthlyEvents/:year/:month': 'monthlyEvent',
     'publications': 'publications',
+    'publications/:category': 'publicationCategory',
     'publications/:category/:title': 'publication',
     'sources': 'sources',
     'sources/:category': 'source',
@@ -67,10 +68,13 @@ export default Router.extend({
     this.render(id)
   },
 
+  publicationCategory (activePublicationCategory) {
+    // we dont first load categories - just load publications
+    const id = 'pages_publications'
+    this.render(id)
+  },
+
   publication (category, title) {
-
-    console.log('router.js, publication')
-
     const id = `publications_${category}_${title}`
     this.render()
     app.Actions.getPage('pages_publications')

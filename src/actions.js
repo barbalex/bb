@@ -29,6 +29,7 @@ export default () => {
     getPublication: {},
     savePublication: {},
     newPublication: {},
+    setPublicationCategory: {},
     removePublication: {},
     toggleDraftOfPublication: {},
     getSources: {},
