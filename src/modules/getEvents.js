@@ -9,7 +9,7 @@ export default () => {
     const options = {
       include_docs: true,
       startkey: 'events_',
-      endkey: 'vents_\uffff'
+      endkey: 'events_\uffff'
     }
     app.db.allDocs(options)
       .then((result) => {

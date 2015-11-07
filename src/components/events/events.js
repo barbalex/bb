@@ -3,11 +3,10 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger, Table } from 'react-bootstrap'
-import _ from 'lodash'
-import EventTableRow from './eventTableRow.js'
+import DateRow from './dateRow.js'
 import NewEvent from './newEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
-import getDatesSinceOldestEvent from '../../modules/getDatesSinceOldestEvent.js'
+import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
 
 export default React.createClass({
   displayName: 'Events',
@@ -15,6 +14,7 @@ export default React.createClass({
   propTypes: {
     events: React.PropTypes.array,
     activeEvent: React.PropTypes.object,
+    dateRowObjects: React.PropTypes.array,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onCloseNewEvent: React.PropTypes.func,
@@ -24,14 +24,13 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      docToRemove: null
+      docToRemove: null,
+      dateRowObjects: []
     }
   },
 
   componentDidMount () {
-    const { events } = this.props
     app.Actions.getEvents()
-    getDatesSinceOldestEvent(events)
   },
 
   onClickEvent (id, e) {
@@ -74,31 +73,31 @@ export default React.createClass({
     )
   },
 
-  eventRows () {
+  dateRows () {
     const { events } = this.props
-    // TODO: add a row for every calendar day
-    return events.map((event, index) => {
-      <EventTableRow key={index} event={event} />
-    })
+    const dateRowObjects = getDaterowObjectsSinceOldestEvent(events)
+    return dateRowObjects.map((dateRowObject, index) => <DateRow key={index} index={index} dateRowObject={dateRowObject} />)
   },
 
   render () {
-    const { activeEvent, showNewEvent, onCloseNewEvent } = this.props
+    const { showNewEvent, onCloseNewEvent } = this.props
     const { docToRemove } = this.state
-    const activeEventId = _.has(activeEvent, '_id') ? activeEvent._id : null
+
     return (
       <div className='events'>
         <h1>Events</h1>
         <Table responsive>
           <thead>
             <tr>
-              <th>Date</th>
+              <th className='year'>Year</th>
+              <th className='month'>Month</th>
+              <th className='day'>Day</th>
               <th>Migration</th>
               <th>Politics</th>
             </tr>
           </thead>
           <tbody>
-            {this.eventRows()}
+            {this.dateRows()}
           </tbody>
         </Table>
         {showNewEvent ? <NewEvent onCloseNewEvent={onCloseNewEvent} /> : null}

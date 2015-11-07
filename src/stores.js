@@ -228,6 +228,9 @@ export default (Actions) => {
             this.getEventsCallback()
             this.getEventsCallback = null
           }
+
+          console.log('eventsStore, onGetEvents, events', events)
+
           this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
