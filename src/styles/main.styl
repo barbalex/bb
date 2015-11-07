@@ -222,28 +222,29 @@ body .navbar
   font-weight bold
 
 .events table
+  display table
+  table-layout fixed
+  width 100%
   margin-bottom 0
 .events table tr td
   border-top 1px solid #ECECEC !important
+.events .monthRow
+  background-image url('../../images/oceanDark.jpg')
+  color #EDF4F8
+  font-weight bold
+.events .monthRow td
+  padding-left 10px
+  
+.events .day
+  width 60px
+  column-width 60px
+  padding-right 20px
+  text-align right
 .events .migration,
 .events .politics
   width 50%
-.events th.migration {
-  width: 48%
-}
-.events th.year,
-.events td.year
-  //width 52px
-  //column-width 52px
-.events th.month,
-.events td.month
-  //width 120px
-  //column-width 120px
-.events th.day,
-.events td.day
-  //width 46px
-  //column-width 46px
-  text-align right
+  column-width 50%
+  word-wrap break-word
 .events td p
   margin-bottom 0
   
@@ -252,7 +253,7 @@ body .navbar
   position: relative
 #eventsTableContainer
   overflow auto
-  height calc(100vh - 180px)
+  height calc(100vh - 79px)
   margin-top 30px
   border-top 1px solid #ECECEC
   border-bottom 1px solid #ECECEC
@@ -260,8 +261,6 @@ body .navbar
   position absolute
   top 40px
 // correct for slight offsets
-.events th.day
-  padding-left 20px
 .events th.politics
   padding-left 0
 // make sure glyphicon and link text are on same line
