@@ -10,7 +10,7 @@ export default React.createClass({
   displayName: 'NewEvent',
 
   propTypes: {
-    onCloseNewCommentary: React.PropTypes.func,
+    onCloseNewEvent: React.PropTypes.func,
     title: React.PropTypes.string,
     date: React.PropTypes.number,
     error: React.PropTypes.string
@@ -33,12 +33,12 @@ export default React.createClass({
     this.setState({ date })
   },
 
-  createNewCommentary () {
-    const { onCloseNewCommentary } = this.props
+  createNewEvent () {
+    const { onCloseNewEvent } = this.props
     const { title, date } = this.state
     if (title && date) {
-      app.Actions.newCommentary(title, date)
-      onCloseNewCommentary()
+      app.Actions.newEvent(title, date)
+      onCloseNewEvent()
     } else {
       let error = 'Please choose a date'
       if (!title) error = 'Please add a title'
@@ -47,8 +47,8 @@ export default React.createClass({
   },
 
   close () {
-    const { onCloseNewCommentary } = this.props
-    onCloseNewCommentary()
+    const { onCloseNewEvent } = this.props
+    onCloseNewEvent()
   },
 
   onHide () {
@@ -87,7 +87,7 @@ export default React.createClass({
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>New commentary</Modal.Title>
+          <Modal.Title>New event</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -107,7 +107,7 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewCommentary}>create new commentary</Button>
+          <Button bsStyle='primary' onClick={this.createNewEvent}>create new event</Button>
         </Modal.Footer>
 
       </Modal>

@@ -8,7 +8,7 @@ export default React.createClass({
 
   propTypes: {
     doc: React.PropTypes.object,
-    removeCommentary: React.PropTypes.func
+    removeEvent: React.PropTypes.func
   },
 
   onHide () {
@@ -16,13 +16,13 @@ export default React.createClass({
   },
 
   onClickRemove () {
-    const { removeCommentary } = this.props
-    removeCommentary(true)
+    const { removeEvent } = this.props
+    removeEvent(true)
   },
 
   close () {
-    const { removeCommentary } = this.props
-    removeCommentary(false)
+    const { removeEvent } = this.props
+    removeEvent(false)
   },
 
   render () {
@@ -32,10 +32,10 @@ export default React.createClass({
       <div className='static-modal'>
         <Modal.Dialog onHide={this.onHide}>
           <Modal.Header>
-            <Modal.Title>Remove commentary "{doc.title}"</Modal.Title>
+            <Modal.Title>Remove event "{doc.title}"</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure, you want to remove commentary "{doc.title}"?</p>
+            <p>Are you sure, you want to remove event "{doc.title}"?</p>
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle='danger' onClick={this.onClickRemove}>yes, remove!</Button>

@@ -23,7 +23,7 @@ export default React.createClass({
 
     const links = event.links.map((link, key) => {
       return (
-        <span key={key} style={outerSpanStyle}>{key > 0 ? ' / ' : ''}<a href={link.url} target='_blank'><Glyphicon glyph='new-window' style={linkGlyphStyle} />{link.label}</a></span>
+        <span key={key} style={outerSpanStyle}>{key > 0 ? ' ' : ''}<a href={link.url} target='_blank'><Glyphicon glyph='new-window' style={linkGlyphStyle} />{link.label}</a></span>
       )
     })
 

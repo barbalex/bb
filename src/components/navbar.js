@@ -21,6 +21,7 @@ export default React.createClass({
     onClickEdit: React.PropTypes.func,
     onClickNewCommentary: React.PropTypes.func,
     onClickNewSource: React.PropTypes.func,
+    onClickNewEvent: React.PropTypes.func,
     onClickNewActor: React.PropTypes.func,
     onClickNewMonthlyEvent: React.PropTypes.func,
     onClickNewPublication: React.PropTypes.func,
@@ -75,6 +76,10 @@ export default React.createClass({
     return <Tooltip id='newCommentary'>new commentary</Tooltip>
   },
 
+  newEventTooltip () {
+    return <Tooltip id='newEvent'>new event</Tooltip>
+  },
+
   newSourceTooltip () {
     return <Tooltip id='newSource'>new source</Tooltip>
   },
@@ -92,18 +97,19 @@ export default React.createClass({
   },
 
   render () {
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActor, email, editing, onClickNewCommentary, onClickNewSource, onClickNewActor, onClickNewMonthlyEvent, onClickNewPublication } = this.props
+    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActor, email, editing, onClickNewCommentary, onClickNewEvent, onClickNewSource, onClickNewActor, onClickNewMonthlyEvent, onClickNewPublication } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = activePage && activePage._id ? activePage._id : null
-    const nonEditableIds = ['pages_commentaries', 'pages_sources', 'pages_monthlyEvents', 'pages_publications', 'pages_actors']
+    const nonEditableIds = ['pages_commentaries', 'pages_sources', 'pages_monthlyEvents', 'pages_publications', 'pages_actors', 'pages_events']
     const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeSource, '_id') || _.has(activeActor, '_id') || _.has(activePublication, '_id'))
     const showAddCommentary = email && activePage._id === 'pages_commentaries'
+    const showAddEvent = email && activePage._id === 'pages_events'
     const showAddSource = email && activePage._id === 'pages_sources'
     const showAddActor = email && activePage._id === 'pages_actors'
     const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
     const showAddPublication = email && activePage._id === 'pages_publications'
-    const showNavbarRight = email || showEdit || showAddCommentary || showAddSource || showAddActor || showAddMonthlyEvent
+    const showNavbarRight = email || showEdit || showAddCommentary || showAddEvent || showAddSource || showAddActor || showAddMonthlyEvent
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -183,6 +189,17 @@ export default React.createClass({
                       <NavItem
                         eventKey={2}
                         onClick={onClickNewCommentary}
+                      >
+                        <Glyphicon glyph='plus' />
+                      </NavItem>
+                    </OverlayTrigger>
+                    : null
+                  }
+                  {showAddEvent ?
+                    <OverlayTrigger placement='bottom' overlay={this.newEventTooltip()}>
+                      <NavItem
+                        eventKey={2}
+                        onClick={onClickNewEvent}
                       >
                         <Glyphicon glyph='plus' />
                       </NavItem>

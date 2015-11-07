@@ -277,6 +277,7 @@ export default React.createClass({
             onClickEdit={this.onClickEdit}
             onClickNewCommentary={this.onClickNewCommentary}
             onClickNewSource={this.onClickNewSource}
+            onClickNewEvent={this.onClickNewEvent}
             onClickNewActor={this.onClickNewActor}
             onClickNewMonthlyEvent={this.onClickNewMonthlyEvent}
             onClickNewPublication={this.onClickNewPublication} />
