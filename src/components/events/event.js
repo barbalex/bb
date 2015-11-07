@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react'
+import { Glyphicon } from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'Event',
@@ -11,10 +12,18 @@ export default React.createClass({
 
   render () {
     const { event } = this.props
+    const linkGlyphStyle = {
+      fontSize: 0.7 + 'em',
+      paddingRight: 3,
+      verticalAlign: 10 + '%'
+    }
+    const outerSpanStyle = {
+      paddingLeft: 5
+    }
 
     const links = event.links.map((link, key) => {
       return (
-        <span key={key}>{key > 0 ? ' / ' : ''}<a href={link.url} target='_blank'>{link.label}</a></span>
+        <span key={key} style={outerSpanStyle}>{key > 0 ? ' / ' : ''}<a href={link.url} target='_blank'><Glyphicon glyph='new-window' style={linkGlyphStyle} />{link.label}</a></span>
       )
     })
 

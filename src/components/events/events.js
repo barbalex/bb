@@ -83,17 +83,22 @@ export default React.createClass({
     const { showNewEvent, onCloseNewEvent } = this.props
     const { docToRemove } = this.state
 
+    const theadStyle = {
+      position: 'absolute',
+      top: 250
+    }
+
     return (
       <div className='events'>
         <h1>Events</h1>
-        <Table responsive>
-          <thead>
+        <Table responsive condensed hover>
+          <thead style={theadStyle}>
             <tr>
               <th className='year'>Year</th>
               <th className='month'>Month</th>
               <th className='day'>Day</th>
-              <th>Migration</th>
-              <th>Politics</th>
+              <th className='migration'>Migration</th>
+              <th className='politics'>Politics</th>
             </tr>
           </thead>
           <tbody>

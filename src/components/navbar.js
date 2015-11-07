@@ -127,7 +127,7 @@ export default React.createClass({
                   active={id === 'pages_monthlyEvents'}
                   onClick={this.onClickPage.bind(this, 'pages_monthlyEvents')}
                 >
-                  Events Archive
+                  Archive
                 </NavItem>
                 <NavItem
                   eventKey={2}

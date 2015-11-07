@@ -84,7 +84,7 @@ export default React.createClass({
 
     return (
       <div id='monthlyEvents'>
-        <h1>Events</h1>
+        <h1>Events Archive</h1>
         <PanelGroup activeKey={activeYear} accordion>
           {this.eventYearsComponent(activeYear)}
         </PanelGroup>

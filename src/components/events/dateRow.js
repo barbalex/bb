@@ -27,8 +27,8 @@ export default React.createClass({
         <td className='year'>{yearText}</td>
         <td className='month'>{monthText}</td>
         <td className='day'>{day}</td>
-        <td>{migrationEvents}</td>
-        <td>{politicsEvents}</td>
+        <td className='migration'>{migrationEvents}</td>
+        <td className='politics'>{politicsEvents}</td>
       </tr>
     )
   }
