@@ -3,7 +3,9 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger, Table } from 'react-bootstrap'
+import moment from 'moment'
 import DateRow from './dateRow.js'
+import MonthRow from './monthRow.js'
 import NewEvent from './newEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
 import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
@@ -76,7 +78,15 @@ export default React.createClass({
   dateRows () {
     const { events } = this.props
     const dateRowObjects = getDaterowObjectsSinceOldestEvent(events)
-    return dateRowObjects.map((dateRowObject, index) => <DateRow key={index} index={index} dateRowObject={dateRowObject} />)
+    let dateRows = []
+    dateRowObjects.forEach((dateRowObject, index) => {
+      const day = moment(dateRowObject.date).format('D')
+      const endOfMonth = moment(dateRowObject.date).endOf('month').format('DD')
+      const needsMonthRow = day === endOfMonth || index === 0
+      if (needsMonthRow) dateRows.push(<MonthRow key={index + 'monthRow'} dateRowObject={dateRowObject} />)
+      dateRows.push(<DateRow key={index} dateRowObject={dateRowObject} />)
+    })
+    return dateRows
   },
 
   render () {
@@ -88,11 +98,14 @@ export default React.createClass({
         <h1>Events</h1>
         <div id='eventsTableContainer'>
           <Table condensed hover>
+            <colgroup>
+              <col className='day' />
+              <col className='migration' />
+              <col className='politics' />
+            </colgroup>
             <thead>
               <tr>
-                <th className='year'>Year</th>
-                <th className='month'>Month</th>
-                <th className='day'>Day</th>
+                <th className='day'>Date</th>
                 <th className='migration'>Migration</th>
                 <th className='politics'>Politics</th>
               </tr>
