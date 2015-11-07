@@ -225,26 +225,10 @@ body .navbar
   margin-bottom 0
 .events table tr td
   border-top 1px solid #ECECEC !important
-.events .migration,
-.events .politics
-  width 50%
-.events th.migration {
-  width: 48%
-}
-.events th.year,
-.events td.year
-  width 52px
-.events th.month,
-.events td.month
-  width 100px
-.events th.day,
-.events td.day
-  width 46px
-  text-align right
 .events td p
   margin-bottom 0
   
-// fix header
+// fix table header
 .events
   position: relative
 #eventsTableContainer
@@ -258,9 +242,12 @@ body .navbar
   top 40px
 // correct for slight offsets
 .events th.day
-  padding-left 20px
+  //padding-left 20px
 .events th.politics
-  padding-left -15px
+  padding-left 0
+// make sure glyphicon and link text are on same line
+.events td a
+  white-space nowrap
   
 
 // validate div after react bootstrap component
