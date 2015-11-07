@@ -5,11 +5,12 @@
 module.exports = () => {
   const isDev = process.env.NODE_ENV !== 'production'
   const jsPath = isDev ? '/app.js' : '/bb.1.0.0.js'
+  const cssPath = isDev ? '' : '/bb.1.0.0.css'
   return `<!doctype html>
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-  <link rel="stylesheet" href="/bb.1.0.0.css"/>
+  <link rel="stylesheet" href="${cssPath}"/>
   <link rel="shortcut icon" href="/favicons/favicon.ico">
   <link rel="icon" sizes="16x16 32x32 64x64" href="/favicons/favicon.ico">
   <link rel="icon" type="image/png" sizes="196x196" href="/favicons/favicon-192.png">
