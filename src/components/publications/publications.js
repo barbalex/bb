@@ -33,8 +33,6 @@ export default React.createClass({
     const { publications, activePublication, editing, email, onSavePublicationArticle } = this.props
     const publicationCategories = app.publicationsStore.getPublicationCategories()
 
-    console.log('publications.js, activePublication', activePublication)
-
     if (publications.length > 0 && publicationCategories.length > 0) {
       return publicationCategories.map((category, yIndex) => {
         const className = category === activePublicationCategory ? 'category active' : 'category not-active'
@@ -53,8 +51,6 @@ export default React.createClass({
 
   render () {
     const { activePublicationCategory, showNewPublication, onCloseNewPublication } = this.props
-
-    console.log('publications.js, activePublicationCategory', activePublicationCategory)
 
     return (
       <div id='publications'>

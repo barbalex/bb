@@ -485,9 +485,6 @@ export default (Actions) => {
       getPublications()
         .then((publications) => {
           this.publications = publications
-
-          console.log('got publications')
-
           if (this.getPublicationsCallback) {
             this.getPublicationsCallback()
             this.getPublicationsCallback = null
