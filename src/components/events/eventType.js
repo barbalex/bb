@@ -18,11 +18,18 @@ export default React.createClass({
 
   render () {
     const { eventType } = this.props
+    const labelStyle = {
+      fontWeight: 'bold',
+      marginBottom: 5
+    }
     return (
-      <ButtonGroup>
-        <Button className={eventType === 'migration' ? 'active' : ''} onClick={this.onChangeEventType.bind(this, 'migration')}>migration</Button>
-        <Button className={eventType === 'politics' ? 'active' : ''} onClick={this.onChangeEventType.bind(this, 'politics')}>politics</Button>
-      </ButtonGroup>
+      <div style={{marginBottom: 20}}>
+        <div style={labelStyle}>Type</div>
+        <ButtonGroup>
+          <Button className={eventType === 'migration' ? 'active' : ''} onClick={this.onChangeEventType.bind(this, 'migration')}>migration</Button>
+          <Button className={eventType === 'politics' ? 'active' : ''} onClick={this.onChangeEventType.bind(this, 'politics')}>politics</Button>
+        </ButtonGroup>
+      </div>
     )
   }
 })
