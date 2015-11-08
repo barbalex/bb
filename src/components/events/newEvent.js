@@ -6,6 +6,7 @@ import { Modal, Button, Input, Alert } from 'react-bootstrap'
 import DateTimeField from 'react-bootstrap-datetimepicker'
 import moment from 'moment'
 import EventType from './eventType.js'
+import TagsInput from './tagsInput.js'
 import EventLinks from './eventLinks.js'
 
 export default React.createClass({
@@ -82,8 +83,12 @@ export default React.createClass({
     this.setState({ eventType })
   },
 
+  onChangeTags (tags) {
+    this.setState({ tags })
+  },
+
   render () {
-    const { title, date, links, eventType, error } = this.state
+    const { title, date, links, eventType, tags, error } = this.state
     const that = this
     const dateTimeFieldInputProps = {
       onFocus (e) {
@@ -119,6 +124,7 @@ export default React.createClass({
               onChange={this.onChangeDate} />
           </div>
           <EventType eventType={eventType} onChangeEventType={this.onChangeEventType} />
+          <TagsInput tags={tags} onChangeTags={this.onChangeTags} />
           <EventLinks links={links} onChangeLinks={this.onChangeLinks} />
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>
