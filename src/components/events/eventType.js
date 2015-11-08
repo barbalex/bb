@@ -11,6 +11,12 @@ export default React.createClass({
     onChangeEventType: React.PropTypes.func
   },
 
+  componentDidMount () {
+    const { eventType, onChangeEventType } = this.props
+    // if no eventType, set migration
+    if (!eventType) onChangeEventType('migration')
+  },
+
   onChangeEventType (eventType) {
     const { onChangeEventType } = this.props
     onChangeEventType(eventType)

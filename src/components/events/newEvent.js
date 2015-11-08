@@ -119,7 +119,6 @@ export default React.createClass({
               onChange={this.onChangeDate} />
           </div>
           <EventType eventType={eventType} onChangeEventType={this.onChangeEventType} />
-          <div style={dateLabelStyle}>Links</div>
           <EventLinks links={links} onChangeLinks={this.onChangeLinks} />
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>

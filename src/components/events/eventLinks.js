@@ -1,9 +1,8 @@
 'use strict'
 
 import React from 'react'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Button } from 'react-bootstrap'
 import EventLink from './eventLink.js'
-import NewEventLink from './newEventLink.js'
 
 export default React.createClass({
   displayName: 'EventLinks',
@@ -27,6 +26,8 @@ export default React.createClass({
   },
 
   onChangeLink (index, link) {
+    console.log('eventLinks.js, onChangeLink, index', index)
+    console.log('eventLinks.js, onChangeLink, link', link)
     const { onChangeLinks } = this.props
     let { links } = this.state
     const label = link.label
@@ -36,22 +37,31 @@ export default React.createClass({
     onChangeLinks(links)
   },
 
-  onNewLink (link) {
+  onNewLink () {
     const { onChangeLinks } = this.props
     let { links } = this.state
-    links.push(link)
+    const newLink = {
+      url: '',
+      label: ''
+    }
+    links.push(newLink)
     this.setState({ links })
     onChangeLinks(links)
   },
 
   eventLinks () {
     const { links } = this.state
-    return links.map((link, index) => <EventLink key={index} index={index} link={link} onChangeLink={this.onChangeLink} onRemoveLink={this.onRemoveLink} />)
+    return links.map((link, index) => <EventLink key={index} index={index} links={links} link={link} onChangeLink={this.onChangeLink} onRemoveLink={this.onRemoveLink} />)
   },
 
   render () {
+    const labelStyle = {
+      fontWeight: 'bold',
+      marginBottom: 5
+    }
     return (
       <div>
+        <div style={labelStyle}>Links</div>
         <Row>
           <Col sm={3} lg={2}>
             <p>Label</p>
@@ -62,7 +72,7 @@ export default React.createClass({
           <Col sm={1} lg={1} />
         </Row>
         {this.eventLinks()}
-        <NewEventLink onNewLink={this.onNewLink} />
+        <Button onClick={this.onNewLink}>new link</Button>
       </div>
     )
   }

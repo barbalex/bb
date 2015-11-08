@@ -18,18 +18,18 @@ export default React.createClass({
     return { link }
   },
 
-  onChangeUrl (url) {
+  onChangeUrl (event) {
     const { index, onChangeLink } = this.props
     let { link } = this.state
-    link.url = url
+    link.url = event.target.value
     this.setState({ link })
     onChangeLink(index, link)
   },
 
-  onChangeLabel (label) {
+  onChangeLabel (event) {
     const { index, onChangeLink } = this.props
     let { link } = this.state
-    link.label = label
+    link.label = event.target.value
     this.setState({ link })
     onChangeLink(index, link)
   },
