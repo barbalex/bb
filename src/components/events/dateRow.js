@@ -8,16 +8,12 @@ export default React.createClass({
   displayName: 'DateRow',
 
   propTypes: {
-    dateRowObject: React.PropTypes.object,
-    index: React.PropTypes.number
+    dateRowObject: React.PropTypes.object
   },
 
   render () {
-    const { dateRowObject: dRO, index } = this.props
+    const { dateRowObject: dRO } = this.props
     const day = moment(dRO.date).format('D')
-    const endOfMonth = moment(dRO.date).endOf('month').format('DD')
-    const yearText = (day === endOfMonth || index === 0) ? moment(dRO.date).format('YYYY') : ''
-    const monthText = (day === endOfMonth || index === 0) ? moment(dRO.date).format('MMMM') : ''
 
     const migrationEvents = dRO.migrationEvents.map((ev, key) => <Event key={key} event={ev} />)
     const politicsEvents = dRO.politicsEvents.map((ev, key) => <Event key={key} event={ev} />)
