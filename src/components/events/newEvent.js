@@ -5,6 +5,8 @@ import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
 import DateTimeField from 'react-bootstrap-datetimepicker'
 import moment from 'moment'
+import EventType from './eventType.js'
+import EventLinks from './eventLinks.js'
 
 export default React.createClass({
   displayName: 'NewEvent',
@@ -13,6 +15,9 @@ export default React.createClass({
     onCloseNewEvent: React.PropTypes.func,
     title: React.PropTypes.string,
     date: React.PropTypes.number,
+    links: React.PropTypes.array,
+    eventType: React.PropTypes.string,
+    tags: React.PropTypes.array,
     error: React.PropTypes.string
   },
 
@@ -20,6 +25,9 @@ export default React.createClass({
     return {
       title: null,
       date: moment(),
+      links: [],
+      eventType: null,
+      tags: [],
       error: null
     }
   },
@@ -35,9 +43,9 @@ export default React.createClass({
 
   createNewEvent () {
     const { onCloseNewEvent } = this.props
-    const { title, date } = this.state
+    const { title, date, links, eventType, tags } = this.state
     if (title && date) {
-      app.Actions.newEvent(title, date)
+      app.Actions.newEvent(date, title, links, eventType, tags)
       onCloseNewEvent()
     } else {
       let error = 'Please choose a date'
@@ -66,8 +74,16 @@ export default React.createClass({
     }
   },
 
+  onChangeLinks (links) {
+    this.setState({ links })
+  },
+
+  onChangeEventType (eventType) {
+    this.setState({ eventType })
+  },
+
   render () {
-    const { title, date, error } = this.state
+    const { title, date, links, eventType, error } = this.state
     const that = this
     const dateTimeFieldInputProps = {
       onFocus (e) {
@@ -102,6 +118,9 @@ export default React.createClass({
               inputProps={dateTimeFieldInputProps}
               onChange={this.onChangeDate} />
           </div>
+          <EventType eventType={eventType} onChangeEventType={this.onChangeEventType} />
+          <div style={dateLabelStyle}>Links</div>
+          <EventLinks links={links} onChangeLinks={this.onChangeLinks} />
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>
 

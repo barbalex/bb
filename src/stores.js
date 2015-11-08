@@ -233,10 +233,13 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewEvent (year, month, day, title, eventType, tags) {
+    onNewEvent (date, title, links, eventType, tags) {
+      const year = moment(date).year()
+      const month = moment(date).format('MM')
+      const day = moment(date).format('DD')
       const _id = `events_${year}_${month}_${day}_${title}`
       const type = 'events'
-      const event = { _id, type, title, eventType, tags }
+      const event = { _id, type, title, links, eventType, tags }
       this.onSaveEvent(event)
     },
 
