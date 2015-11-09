@@ -30,6 +30,22 @@ config.module.loaders.push(
   {
     test: /tinymce\/tinymce\.js/,
     loader: 'imports?document=>window.document,this=>window!exports?window.tinymce'
+  },
+  {
+    test: /\.jsx?$/,
+    exclude: /(node_modules|bower_components)/,
+    loader: 'babel',
+    query: {
+      presets: ['es2015', 'react', 'stage-0']
+    }
+  },
+  {
+    test: /\.js?$/,
+    exclude: /(node_modules|bower_components)/,
+    loader: 'babel',
+    query: {
+      presets: ['es2015', 'react', 'stage-0']
+    }
   }
 )
 
