@@ -43,14 +43,14 @@ export default React.createClass({
     return <Tooltip id='removeLink'>remove</Tooltip>
   },
 
-  removeLinkGlyph (doc) {
+  removeLinkGlyph () {
     const { index } = this.props
     const glyphStyle = {
       fontSize: 1.5 + 'em'
     }
     return (
       <OverlayTrigger placement='right' overlay={this.removeLinkTooltip()}>
-        <Glyphicon glyph='remove' style={glyphStyle} onClick={this.onRemoveLink.bind(this, index)} />
+        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveLink.bind(this, index)} />
       </OverlayTrigger>
     )
   },
@@ -62,11 +62,11 @@ export default React.createClass({
         <Col sm={3} lg={2}>
           <Input type='text' value={link.label} bsSize='small' onChange={this.onChangeLabel} />
         </Col>
-        <Col sm={7} lg={8}>
+        <Col sm={8} lg={9}>
           <Input type='url' value={link.url} bsSize='small' onChange={this.onChangeUrl} />
         </Col>
         <Col sm={1} lg={1}>
-          <removeLinkGlyph onClick={this.onRemoveLink} />
+          {this.removeLinkGlyph()}
         </Col>
       </Row>
     )
