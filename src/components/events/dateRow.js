@@ -8,15 +8,17 @@ export default React.createClass({
   displayName: 'DateRow',
 
   propTypes: {
-    dateRowObject: React.PropTypes.object
+    dateRowObject: React.PropTypes.object,
+    onRemoveEvent: React.PropTypes.func,
+    email: React.PropTypes.string
   },
 
   render () {
-    const { dateRowObject: dRO } = this.props
+    const { dateRowObject: dRO, onRemoveEvent, email } = this.props
     const day = moment(dRO.date).format('D')
 
-    const migrationEvents = dRO.migrationEvents.map((ev, key) => <Event key={key} event={ev} />)
-    const politicsEvents = dRO.politicsEvents.map((ev, key) => <Event key={key} event={ev} />)
+    const migrationEvents = dRO.migrationEvents.map((ev, key) => <Event key={key} event={ev} email={email} onRemoveEvent={onRemoveEvent} />)
+    const politicsEvents = dRO.politicsEvents.map((ev, key) => <Event key={key} event={ev} email={email} onRemoveEvent={onRemoveEvent} />)
 
     return (
       <tr>

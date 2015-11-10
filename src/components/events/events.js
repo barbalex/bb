@@ -44,9 +44,7 @@ export default React.createClass({
     app.Actions.getEvent(idToGet)
   },
 
-  onRemoveEvent (docToRemove, event) {
-    event.preventDefault()
-    event.stopPropagation()
+  onRemoveEvent (docToRemove) {
     this.setState({ docToRemove })
   },
 
@@ -56,27 +54,8 @@ export default React.createClass({
     this.setState({ docToRemove: null })
   },
 
-  removeEventTooltip () {
-    return <Tooltip id='removeThisEvent'>remove</Tooltip>
-  },
-
-  removeEventGlyph (doc) {
-    const glyphStyle = {
-      position: 'absolute',
-      right: 10,
-      top: 6,
-      fontSize: 1.5 + 'em',
-      color: '#edf4f8'
-    }
-    return (
-      <OverlayTrigger placement='top' overlay={this.removeEventTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveEvent.bind(this, doc)} />
-      </OverlayTrigger>
-    )
-  },
-
   dateRows () {
-    const { events } = this.props
+    const { events, email } = this.props
     const dateRowObjects = getDaterowObjectsSinceOldestEvent(events)
     let dateRows = []
     dateRowObjects.forEach((dateRowObject, index) => {
@@ -84,7 +63,7 @@ export default React.createClass({
       const endOfMonth = moment(dateRowObject.date).endOf('month').format('DD')
       const needsMonthRow = day === endOfMonth || index === 0
       if (needsMonthRow) dateRows.push(<MonthRow key={index + 'monthRow'} dateRowObject={dateRowObject} />)
-      dateRows.push(<DateRow key={index} dateRowObject={dateRowObject} />)
+      dateRows.push(<DateRow key={index} dateRowObject={dateRowObject} email={email} onRemoveEvent={this.onRemoveEvent} />)
     })
     return dateRows
   },
