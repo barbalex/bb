@@ -4,7 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
 import moment from 'moment'
-import EventType from './eventType.js'
+import EventTypeButtonGroup from './eventTypeButtonGroup.js'
 import DateInput from './dateInput.js'
 import TagsInput from './tagsInput.js'
 import EventLinks from './eventLinks.js'
@@ -43,6 +43,20 @@ export default React.createClass({
     this.setState({ date })
   },
 
+  onChangeLinks (links) {
+    // remove empty links
+    links = links.filter((link) => link.url && link.label)
+    this.setState({ links })
+  },
+
+  onChangeEventType (eventType) {
+    this.setState({ eventType })
+  },
+
+  onChangeTags (tags) {
+    this.setState({ tags })
+  },
+
   createNewEvent () {
     const { onCloseNewEvent } = this.props
     const { title, date, links, eventType, tags } = this.state
@@ -65,31 +79,6 @@ export default React.createClass({
     // seems that this method is needed ???
   },
 
-  handleDateTimeFieldFocus (e) {
-    const parent = e.target.parentElement
-    const children = parent.childNodes
-    for (let i = 0; i < children.length; i++) {
-      if (children[i].tagName.toLowerCase() === 'span') {
-        children[i].click()
-        return
-      }
-    }
-  },
-
-  onChangeLinks (links) {
-    // remove empty links
-    links = links.filter((link) => link.url && link.label)
-    this.setState({ links })
-  },
-
-  onChangeEventType (eventType) {
-    this.setState({ eventType })
-  },
-
-  onChangeTags (tags) {
-    this.setState({ tags })
-  },
-
   render () {
     const { title, date, links, eventType, tags, error } = this.state
     const alertStyle = {
@@ -105,7 +94,7 @@ export default React.createClass({
         <Modal.Body>
           <Input type='text' label='Title' value={title} onChange={this.onChangeTitle} autoFocus />
           <DateInput date={date} onChangeDate={this.onChangeDate} />
-          <EventType eventType={eventType} onChangeEventType={this.onChangeEventType} />
+          <EventTypeButtonGroup eventType={eventType} onChangeEventType={this.onChangeEventType} />
           <TagsInput tags={tags} onChangeTags={this.onChangeTags} />
           <EventLinks links={links} onChangeLinks={this.onChangeLinks} />
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
