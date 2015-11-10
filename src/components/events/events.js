@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Glyphicon, Tooltip, OverlayTrigger, Table } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import moment from 'moment'
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
