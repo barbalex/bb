@@ -26,8 +26,6 @@ export default React.createClass({
   },
 
   onChangeLink (index, link) {
-    console.log('eventLinks.js, onChangeLink, index', index)
-    console.log('eventLinks.js, onChangeLink, link', link)
     const { onChangeLinks } = this.props
     let { links } = this.state
     const label = link.label
