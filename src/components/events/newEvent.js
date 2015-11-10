@@ -3,9 +3,9 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
-import DateTimeField from 'react-bootstrap-datetimepicker'
 import moment from 'moment'
 import EventType from './eventType.js'
+import DateInput from './dateInput.js'
 import TagsInput from './tagsInput.js'
 import EventLinks from './eventLinks.js'
 
@@ -38,7 +38,8 @@ export default React.createClass({
     this.setState({ title })
   },
 
-  onChangeDate (date) {
+  onChangeDate (datePassed) {
+    const date = moment(datePassed, 'DD.MM.YYYY')
     this.setState({ date })
   },
 
@@ -91,21 +92,9 @@ export default React.createClass({
 
   render () {
     const { title, date, links, eventType, tags, error } = this.state
-    const that = this
-    const dateTimeFieldInputProps = {
-      onFocus (e) {
-        that.handleDateTimeFieldFocus(e)
-      }
-    }
     const alertStyle = {
+      marginTop: 10,
       marginBottom: 10
-    }
-    const dateLabelStyle = {
-      fontWeight: 'bold',
-      marginBottom: 5
-    }
-    const dtfStyle = {
-      marginBottom: 20
     }
     return (
       <Modal show={true} onHide={this.close} bsSize='large'>
@@ -115,16 +104,7 @@ export default React.createClass({
 
         <Modal.Body>
           <Input type='text' label='Title' value={title} onChange={this.onChangeTitle} autoFocus />
-          <div style={dateLabelStyle}>Date</div>
-          <div style={dtfStyle}>
-            <DateTimeField
-              dateTime={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
-              format='DD.MM.YYYY'
-              inputFormat ='DD.MM.YYYY'
-              mode='date'
-              inputProps={dateTimeFieldInputProps}
-              onChange={this.onChangeDate} />
-          </div>
+          <DateInput date={date} onChangeDate={this.onChangeDate} />
           <EventType eventType={eventType} onChangeEventType={this.onChangeEventType} />
           <TagsInput tags={tags} onChangeTags={this.onChangeTags} />
           <EventLinks links={links} onChangeLinks={this.onChangeLinks} />
