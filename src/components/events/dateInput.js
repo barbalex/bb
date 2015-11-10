@@ -16,10 +16,7 @@ export default React.createClass({
     const parent = e.target.parentElement
     const children = parent.childNodes
     for (let i = 0; i < children.length; i++) {
-      if (children[i].tagName.toLowerCase() === 'span') {
-        children[i].click()
-        return
-      }
+      if (children[i].tagName.toLowerCase() === 'span') return children[i].click()
     }
   },
 
