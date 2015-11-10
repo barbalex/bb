@@ -12,10 +12,8 @@ export default React.createClass({
     email: React.PropTypes.string
   },
 
-  onRemoveEvent (doc, event) {
+  onRemoveEvent (doc) {
     const { onRemoveEvent } = this.props
-    event.preventDefault()
-    event.stopPropagation()
     onRemoveEvent(doc)
   },
 
