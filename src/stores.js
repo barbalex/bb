@@ -237,7 +237,7 @@ export default (Actions) => {
       const year = moment(date).year()
       const month = moment(date).format('MM')
       const day = moment(date).format('DD')
-      const _id = `events_${year}_${month}_${day}_${title}`
+      const _id = `events_${year}_${month}_${day}_${slug(title)}`
       const type = 'events'
       const event = { _id, type, title, links, eventType, tags }
       this.onSaveEvent(event)
