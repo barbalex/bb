@@ -55,19 +55,25 @@ export default React.createClass({
   },
 
   render () {
-    const labelStyle = {
+    const { links } = this.state
+    const labelText = links.length > 0 ? 'Label' : null
+    const urlText = links.length > 0 ? 'Url' : null
+    const titleStyle = {
       fontWeight: 'bold',
       marginBottom: 5
     }
+    const labelStyle = {
+      marginBottom: 0
+    }
     return (
       <div>
-        <div style={labelStyle}>Links</div>
+        <div style={titleStyle}>Links</div>
         <Row>
           <Col sm={3} lg={2}>
-            <p>Label</p>
+            <p style={labelStyle}>{labelText}</p>
           </Col>
           <Col sm={7} lg={8}>
-            <p>Url</p>
+            <p style={labelStyle}>{urlText}</p>
           </Col>
           <Col sm={1} lg={1} />
         </Row>
