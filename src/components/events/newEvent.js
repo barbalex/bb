@@ -76,6 +76,8 @@ export default React.createClass({
   },
 
   onChangeLinks (links) {
+    // remove empty links
+    links = links.filter((link) => link.url && link.label)
     this.setState({ links })
   },
 
