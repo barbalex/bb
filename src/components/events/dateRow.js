@@ -16,13 +16,14 @@ export default React.createClass({
   render () {
     const { dateRowObject: dRO, onRemoveEvent, email } = this.props
     const day = moment(dRO.date).format('D')
+    const dayClassName = dRO.migrationEvents.length > 0 || dRO.politicsEvents.length > 0 ? 'day dayWithEvents' : 'day'
 
     const migrationEvents = dRO.migrationEvents.map((ev, key) => <Event key={key} event={ev} email={email} onRemoveEvent={onRemoveEvent} />)
     const politicsEvents = dRO.politicsEvents.map((ev, key) => <Event key={key} event={ev} email={email} onRemoveEvent={onRemoveEvent} />)
 
     return (
       <tr>
-        <td className='day'>{day}</td>
+        <td className={dayClassName}><p>{day}</p></td>
         <td className='migration'><ul>{migrationEvents}</ul></td>
         <td className='politics'><ul>{politicsEvents}</ul></td>
       </tr>
