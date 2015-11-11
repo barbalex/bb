@@ -9,6 +9,7 @@ export default React.createClass({
   propTypes: {
     index: React.PropTypes.number,
     link: React.PropTypes.object,
+    focus: React.PropTypes.bool,
     onChangeLink: React.PropTypes.func,
     onRemoveLink: React.PropTypes.func
   },
@@ -58,7 +59,8 @@ export default React.createClass({
   removeLinkGlyph () {
     const { index } = this.props
     const glyphStyle = {
-      fontSize: 1.5 + 'em'
+      fontSize: 1.5 + 'em',
+      color: 'red'
     }
     return (
       <OverlayTrigger placement='right' overlay={this.removeLinkTooltip()}>
@@ -68,11 +70,13 @@ export default React.createClass({
   },
 
   render () {
+    const { focus } = this.props
     const { link } = this.state
+    const focusLabel = focus && !link.label
     return (
       <Row>
         <Col sm={3} lg={2}>
-          <Input type='text' value={link.label} bsSize='small' onChange={this.onChangeLabel} onBlur={this.onBlurLabel} />
+          <Input type='text' value={link.label} bsSize='small' onChange={this.onChangeLabel} onBlur={this.onBlurLabel} autoFocus={focusLabel} />
         </Col>
         <Col sm={8} lg={9}>
           <Input type='url' value={link.url} bsSize='small' onChange={this.onChangeUrl} onBlur={this.onBlurUrl} />

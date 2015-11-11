@@ -49,7 +49,7 @@ export default React.createClass({
 
   eventLinks () {
     const { links } = this.state
-    return links.map((link, index) => <EventLink key={index} index={index} links={links} link={link} onChangeLink={this.onChangeLink} onRemoveLink={this.onRemoveLink} />)
+    return links.map((link, index) => <EventLink key={index} index={index} links={links} link={link} focus={index === links.length - 1} onChangeLink={this.onChangeLink} onRemoveLink={this.onRemoveLink} />)
   },
 
   render () {
