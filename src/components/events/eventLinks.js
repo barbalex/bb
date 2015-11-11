@@ -1,5 +1,6 @@
 'use strict'
 
+import app from 'ampersand-app'
 import React from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
 import EventLink from './eventLink.js'
@@ -8,49 +9,28 @@ export default React.createClass({
   displayName: 'EventLinks',
 
   propTypes: {
-    links: React.PropTypes.array,
-    onChangeLinks: React.PropTypes.func
-  },
-
-  onRemoveLink (linkToRemove) {
-    const { onChangeLinks } = this.props
-    let { links } = this.props
-    console.log('eventLinks.js, onRemoveLink, linkToRemove', linkToRemove)
-    console.log('eventLinks.js, onRemoveLink, links before filtering', links)
-    links = links.filter((link, index) => link.label !== linkToRemove.label && link.url !== linkToRemove.url)
-    console.log('eventLinks.js, onRemoveLink, links after filtering', links)
-    onChangeLinks(links)
-  },
-
-  onChangeLink (index, link) {
-    const { onChangeLinks } = this.props
-    let { links } = this.props
-    const label = link.label
-    const url = link.url
-    links[index] = { label, url }
-    onChangeLinks(links)
+    activeEvent: React.PropTypes.object
   },
 
   onNewLink () {
-    const { onChangeLinks } = this.props
-    let { links } = this.props
+    const { activeEvent } = this.props
     const newLink = {
       url: '',
       label: ''
     }
-    links.push(newLink)
-    onChangeLinks(links)
+    activeEvent.links.push(newLink)
+    app.Actions.saveEvent(activeEvent)
   },
 
   eventLinks () {
-    const { links } = this.props
-    return links.map((link, index) => <EventLink key={index} index={index} links={links} link={link} focus={index === links.length - 1} onChangeLink={this.onChangeLink} onRemoveLink={this.onRemoveLink} />)
+    const { activeEvent } = this.props
+    return activeEvent.links.map((link, index) => <EventLink key={index} activeEvent={activeEvent} links={activeEvent.links} link={link} focus={index === activeEvent.links.length - 1} />)
   },
 
   render () {
-    const { links } = this.props
-    const labelText = links.length > 0 ? 'Label' : null
-    const urlText = links.length > 0 ? 'Url' : null
+    const { activeEvent } = this.props
+    const labelText = activeEvent.links.length > 0 ? 'Label' : null
+    const urlText = activeEvent.links.length > 0 ? 'Url' : null
     const titleStyle = {
       fontWeight: 'bold',
       marginBottom: 5
@@ -58,6 +38,7 @@ export default React.createClass({
     const labelStyle = {
       marginBottom: 0
     }
+
     return (
       <div>
         <div style={titleStyle}>Links</div>

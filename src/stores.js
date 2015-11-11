@@ -233,15 +233,14 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewEvent (date, title, links, eventType, tags, setActiveEvent) {
-      // setActiveEvent: onReplaceEvent needs activeEvent to be set to the new one after creating it
+    onNewEvent (date, title, links, eventType, tags) {
       const year = moment(date).year()
       const month = moment(date).format('MM')
       const day = moment(date).format('DD')
       const _id = `events_${year}_${month}_${day}_${slug(title)}`
       const type = 'events'
       const event = { _id, type, title, links, eventType, tags }
-      if (setActiveEvent) this.activeEventId = _id
+      this.activeEventId = _id
       this.onSaveEvent(event)
     },
 
@@ -323,7 +322,7 @@ export default (Actions) => {
       /**
        * if an event's title or date are changed, it has to be replaced with a new one
        */
-      this.onNewEvent(date, title, links, eventType, tags, 'setActiveEvent')
+      this.onNewEvent(date, title, links, eventType, tags)
       this.onRemoveEvent(eventToReplace)
     },
 

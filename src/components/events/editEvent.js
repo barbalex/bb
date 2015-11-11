@@ -58,14 +58,6 @@ export default React.createClass({
     }
   },
 
-  onChangeLinks (links) {
-    let { activeEvent } = this.props
-    // remove empty links
-    links = links.filter((link) => link.url && link.label)
-    activeEvent.links = links
-    app.Actions.saveEvent(activeEvent)
-  },
-
   onChangeEventType (eventType) {
     let { activeEvent } = this.props
     activeEvent.eventType = eventType
@@ -104,7 +96,7 @@ export default React.createClass({
           <DateInput date={date} onChangeDate={this.onChangeDate} />
           <EventTypeButtonGroup eventType={activeEvent.eventType} onChangeEventType={this.onChangeEventType} />
           <TagsInput tags={activeEvent.tags} onChangeTags={this.onChangeTags} />
-          <EventLinks links={activeEvent.links} onChangeLinks={this.onChangeLinks} />
+          <EventLinks activeEvent={activeEvent} />
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>
 

@@ -1,5 +1,6 @@
 'use strict'
 
+import app from 'ampersand-app'
 import React from 'react'
 import { Input, Row, Col, Tooltip, OverlayTrigger, Glyphicon } from 'react-bootstrap'
 
@@ -7,49 +8,55 @@ export default React.createClass({
   displayName: 'EventLink',
 
   propTypes: {
-    index: React.PropTypes.number,
+    activeEvent: React.PropTypes.object,
     link: React.PropTypes.object,
-    focus: React.PropTypes.bool,
-    onChangeLink: React.PropTypes.func,
-    onRemoveLink: React.PropTypes.func
+    focus: React.PropTypes.bool
   },
 
   getInitialState () {
-    const { link } = this.props
-    return { link }
+    return {
+      link: this.props.link
+    }
   },
 
-  onChangeUrl (event) {
+  onChangeUrl (e) {
     let { link } = this.state
-    link.url = event.target.value
+    link.url = e.target.value
     this.setState({ link })
   },
 
   onBlurUrl (event) {
-    const { index, onChangeLink } = this.props
-    let { link } = this.state
-    link.url = event.target.value
-    // this.setState({ link })
-    onChangeLink(index, link)
+    const { link: oldLink } = this.state
+    let newLink = Object.assign({}, oldLink)
+    newLink.url = event.target.value
+    this.onChangeLink(oldLink, newLink)
   },
 
-  onChangeLabel (event) {
+  onChangeLabel (e) {
     let { link } = this.state
-    link.label = event.target.value
+    link.label = e.target.value
     this.setState({ link })
   },
 
-  onBlurLabel (event) {
-    const { index, onChangeLink } = this.props
-    let { link } = this.state
-    link.label = event.target.value
-    // this.setState({ link })
-    onChangeLink(index, link)
+  onBlurLabel (e) {
+    const { link: oldLink } = this.state
+    let newLink = Object.assign({}, oldLink)
+    newLink.label = e.target.value
+    this.onChangeLink(oldLink, newLink)
+  },
+
+  onChangeLink (oldLink, newLink) {
+    let { activeEvent } = this.props
+    const index = activeEvent.links.findIndex((link) => link.label === oldLink.label && link.url === oldLink.url)
+    activeEvent.links[index] = newLink
+    app.Actions.saveEvent(activeEvent)
   },
 
   onRemoveLink () {
-    const { index, onRemoveLink } = this.props
-    onRemoveLink(index)
+    let { activeEvent } = this.props
+    const { link: linkToRemove } = this.state
+    activeEvent.links = activeEvent.links.filter((link) => link.label !== linkToRemove.label && link.url !== linkToRemove.url)
+    app.Actions.saveEvent(activeEvent)
   },
 
   removeLinkTooltip () {
@@ -57,14 +64,13 @@ export default React.createClass({
   },
 
   removeLinkGlyph () {
-    const { index } = this.props
     const glyphStyle = {
       fontSize: 1.5 + 'em',
       color: 'red'
     }
     return (
       <OverlayTrigger placement='right' overlay={this.removeLinkTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveLink.bind(this, index)} />
+        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveLink} />
       </OverlayTrigger>
     )
   },
@@ -73,6 +79,7 @@ export default React.createClass({
     const { focus } = this.props
     const { link } = this.state
     const focusLabel = focus && !link.label
+
     return (
       <Row>
         <Col sm={3} lg={2}>

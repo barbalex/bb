@@ -4,10 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
 import moment from 'moment'
-import EventTypeButtonGroup from './eventTypeButtonGroup.js'
 import DateInput from './dateInput.js'
-import TagsInput from './tagsInput.js'
-import EventLinks from './eventLinks.js'
 
 export default React.createClass({
   displayName: 'NewEvent',
@@ -16,9 +13,6 @@ export default React.createClass({
     onCloseNewEvent: React.PropTypes.func,
     title: React.PropTypes.string,
     date: React.PropTypes.number,
-    links: React.PropTypes.array,
-    eventType: React.PropTypes.string,
-    tags: React.PropTypes.array,
     error: React.PropTypes.string
   },
 
@@ -26,9 +20,6 @@ export default React.createClass({
     return {
       title: null,
       date: moment(),
-      links: [],
-      eventType: null,
-      tags: [],
       error: null
     }
   },
@@ -43,25 +34,11 @@ export default React.createClass({
     this.setState({ date })
   },
 
-  onChangeLinks (links) {
-    // remove empty links
-    links = links.filter((link) => link.url && link.label)
-    this.setState({ links })
-  },
-
-  onChangeEventType (eventType) {
-    this.setState({ eventType })
-  },
-
-  onChangeTags (tags) {
-    this.setState({ tags })
-  },
-
   createNewEvent () {
     const { onCloseNewEvent } = this.props
-    const { title, date, links, eventType, tags } = this.state
+    const { title, date } = this.state
     if (title && date) {
-      app.Actions.newEvent(date, title, links, eventType, tags)
+      app.Actions.newEvent(date, title, [], 'migration', [])
       onCloseNewEvent()
     } else {
       let error = 'Please choose a date'
@@ -80,7 +57,7 @@ export default React.createClass({
   },
 
   render () {
-    const { title, date, links, eventType, tags, error } = this.state
+    const { title, date, error } = this.state
     const alertStyle = {
       marginTop: 10,
       marginBottom: 10
@@ -94,9 +71,6 @@ export default React.createClass({
         <Modal.Body>
           <Input type='text' label='Title' value={title} onChange={this.onChangeTitle} autoFocus />
           <DateInput date={date} onChangeDate={this.onChangeDate} />
-          <EventTypeButtonGroup eventType={eventType} onChangeEventType={this.onChangeEventType} />
-          <TagsInput tags={tags} onChangeTags={this.onChangeTags} />
-          <EventLinks links={links} onChangeLinks={this.onChangeLinks} />
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>
 
