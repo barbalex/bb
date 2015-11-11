@@ -48,7 +48,7 @@ export default React.createClass({
   },
 
   dateRows () {
-    const { events, email, activeEvent } = this.props
+    const { events, email } = this.props
     const dateRowObjects = getDaterowObjectsSinceOldestEvent(events)
     let dateRows = []
     dateRowObjects.forEach((dateRowObject, index) => {
