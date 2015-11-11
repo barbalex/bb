@@ -78,7 +78,7 @@ export default React.createClass({
     })
 
     return (
-      <div>
+      <li>
         <p>
           {event.title} <span>{links}</span>
           {showEditingGlyphons ?
@@ -90,7 +90,7 @@ export default React.createClass({
             : null
           }
         </p>
-      </div>
+      </li>
     )
   }
 })

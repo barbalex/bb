@@ -23,8 +23,8 @@ export default React.createClass({
     return (
       <tr>
         <td className='day'>{day}</td>
-        <td className='migration'>{migrationEvents}</td>
-        <td className='politics'>{politicsEvents}</td>
+        <td className='migration'><ul>{migrationEvents}</ul></td>
+        <td className='politics'><ul>{politicsEvents}</ul></td>
       </tr>
     )
   }
