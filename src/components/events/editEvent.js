@@ -94,8 +94,8 @@ export default React.createClass({
       marginBottom: 10
     }
     return (
-      <Modal show={true} onHide={this.close} bsSize='large'>
-        <Modal.Header>
+      <Modal show={true} onHide={this.close} bsSize='large' dialogClassName='editEvent'>
+        <Modal.Header closeButton={true}>
           <Modal.Title>Edit event</Modal.Title>
         </Modal.Header>
 
