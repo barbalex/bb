@@ -35,11 +35,9 @@ export default React.createClass({
   },
 
   createNewEvent () {
-    const { onCloseNewEvent } = this.props
     const { title, date } = this.state
     if (title && date) {
       app.Actions.newEvent(date, title, [], 'migration', [])
-      onCloseNewEvent()
     } else {
       let error = 'Please choose a date'
       if (!title) error = 'Please add a title'

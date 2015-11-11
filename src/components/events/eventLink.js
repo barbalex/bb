@@ -25,11 +25,12 @@ export default React.createClass({
     this.setState({ link })
   },
 
-  onBlurUrl (event) {
-    const { link: oldLink } = this.state
-    let newLink = Object.assign({}, oldLink)
-    newLink.url = event.target.value
-    this.onChangeLink(oldLink, newLink)
+  onBlurUrl () {
+    let { activeEvent } = this.props
+    const { link: newLink } = this.state
+    const index = activeEvent.links.findIndex((link) => link.label === newLink.label)
+    activeEvent.links[index] = newLink
+    app.Actions.saveEvent(activeEvent)
   },
 
   onChangeLabel (e) {
@@ -38,16 +39,10 @@ export default React.createClass({
     this.setState({ link })
   },
 
-  onBlurLabel (e) {
-    const { link: oldLink } = this.state
-    let newLink = Object.assign({}, oldLink)
-    newLink.label = e.target.value
-    this.onChangeLink(oldLink, newLink)
-  },
-
-  onChangeLink (oldLink, newLink) {
+  onBlurLabel () {
     let { activeEvent } = this.props
-    const index = activeEvent.links.findIndex((link) => link.label === oldLink.label && link.url === oldLink.url)
+    const { link: newLink } = this.state
+    const index = activeEvent.links.findIndex((link) => link.Url === newLink.url)
     activeEvent.links[index] = newLink
     app.Actions.saveEvent(activeEvent)
   },

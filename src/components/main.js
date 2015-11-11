@@ -116,7 +116,10 @@ export default React.createClass({
   },
 
   onEventsStoreChange (events, activeEvent) {
-    this.setState({ events, activeEvent })
+    let state = { events, activeEvent }
+    // when new event was saved, hide component
+    if (activeEvent) Object.assign(state, { showNewEvent: false })
+    this.setState(state)
   },
 
   onSourcesStoreChange (sources, activeSource) {
