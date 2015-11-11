@@ -49,7 +49,7 @@ export default React.createClass({
   editEventGlyph () {
     const glyphStyle = {
       fontSize: 0.9 + 'em',
-      paddingLeft: 5,
+      paddingLeft: 8,
       cursor: 'pointer'
     }
     return (
