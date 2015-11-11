@@ -64,12 +64,6 @@ export default React.createClass({
     app.Actions.saveEvent(activeEvent)
   },
 
-  onChangeTags (tags) {
-    let { activeEvent } = this.props
-    activeEvent.tags = tags
-    app.Actions.saveEvent(activeEvent)
-  },
-
   close () {
     app.Actions.getEvent(null)
   },
@@ -95,7 +89,7 @@ export default React.createClass({
           <Input type='text' label='Title' value={activeEvent.title} onChange={this.onChangeTitle} onBlur={this.onBlurTitle} />
           <DateInput date={date} onChangeDate={this.onChangeDate} />
           <EventTypeButtonGroup eventType={activeEvent.eventType} onChangeEventType={this.onChangeEventType} />
-          <TagsInput tags={activeEvent.tags} onChangeTags={this.onChangeTags} />
+          <TagsInput activeEvent={activeEvent} />
           <EventLinks activeEvent={activeEvent} />
           {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
         </Modal.Body>

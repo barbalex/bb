@@ -1,5 +1,6 @@
 'use strict'
 
+import app from 'ampersand-app'
 import React from 'react'
 import { Tokenizer } from 'react-typeahead'
 import allTags from './tags.js'
@@ -8,22 +9,19 @@ export default React.createClass({
   displayName: 'EventTags',
 
   propTypes: {
-    tags: React.PropTypes.array,
-    onChangeTags: React.PropTypes.func
+    activeEvent: React.PropTypes.object
   },
 
   onTokenAdd (tag) {
-    const { onChangeTags } = this.props
-    let { tags } = this.props
-    tags.push(tag)
-    onChangeTags(tags)
+    let { activeEvent } = this.props
+    activeEvent.tags.push(tag)
+    app.Actions.saveEvent(activeEvent)
   },
 
   onTokenRemove (tag) {
-    const { onChangeTags } = this.props
-    let { tags } = this.props
-    tags = tags.filter((_tag) => _tag !== tag)
-    onChangeTags(tags)
+    let { activeEvent } = this.props
+    activeEvent.tags = activeEvent.tags.filter((_tag) => _tag !== tag)
+    app.Actions.saveEvent(activeEvent)
   },
 
   onFocus () {
@@ -36,7 +34,7 @@ export default React.createClass({
   },
 
   render () {
-    const { tags } = this.props
+    const { activeEvent } = this.props
     const labelStyle = {
       fontWeight: 'bold',
       marginBottom: 5
@@ -48,13 +46,14 @@ export default React.createClass({
       results: 'list-group'
     }
     const allTagOptions = allTags()
-    const options = allTagOptions.filter((option) => !tags.includes(option))
+    const options = allTagOptions.filter((option) => !activeEvent.tags.includes(option))
     return (
       <div style={{marginBottom: 20}}>
         <div style={labelStyle}>Tags</div>
         <Tokenizer
           options={options}
-          value={tags}
+          defaultSelected={activeEvent.tags}
+          value={activeEvent.tags}
           // defaultValue='*'
           customClasses={customClasses}
           onTokenAdd={this.onTokenAdd}
