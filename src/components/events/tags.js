@@ -4,7 +4,7 @@ export default () => [
   'weather',
   'arrivals',
   'victims',
-  'numbers',
+  'statistics',
   'EU',
   'UN',
   'Italy',

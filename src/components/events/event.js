@@ -77,9 +77,12 @@ export default React.createClass({
       )
     })
 
+    const classNames = event.tags && event.tags.length > 0 ? event.tags.map((tag) => `event-${tag}`) : []
+    if (classNames.length > 0) console.log('event.js, render, classNames of event ' + event.title + ':', classNames)
+
     return (
-      <li>
-        <p>
+      <li className={classNames}>
+        <p className={classNames}>
           {event.title} <span>{links}</span>
           {showEditingGlyphons ?
             this.editEventGlyph()
