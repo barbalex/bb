@@ -1,5 +1,6 @@
 // @import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 @import '../../node_modules/react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css'
+@import '../../node_modules/gemini-scrollbar/gemini-scrollbar.css'
 
 body
   margin-top 52px
@@ -232,8 +233,10 @@ body .navbar
   background-image url('../../images/oceanDark.jpg')
   color #EDF4F8
   font-weight bold
+  // border-radius 3px
 .events .monthRow td
   padding-left 10px
+  // border-radius 3px
   
 .events .day
   width 60px
@@ -251,18 +254,15 @@ body .navbar
 // fix table header
 .events
   position: relative
-#eventsTableContainer
+#eventsTableBody
   overflow auto
   height calc(100vh - 79px)
   margin-top 30px
   border-top 1px solid #ECECEC
   border-bottom 1px solid #ECECEC
-#eventsTableContainer thead
+#eventsTableHead
   position absolute
   top 40px
-// correct for slight offsets
-.events th.politics
-  padding-left 0
 // make sure glyphicon and link text are on same line
 .events td a
   white-space nowrap

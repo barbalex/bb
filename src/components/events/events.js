@@ -4,6 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import { Table } from 'react-bootstrap'
 import moment from 'moment'
+import GeminiScrollbar from 'react-gemini-scrollbar'
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
 import NewEvent from './newEvent.js'
@@ -68,25 +69,32 @@ export default React.createClass({
     return (
       <div className='events'>
         <h1>Events</h1>
-        <div id='eventsTableContainer'>
+        <Table id='eventsTableHead' condensed hover>
+          <colgroup>
+            <col className='day' />
+            <col className='migration' />
+            <col className='politics' />
+          </colgroup>
+          <thead>
+            <tr>
+              <th className='day'>Date</th>
+              <th className='migration'>Migration</th>
+              <th className='politics'>Politics</th>
+            </tr>
+          </thead>
+        </Table>
+        <GeminiScrollbar id='eventsTableBody' autoshow>
           <Table condensed hover>
             <colgroup>
               <col className='day' />
               <col className='migration' />
               <col className='politics' />
             </colgroup>
-            <thead>
-              <tr>
-                <th className='day'>Date</th>
-                <th className='migration'>Migration</th>
-                <th className='politics'>Politics</th>
-              </tr>
-            </thead>
             <tbody>
               {this.dateRows()}
             </tbody>
           </Table>
-        </div>
+        </GeminiScrollbar>
         {activeEvent ? <EditEvent activeEvent={activeEvent} onChangeActiveEvent={onChangeActiveEvent} /> : null}
         {showNewEvent ? <NewEvent onCloseNewEvent={onCloseNewEvent} /> : null}
         {docToRemove ? <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} /> : null}
