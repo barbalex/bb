@@ -6,8 +6,7 @@ import getDateFromEventId from './getDateFromEventId.js'
 export default (events) => {
   const oldestEvent = events[events.length - 1]
   if (oldestEvent) {
-    const oldestDateObject = getDateFromEventId(oldestEvent._id)
-    const oldestDate = moment(`${oldestDateObject.year}.${oldestDateObject.month}.${oldestDateObject.day}`, 'YYYY.MM.DD')
+    const oldestDate = getDateFromEventId(oldestEvent._id)
     let daterowObjects = []
     let date = moment()
     while (date >= oldestDate) {

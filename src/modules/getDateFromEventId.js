@@ -1,10 +1,13 @@
 'use strict'
 
+import moment from 'moment'
+
 export default (id) => {
   const idArray = id.split('_')
-  return {
-    year: idArray[1],
-    month: idArray[2],
-    day: idArray[3]
-  }
+  const year = idArray[1]
+  const month = idArray[2]
+  const day = idArray[3]
+  const dateString = `${day}.${month}.${year}`
+
+  return moment(dateString, 'DD.MM.YYYY')
 }

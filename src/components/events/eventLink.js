@@ -19,18 +19,30 @@ export default React.createClass({
   },
 
   onChangeUrl (event) {
-    const { index, onChangeLink } = this.props
     let { link } = this.state
     link.url = event.target.value
     this.setState({ link })
+  },
+
+  onBlurUrl (event) {
+    const { index, onChangeLink } = this.props
+    let { link } = this.state
+    link.url = event.target.value
+    // this.setState({ link })
     onChangeLink(index, link)
   },
 
   onChangeLabel (event) {
-    const { index, onChangeLink } = this.props
     let { link } = this.state
     link.label = event.target.value
     this.setState({ link })
+  },
+
+  onBlurLabel (event) {
+    const { index, onChangeLink } = this.props
+    let { link } = this.state
+    link.label = event.target.value
+    // this.setState({ link })
     onChangeLink(index, link)
   },
 
@@ -60,10 +72,10 @@ export default React.createClass({
     return (
       <Row>
         <Col sm={3} lg={2}>
-          <Input type='text' value={link.label} bsSize='small' onChange={this.onChangeLabel} />
+          <Input type='text' value={link.label} bsSize='small' onChange={this.onChangeLabel} onBlur={this.onBlurLabel} />
         </Col>
         <Col sm={8} lg={9}>
-          <Input type='url' value={link.url} bsSize='small' onChange={this.onChangeUrl} />
+          <Input type='url' value={link.url} bsSize='small' onChange={this.onChangeUrl} onBlur={this.onBlurUrl} />
         </Col>
         <Col sm={1} lg={1}>
           {this.removeLinkGlyph()}

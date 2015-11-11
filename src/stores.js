@@ -233,35 +233,28 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewEvent (date, title, links, eventType, tags) {
+    onNewEvent (date, title, links, eventType, tags, setActiveEvent) {
+      // setActiveEvent: onReplaceEvent needs activeEvent to be set to the new one after creating it
       const year = moment(date).year()
       const month = moment(date).format('MM')
       const day = moment(date).format('DD')
       const _id = `events_${year}_${month}_${day}_${slug(title)}`
       const type = 'events'
       const event = { _id, type, title, links, eventType, tags }
+      if (setActiveEvent) this.activeEventId = _id
       this.onSaveEvent(event)
     },
 
     onGetEvent (id) {
       if (!id) {
-        app.router.navigate('/events')
         this.activeEventId = null
         this.triggerStore()
       } else {
         if (this.events.length === 0) {
           // on first load events is empty
           // need to wait until onGetEvents fires
-          this.getEventsCallback = () => {
-            const event = this.events.find((event) => event._id === id)
-            const path = getPathFromDoc(event)
-            app.router.navigate('/' + path)
-            this.activeEventId = id
-          }
+          this.getEventsCallback = () => this.activeEventId = id
         } else {
-          const event = this.events.find((event) => event._id === id)
-          const path = getPathFromDoc(event)
-          app.router.navigate('/' + path)
           this.activeEventId = id
           this.triggerStore()
         }
@@ -324,6 +317,14 @@ export default (Actions) => {
           this.revertCache(oldEvents, oldActiveEventId)
           app.Actions.showError({title: 'Error removing event:', msg: error})
         })
+    },
+
+    onReplaceEvent (eventToReplace, date, title, links, eventType, tags) {
+      /**
+       * if an event's title or date are changed, it has to be replaced with a new one
+       */
+      this.onNewEvent(date, title, links, eventType, tags, 'setActiveEvent')
+      this.onRemoveEvent(eventToReplace)
     },
 
     triggerStore () {

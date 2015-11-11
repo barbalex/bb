@@ -1,5 +1,6 @@
 'use strict'
 
+import app from 'ampersand-app'
 import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
@@ -17,8 +18,17 @@ export default React.createClass({
     onRemoveEvent(doc)
   },
 
+  onEditEvent () {
+    const { event } = this.props
+    app.Actions.getEvent(event._id)
+  },
+
   removeEventTooltip () {
     return <Tooltip id='removeThisEvent'>remove</Tooltip>
+  },
+
+  editEventTooltip () {
+    return <Tooltip id='editThisEvent'>edit</Tooltip>
   },
 
   removeEventGlyph () {
@@ -26,12 +36,25 @@ export default React.createClass({
     const glyphStyle = {
       fontSize: 0.9 + 'em',
       color: 'red',
-      paddingLeft: 5,
-      marginBottom: -3 + 'px'
+      paddingLeft: 8,
+      cursor: 'pointer'
     }
     return (
       <OverlayTrigger placement='top' overlay={this.removeEventTooltip()}>
         <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveEvent.bind(this, event)} />
+      </OverlayTrigger>
+    )
+  },
+
+  editEventGlyph () {
+    const glyphStyle = {
+      fontSize: 0.9 + 'em',
+      paddingLeft: 5,
+      cursor: 'pointer'
+    }
+    return (
+      <OverlayTrigger placement='top' overlay={this.editEventTooltip()}>
+        <Glyphicon glyph='pencil' style={glyphStyle} onClick={this.onEditEvent} />
       </OverlayTrigger>
     )
   },
@@ -58,6 +81,10 @@ export default React.createClass({
       <div>
         <p>
           {event.title} <span>{links}</span>
+          {showEditingGlyphons ?
+            this.editEventGlyph()
+            : null
+          }
           {showEditingGlyphons ?
             this.removeEventGlyph()
             : null

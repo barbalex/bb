@@ -234,6 +234,10 @@ export default React.createClass({
     app.Actions.saveActor(activeActor)
   },
 
+  onChangeActiveEvent (activeEvent) {
+    this.setState({ activeEvent })
+  },
+
   render () {
     const { login } = this.props
     const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, sources, activeSource, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
@@ -296,7 +300,9 @@ export default React.createClass({
                 events={events}
                 editing={editing}
                 email={email}
+                activeEvent={activeEvent}
                 showNewEvent={showNewEvent}
+                onChangeActiveEvent={this.onChangeActiveEvent}
                 onCloseNewEvent={this.onCloseNewEvent} />
               : null
             }

@@ -13,6 +13,7 @@ export default () => {
     saveEvent: {},
     newEvent: {},
     removeEvent: {},
+    replaceEvent: {},
     getMonthlyEvents: {},
     getMonthlyEvent: {},
     saveMonthlyEvent: {},

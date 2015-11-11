@@ -7,6 +7,7 @@ import moment from 'moment'
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
 import NewEvent from './newEvent.js'
+import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
 import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
 
@@ -20,6 +21,7 @@ export default React.createClass({
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onCloseNewEvent: React.PropTypes.func,
+    onChangeActiveEvent: React.PropTypes.func,
     showNewEvent: React.PropTypes.bool,
     docToRemove: React.PropTypes.object
   },
@@ -35,15 +37,6 @@ export default React.createClass({
     app.Actions.getEvents()
   },
 
-  onClickEvent (id, e) {
-    const { activeEvent } = this.props
-    // prevent higher level panels from reacting
-    e.preventDefault()
-    e.stopPropagation()
-    const idToGet = (!activeEvent || activeEvent._id !== id) ? id : null
-    app.Actions.getEvent(idToGet)
-  },
-
   onRemoveEvent (docToRemove) {
     this.setState({ docToRemove })
   },
@@ -55,7 +48,7 @@ export default React.createClass({
   },
 
   dateRows () {
-    const { events, email } = this.props
+    const { events, email, activeEvent } = this.props
     const dateRowObjects = getDaterowObjectsSinceOldestEvent(events)
     let dateRows = []
     dateRowObjects.forEach((dateRowObject, index) => {
@@ -69,7 +62,7 @@ export default React.createClass({
   },
 
   render () {
-    const { showNewEvent, onCloseNewEvent } = this.props
+    const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove } = this.state
 
     return (
@@ -94,6 +87,7 @@ export default React.createClass({
             </tbody>
           </Table>
         </div>
+        {activeEvent ? <EditEvent activeEvent={activeEvent} onChangeActiveEvent={onChangeActiveEvent} /> : null}
         {showNewEvent ? <NewEvent onCloseNewEvent={onCloseNewEvent} /> : null}
         {docToRemove ? <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} /> : null}
       </div>
