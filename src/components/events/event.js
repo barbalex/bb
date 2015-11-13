@@ -62,6 +62,7 @@ export default React.createClass({
   render () {
     const { event, email } = this.props
     const showEditingGlyphons = !!email
+    const classNames = event.tags && event.tags.length > 0 ? event.tags.map((tag) => `event-${tag}`) : []
     const linkGlyphStyle = {
       fontSize: 0.7 + 'em',
       paddingRight: 3,
@@ -76,9 +77,6 @@ export default React.createClass({
         <span key={key} style={outerSpanStyle}>{key > 0 ? ' ' : ''}<a href={link.url} target='_blank'><Glyphicon glyph='new-window' style={linkGlyphStyle} />{link.label}</a></span>
       )
     })
-
-    const classNames = event.tags && event.tags.length > 0 ? event.tags.map((tag) => `event-${tag}`) : []
-    if (classNames.length > 0) console.log('event.js, render, classNames of event ' + event.title + ':', classNames)
 
     return (
       <li className={classNames}>
