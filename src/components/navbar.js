@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Navbar, NavBrand, CollapsibleNav, NavItem, Nav, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { Navbar, NavItem, Nav, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import _ from 'lodash'
 import AffixWrapper from './affixWrapper.js'
 
@@ -113,14 +113,17 @@ export default React.createClass({
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
-          <Navbar inverse toggleNavKey={0} navExpanded={navExpanded} onToggle={this.onToggleNav}>
-            <NavBrand
-              onClick={this.onClickPage.bind(this, 'pages_home')}
-            >
-              Home
-            </NavBrand>
-            <CollapsibleNav eventKey={0}>
-              <Nav navbar>
+          <Navbar inverse expanded={navExpanded} onToggle={this.onToggleNav}>
+            <Navbar.Header>
+              <Navbar.Brand
+                onClick={this.onClickPage.bind(this, 'pages_home')}
+              >
+                Home
+              </Navbar.Brand>
+              <Navbar.Toggle />
+            </Navbar.Header>
+            <Navbar.Collapse eventKey={0}>
+              <Nav>
                 <NavItem
                   eventKey={0}
                   active={id === 'pages_events'}
@@ -172,7 +175,7 @@ export default React.createClass({
                 </NavItem>
               </Nav>
               {showNavbarRight ?
-                <Nav navbar right>
+                <Nav navbar pullRight>
                   {showEdit ?
                     <OverlayTrigger placement='bottom' overlay={this.editTooltip()}>
                       <NavItem
@@ -261,7 +264,7 @@ export default React.createClass({
                 </Nav>
                 : null
               }
-            </CollapsibleNav>
+            </Navbar.Collapse>
           </Navbar>
         </AffixWrapper>
       </div>
