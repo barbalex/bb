@@ -1,7 +1,5 @@
 'use strict'
 
-// <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
-
 module.exports = () => {
   const isDev = process.env.NODE_ENV !== 'production'
   const jsPath = isDev ? '/app.js' : '/bb.1.0.0.js'
