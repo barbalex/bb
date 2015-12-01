@@ -65,10 +65,13 @@ export default React.createClass({
   render () {
     const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove } = this.state
+    const introText = `In 2015, Europe witnessed a tremendous increase in the arrival of migrants and refugees. Most of them had to cross the blue borders of the Eastern and Central Mediterranean, often under difficult circumstances. As is to be expected in the age of the Internet, interested observers of these movements are confronted with an enormous amount of information. This is where the present website comes in. Its main purpose is to present an overview by focusing on two topics: on actual blue border events and on the surrounding politics. And, to simplify matters, the information is arranged in chronological order.`
 
     return (
       <div className='events'>
-        <h1>Events</h1>
+        <div className='eventsIntro'>
+          <p>{introText}</p>
+        </div>
         <Table id='eventsTableHead' condensed hover>
           <colgroup>
             <col className='day' />
@@ -78,8 +81,8 @@ export default React.createClass({
           <thead>
             <tr>
               <th className='day'>Date</th>
-              <th className='migration'>Migration</th>
-              <th className='politics'>Politics</th>
+              <th className='migration'>Migration Events</th>
+              <th className='politics'>Political Events</th>
             </tr>
           </thead>
         </Table>

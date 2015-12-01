@@ -116,9 +116,9 @@ export default React.createClass({
           <Navbar inverse expanded={navExpanded} onToggle={this.onToggleNav}>
             <Navbar.Header>
               <Navbar.Brand
-                onClick={this.onClickPage.bind(this, 'pages_home')}
+                onClick={this.onClickPage.bind(this, 'pages_events')}
               >
-                Home
+                Events
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
@@ -126,48 +126,41 @@ export default React.createClass({
               <Nav>
                 <NavItem
                   eventKey={0}
-                  active={id === 'pages_events'}
-                  onClick={this.onClickPage.bind(this, 'pages_events')}
-                >
-                  Events
-                </NavItem>
-                <NavItem
-                  eventKey={1}
-                  active={id === 'pages_monthlyEvents'}
-                  onClick={this.onClickPage.bind(this, 'pages_monthlyEvents')}
-                >
-                  Archive
-                </NavItem>
-                <NavItem
-                  eventKey={2}
                   active={id === 'pages_commentaries'}
                   onClick={this.onClickPage.bind(this, 'pages_commentaries')}
                 >
                   Commentaries
                 </NavItem>
                 <NavItem
-                  eventKey={3}
+                  eventKey={1}
                   active={id === 'pages_sources'}
                   onClick={this.onClickPage.bind(this, 'pages_sources')}
                 >
                   Sources
                 </NavItem>
                 <NavItem
-                  eventKey={4}
+                  eventKey={2}
                   active={id === 'pages_actors'}
                   onClick={this.onClickPage.bind(this, 'pages_actors')}
                 >
                   Actors
                 </NavItem>
                 <NavItem
-                  eventKey={5}
+                  eventKey={3}
                   active={id === 'pages_publications'}
                   onClick={this.onClickPage.bind(this, 'pages_publications')}
                 >
                   Publications
                 </NavItem>
                 <NavItem
-                  eventKey={6}
+                  eventKey={4}
+                  active={id === 'pages_monthlyEvents'}
+                  onClick={this.onClickPage.bind(this, 'pages_monthlyEvents')}
+                >
+                  Archive
+                </NavItem>
+                <NavItem
+                  eventKey={5}
                   active={id === 'pages_aboutUs'}
                   onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
                 >
