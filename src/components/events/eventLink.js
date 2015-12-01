@@ -63,7 +63,8 @@ export default React.createClass({
   removeLinkGlyph () {
     const glyphStyle = {
       fontSize: 1.5 + 'em',
-      color: 'red'
+      color: 'red',
+      cursor: 'pointer'
     }
     return (
       <OverlayTrigger placement='right' overlay={this.removeLinkTooltip()}>
