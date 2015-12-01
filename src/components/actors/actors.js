@@ -84,7 +84,7 @@ export default React.createClass({
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
       if (node.offsetTop) {
         window.$('html, body').animate({
-            scrollTop: node.offsetTop - reduce
+          scrollTop: node.offsetTop - reduce
         }, 500)
       }
     }
@@ -178,21 +178,32 @@ export default React.createClass({
                   {doc.category}
                 </a>
               </h4>
-              {showEditingGlyphons ?
-                this.toggleDraftGlyph(doc)
+              {
+                showEditingGlyphons
+                ? this.toggleDraftGlyph(doc)
                 : null
               }
-              {showEditingGlyphons ?
-                this.removeActorGlyph(doc)
+              {
+                showEditingGlyphons
+                ? this.removeActorGlyph(doc)
                 : null
               }
             </div>
-            {isActiveActor ?
-              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickActorCollapse}>
-                <div className='panel-body' style={panelBodyStyle}>
-                  <Actor activeActor={activeActor} editing={editing} onSaveActorArticle={onSaveActorArticle} />
+            {
+              isActiveActor
+              ? <div
+                  id={'#collapse' + index}
+                  className='panel-collapse collapse in'
+                  role='tabpanel'
+                  aria-labelledby={'heading' + index}
+                  onClick={this.onClickActorCollapse}>
+                  <div className='panel-body' style={panelBodyStyle}>
+                    <Actor
+                      activeActor={activeActor}
+                      editing={editing}
+                      onSaveActorArticle={onSaveActorArticle} />
+                  </div>
                 </div>
-              </div>
               : null
             }
           </div>

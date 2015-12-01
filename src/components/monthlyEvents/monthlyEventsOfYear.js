@@ -76,7 +76,7 @@ export default React.createClass({
       if (more) reduce = reduce - 5
       if (node.offsetTop) {
         window.$('html, body').animate({
-            scrollTop: node.offsetTop - reduce
+          scrollTop: node.offsetTop - reduce
         }, 500)
       }
     }
@@ -174,32 +174,35 @@ export default React.createClass({
                 {month}
               </a>
             </h4>
-            {showEditingGlyphons ?
-              this.toggleDraftGlyph(doc)
+            {
+              showEditingGlyphons
+              ? this.toggleDraftGlyph(doc)
               : null
             }
-            {showEditingGlyphons ?
-              this.removeMonthlyEventGlyph(doc)
+            {
+              showEditingGlyphons
+              ? this.removeMonthlyEventGlyph(doc)
               : null
             }
           </div>
-          {isActiveMonthlyEvent ?
-            <div
-              id={'#collapse' + dIndex}
-              className='panel-collapse collapse in'
-              role='tabpanel'
-              aria-labelledby={'heading' + dIndex}
-              onClick={this.onClickEventCollapse}>
-              <div className='panel-body' style={panelBodyStyle}>
-                <MonthlyEvent
-                  activeMonthlyEvent={activeMonthlyEvent}
-                  year={year}
-                  month={month}
-                  editing={editing}
-                  onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
-                />
+          {
+            isActiveMonthlyEvent
+            ? <div
+                id={'#collapse' + dIndex}
+                className='panel-collapse collapse in'
+                role='tabpanel'
+                aria-labelledby={'heading' + dIndex}
+                onClick={this.onClickEventCollapse}>
+                <div className='panel-body' style={panelBodyStyle}>
+                  <MonthlyEvent
+                    activeMonthlyEvent={activeMonthlyEvent}
+                    year={year}
+                    month={month}
+                    editing={editing}
+                    onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
+                  />
+                </div>
               </div>
-            </div>
             : null
           }
         </div>

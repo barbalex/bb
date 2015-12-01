@@ -102,7 +102,7 @@ export default React.createClass({
   },
 
   render () {
-    const { invalidEmail, invalidPassword, loginError, newEmail, password } = this.state
+    const { invalidEmail, invalidPassword, loginError } = this.state
     const emailInputBsStyle = invalidEmail ? 'error' : null
     const passwordInputBsStyle = invalidPassword ? 'error' : null
     const styleAlert = {

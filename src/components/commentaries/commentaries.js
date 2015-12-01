@@ -81,7 +81,7 @@ export default React.createClass({
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
       if (node.offsetTop) {
         window.$('html, body').animate({
-            scrollTop: node.offsetTop - reduce
+          scrollTop: node.offsetTop - reduce
         }, 500)
       }
     }
@@ -177,21 +177,32 @@ export default React.createClass({
                   {doc.title}
                 </a>
               </h4>
-              {showEditingGlyphons ?
-                this.toggleDraftGlyph(doc)
+              {
+                showEditingGlyphons
+                ? this.toggleDraftGlyph(doc)
                 : null
               }
-              {showEditingGlyphons ?
-                this.removeCommentaryGlyph(doc)
+              {
+                showEditingGlyphons
+                ? this.removeCommentaryGlyph(doc)
                 : null
               }
             </div>
-            {isActiveCommentary ?
-              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickCommentaryCollapse}>
-                <div className='panel-body' style={panelBodyStyle}>
-                  <Commentary activeCommentary={activeCommentary} editing={editing} onSaveCommentaryArticle={onSaveCommentaryArticle} />
+            {
+              isActiveCommentary
+              ? <div
+                  id={'#collapse' + index}
+                  className='panel-collapse collapse in'
+                  role='tabpanel'
+                  aria-labelledby={'heading' + index}
+                  onClick={this.onClickCommentaryCollapse}>
+                  <div className='panel-body' style={panelBodyStyle}>
+                    <Commentary
+                      activeCommentary={activeCommentary}
+                      editing={editing}
+                      onSaveCommentaryArticle={onSaveCommentaryArticle} />
+                  </div>
                 </div>
-              </div>
               : null
             }
           </div>

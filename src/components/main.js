@@ -290,83 +290,100 @@ export default React.createClass({
             onClickNewPublication={this.onClickNewPublication} />
           <div className='container'>
             <Errors errors={errors} />
-            {isSimplePage ?
-              <Page
-                activePage={activePage}
-                editing={editing}
-                onSavePageArticle={this.onSavePageArticle}
-                onSavePage={this.onSavePage} />
+            {
+              isSimplePage
+              ? <Page
+                  activePage={activePage}
+                  editing={editing}
+                  onSavePageArticle={this.onSavePageArticle}
+                  onSavePage={this.onSavePage} />
               : null
             }
-            {showEventsPage ?
-              <Events
-                events={events}
-                editing={editing}
-                email={email}
-                activeEvent={activeEvent}
-                showNewEvent={showNewEvent}
-                onChangeActiveEvent={this.onChangeActiveEvent}
-                onCloseNewEvent={this.onCloseNewEvent} />
+            {
+              showEventsPage
+              ? <Events
+                  events={events}
+                  editing={editing}
+                  email={email}
+                  activeEvent={activeEvent}
+                  showNewEvent={showNewEvent}
+                  onChangeActiveEvent={this.onChangeActiveEvent}
+                  onCloseNewEvent={this.onCloseNewEvent} />
               : null
             }
-            {showCommentaryPage ?
-              <Commentaries
-                commentaries={commentaries}
-                activeCommentary={activeCommentary}
-                editing={editing}
-                email={email}
-                onSaveCommentaryArticle={this.onSaveCommentaryArticle}
-                showNewCommentary={showNewCommentary}
-                onCloseNewCommentary={this.onCloseNewCommentary} />
+            {
+              showCommentaryPage
+              ? <Commentaries
+                  commentaries={commentaries}
+                  activeCommentary={activeCommentary}
+                  editing={editing}
+                  email={email}
+                  onSaveCommentaryArticle={this.onSaveCommentaryArticle}
+                  showNewCommentary={showNewCommentary}
+                  onCloseNewCommentary={this.onCloseNewCommentary} />
               : null
             }
-            {showSourcePage ?
-              <Sources
-                sources={sources}
-                activeSource={activeSource}
-                editing={editing}
-                email={email}
-                onSaveSourceArticle={this.onSaveSourceArticle}
-                showNewSource={showNewSource}
-                onCloseNewSource={this.onCloseNewSource} />
+            {
+              showSourcePage
+              ? <Sources
+                  sources={sources}
+                  activeSource={activeSource}
+                  editing={editing}
+                  email={email}
+                  onSaveSourceArticle={this.onSaveSourceArticle}
+                  showNewSource={showNewSource}
+                  onCloseNewSource={this.onCloseNewSource} />
               : null
             }
-            {showActorPage ?
-              <Actors
-                actors={actors}
-                activeActor={activeActor}
-                editing={editing}
-                email={email}
-                onSaveActorArticle={this.onSaveActorArticle}
-                showNewActor={showNewActor}
-                onCloseNewActor={this.onCloseNewActor} />
+            {
+              showActorPage
+              ? <Actors
+                  actors={actors}
+                  activeActor={activeActor}
+                  editing={editing}
+                  email={email}
+                  onSaveActorArticle={this.onSaveActorArticle}
+                  showNewActor={showNewActor}
+                  onCloseNewActor={this.onCloseNewActor} />
               : null
             }
-            {showMonthlyEventsPage ?
-              <MonthlyEvents
-                monthlyEvents={monthlyEvents}
-                activeMonthlyEvent={activeMonthlyEvent}
-                editing={editing}
-                email={email}
-                onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}
-                showNewMonthlyEvent={showNewMonthlyEvent}
-                onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
+            {
+              showMonthlyEventsPage
+              ? <MonthlyEvents
+                  monthlyEvents={monthlyEvents}
+                  activeMonthlyEvent={activeMonthlyEvent}
+                  editing={editing}
+                  email={email}
+                  onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}
+                  showNewMonthlyEvent={showNewMonthlyEvent}
+                  onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
               : null
             }
-            {showPublicationsPage ?
-              <Publications
-                publications={publications}
-                activePublicationCategory={activePublicationCategory}
-                activePublication={activePublication}
-                editing={editing}
-                email={email}
-                onSavePublicationArticle={this.onSavePublicationArticle}
-                showNewPublication={showNewPublication}
-                onCloseNewPublication={this.onCloseNewPublication} />
+            {
+              showPublicationsPage
+              ? <Publications
+                  publications={publications}
+                  activePublicationCategory={activePublicationCategory}
+                  activePublication={activePublication}
+                  editing={editing}
+                  email={email}
+                  onSavePublicationArticle={this.onSavePublicationArticle}
+                  showNewPublication={showNewPublication}
+                  onCloseNewPublication={this.onCloseNewPublication} />
               : null
             }
-            {login ? <Login email={email} /> : null}
-            {showCopyright ? <p style={{marginTop: 70}}>&copy; Jürg Martin Gabriel. All Rights Reserved.</p> : null}
+            {
+              login
+              ? <Login email={email} />
+              : null
+            }
+            {
+              showCopyright
+              ? <p style={{marginTop: 70}}>
+                  &copy; Jürg Martin Gabriel. All Rights Reserved.
+                </p>
+              : null
+            }
           </div>
         </NavHelper>
       </DocumentTitle>

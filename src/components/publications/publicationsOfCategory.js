@@ -43,9 +43,6 @@ export default React.createClass({
   },
 
   onClickPublication (id, e) {
-
-    console.log('PublicationOfCategory, onClickPublication, id', id)
-
     const { activePublication } = this.props
     // prevent higher level panels from reacting
     e.preventDefault()
@@ -75,7 +72,7 @@ export default React.createClass({
       if (more) reduce = reduce - 5
       if (node.offsetTop) {
         window.$('html, body').animate({
-            scrollTop: node.offsetTop - reduce
+          scrollTop: node.offsetTop - reduce
         }, 500)
       }
     }
@@ -176,30 +173,33 @@ export default React.createClass({
                 {doc.title}
               </a>
             </h4>
-            {showEditingGlyphons ?
-              this.toggleDraftGlyph(doc)
+            {
+              showEditingGlyphons
+              ? this.toggleDraftGlyph(doc)
               : null
             }
-            {showEditingGlyphons ?
-              this.removePublicationGlyph(doc)
+            {
+              showEditingGlyphons
+              ? this.removePublicationGlyph(doc)
               : null
             }
           </div>
-          {isActivePublication ?
-            <div
-              id={'#collapse' + dIndex}
-              className='panel-collapse collapse in'
-              role='tabpanel'
-              aria-labelledby={'heading' + dIndex}
-              onClick={this.onClickEventCollapse}>
-              <div className='panel-body' style={panelBodyStyle}>
-                <Publication
-                  activePublication={activePublication}
-                  editing={editing}
-                  onSavePublicationArticle={onSavePublicationArticle}
-                />
+          {
+            isActivePublication
+            ? <div
+                id={'#collapse' + dIndex}
+                className='panel-collapse collapse in'
+                role='tabpanel'
+                aria-labelledby={'heading' + dIndex}
+                onClick={this.onClickEventCollapse}>
+                <div className='panel-body' style={panelBodyStyle}>
+                  <Publication
+                    activePublication={activePublication}
+                    editing={editing}
+                    onSavePublicationArticle={onSavePublicationArticle}
+                  />
+                </div>
               </div>
-            </div>
             : null
           }
         </div>

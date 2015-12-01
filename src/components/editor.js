@@ -50,14 +50,16 @@ export default React.createClass({
       content_css: '/tinymce.css',
       // try to stop tinymce from changing html on the server
       // sadly did not work
-      /*entity_encoding: 'raw',
+      /*
+      entity_encoding: 'raw',
       verify_html: false,
       cleanup_on_startup: false,
       cleanup_on_save: false,
       trim_span_elements: false,
       convert_urls: false,
       extended_valid_elements: 'table[th]',
-      valid_elements: '*[*]',*/
+      valid_elements: '*[*]',
+      */
       // enable auto-saving
       setup (editor) {
         editor.on('change undo redo', (e) => {

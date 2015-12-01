@@ -25,8 +25,20 @@ export default React.createClass({
     return (
       <div>
         <h1>Login</h1>
-        {!email ? <LoginForm /> : null}
-        {email ? <Button className='btn-primary' onClick={this.onClickLogout}>log out</Button> : null}
+        {
+          !email
+          ? <LoginForm />
+          : null
+        }
+        {
+          email
+          ? <Button
+              className='btn-primary'
+              onClick={this.onClickLogout}>
+              log out
+            </Button>
+          : null
+        }
       </div>
     )
   }

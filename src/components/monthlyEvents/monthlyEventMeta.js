@@ -45,7 +45,7 @@ export default React.createClass({
     const { year, month } = this.props
     const { arrivals, victims } = this.state
     return (
-      <Modal show={true} onHide={this.close} bsSize='medium'>
+      <Modal show onHide={this.close} bsSize='medium'>
         <Modal.Header>
           <Modal.Title>Arrivals & Victims in {month} {year}</Modal.Title>
         </Modal.Header>

@@ -81,7 +81,7 @@ export default React.createClass({
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
       if (node.offsetTop) {
         window.$('html, body').animate({
-            scrollTop: node.offsetTop - reduce
+          scrollTop: node.offsetTop - reduce
         }, 500)
       }
     }
@@ -175,21 +175,32 @@ export default React.createClass({
                   {doc.category}
                 </a>
               </h4>
-              {showEditingGlyphons ?
-                this.toggleDraftGlyph(doc)
+              {
+                showEditingGlyphons
+                ? this.toggleDraftGlyph(doc)
                 : null
               }
-              {showEditingGlyphons ?
-                this.removeSourceGlyph(doc)
+              {
+                showEditingGlyphons
+                ? this.removeSourceGlyph(doc)
                 : null
               }
             </div>
-            {isActiveSource ?
-              <div id={'#collapse' + index} className='panel-collapse collapse in' role='tabpanel' aria-labelledby={'heading' + index} onClick={this.onClickSourceCollapse}>
-                <div className='panel-body' style={panelBodyStyle}>
-                  <Source activeSource={activeSource} editing={editing} onSaveSourceArticle={onSaveSourceArticle} />
+            {
+              isActiveSource
+              ? <div
+                  id={'#collapse' + index}
+                  className='panel-collapse collapse in'
+                  role='tabpanel'
+                  aria-labelledby={'heading' + index}
+                  onClick={this.onClickSourceCollapse}>
+                  <div className='panel-body' style={panelBodyStyle}>
+                    <Source
+                      activeSource={activeSource}
+                      editing={editing}
+                      onSaveSourceArticle={onSaveSourceArticle} />
+                  </div>
                 </div>
-              </div>
               : null
             }
           </div>
@@ -208,8 +219,18 @@ export default React.createClass({
         <PanelGroup activeKey={activeId} id='sourcesAccordion' accordion>
           {this.sourcesComponent()}
         </PanelGroup>
-        {showNewSource ? <NewSource onCloseNewSource={onCloseNewSource} /> : null}
-        {docToRemove ? <ModalRemoveSource doc={docToRemove} removeSource={this.removeSource} /> : null}
+        {
+          showNewSource
+          ? <NewSource onCloseNewSource={onCloseNewSource} />
+          : null
+        }
+        {
+          docToRemove
+          ? <ModalRemoveSource
+              doc={docToRemove}
+              removeSource={this.removeSource} />
+          : null
+        }
       </div>
     )
   }

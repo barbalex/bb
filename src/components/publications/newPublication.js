@@ -67,7 +67,7 @@ export default React.createClass({
       marginBottom: 10
     }
     return (
-      <Modal show={true} onHide={this.close} bsSize='large'>
+      <Modal show onHide={this.close} bsSize='large'>
         <Modal.Header>
           <Modal.Title>New publication</Modal.Title>
         </Modal.Header>

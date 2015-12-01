@@ -31,7 +31,11 @@ export default React.createClass({
     const errorMessages = errors.map((error, index) => (
       <div className='errorContainer' key={index}>
         <div className='error'>
-          {error.title ? <p>{error.title}</p> : null}
+          {
+            error.title
+            ? <p>{error.title}</p>
+            : null
+          }
           <p><em>{error.msg}</em></p>
         </div>
         {index + 1 < errors.length ? <hr/> : null}
@@ -52,7 +56,10 @@ export default React.createClass({
         placement='top'
       >
         <div id='errors'>
-          <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onClickRemove} />
+          <Glyphicon
+            glyph='remove-circle'
+            style={glyphStyle}
+            onClick={this.onClickRemove} />
           {errorMessages}
         </div>
       </Overlay>

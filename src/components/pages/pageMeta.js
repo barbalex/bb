@@ -24,7 +24,7 @@ export default React.createClass({
   render () {
     const { activePage } = this.props
     return (
-      <Modal show={true} onHide={this.close} bsSize='large'>
+      <Modal show onHide={this.close} bsSize='large'>
         <Modal.Header>
           <Modal.Title>Images for "{activePage.title}"</Modal.Title>
         </Modal.Header>

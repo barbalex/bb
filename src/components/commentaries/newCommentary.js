@@ -82,7 +82,7 @@ export default React.createClass({
       marginBottom: 20
     }
     return (
-      <Modal show={true} onHide={this.close} bsSize='large'>
+      <Modal show onHide={this.close} bsSize='large'>
         <Modal.Header>
           <Modal.Title>New commentary</Modal.Title>
         </Modal.Header>
