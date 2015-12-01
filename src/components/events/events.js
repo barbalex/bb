@@ -94,10 +94,28 @@ export default React.createClass({
               {this.dateRows()}
             </tbody>
           </Table>
+          <p style={{ marginTop: 20 }}>Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.</p>
         </GeminiScrollbar>
-        {activeEvent ? <EditEvent activeEvent={activeEvent} onChangeActiveEvent={onChangeActiveEvent} /> : null}
-        {showNewEvent ? <NewEvent onCloseNewEvent={onCloseNewEvent} /> : null}
-        {docToRemove ? <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} /> : null}
+        {
+          activeEvent
+          ? <EditEvent
+              activeEvent={activeEvent}
+              onChangeActiveEvent={onChangeActiveEvent} />
+          : null
+        }
+        {
+          showNewEvent
+          ? <NewEvent
+              onCloseNewEvent={onCloseNewEvent} />
+          : null
+        }
+        {
+          docToRemove
+          ? <ModalRemoveEvent
+              doc={docToRemove}
+              removeEvent={this.removeEvent} />
+          : null
+        }
       </div>
     )
   }
