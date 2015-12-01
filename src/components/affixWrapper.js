@@ -16,25 +16,25 @@ export default React.createClass({
   /**
    * @return {Object}
    */
-  getDefaultProps() {
+  getDefaultProps () {
     return {
       offset: 0
-    };
+    }
   },
 
   /**
    * @return {Object}
    */
-  getInitialState() {
+  getInitialState () {
     return {
       affix: false
-    };
+    }
   },
 
   /**
    * @return {void}
    */
-  handleScroll() {
+  handleScroll () {
     const affix = this.state.affix
     const offset = this.props.offset
     const scrollTop = document.body.scrollTop
@@ -42,31 +42,31 @@ export default React.createClass({
     if (!affix && scrollTop >= offset) {
       this.setState({
         affix: true
-      });
+      })
     }
 
     if (affix && scrollTop < offset) {
       this.setState({
         affix: false
-      });
+      })
     }
   },
 
   /**
    * @return {void}
    */
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+  componentDidMount () {
+    window.addEventListener('scroll', this.handleScroll)
   },
 
   /**
    * @return {void}
    */
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+  componentWillUnmount () {
+    window.removeEventListener('scroll', this.handleScroll)
   },
 
-  render() {
+  render () {
     const affix = this.state.affix ? 'affix' : ''
     const {className, offset, ...props} = this.props
 
@@ -74,7 +74,7 @@ export default React.createClass({
       <div {...props} className={classnames(className, affix)}>
         {this.props.children}
       </div>
-    );
+    )
   }
 
 })
