@@ -50,10 +50,7 @@ export default React.createClass({
   onRemoveLink () {
     let { activeEvent } = this.props
     const { link: linkToRemove } = this.state
-    console.log('activeEvent.links before removing', activeEvent.links)
-    console.log('linkToRemove', linkToRemove)
     activeEvent.links = activeEvent.links.filter((link) => link.label !== linkToRemove.label && link.url !== linkToRemove.url)
-    console.log('activeEvent.links after removing', activeEvent.links)
     app.Actions.saveEvent(activeEvent)
   },
 
@@ -77,8 +74,6 @@ export default React.createClass({
     const { focus } = this.props
     const { link } = this.state
     const focusLabel = focus && !link.label
-
-    console.log('eventLink.js, render, link', link)
 
     return (
       <Row>

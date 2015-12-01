@@ -82,14 +82,12 @@ export default React.createClass({
       <li className={classNames}>
         <p className={classNames}>
           {event.title} <span>{links}</span>
-          {
-            showEditingGlyphons
-            ? this.editEventGlyph()
+          {showEditingGlyphons ?
+            this.editEventGlyph()
             : null
           }
-          {
-            showEditingGlyphons
-            ? this.removeEventGlyph()
+          {showEditingGlyphons ?
+            this.removeEventGlyph()
             : null
           }
         </p>
