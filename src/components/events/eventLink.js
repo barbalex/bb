@@ -27,8 +27,9 @@ export default React.createClass({
 
   onBlurUrl () {
     let { activeEvent } = this.props
+    const { link: oldLink } = this.props
     const { link: newLink } = this.state
-    const index = activeEvent.links.findIndex((link) => link.label === newLink.label)
+    const index = activeEvent.links.findIndex((link) => link.label === oldLink.label && link.url === oldLink.url)
     activeEvent.links[index] = newLink
     app.Actions.saveEvent(activeEvent)
   },
@@ -41,15 +42,16 @@ export default React.createClass({
 
   onBlurLabel () {
     let { activeEvent } = this.props
+    const { link: oldLink } = this.props
     const { link: newLink } = this.state
-    const index = activeEvent.links.findIndex((link) => link.Url === newLink.url)
+    const index = activeEvent.links.findIndex((link) => link.url === oldLink.url && link.label === oldLink.label)
     activeEvent.links[index] = newLink
     app.Actions.saveEvent(activeEvent)
   },
 
   onRemoveLink () {
     let { activeEvent } = this.props
-    const { link: linkToRemove } = this.state
+    const { link: linkToRemove } = this.props
     activeEvent.links = activeEvent.links.filter((link) => link.label !== linkToRemove.label && link.url !== linkToRemove.url)
     app.Actions.saveEvent(activeEvent)
   },
