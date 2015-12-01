@@ -13,7 +13,7 @@ export default React.createClass({
   },
 
   onNewLink () {
-    const { activeEvent } = this.props
+    let { activeEvent } = this.props
     const newLink = {
       url: '',
       label: ''
@@ -24,7 +24,14 @@ export default React.createClass({
 
   eventLinks () {
     const { activeEvent } = this.props
-    return activeEvent.links.map((link, index) => <EventLink key={index} activeEvent={activeEvent} links={activeEvent.links} link={link} focus={index === activeEvent.links.length - 1} />)
+    console.log('eventLinks.js, eventLinks, activeEvent.links', activeEvent.links)
+    return activeEvent.links.map((link, index) => (
+      <EventLink
+        key={index}
+        activeEvent={activeEvent}
+        link={link}
+        focus={index === activeEvent.links.length - 1} />
+      ))
   },
 
   render () {
@@ -38,6 +45,8 @@ export default React.createClass({
     const labelStyle = {
       marginBottom: 0
     }
+
+    console.log('eventLinks.js, render,activeEvent.links', activeEvent.links)
 
     return (
       <div>
