@@ -25,11 +25,12 @@ export default React.createClass({
   eventLinks () {
     const { activeEvent } = this.props
     return activeEvent.links.map((link, index) => (
-      <EventLink
-        key={index}
-        activeEvent={activeEvent}
-        link={link}
-        focus={index === activeEvent.links.length - 1} />
+        <div key={index}>
+          <EventLink
+            activeEvent={activeEvent}
+            link={link}
+            focus={index === activeEvent.links.length - 1} />
+        </div>
       )
     )
   },
