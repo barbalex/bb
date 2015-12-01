@@ -14,13 +14,13 @@ export default React.createClass({
     activeMonthlyEvent: React.PropTypes.object,
     activePublication: React.PropTypes.object,
     activeCommentary: React.PropTypes.object,
-    activeSource: React.PropTypes.object,
+    activeStatistic: React.PropTypes.object,
     activeActor: React.PropTypes.object,
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
     onClickNewCommentary: React.PropTypes.func,
-    onClickNewSource: React.PropTypes.func,
+    onClickNewStatistic: React.PropTypes.func,
     onClickNewEvent: React.PropTypes.func,
     onClickNewActor: React.PropTypes.func,
     onClickNewMonthlyEvent: React.PropTypes.func,
@@ -80,8 +80,8 @@ export default React.createClass({
     return <Tooltip id='newEvent'>new event</Tooltip>
   },
 
-  newSourceTooltip () {
-    return <Tooltip id='newSource'>new source</Tooltip>
+  newStatisticTooltip () {
+    return <Tooltip id='newStatistic'>new statistic</Tooltip>
   },
 
   newActorTooltip () {
@@ -97,19 +97,19 @@ export default React.createClass({
   },
 
   render () {
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeSource, activeActor, email, editing, onClickNewCommentary, onClickNewEvent, onClickNewSource, onClickNewActor, onClickNewMonthlyEvent, onClickNewPublication } = this.props
+    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeStatistic, activeActor, email, editing, onClickNewCommentary, onClickNewEvent, onClickNewStatistic, onClickNewActor, onClickNewMonthlyEvent, onClickNewPublication } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = activePage && activePage._id ? activePage._id : null
-    const nonEditableIds = ['pages_commentaries', 'pages_sources', 'pages_monthlyEvents', 'pages_publications', 'pages_actors', 'pages_events']
-    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeSource, '_id') || _.has(activeActor, '_id') || _.has(activePublication, '_id'))
+    const nonEditableIds = ['pages_commentaries', 'pages_statistics', 'pages_monthlyEvents', 'pages_publications', 'pages_actors', 'pages_events']
+    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeStatistic, '_id') || _.has(activeActor, '_id') || _.has(activePublication, '_id'))
     const showAddCommentary = email && activePage._id === 'pages_commentaries'
     const showAddEvent = email && activePage._id === 'pages_events'
-    const showAddSource = email && activePage._id === 'pages_sources'
+    const showAddStatistic = email && activePage._id === 'pages_statistics'
     const showAddActor = email && activePage._id === 'pages_actors'
     const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
     const showAddPublication = email && activePage._id === 'pages_publications'
-    const showNavbarRight = email || showEdit || showAddCommentary || showAddEvent || showAddSource || showAddActor || showAddMonthlyEvent
+    const showNavbarRight = email || showEdit || showAddCommentary || showAddEvent || showAddStatistic || showAddActor || showAddMonthlyEvent
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -126,10 +126,10 @@ export default React.createClass({
               <Nav>
                 <NavItem
                   eventKey={0}
-                  active={id === 'pages_sources'}
-                  onClick={this.onClickPage.bind(this, 'pages_sources')}
+                  active={id === 'pages_statistics'}
+                  onClick={this.onClickPage.bind(this, 'pages_statistics')}
                 >
-                  Sources (soon: statistics)
+                  Statistics
                 </NavItem>
                 <NavItem
                   eventKey={1}
@@ -207,11 +207,11 @@ export default React.createClass({
                     : null
                   }
                   {
-                    showAddSource
-                    ? <OverlayTrigger placement='bottom' overlay={this.newSourceTooltip()}>
+                    showAddStatistic
+                    ? <OverlayTrigger placement='bottom' overlay={this.newStatisticTooltip()}>
                         <NavItem
                           eventKey={3}
-                          onClick={onClickNewSource}
+                          onClick={onClickNewStatistic}
                         >
                           <Glyphicon glyph='plus' />
                         </NavItem>

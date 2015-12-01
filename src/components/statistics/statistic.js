@@ -7,13 +7,13 @@ import Editor from '../editor.js'
 import Meta from '../pages/pageMeta.js'
 
 export default React.createClass({
-  displayName: 'Source',
+  displayName: 'Statistic',
 
   propTypes: {
-    activeSource: React.PropTypes.object,
+    activeStatistic: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showMeta: React.PropTypes.bool,
-    onSaveSourceArticle: React.PropTypes.func
+    onSaveStatisticArticle: React.PropTypes.func
   },
 
   getInitialState () {
@@ -36,9 +36,9 @@ export default React.createClass({
   },
 
   render () {
-    const { activeSource, editing, onSaveSourceArticle } = this.props
+    const { activeStatistic, editing, onSaveStatisticArticle } = this.props
     const { showMeta } = this.state
-    const articleEncoded = activeSource.article
+    const articleEncoded = activeStatistic.article
     const articleDecoded = Base64.decode(articleEncoded)
     const metaButtonStyle = {
       position: 'fixed',
@@ -47,16 +47,16 @@ export default React.createClass({
     }
     if (editing) {
       return (
-        <div className='source'>
-          {showMeta ? <Meta doc={activeSource} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={activeSource} articleDecoded={articleDecoded} onSaveSourceArticle={onSaveSourceArticle} />
+        <div className='statistic'>
+          {showMeta ? <Meta doc={activeStatistic} onCloseMeta={this.onCloseMeta} /> : null}
+          <Editor doc={activeStatistic} articleDecoded={articleDecoded} onSaveStatisticArticle={onSaveStatisticArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
-      <div className='source col400'>
+      <div className='statistic col400'>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )

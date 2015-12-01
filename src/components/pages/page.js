@@ -46,7 +46,7 @@ export default React.createClass({
       bottom: 10,
       right: 10
     }
-    if (editing && activePage._id !== 'pages_sources' && activePage._id !== 'pages_actors') {
+    if (editing && activePage._id !== 'pages_statistics' && activePage._id !== 'pages_actors') {
       return (
         <div className='page'>
           {showMeta ? <Meta activePage={activePage} onCloseMeta={this.onCloseMeta} /> : null}

@@ -4,21 +4,21 @@ import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
-import Source from './source.js'
-import NewSource from './newSource.js'
-import ModalRemoveSource from './modalRemoveSource.js'
+import Statistic from './statistic.js'
+import NewStatistic from './newStatistic.js'
+import ModalRemoveStatistic from './modalRemoveStatistic.js'
 
 export default React.createClass({
-  displayName: 'Sources',
+  displayName: 'Statistics',
 
   propTypes: {
-    sources: React.PropTypes.array,
-    activeSource: React.PropTypes.object,
+    statistics: React.PropTypes.array,
+    activeStatistic: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onSaveSourceArticle: React.PropTypes.func,
-    onCloseNewSource: React.PropTypes.func,
-    showNewSource: React.PropTypes.bool,
+    onSaveStatisticArticle: React.PropTypes.func,
+    onCloseNewStatistic: React.PropTypes.func,
+    showNewStatistic: React.PropTypes.bool,
     docToRemove: React.PropTypes.object
   },
 
@@ -29,12 +29,12 @@ export default React.createClass({
   },
 
   componentDidMount () {
-    app.Actions.getSources()
+    app.Actions.getStatistics()
   },
 
   componentDidUpdate (prevProps) {
-    if (this.props.activeSource) {
-      if (!prevProps.activeSource) {
+    if (this.props.activeStatistic) {
+      if (!prevProps.activeStatistic) {
         /**
          * this is first render
          * componentDidUpdate and componentDidMount are actually executed
@@ -45,7 +45,7 @@ export default React.createClass({
           this.scrollToActivePanel()
         }, 200)
         // window.requestAnimationFrame(() => this.scrollToActivePanel())
-      } else if (this.props.activeSource._id !== prevProps.activeSource._id) {
+      } else if (this.props.activeStatistic._id !== prevProps.activeStatistic._id) {
         // this is later rerender
         // only scroll into view if the active item changed last render
         this.scrollToActivePanel()
@@ -53,29 +53,29 @@ export default React.createClass({
     }
   },
 
-  onClickSource (id, e) {
-    const { activeSource } = this.props
+  onClickStatistic (id, e) {
+    const { activeStatistic } = this.props
     // prevent higher level panels from reacting
     e.preventDefault()
     e.stopPropagation()
-    const idToGet = (!activeSource || activeSource._id !== id) ? id : null
-    app.Actions.getSource(idToGet)
+    const idToGet = (!activeStatistic || activeStatistic._id !== id) ? id : null
+    app.Actions.getStatistic(idToGet)
   },
 
-  onClickSourceCollapse (event) {
+  onClickStatisticCollapse (event) {
     // prevent higher level panels from reacting
     event.preventDefault()
     event.stopPropagation()
   },
 
-  onRemoveSource (docToRemove, event) {
+  onRemoveStatistic (docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
   },
 
   scrollToActivePanel () {
-    const node = ReactDOM.findDOMNode(this._activeSourcePanel)
+    const node = ReactDOM.findDOMNode(this._activeStatisticPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
@@ -87,17 +87,17 @@ export default React.createClass({
     }
   },
 
-  removeSource (remove) {
+  removeStatistic (remove) {
     const { docToRemove } = this.state
-    if (remove) app.Actions.removeSource(docToRemove)
+    if (remove) app.Actions.removeStatistic(docToRemove)
     this.setState({ docToRemove: null })
   },
 
-  removeSourceTooltip () {
-    return <Tooltip id='removeThisSource'>remove</Tooltip>
+  removeStatisticTooltip () {
+    return <Tooltip id='removeThisStatistic'>remove</Tooltip>
   },
 
-  removeSourceGlyph (doc) {
+  removeStatisticGlyph (doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 10,
@@ -106,8 +106,8 @@ export default React.createClass({
       color: '#edf4f8'
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.removeSourceTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveSource.bind(this, doc)} />
+      <OverlayTrigger placement='top' overlay={this.removeStatisticTooltip()}>
+        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveStatistic.bind(this, doc)} />
       </OverlayTrigger>
     )
   },
@@ -137,14 +137,14 @@ export default React.createClass({
   onToggleDraft (doc, event) {
     event.preventDefault()
     event.stopPropagation()
-    app.Actions.toggleDraftOfSource(doc)
+    app.Actions.toggleDraftOfStatistic(doc)
   },
 
-  sourcesComponent () {
-    const { sources, activeSource, editing, email, onSaveSourceArticle } = this.props
-    if (sources.length > 0) {
-      return sources.map((doc, index) => {
-        const isActiveSource = activeSource ? doc._id === activeSource._id : false
+  statisticsComponent () {
+    const { statistics, activeStatistic, editing, email, onSaveStatisticArticle } = this.props
+    if (statistics.length > 0) {
+      return statistics.map((doc, index) => {
+        const isActiveStatistic = activeStatistic ? doc._id === activeStatistic._id : false
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative',
@@ -158,20 +158,20 @@ export default React.createClass({
           maxHeight: window.innerHeight - 141,
           overflowY: 'auto'
         }
-        if (!isActiveSource) {
+        if (!isActiveStatistic) {
           Object.assign(panelHeadingStyle, {
             borderBottomRightRadius: 3,
             borderBottomLeftRadius: 3
           })
         }
-        const ref = isActiveSource ? '_activeSourcePanel' : '_sourcePanel' + doc._id
+        const ref = isActiveStatistic ? '_activeStatisticPanel' : '_statisticPanel' + doc._id
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
           <div key={doc._id} ref={(c) => this[ref] = c} className='panel panel-default'>
-            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickSource.bind(this, doc._id)} style={panelHeadingStyle}>
+            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickStatistic.bind(this, doc._id)} style={panelHeadingStyle}>
               <h4 className='panel-title'>
-                <a role='button' data-toggle='collapse' data-parent='#sourcesAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
+                <a role='button' data-toggle='collapse' data-parent='#statisticsAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
                   {doc.category}
                 </a>
               </h4>
@@ -182,23 +182,23 @@ export default React.createClass({
               }
               {
                 showEditingGlyphons
-                ? this.removeSourceGlyph(doc)
+                ? this.removeStatisticGlyph(doc)
                 : null
               }
             </div>
             {
-              isActiveSource
+              isActiveStatistic
               ? <div
                   id={'#collapse' + index}
                   className='panel-collapse collapse in'
                   role='tabpanel'
                   aria-labelledby={'heading' + index}
-                  onClick={this.onClickSourceCollapse}>
+                  onClick={this.onClickStatisticCollapse}>
                   <div className='panel-body' style={panelBodyStyle}>
-                    <Source
-                      activeSource={activeSource}
+                    <Statistic
+                      activeStatistic={activeStatistic}
                       editing={editing}
-                      onSaveSourceArticle={onSaveSourceArticle} />
+                      onSaveStatisticArticle={onSaveStatisticArticle} />
                   </div>
                 </div>
               : null
@@ -211,24 +211,24 @@ export default React.createClass({
   },
 
   render () {
-    const { activeSource, showNewSource, onCloseNewSource } = this.props
+    const { activeStatistic, showNewStatistic, onCloseNewStatistic } = this.props
     const { docToRemove } = this.state
-    const activeId = activeSource ? activeSource._id : null
+    const activeId = activeStatistic ? activeStatistic._id : null
     return (
-      <div className='sources'>
-        <PanelGroup activeKey={activeId} id='sourcesAccordion' accordion>
-          {this.sourcesComponent()}
+      <div className='statistics'>
+        <PanelGroup activeKey={activeId} id='statisticsAccordion' accordion>
+          {this.statisticsComponent()}
         </PanelGroup>
         {
-          showNewSource
-          ? <NewSource onCloseNewSource={onCloseNewSource} />
+          showNewStatistic
+          ? <NewStatistic onCloseNewStatistic={onCloseNewStatistic} />
           : null
         }
         {
           docToRemove
-          ? <ModalRemoveSource
+          ? <ModalRemoveStatistic
               doc={docToRemove}
-              removeSource={this.removeSource} />
+              removeStatistic={this.removeStatistic} />
           : null
         }
       </div>

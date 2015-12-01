@@ -8,8 +8,8 @@ import slug from 'slug'
 import getPathFromDoc from './modules/getPathFromDoc.js'
 import getCommentaries from './modules/getCommentaries.js'
 import sortCommentaries from './modules/sortCommentaries.js'
-import getSources from './modules/getSources.js'
-import sortSources from './modules/sortSources.js'
+import getStatistics from './modules/getStatistics.js'
+import sortStatistics from './modules/sortStatistics.js'
 import getActors from './modules/getActors.js'
 import sortActors from './modules/sortActors.js'
 import getMonthlyEvents from './modules/getMonthlyEvents.js'
@@ -627,139 +627,139 @@ export default (Actions) => {
     }
   })
 
-  app.sourcesStore = Reflux.createStore({
+  app.statisticsStore = Reflux.createStore({
 
     listenables: Actions,
 
-    sources: [],
+    statistics: [],
 
     // cache the id, not the entire doc
-    // advantage: on first load sources is empty so no activeSource can be gotten
+    // advantage: on first load statistics is empty so no activeStatistic can be gotten
     // but if id is used, this can be cached
-    activeSourceId: null,
+    activeStatisticId: null,
 
-    activeSource () {
-      return this.sources.find((source) => source._id === this.activeSourceId)
+    activeStatistic () {
+      return this.statistics.find((statistic) => statistic._id === this.activeStatisticId)
     },
 
-    getSourcesCallback: null,
+    getStatisticsCallback: null,
 
-    onGetSources () {
-      getSources()
-        .then((sources) => {
-          this.sources = sources
-          if (this.getSourcesCallback) {
-            this.getSourcesCallback()
-            this.getSourcesCallback = null
+    onGetStatistics () {
+      getStatistics()
+        .then((statistics) => {
+          this.statistics = statistics
+          if (this.getStatisticsCallback) {
+            this.getStatisticsCallback()
+            this.getStatisticsCallback = null
           }
           this.triggerStore()
         })
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewSource (category) {
+    onNewStatistic (category) {
       const categorySlugified = slug(category, {lower: true})
-      const _id = `sources_${categorySlugified}`
+      const _id = `statistics_${categorySlugified}`
       const draft = true
       const article = 'IA=='
-      const type = 'sources'
-      const source = { _id, category, draft, article, type }
-      this.onSaveSource(source)
+      const type = 'statistics'
+      const statistic = { _id, category, draft, article, type }
+      this.onSaveStatistic(statistic)
     },
 
-    onGetSource (id) {
+    onGetStatistic (id) {
       if (!id) {
-        app.router.navigate('/sources')
-        this.activeSourceId = null
+        app.router.navigate('/statistics')
+        this.activeStatisticId = null
         this.triggerStore()
       } else {
-        this.activeSourceId = id
-        if (this.sources.length === 0) {
-          // on first load sources is empty
-          // need to wait until onGetSources fires
-          this.getSourcesCallback = () => {
-            const source = this.sources.find((source) => source._id === id)
-            const path = getPathFromDoc(source)
+        this.activeStatisticId = id
+        if (this.statistics.length === 0) {
+          // on first load statistics is empty
+          // need to wait until onGetStatistics fires
+          this.getStatisticsCallback = () => {
+            const statistic = this.statistics.find((statistic) => statistic._id === id)
+            const path = getPathFromDoc(statistic)
             app.router.navigate('/' + path)
           }
         } else {
-          const source = this.sources.find((source) => source._id === id)
-          const path = getPathFromDoc(source)
+          const statistic = this.statistics.find((statistic) => statistic._id === id)
+          const path = getPathFromDoc(statistic)
           app.router.navigate('/' + path)
           this.triggerStore()
         }
       }
     },
 
-    updateSourceInCache (source) {
-      // first update the source in this.sources
-      this.sources = this.sources.filter((thisSource) => thisSource._id !== source._id)
-      this.sources.push(source)
-      this.sources = sortSources(this.sources)
+    updateStatisticInCache (statistic) {
+      // first update the statistic in this.statistics
+      this.statistics = this.statistics.filter((thisStatistic) => thisStatistic._id !== statistic._id)
+      this.statistics.push(statistic)
+      this.statistics = sortStatistics(this.statistics)
       // now tell every one!
       this.triggerStore()
     },
 
-    revertCache (oldSources, oldActiveSourceId) {
-      this.sources = oldSources
-      this.activeSourceId = oldActiveSourceId
+    revertCache (oldStatistics, oldActiveStatisticId) {
+      this.statistics = oldStatistics
+      this.activeStatisticId = oldActiveStatisticId
       this.triggerStore()
     },
 
-    onSaveSource (source) {
+    onSaveStatistic (statistic) {
       // keep old cache in case of error
-      const oldSources = this.sources
-      const oldActiveSourceId = this.activeSourceId
+      const oldStatistics = this.statistics
+      const oldActiveStatisticId = this.activeStatisticId
       // optimistically update in cache
-      this.updateSourceInCache(source)
-      app.db.put(source)
+      this.updateStatisticInCache(statistic)
+      app.db.put(statistic)
         .then((resp) => {
-          source._rev = resp.rev
+          statistic._rev = resp.rev
           // definitely update in cache
-          this.updateSourceInCache(source)
+          this.updateStatisticInCache(statistic)
         })
         .catch((error) => {
-          this.revertCache(oldSources, oldActiveSourceId)
-          app.Actions.showError({title: 'Error saving source:', msg: error})
+          this.revertCache(oldStatistics, oldActiveStatisticId)
+          app.Actions.showError({title: 'Error saving statistic:', msg: error})
         })
     },
 
-    removeSourceFromCache (source) {
-      // first update the source in this.sources
-      this.sources = this.sources.filter((thisSource) => thisSource._id !== source._id)
-      this.sources = sortSources(this.sources)
-      // now update this.activeSourceId if it is the active source's _id
-      const isActiveSource = this.activeSourceId === source._id
-      if (isActiveSource) this.activeSourceId = null
+    removeStatisticFromCache (statistic) {
+      // first update the statistic in this.statistics
+      this.statistics = this.statistics.filter((thisStatistic) => thisStatistic._id !== statistic._id)
+      this.statistics = sortStatistics(this.statistics)
+      // now update this.activeStatisticId if it is the active statistic's _id
+      const isActiveStatistic = this.activeStatisticId === statistic._id
+      if (isActiveStatistic) this.activeStatisticId = null
       // now tell every one!
       this.triggerStore()
     },
 
-    onRemoveSource (source) {
+    onRemoveStatistic (statistic) {
       // keep old cache in case of error
-      const oldSources = this.sources
-      const oldActiveSourceId = this.activeSourceId
+      const oldStatistics = this.statistics
+      const oldActiveStatisticId = this.activeStatisticId
       // optimistically remove event from cache
-      this.removeSourceFromCache(source)
-      app.db.remove(source)
+      this.removeStatisticFromCache(statistic)
+      app.db.remove(statistic)
         .catch((error) => {
           // oops. Revert optimistic removal
-          this.revertCache(oldSources, oldActiveSourceId)
-          app.Actions.showError({title: 'Error removing source:', msg: error})
+          this.revertCache(oldStatistics, oldActiveStatisticId)
+          app.Actions.showError({title: 'Error removing statistic:', msg: error})
         })
     },
 
-    onToggleDraftOfSource (source) {
-      if (source.draft === true) {
-        delete source.draft
+    onToggleDraftOfStatistic (statistic) {
+      if (statistic.draft === true) {
+        delete statistic.draft
       } else {
-        source.draft = true
+        statistic.draft = true
       }
-      this.onSaveSource(source)
+      this.onSaveStatistic(statistic)
     },
 
     triggerStore () {
-      this.trigger(this.sources, this.activeSource())
+      this.trigger(this.statistics, this.activeStatistic())
     }
   })
 

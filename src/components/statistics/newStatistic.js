@@ -5,10 +5,10 @@ import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
 
 export default React.createClass({
-  displayName: 'NewSource',
+  displayName: 'NewStatistic',
 
   propTypes: {
-    onCloseNewSource: React.PropTypes.func,
+    onCloseNewStatistic: React.PropTypes.func,
     category: React.PropTypes.string,
     error: React.PropTypes.string
   },
@@ -25,12 +25,12 @@ export default React.createClass({
     this.setState({ category })
   },
 
-  createNewSource () {
-    const { onCloseNewSource } = this.props
+  createNewStatistic () {
+    const { onCloseNewStatistic } = this.props
     const { category } = this.state
     if (category) {
-      app.Actions.newSource(category)
-      onCloseNewSource()
+      app.Actions.newStatistic(category)
+      onCloseNewStatistic()
     } else {
       const error = 'Please choose a category'
       this.setState({ error })
@@ -38,8 +38,8 @@ export default React.createClass({
   },
 
   close () {
-    const { onCloseNewSource } = this.props
-    onCloseNewSource()
+    const { onCloseNewStatistic } = this.props
+    onCloseNewStatistic()
   },
 
   onHide () {
@@ -54,7 +54,7 @@ export default React.createClass({
     return (
       <Modal show onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>New source</Modal.Title>
+          <Modal.Title>New statistic</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -64,7 +64,7 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewSource}>create new source</Button>
+          <Button bsStyle='primary' onClick={this.createNewStatistic}>create new source</Button>
         </Modal.Footer>
 
       </Modal>

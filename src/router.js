@@ -20,8 +20,8 @@ export default Router.extend({
     'publications': 'publications',
     'publications/:category': 'publicationCategory',
     'publications/:category/:title': 'publication',
-    'sources': 'sources',
-    'sources/:category': 'source',
+    'statistics': 'statistics',
+    'statistics/:category': 'statistic',
     'actors': 'actors',
     'actors/:category': 'actor',
     'login': 'login',
@@ -80,16 +80,16 @@ export default Router.extend({
     app.Actions.getPublication(id)
   },
 
-  sources () {
-    const id = 'pages_sources'
+  statistics () {
+    const id = 'pages_statistics'
     this.render(id)
   },
 
-  source (category) {
-    const id = `sources_${category}`
+  statistic (category) {
+    const id = `statistics_${category}`
     this.render()
-    app.Actions.getPage('pages_sources')
-    app.Actions.getSource(id)
+    app.Actions.getPage('pages_statistics')
+    app.Actions.getStatistic(id)
   },
 
   actors () {

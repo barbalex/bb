@@ -11,7 +11,7 @@ import Navbar from '../components/navbar.js'
 import Page from './pages/page.js'
 import Events from './events/events.js'
 import Commentaries from './commentaries/commentaries.js'
-import Sources from './sources/sources.js'
+import Statistics from './statistics/statistics.js'
 import Actors from './actors/actors.js'
 import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
 import Publications from './publications/publications.js'
@@ -35,14 +35,14 @@ export default React.createClass({
     activeCommentary: React.PropTypes.object,
     events: React.PropTypes.array,
     activeEvent: React.PropTypes.object,
-    sources: React.PropTypes.array,
-    activeSource: React.PropTypes.object,
+    statistics: React.PropTypes.array,
+    activeStatistic: React.PropTypes.object,
     actors: React.PropTypes.array,
     activeActor: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
     showNewEvent: React.PropTypes.bool,
-    showNewSource: React.PropTypes.bool,
+    showNewStatistic: React.PropTypes.bool,
     showNewActor: React.PropTypes.bool,
     showNewMonthlyEvent: React.PropTypes.bool,
     showNewPublication: React.PropTypes.bool,
@@ -64,14 +64,14 @@ export default React.createClass({
       commentaries: [],
       activeEvent: null,
       events: [],
-      activeSource: null,
-      sources: [],
+      activeStatistic: null,
+      statistics: [],
       activeActor: null,
       actors: [],
       editing: false,
       showNewCommentary: false,
       showNewEvent: false,
-      showNewSource: false,
+      showNewStatistic: false,
       showNewActor: false,
       showNewMonthlyEvent: false,
       showNewPublication: false,
@@ -87,7 +87,7 @@ export default React.createClass({
     this.listenTo(app.publicationsStore, this.onPublicationsStoreChange)
     this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
     this.listenTo(app.eventsStore, this.onEventsStoreChange)
-    this.listenTo(app.sourcesStore, this.onSourcesStoreChange)
+    this.listenTo(app.statisticsStore, this.onStatisticsStoreChange)
     this.listenTo(app.actorsStore, this.onActorsStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onErrorStoreChange)
@@ -122,10 +122,10 @@ export default React.createClass({
     this.setState(state)
   },
 
-  onSourcesStoreChange (sources, activeSource) {
+  onStatisticsStoreChange (statistics, activeStatistic) {
     const { email } = this.state
-    if (!email) sources = sources.filter((source) => !source.draft)
-    this.setState({ sources, activeSource })
+    if (!email) statistics = statistics.filter((statistic) => !statistic.draft)
+    this.setState({ statistics, activeStatistic })
   },
 
   onActorsStoreChange (actors, activeActor) {
@@ -157,8 +157,8 @@ export default React.createClass({
     this.setState({ showNewEvent: true })
   },
 
-  onClickNewSource () {
-    this.setState({ showNewSource: true })
+  onClickNewStatistic () {
+    this.setState({ showNewStatistic: true })
   },
 
   onClickNewActor () {
@@ -181,8 +181,8 @@ export default React.createClass({
     this.setState({ showNewEvent: false })
   },
 
-  onCloseNewSource () {
-    this.setState({ showNewSource: false })
+  onCloseNewStatistic () {
+    this.setState({ showNewStatistic: false })
   },
 
   onCloseNewActor () {
@@ -225,10 +225,10 @@ export default React.createClass({
     app.Actions.saveCommentary(activeCommentary)
   },
 
-  onSaveSourceArticle (articleEncoded) {
-    let { activeSource } = this.state
-    activeSource.article = articleEncoded
-    app.Actions.saveSource(activeSource)
+  onSaveStatisticArticle (articleEncoded) {
+    let { activeStatistic } = this.state
+    activeStatistic.article = articleEncoded
+    app.Actions.saveStatistic(activeStatistic)
   },
 
   onSaveActorArticle (articleEncoded) {
@@ -243,20 +243,20 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, sources, activeSource, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewSource, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, statistics, activeStatistic, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewStatistic, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
-    const isSourcePage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_sources'
+    const isStatisticPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_statistics'
     const isEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_events'
     const isActorPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_actors'
     const isMonthlyEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_monthlyEvents'
     const isPublicationsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_publications'
     const isCommentary = activePage.type && activePage.type === 'commentaries'
-    const isSource = activePage.type && activePage.type === 'sources'
+    const isStatistic = activePage.type && activePage.type === 'statistics'
     const isActor = activePage.type && activePage.type === 'actors'
     const showCommentaryPage = isCommentariesPage || isCommentary
-    const showSourcePage = isSourcePage || isSource
+    const showStatisticPage = isStatisticPage || isStatistic
     const showEventsPage = isEventsPage
     const showActorPage = isActorPage || isActor
     const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
@@ -277,13 +277,13 @@ export default React.createClass({
             activeMonthlyEvent={activeMonthlyEvent}
             activePublication={activePublication}
             activeCommentary={activeCommentary}
-            activeSource={activeSource}
+            activeStatistic={activeStatistic}
             activeActor={activeActor}
             email={email}
             editing={editing}
             onClickEdit={this.onClickEdit}
             onClickNewCommentary={this.onClickNewCommentary}
-            onClickNewSource={this.onClickNewSource}
+            onClickNewStatistic={this.onClickNewStatistic}
             onClickNewEvent={this.onClickNewEvent}
             onClickNewActor={this.onClickNewActor}
             onClickNewMonthlyEvent={this.onClickNewMonthlyEvent}
@@ -324,15 +324,15 @@ export default React.createClass({
               : null
             }
             {
-              showSourcePage
-              ? <Sources
-                  sources={sources}
-                  activeSource={activeSource}
+              showStatisticPage
+              ? <Statistics
+                  statistics={statistics}
+                  activeStatistic={activeStatistic}
                   editing={editing}
                   email={email}
-                  onSaveSourceArticle={this.onSaveSourceArticle}
-                  showNewSource={showNewSource}
-                  onCloseNewSource={this.onCloseNewSource} />
+                  onSaveStatisticArticle={this.onSaveStatisticArticle}
+                  showNewStatistic={showNewStatistic}
+                  onCloseNewStatistic={this.onCloseNewStatistic} />
               : null
             }
             {

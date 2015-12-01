@@ -4,11 +4,11 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 
 export default React.createClass({
-  displayName: 'ModalRemoveSource',
+  displayName: 'ModalRemoveStatistic',
 
   propTypes: {
     doc: React.PropTypes.object,
-    removeSource: React.PropTypes.func
+    removeStatistic: React.PropTypes.func
   },
 
   onHide () {
@@ -16,13 +16,13 @@ export default React.createClass({
   },
 
   onClickRemove () {
-    const { removeSource } = this.props
-    removeSource(true)
+    const { removeStatistic } = this.props
+    removeStatistic(true)
   },
 
   close () {
-    const { removeSource } = this.props
-    removeSource(false)
+    const { removeStatistic } = this.props
+    removeStatistic(false)
   },
 
   render () {
@@ -32,10 +32,10 @@ export default React.createClass({
       <div className='static-modal'>
         <Modal.Dialog onHide={this.onHide}>
           <Modal.Header>
-            <Modal.Title>Remove source "{doc.category}"</Modal.Title>
+            <Modal.Title>Remove statistic "{doc.category}"</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure, you want to remove source "{doc.category}"?</p>
+            <p>Are you sure, you want to remove statistic "{doc.category}"?</p>
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle='danger' onClick={this.onClickRemove}>yes, remove!</Button>

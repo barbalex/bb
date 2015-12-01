@@ -13,16 +13,16 @@ export default React.createClass({
     onSaveMonthlyEventArticle: React.PropTypes.func,
     onSavePublicationArticle: React.PropTypes.func,
     onSaveCommentaryArticle: React.PropTypes.func,
-    onSaveSourceArticle: React.PropTypes.func,
+    onSaveStatisticArticle: React.PropTypes.func,
     onSaveActorArticle: React.PropTypes.func
   },
 
   componentDidMount () {
-    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle, onSaveSourceArticle, onSaveActorArticle } = this.props
+    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle, onSaveStatisticArticle, onSaveActorArticle } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
     if (onSaveMonthlyEventArticle || onSavePublicationArticle) height = window.innerHeight - 52 - 74 - 76
-    if (onSaveCommentaryArticle || onSaveSourceArticle || onSaveActorArticle) height = window.innerHeight - 52 - 74 - 90
+    if (onSaveCommentaryArticle || onSaveStatisticArticle || onSaveActorArticle) height = window.innerHeight - 52 - 74 - 90
     const instanceSelector = `#${doc._id}`
     // need to add specific classes to the iframe body because my css will not apply otherwise
     let bodyClass = ''
@@ -30,7 +30,7 @@ export default React.createClass({
     if (onSaveMonthlyEventArticle) bodyClass = 'monthlyEvent'
     if (onSavePublicationArticle) bodyClass = 'publication'
     if (onSaveCommentaryArticle) bodyClass = 'commentary'
-    if (onSaveSourceArticle) bodyClass = 'source'
+    if (onSaveStatisticArticle) bodyClass = 'statistic'
     if (onSaveActorArticle) bodyClass = 'actor'
 
     window.tinymce.init({
@@ -69,7 +69,7 @@ export default React.createClass({
           if (onSaveMonthlyEventArticle) onSaveMonthlyEventArticle(articleEncoded)
           if (onSavePublicationArticle) onSavePublicationArticle(articleEncoded)
           if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)
-          if (onSaveSourceArticle) onSaveSourceArticle(articleEncoded)
+          if (onSaveStatisticArticle) onSaveStatisticArticle(articleEncoded)
           if (onSaveActorArticle) onSaveActorArticle(articleEncoded)
         })
       },
