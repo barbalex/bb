@@ -75,7 +75,7 @@ export default React.createClass({
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4
       codemirror: {
-        path: 'http://46.101.159.23/tinymce/plugins/codemirror/codemirror-4.8',
+        path: 'http://46.101.159.23/tinymce/plugins/codemirror/codemirror-5.9',
         indentOnInit: true
       }
     })
