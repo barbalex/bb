@@ -62,7 +62,7 @@ export default React.createClass({
   render () {
     const { event, email } = this.props
     const showEditingGlyphons = !!email
-    const classNames = event.tags && event.tags.length > 0 ? event.tags.map((tag) => `event-${tag}`) : []
+    const classNames = event.tags && event.tags.length > 0 ? event.tags.map((tag) => `event-${tag}`).join(' ') : []
     const linkGlyphStyle = {
       fontSize: 0.7 + 'em',
       paddingRight: 3,
@@ -74,7 +74,23 @@ export default React.createClass({
 
     const links = event.links.map((link, key) => {
       return (
-        <span key={key} style={outerSpanStyle}>{key > 0 ? ' ' : ''}<a href={link.url} target='_blank'><Glyphicon glyph='new-window' style={linkGlyphStyle} />{link.label}</a></span>
+        <span
+          key={key}
+          style={outerSpanStyle}>
+          {
+            key > 0
+            ? ' '
+            : null
+          }
+          <a
+            href={link.url}
+            target='_blank'>
+            <Glyphicon
+              glyph='new-window'
+              style={linkGlyphStyle} />
+            {link.label}
+          </a>
+        </span>
       )
     })
 
