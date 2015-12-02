@@ -136,7 +136,7 @@ export default React.createClass({
 
   onLoginStoreChange (email) {
     this.setState({ email })
-    if (email) app.Actions.getPage('pages_home')
+    if (email) app.Actions.getPage('pages_events')
   },
 
   onErrorStoreChange (errors) {
@@ -265,7 +265,7 @@ export default React.createClass({
     const showPublicationsPage = isPublicationsPage || isPublication
     const pageName = getPageNameFromDoc(activePage)
     const pageTitle = `blue-borders | ${pageName}`
-    const pagesWitCopyright = ['pages_commentaries', 'pages_home']
+    const pagesWitCopyright = ['pages_commentaries']
     const showCopyright = activePage.type && activePage.type === 'pages' && _.includes(pagesWitCopyright, activePage._id)
 
     return (
