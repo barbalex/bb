@@ -56,12 +56,12 @@ export default (Actions) => {
 
     // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
     onAddPageAttachments (doc, attachments) {
+      if (!doc._attachments) doc._attachments = {}
       doc._attachments = Object.assign(doc._attachments, attachments)
       this.onSavePage(doc)
     },
 
     onRemovePageAttachment (doc, attachmentId) {
-      console.log('activePageStore removing attachment', attachmentId)
       delete doc._attachments[attachmentId]
       this.onSavePage(doc)
     }
