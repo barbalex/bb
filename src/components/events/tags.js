@@ -10,5 +10,6 @@ export default () => [
   'Italy',
   'Malta',
   'Libya',
-  'Tunisia'
+  'Tunisia',
+  'Greece'
 ]
