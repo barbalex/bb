@@ -2,9 +2,11 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Table } from 'react-bootstrap'
+import ReactDOM from 'react-dom'
+import { Table, Jumbotron } from 'react-bootstrap'
 import moment from 'moment'
 import GeminiScrollbar from 'react-gemini-scrollbar'
+import _ from 'lodash'
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
 import NewEvent from './newEvent.js'
@@ -24,18 +26,33 @@ export default React.createClass({
     onCloseNewEvent: React.PropTypes.func,
     onChangeActiveEvent: React.PropTypes.func,
     showNewEvent: React.PropTypes.bool,
-    docToRemove: React.PropTypes.object
+    docToRemove: React.PropTypes.object,
+    introJumbotronHeight: React.PropTypes.number
   },
 
   getInitialState () {
     return {
       docToRemove: null,
-      dateRowObjects: []
+      dateRowObjects: [],
+      introJumbotronHeight: null
     }
   },
 
   componentDidMount () {
     app.Actions.getEvents()
+    this.setIntroJumbotronHeight()
+    window.addEventListener('resize', _.debounce(this.setIntroJumbotronHeight, 50))
+  },
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', _.debounce(this.setIntroJumbotronHeight, 50))
+  },
+
+  setIntroJumbotronHeight () {
+    const { introJumbotronHeight: introJumbotronHeightOld } = this.state
+    const introJumbotronDomNode = this.introJumbotron ? ReactDOM.findDOMNode(this.introJumbotron) : null
+    const introJumbotronHeight = introJumbotronDomNode ? introJumbotronDomNode.clientHeight : null
+    if (introJumbotronHeight && introJumbotronHeight !== introJumbotronHeightOld) this.setState({ introJumbotronHeight })
   },
 
   onRemoveEvent (docToRemove) {
@@ -64,15 +81,19 @@ export default React.createClass({
 
   render () {
     const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
-    const { docToRemove } = this.state
-    const introText = `In 2015, Europe witnessed a tremendous increase in the arrival of migrants and refugees. Most of them had to cross the blue borders of the Eastern and Central Mediterranean, often under difficult circumstances. As is to be expected in the age of the Internet, interested observers of these movements are confronted with an enormous amount of information. This is where the present website comes in. Its main purpose is to present an overview by focusing on two topics: on actual blue border events and on the surrounding politics. And, to simplify matters, the information is arranged in chronological order.`
+    const { docToRemove, introJumbotronHeight } = this.state
+    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 14 : 305
+    const eventsTableHeadStyle = {
+      top: eventsTableHeadTop
+    }
+    const introText = `In 2015, Europe witnessed a tremendous increase in the arrival of migrants and refugees. Most of them had to cross the blue borders of the Eastern and Central Mediterranean. The purpose of this website is to gain an overview by chronologically covering both maritime events and the surrounding politics. The first include information on embarkation, accidents, search and rescue (SAR) operations, victims and disembarkation. By politics I mean the reactions and actions undertaken by national, regional and global actors, public as well as private.`
 
     return (
       <div className='events'>
-        <div className='eventsIntro'>
+        <Jumbotron ref={(j) => this.introJumbotron = j} className='eventsIntro'>
           <p>{introText}</p>
-        </div>
-        <Table id='eventsTableHead' condensed hover>
+        </Jumbotron>
+        <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
           <colgroup>
             <col className='day' />
             <col className='migration' />

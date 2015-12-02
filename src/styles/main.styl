@@ -46,7 +46,6 @@ a:link
   z-index: -1
   opacity: 1
   
-
 .introText
 	font-size 28px
 	font-weight 600
@@ -70,6 +69,17 @@ body .navbar
 
 .navbar-inverse
 	background-image url('../../images/oceanDark.jpg')
+ 
+// bootstrap only padds jumbotron above 768px screen width!
+.eventsIntro.jumbotron
+  padding-left: 30px
+  padding-right: 30px
+  // background-color transparent
+  background-color rgba(0, 109, 255, 0.05)
+  // background-image url('../../images/oceanLight.png')
+  border 1px solid #ddd
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 
 .year > .panel-heading,
 .category > .panel-heading,
@@ -296,7 +306,6 @@ body .navbar
   border-bottom 1px solid #ECECEC
 #eventsTableHead
   position absolute
-  top 100px
 
 // make sure glyphicon and link text are on same line
 .events td a
