@@ -244,7 +244,7 @@ export default React.createClass({
   render () {
     const { login } = this.props
     const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, statistics, activeStatistic, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewStatistic, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
-    const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
+    const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events', 'pages_statistics']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
     const isStatisticPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_statistics'
