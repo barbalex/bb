@@ -5,6 +5,7 @@ module.exports = () => {
   const jsPath = isDev ? '/app.js' : '/bb.1.0.0.js'
   const cssPath = isDev ? '' : '/bb.1.0.0.css'
   return `<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
@@ -35,5 +36,6 @@ module.exports = () => {
 </body>
 <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
 <script src="${jsPath}"></script>
+</html>
 `
 }

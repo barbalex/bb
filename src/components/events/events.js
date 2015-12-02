@@ -86,12 +86,11 @@ export default React.createClass({
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }
-    const introText = `In 2015, Europe witnessed a tremendous increase in the arrival of migrants and refugees. Most of them had to cross the blue borders of the Eastern and Central Mediterranean. The purpose of this website is to gain an overview by chronologically covering both maritime events and the surrounding politics. The first include information on embarkation, accidents, search and rescue (SAR) operations, victims and disembarkation. By politics I mean the reactions and actions undertaken by national, regional and global actors, public as well as private.`
 
     return (
       <div className='events'>
         <Jumbotron ref={(j) => this.introJumbotron = j} className='eventsIntro'>
-          <p>{introText}</p>
+          <p>In 2015, Europe witnessed a tremen&shy;dous increase in the arrival of mi&shy;grants and refu&shy;gees. Most of them had to cross the blue bor&shy;ders of the Eas&shy;tern and Cen&shy;tral Me&shy;di&shy;ter&shy;ra&shy;ne&shy;an. The pur&shy;pose of this web&shy;site is to gain an over&shy;view by chro&shy;no&shy;lo&shy;gi&shy;cal&shy;ly cove&shy;ring both ma&shy;ri&shy;ti&shy;me events and the sur&shy;roun&shy;ding po&shy;li&shy;tics. The first in&shy;clude in&shy;for&shy;ma&shy;tion on em&shy;bar&shy;ka&shy;tion, ac&shy;ci&shy;dents, search and res&shy;cue (SAR) ope&shy;ra&shy;tions, vic&shy;tims and dis&shy;em&shy;bar&shy;ka&shy;tion. By po&shy;li&shy;tics I mean the re&shy;ac&shy;tions and ac&shy;tions under&shy;ta&shy;ken by na&shy;tio&shy;nal, re&shy;gio&shy;nal and glo&shy;bal ac&shy;tors, pub&shy;lic as well as pri&shy;vate.</p>
         </Jumbotron>
         <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
           <colgroup>
