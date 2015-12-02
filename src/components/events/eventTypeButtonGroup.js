@@ -30,10 +30,21 @@ export default React.createClass({
     }
     return (
       <div style={{marginBottom: 20}}>
-        <div style={labelStyle}>Type</div>
+        <div
+          style={labelStyle}>
+          Type
+        </div>
         <ButtonGroup>
-          <Button className={eventType === 'migration' ? 'active' : ''} onClick={this.onChangeEventType.bind(this, 'migration')}>migration</Button>
-          <Button className={eventType === 'politics' ? 'active' : ''} onClick={this.onChangeEventType.bind(this, 'politics')}>politics</Button>
+          <Button
+            className={eventType === 'migration' ? 'active' : ''}
+            onClick={this.onChangeEventType.bind(this, 'migration')}>
+            migration
+          </Button>
+          <Button
+            className={eventType === 'politics' ? 'active' : ''}
+            onClick={this.onChangeEventType.bind(this, 'politics')}>
+            politics
+          </Button>
         </ButtonGroup>
       </div>
     )

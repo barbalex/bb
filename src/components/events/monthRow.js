@@ -18,7 +18,9 @@ export default React.createClass({
 
     return (
       <tr className='monthRow'>
-        <td colSpan='3'>{text}</td>
+        <td colSpan='3'>
+          {text}
+        </td>
       </tr>
     )
   }

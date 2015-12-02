@@ -30,16 +30,28 @@ export default React.createClass({
 
     return (
       <div className='static-modal'>
-        <Modal.Dialog onHide={this.onHide}>
+        <Modal.Dialog
+          onHide={this.onHide}>
           <Modal.Header>
-            <Modal.Title>Remove event "{doc.title}"</Modal.Title>
+            <Modal.Title>
+              Remove event "{doc.title}"
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure, you want to remove event "{doc.title}"?</p>
+            <p>
+              Are you sure, you want to remove event "{doc.title}"?
+            </p>
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle='danger' onClick={this.onClickRemove}>yes, remove!</Button>
-            <Button onClick={this.close}>no!</Button>
+            <Button
+              bsStyle='danger'
+              onClick={this.onClickRemove}>
+              yes, remove!
+            </Button>
+            <Button
+              onClick={this.close}>
+              no!
+            </Button>
           </Modal.Footer>
         </Modal.Dialog>
       </div>
