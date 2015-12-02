@@ -41,6 +41,7 @@ export default React.createClass({
     const { showMeta } = this.state
     const articleEncoded = activePage.article
     const articleDecoded = Base64.decode(articleEncoded)
+    let title = activePage.title ? activePage.title : activePage.category
     const metaButtonStyle = {
       position: 'fixed',
       bottom: 10,
@@ -49,17 +50,16 @@ export default React.createClass({
     if (editing && activePage._id !== 'pages_statistics' && activePage._id !== 'pages_actors') {
       return (
         <div className='page'>
-          {showMeta ? <Meta activePage={activePage} onCloseMeta={this.onCloseMeta} /> : null}
+          {showMeta ? <Meta doc={activePage} onCloseMeta={this.onCloseMeta} /> : null}
           <Editor doc={activePage} articleDecoded={articleDecoded} onSavePageArticle={onSavePageArticle} />
           <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
-    const notHome = activePage.title !== 'Home'
     return (
       <div className='page'>
-        {notHome ? <h1>{activePage.title}</h1> : null}
+        <h1>{title}</h1>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )

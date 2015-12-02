@@ -8,7 +8,7 @@ export default React.createClass({
   displayName: 'PageMeta',
 
   propTypes: {
-    activePage: React.PropTypes.object,
+    doc: React.PropTypes.object,
     onCloseMeta: React.PropTypes.func
   },
 
@@ -22,15 +22,16 @@ export default React.createClass({
   },
 
   render () {
-    const { activePage } = this.props
+    const { doc } = this.props
+    let title = doc.title ? doc.title : doc.category
     return (
       <Modal show onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>Images for "{activePage.title}"</Modal.Title>
+          <Modal.Title>Images for "{title}"</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <AttachedImages doc={activePage} />
+          <AttachedImages doc={doc} />
         </Modal.Body>
 
         <Modal.Footer>
