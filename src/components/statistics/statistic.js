@@ -45,6 +45,7 @@ export default React.createClass({
       bottom: 10,
       right: 10
     }
+
     if (editing) {
       return (
         <div className='statistic'>
