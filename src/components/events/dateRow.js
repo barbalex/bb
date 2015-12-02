@@ -13,19 +13,45 @@ export default React.createClass({
     email: React.PropTypes.string
   },
 
+  mapEventComponents (events) {
+    const { onRemoveEvent, email } = this.props
+    return events.map((ev, key) => (
+      <Event
+        key={key}
+        event={ev}
+        email={email}
+        onRemoveEvent={onRemoveEvent} />
+      )
+    )
+  },
+
   render () {
-    const { dateRowObject: dRO, onRemoveEvent, email } = this.props
+    const { dateRowObject: dRO } = this.props
     const day = moment(dRO.date).format('D')
     const dayClassName = dRO.migrationEvents.length > 0 || dRO.politicsEvents.length > 0 ? 'day dayWithEvents' : 'day'
-
-    const migrationEvents = dRO.migrationEvents.map((ev, key) => <Event key={key} event={ev} email={email} onRemoveEvent={onRemoveEvent} />)
-    const politicsEvents = dRO.politicsEvents.map((ev, key) => <Event key={key} event={ev} email={email} onRemoveEvent={onRemoveEvent} />)
+    const migrationEvents = this.mapEventComponents(dRO.migrationEvents)
+    const politicsEvents = this.mapEventComponents(dRO.politicsEvents)
 
     return (
       <tr>
-        <td className={dayClassName}><p>{day}</p></td>
-        <td className='migration'><ul>{migrationEvents}</ul></td>
-        <td className='politics'><ul>{politicsEvents}</ul></td>
+        <td
+          className={dayClassName}>
+          <p>
+            {day}
+          </p>
+        </td>
+        <td
+          className='migration'>
+          <ul>
+            {migrationEvents}
+          </ul>
+        </td>
+        <td
+          className='politics'>
+          <ul>
+            {politicsEvents}
+          </ul>
+        </td>
       </tr>
     )
   }

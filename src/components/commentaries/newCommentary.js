@@ -84,13 +84,24 @@ export default React.createClass({
     return (
       <Modal show onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>New commentary</Modal.Title>
+          <Modal.Title>
+            New commentary
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='text' label='Title' value={title} onChange={this.onChangeTitle} autoFocus />
-          <div style={dateLabelStyle}>Date</div>
-          <div style={dtfStyle}>
+          <Input
+            type='text'
+            label='Title'
+            value={title}
+            onChange={this.onChangeTitle}
+            autoFocus />
+          <div
+            style={dateLabelStyle}>
+            Date
+          </div>
+          <div
+            style={dtfStyle}>
             <DateTimeField
               dateTime={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
               format='DD.MM.YYYY'
@@ -99,12 +110,27 @@ export default React.createClass({
               inputProps={dateTimeFieldInputProps}
               onChange={this.onChangeDate} />
           </div>
-          {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
+          {
+            error
+            ? <Alert
+                bsStyle='danger'
+                style={alertStyle}>
+              {error}
+            </Alert>
+            : null
+          }
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewCommentary}>create new commentary</Button>
+          <Button
+            onClick={this.close}>
+            discard input and close
+          </Button>
+          <Button
+            bsStyle='primary'
+            onClick={this.createNewCommentary}>
+            create new commentary
+          </Button>
         </Modal.Footer>
 
       </Modal>

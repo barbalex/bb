@@ -47,18 +47,36 @@ export default React.createClass({
     }
     if (editing) {
       return (
-        <div className='commentary'>
-          {showMeta ? <Meta doc={activeCommentary} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={activeCommentary} articleDecoded={articleDecoded} onSaveCommentaryArticle={onSaveCommentaryArticle} />
-          <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
+        <div
+          className='commentary'>
+          {
+            showMeta
+            ? <Meta
+                doc={activeCommentary}
+                onCloseMeta={this.onCloseMeta} />
+            : null
+          }
+          <Editor
+            doc={activeCommentary}
+            articleDecoded={articleDecoded}
+            onSaveCommentaryArticle={onSaveCommentaryArticle} />
+          <Button
+            style={metaButtonStyle}
+            onClick={this.onClickMeta}>
+            images
+          </Button>
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
-      <div className='commentary'>
-        <h1>{activeCommentary.title}</h1>
-        <div dangerouslySetInnerHTML={createMarkup()} />
+      <div
+        className='commentary'>
+        <h1>
+          {activeCommentary.title}
+        </h1>
+        <div
+          dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )
   }

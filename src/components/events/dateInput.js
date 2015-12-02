@@ -37,8 +37,12 @@ export default React.createClass({
     }
     return (
       <div>
-        <div style={dateLabelStyle}>Date</div>
-        <div style={dtfStyle}>
+        <div
+          style={dateLabelStyle}>
+          Date
+        </div>
+        <div
+          style={dtfStyle}>
           <DateTimeField
             dateTime={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
             format='DD.MM.YYYY'

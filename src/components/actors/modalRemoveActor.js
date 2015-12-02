@@ -38,8 +38,15 @@ export default React.createClass({
             <p>Are you sure, you want to remove actor "{doc.category}"?</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle='danger' onClick={this.onClickRemove}>yes, remove!</Button>
-            <Button onClick={this.close}>no!</Button>
+            <Button
+              bsStyle='danger'
+              onClick={this.onClickRemove}>
+              yes, remove!
+            </Button>
+            <Button
+              onClick={this.close}>
+              no!
+            </Button>
           </Modal.Footer>
         </Modal.Dialog>
       </div>

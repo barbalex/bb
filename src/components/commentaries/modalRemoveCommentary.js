@@ -32,14 +32,25 @@ export default React.createClass({
       <div className='static-modal'>
         <Modal.Dialog onHide={this.onHide}>
           <Modal.Header>
-            <Modal.Title>Remove commentary "{doc.title}"</Modal.Title>
+            <Modal.Title>
+              Remove commentary "{doc.title}"
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Are you sure, you want to remove commentary "{doc.title}"?</p>
+            <p>
+              Are you sure, you want to remove commentary "{doc.title}"?
+            </p>
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle='danger' onClick={this.onClickRemove}>yes, remove!</Button>
-            <Button onClick={this.close}>no!</Button>
+            <Button
+              bsStyle='danger'
+              onClick={this.onClickRemove}>
+              yes, remove!
+            </Button>
+            <Button
+              onClick={this.close}>
+              no!
+            </Button>
           </Modal.Footer>
         </Modal.Dialog>
       </div>

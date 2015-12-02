@@ -54,17 +54,29 @@ export default React.createClass({
     return (
       <Modal show onHide={this.close} bsSize='large'>
         <Modal.Header>
-          <Modal.Title>New actor category</Modal.Title>
+          <Modal.Title>
+            New actor category
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <Input type='text' label='Category' value={category} onChange={this.onChangeCategory} autoFocus />
-          {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
+          {
+            error
+            ? <Alert bsStyle='danger' style={alertStyle}>
+                {error}
+              </Alert>
+            : null
+          }
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewActor}>create new actor</Button>
+          <Button onClick={this.close}>
+            discard input and close
+          </Button>
+          <Button bsStyle='primary' onClick={this.createNewActor}>
+            create new actor
+          </Button>
         </Modal.Footer>
 
       </Modal>

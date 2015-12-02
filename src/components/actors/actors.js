@@ -171,10 +171,25 @@ export default React.createClass({
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
-          <div key={doc._id} ref={(c) => this[ref] = c} className='panel panel-default'>
-            <div className='panel-heading' role='tab' id={'heading' + index} onClick={this.onClickActor.bind(this, doc._id)} style={panelHeadingStyle}>
-              <h4 className='panel-title'>
-                <a role='button' data-toggle='collapse' data-parent='#actorsAccordion' href={'#collapse' + index} aria-expanded='false' aria-controls={'#collapse' + index}>
+          <div
+            key={doc._id}
+            ref={(c) => this[ref] = c}
+            className='panel panel-default'>
+            <div
+              className='panel-heading'
+              role='tab'
+              id={'heading' + index}
+              onClick={this.onClickActor.bind(this, doc._id)}
+              style={panelHeadingStyle}>
+              <h4
+                className='panel-title'>
+                <a
+                  role='button'
+                  data-toggle='collapse'
+                  data-parent='#actorsAccordion'
+                  href={'#collapse' + index}
+                  aria-expanded='false'
+                  aria-controls={'#collapse' + index}>
                   {doc.category}
                 </a>
               </h4>
@@ -197,7 +212,9 @@ export default React.createClass({
                   role='tabpanel'
                   aria-labelledby={'heading' + index}
                   onClick={this.onClickActorCollapse}>
-                  <div className='panel-body' style={panelBodyStyle}>
+                  <div
+                    className='panel-body'
+                    style={panelBodyStyle}>
                     <Actor
                       activeActor={activeActor}
                       editing={editing}
@@ -219,11 +236,24 @@ export default React.createClass({
     const activeId = activeActor ? activeActor._id : null
     return (
       <div className='actors'>
-        <PanelGroup activeKey={activeId} id='actorsAccordion' accordion>
+        <PanelGroup
+          activeKey={activeId}
+          id='actorsAccordion' accordion>
           {this.actorsComponent()}
         </PanelGroup>
-        {showNewActor ? <NewActor onCloseNewActor={onCloseNewActor} /> : null}
-        {docToRemove ? <ModalRemoveActor doc={docToRemove} removeActor={this.removeActor} /> : null}
+        {
+          showNewActor
+          ? <NewActor
+              onCloseNewActor={onCloseNewActor} />
+          : null
+        }
+        {
+          docToRemove
+          ? <ModalRemoveActor
+              doc={docToRemove}
+              removeActor={this.removeActor} />
+          : null
+        }
       </div>
     )
   }
