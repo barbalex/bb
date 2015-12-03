@@ -216,6 +216,9 @@ export default React.createClass({
     const activeId = activeStatistic ? activeStatistic._id : null
     return (
       <div className='statistics'>
+        <h1>
+          Statistics
+        </h1>
         <PanelGroup activeKey={activeId} id='statisticsAccordion' accordion>
           {this.statisticsComponent()}
         </PanelGroup>
