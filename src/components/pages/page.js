@@ -50,17 +50,33 @@ export default React.createClass({
     if (editing && activePage._id !== 'pages_statistics' && activePage._id !== 'pages_actors') {
       return (
         <div className='page'>
-          {showMeta ? <Meta doc={activePage} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={activePage} articleDecoded={articleDecoded} onSavePageArticle={onSavePageArticle} />
-          <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
+          {
+            showMeta
+            ? <Meta
+                doc={activePage}
+                onCloseMeta={this.onCloseMeta} />
+            : null
+          }
+          <Editor
+            doc={activePage}
+            articleDecoded={articleDecoded}
+            onSavePageArticle={onSavePageArticle} />
+          <Button
+            style={metaButtonStyle}
+            onClick={this.onClickMeta}>
+            images
+          </Button>
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
       <div className='page'>
-        <h1>{title}</h1>
-        <div dangerouslySetInnerHTML={createMarkup()} />
+        <h1>
+          {title}
+        </h1>
+        <div
+          dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )
   }
