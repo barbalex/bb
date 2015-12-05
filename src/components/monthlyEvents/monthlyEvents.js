@@ -64,8 +64,19 @@ export default React.createClass({
         // wanted to only build MonthlyEventsOfYear if isActiveYear
         // but opening a year was way to hideous
         return (
-          <Panel key={year} header={year} eventKey={year} className={className} onClick={this.onClickYear.bind(this, year)}>
-            <MonthlyEventsOfYear year={year} monthlyEvents={monthlyEvents} activeMonthlyEvent={activeMonthlyEvent} editing={editing} email={email} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+          <Panel
+            key={year}
+            header={year}
+            eventKey={year}
+            className={className}
+            onClick={this.onClickYear.bind(this, year)}>
+            <MonthlyEventsOfYear
+              year={year}
+              monthlyEvents={monthlyEvents}
+              activeMonthlyEvent={activeMonthlyEvent}
+              editing={editing}
+              email={email}
+              onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
           </Panel>
         )
       })
