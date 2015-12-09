@@ -32,7 +32,7 @@ export default React.createClass({
       <div style={{marginBottom: 20}}>
         <div
           style={labelStyle}>
-          Type
+          Column
         </div>
         <ButtonGroup>
           <Button

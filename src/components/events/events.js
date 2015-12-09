@@ -9,6 +9,7 @@ import GeminiScrollbar from 'react-gemini-scrollbar'
 import _ from 'lodash'
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
+import MonthlyStatisticsRow from './monthlyStatisticsRow.js'
 import NewEvent from './newEvent.js'
 import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
@@ -69,12 +70,29 @@ export default React.createClass({
     const { events, email } = this.props
     const dateRowObjects = getDaterowObjectsSinceOldestEvent(events)
     let dateRows = []
-    dateRowObjects.forEach((dateRowObject, index) => {
-      const day = moment(dateRowObject.date).format('D')
-      const endOfMonth = moment(dateRowObject.date).endOf('month').format('DD')
+    dateRowObjects.forEach((dRO, index) => {
+      const day = moment(dRO.date).format('D')
+      const endOfMonth = moment(dRO.date).endOf('month').format('DD')
+      const dROForDateRow = {
+        date: dRO.date,
+        migrationEvents: dRO.migrationEvents.filter((event) => !event.tags || !event.tags.includes('monthlyStatistics')),
+        politicsEvents: dRO.politicsEvents.filter((event) => !event.tags || !event.tags.includes('monthlyStatistics'))
+      }
+      const dROForMonthlyStatsRow = {
+        date: dRO.date,
+        migrationEvents: dRO.migrationEvents.filter((event) => event.tags && event.tags.includes('monthlyStatistics')),
+        politicsEvents: dRO.politicsEvents.filter((event) => event.tags && event.tags.includes('monthlyStatistics'))
+      }
+      const dROForMonthlyStatsHasEvents = dROForMonthlyStatsRow.migrationEvents.length > 0 || dROForMonthlyStatsRow.politicsEvents.length > 0
       const needsMonthRow = day === endOfMonth || index === 0
-      if (needsMonthRow) dateRows.push(<MonthRow key={index + 'monthRow'} dateRowObject={dateRowObject} />)
-      dateRows.push(<DateRow key={index} dateRowObject={dateRowObject} email={email} onRemoveEvent={this.onRemoveEvent} />)
+      const needsMonthlyStatisticsRow = day === endOfMonth && dROForMonthlyStatsHasEvents
+      if (needsMonthRow) {
+        dateRows.push(<MonthRow key={index + 'monthRow'} dateRowObject={dRO} />)
+      }
+      if (needsMonthlyStatisticsRow) {
+        dateRows.push(<MonthlyStatisticsRow key={index + 'monthlyStatisticsRow'} dateRowObject={dROForMonthlyStatsRow} email={email} onRemoveEvent={this.onRemoveEvent} />)
+      }
+      dateRows.push(<DateRow key={index} dateRowObject={dROForDateRow} email={email} onRemoveEvent={this.onRemoveEvent} />)
     })
     return dateRows
   },

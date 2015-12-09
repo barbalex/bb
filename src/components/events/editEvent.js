@@ -80,22 +80,49 @@ export default React.createClass({
       marginBottom: 10
     }
     return (
-      <Modal show onHide={this.close} bsSize='large' dialogClassName='editEvent'>
+      <Modal
+        show
+        onHide={this.close}
+        bsSize='large'
+        dialogClassName='editEvent'>
         <Modal.Header closeButton>
-          <Modal.Title>Edit event</Modal.Title>
+          <Modal.Title>
+            Edit event
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='text' label='Title' value={activeEvent.title} onChange={this.onChangeTitle} onBlur={this.onBlurTitle} />
-          <DateInput date={date} onChangeDate={this.onChangeDate} />
-          <EventTypeButtonGroup eventType={activeEvent.eventType} onChangeEventType={this.onChangeEventType} />
-          <TagsInput activeEvent={activeEvent} />
-          <EventLinks activeEvent={activeEvent} />
-          {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
+          <Input
+            type='text'
+            label='Title'
+            value={activeEvent.title}
+            onChange={this.onChangeTitle}
+            onBlur={this.onBlurTitle} />
+          <DateInput
+            date={date}
+            onChangeDate={this.onChangeDate} />
+          <EventTypeButtonGroup
+            eventType={activeEvent.eventType}
+            onChangeEventType={this.onChangeEventType} />
+          <TagsInput
+            activeEvent={activeEvent} />
+          <EventLinks
+            activeEvent={activeEvent} />
+          {
+            error
+            ? <Alert
+                bsStyle='danger'
+                style={alertStyle}>
+                {error}
+              </Alert>
+            : null
+          }
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.close}>close</Button>
+          <Button onClick={this.close}>
+            close
+          </Button>
         </Modal.Footer>
 
       </Modal>

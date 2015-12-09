@@ -5,6 +5,7 @@ export default () => [
   'arrivals',
   'victims',
   'statistics',
+  'monthlyStatistics',
   'EU',
   'UN',
   'Italy',

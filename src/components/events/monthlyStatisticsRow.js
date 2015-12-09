@@ -27,32 +27,32 @@ export default React.createClass({
 
   render () {
     const { dateRowObject: dRO } = this.props
-    const day = moment(dRO.date).format('D')
     const migrationEvents = this.mapEventComponents(dRO.migrationEvents)
     const politicsEvents = this.mapEventComponents(dRO.politicsEvents)
-    const dayClassName = migrationEvents.length > 0 || politicsEvents.length > 0 ? 'day dayWithEvents' : 'day'
 
-    return (
-      <tr>
-        <td
-          className={dayClassName}>
-          <p>
-            {day}
-          </p>
-        </td>
-        <td
-          className='migration'>
-          <ul>
-            {migrationEvents}
-          </ul>
-        </td>
-        <td
-          className='politics'>
-          <ul>
-            {politicsEvents}
-          </ul>
-        </td>
-      </tr>
-    )
+    if (migrationEvents.length > 0 || politicsEvents.length > 0) {
+      return (
+        <tr className='monthlyStatisticsRow'>
+          <td
+            className='day'>
+            <p>
+            </p>
+          </td>
+          <td
+            className='migration'>
+            <ul>
+              {migrationEvents}
+            </ul>
+          </td>
+          <td
+            className='politics'>
+            <ul>
+              {politicsEvents}
+            </ul>
+          </td>
+        </tr>
+      )
+    }
+    return null
   }
 })
