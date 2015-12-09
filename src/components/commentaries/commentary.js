@@ -72,9 +72,6 @@ export default React.createClass({
     return (
       <div
         className='commentary'>
-        <h1>
-          {activeCommentary.title}
-        </h1>
         <div
           dangerouslySetInnerHTML={createMarkup()} />
       </div>
