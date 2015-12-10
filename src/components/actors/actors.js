@@ -148,12 +148,10 @@ export default React.createClass({
     const { activeActor, editing, email, onSaveActorArticle } = this.props
     let { actors } = this.props
     if (actors.length > 0) {
-      console.log('actors before sorting', actors)
       actors = _.sortBy(actors, (actor) => {
         if (actor.order) return actor.order
         return 100
       })
-      console.log('actors after sorting', actors)
       return actors.map((doc, index) => {
         const isActiveActor = activeActor ? doc._id === activeActor._id : false
         const showEditingGlyphons = !!email
