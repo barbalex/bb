@@ -56,7 +56,7 @@ export default React.createClass({
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
-      <div className='actor'>
+      <div className='actor col500'>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )
