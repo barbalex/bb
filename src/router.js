@@ -106,7 +106,7 @@ export default Router.extend({
 
   login () {
     ReactDOM.render(
-      <Main login={true} />, document.getElementById('content')
+      <Main login />, document.getElementById('content')
     )
   },
 
