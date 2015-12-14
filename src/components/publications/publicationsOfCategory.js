@@ -136,6 +136,10 @@ export default React.createClass({
     // filter only publication of current category
     publications = publications.filter((publication) => publication.category === category)
     publications = publications.sort((a, b) => {
+      if (a.order && b.order) {
+        if (a.order < b.order) return -1
+        return 1
+      }
       if (a.title < b.title) return -1
       return 1
     })
