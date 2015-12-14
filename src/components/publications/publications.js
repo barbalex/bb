@@ -2,6 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
+import _ from 'lodash'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import PublicationsOfCategory from './publicationsOfCategory.js'
 import NewPublication from './newPublication.js'
@@ -30,9 +31,19 @@ export default React.createClass({
 
   publicationCategoriesComponent (activePublicationCategory) {
     const { publications, activePublication, editing, email, onSavePublicationArticle } = this.props
-    const publicationCategories = app.publicationsStore.getPublicationCategories()
+    let publicationCategories = app.publicationsStore.getPublicationCategories()
 
     if (publications.length > 0 && publicationCategories.length > 0) {
+      publicationCategories = _.sortBy(publicationCategories, (cat) => {
+        const orderByCategory = {
+          'Academic': 3,
+          'European Union': 1,
+          "IO's & NGO's": 2
+        }
+        let order = orderByCategory[cat]
+        if (!order) order = 4
+        return order
+      })
       return publicationCategories.map((category, yIndex) => {
         const className = category === activePublicationCategory ? 'category active' : 'category not-active'
         // wanted to only build publicationsOfCategory if isActiveYear
