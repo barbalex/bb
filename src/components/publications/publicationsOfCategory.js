@@ -45,7 +45,6 @@ export default React.createClass({
   onClickPublication (id, e) {
     const { activePublication } = this.props
     // prevent higher level panels from reacting
-    e.preventDefault()
     e.stopPropagation()
     const idToGet = (!activePublication || activePublication._id !== id) ? id : null
     app.Actions.getPublication(idToGet)
@@ -53,7 +52,6 @@ export default React.createClass({
 
   onClickEventCollapse (event) {
     // prevent higher level panels from reacting
-    event.preventDefault()
     event.stopPropagation()
   },
 

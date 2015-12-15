@@ -46,18 +46,16 @@ export default React.createClass({
     }
   },
 
-  onClickMonthlyEvent (id, e) {
+  onClickMonthlyEvent (id, event) {
     const { activeMonthlyEvent } = this.props
     // prevent higher level panels from reacting
-    e.preventDefault()
-    e.stopPropagation()
+    event.stopPropagation()
     const idToGet = (!activeMonthlyEvent || activeMonthlyEvent._id && activeMonthlyEvent._id !== id) ? id : null
     app.Actions.getMonthlyEvent(idToGet)
   },
 
   onClickEventCollapse (event) {
     // prevent higher level panels from reacting
-    event.preventDefault()
     event.stopPropagation()
   },
 

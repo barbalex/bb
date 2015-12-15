@@ -60,7 +60,6 @@ export default React.createClass({
   onClickActor (id, e) {
     const { activeActor } = this.props
     // prevent higher level panels from reacting
-    e.preventDefault()
     e.stopPropagation()
     const idToGet = (!activeActor || activeActor._id !== id) ? id : null
     app.Actions.getActor(idToGet)
@@ -68,7 +67,6 @@ export default React.createClass({
 
   onClickActorCollapse (event) {
     // prevent higher level panels from reacting
-    event.preventDefault()
     event.stopPropagation()
   },
 

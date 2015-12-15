@@ -56,7 +56,6 @@ export default React.createClass({
   onClickCommentary (id, e) {
     const { activeCommentary } = this.props
     // prevent higher level panels from reacting
-    e.preventDefault()
     e.stopPropagation()
     const idToGet = (!activeCommentary || activeCommentary._id !== id) ? id : null
     app.Actions.getCommentary(idToGet)
@@ -64,7 +63,6 @@ export default React.createClass({
 
   onClickCommentaryCollapse (event) {
     // prevent higher level panels from reacting
-    event.preventDefault()
     event.stopPropagation()
   },
 

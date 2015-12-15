@@ -56,7 +56,6 @@ export default React.createClass({
   onClickStatistic (id, e) {
     const { activeStatistic } = this.props
     // prevent higher level panels from reacting
-    e.preventDefault()
     e.stopPropagation()
     const idToGet = (!activeStatistic || activeStatistic._id !== id) ? id : null
     app.Actions.getStatistic(idToGet)
@@ -64,7 +63,6 @@ export default React.createClass({
 
   onClickStatisticCollapse (event) {
     // prevent higher level panels from reacting
-    event.preventDefault()
     event.stopPropagation()
   },
 
