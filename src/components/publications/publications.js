@@ -38,7 +38,7 @@ export default React.createClass({
         const orderByCategory = {
           'Academic': 3,
           'European Union': 1,
-          "IO's & NGO's": 2
+          'IOs & NGOs': 2
         }
         let order = orderByCategory[cat]
         if (!order) order = 4
