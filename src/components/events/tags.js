@@ -26,6 +26,12 @@ export default () => [
     explanation: 'places events in blue row directly under month title if date is last day in month'
   },
   {
+    tag: 'highlighted',
+    iconNr: 'e006',
+    iconText: 'star',
+    top: 5
+  },
+  {
     tag: 'EU',
     iconNr: null,
     explanation: null
@@ -65,7 +71,5 @@ export default () => [
     iconNr: null,
     iconText: null,
     explanation: null
-  },
-  
-  
+  }
 ]

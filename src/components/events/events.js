@@ -160,7 +160,6 @@ export default React.createClass({
       top: eventsTableHeadTop
     }
     const fontSize = window.innerWidth < 500 ? 20 : 21
-    console.log('window.innerWidth', window.innerWidth)
     const headerStyle = {
       fontSize: fontSize,
       whiteSpace: 'nowrap',
