@@ -133,9 +133,18 @@ export default React.createClass({
   archiveMessage () {
     const { showArchiveMessage } = this.props
     if (!showArchiveMessage) return null
+    const pStyle = {
+      marginTop: 15,
+      marginBottom: 15,
+      paddingLeft: 6
+    }
     return (
-      <div ref={(j) => this.archiveMessageComponent = j} >
-        <p style={{ marginTop: 15, marginBottom: 15, paddingLeft: 6 }}>Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.</p>
+      <div
+        ref={(j) => this.archiveMessageComponent = j} >
+        <p
+          style={pStyle}>
+          Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
+        </p>
       </div>
     )
   },
@@ -149,6 +158,13 @@ export default React.createClass({
     }
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
+    }
+    const fontSize = window.innerWidth < 500 ? 20 : 21
+    console.log('window.innerWidth', window.innerWidth)
+    const headerStyle = {
+      fontSize: fontSize,
+      whiteSpace: 'nowrap',
+      textOverflox: 'ellipsis'
     }
 
     return (
@@ -167,9 +183,9 @@ export default React.createClass({
           </colgroup>
           <thead>
             <tr>
-              <th className='day'>Date</th>
-              <th className='migration'>Maritime Events</th>
-              <th className='politics'>Political Events</th>
+              <th className='day' style={headerStyle}>Date</th>
+              <th className='migration' style={headerStyle}>Maritime Events</th>
+              <th className='politics' style={headerStyle}>Political Events</th>
             </tr>
           </thead>
         </Table>
