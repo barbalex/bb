@@ -48,7 +48,8 @@ export default React.createClass({
     showNewPublication: React.PropTypes.bool,
     login: React.PropTypes.bool,
     email: React.PropTypes.string,
-    errors: React.PropTypes.array
+    errors: React.PropTypes.array,
+    showArchiveMessage: React.PropTypes.bool
   },
 
   getInitialState () {
@@ -76,7 +77,8 @@ export default React.createClass({
       showNewMonthlyEvent: false,
       showNewPublication: false,
       email: email,
-      errors: []
+      errors: [],
+      showArchiveMessage: false
     }
   },
 
@@ -91,6 +93,14 @@ export default React.createClass({
     this.listenTo(app.actorsStore, this.onActorsStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onErrorStoreChange)
+    this.manageArchiveMessage()
+  },
+
+  manageArchiveMessage () {
+    this.setState({ showArchiveMessage: true })
+    setTimeout(() => {
+      this.setState({ showArchiveMessage: false })
+    }, 10000)
   },
 
   onActivePageStoreChange (activePage) {
@@ -243,7 +253,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, statistics, activeStatistic, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewStatistic, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors } = this.state
+    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, statistics, activeStatistic, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewStatistic, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, showArchiveMessage } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events', 'pages_statistics']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
@@ -308,7 +318,8 @@ export default React.createClass({
                   activeEvent={activeEvent}
                   showNewEvent={showNewEvent}
                   onChangeActiveEvent={this.onChangeActiveEvent}
-                  onCloseNewEvent={this.onCloseNewEvent} />
+                  onCloseNewEvent={this.onCloseNewEvent}
+                  showArchiveMessage={showArchiveMessage} />
               : null
             }
             {

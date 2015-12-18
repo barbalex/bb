@@ -28,32 +28,39 @@ export default React.createClass({
     onChangeActiveEvent: React.PropTypes.func,
     showNewEvent: React.PropTypes.bool,
     docToRemove: React.PropTypes.object,
-    introJumbotronHeight: React.PropTypes.number
+    introJumbotronHeight: React.PropTypes.number,
+    showArchiveMessageHeight: React.PropTypes.number,
+    showArchiveMessage: React.PropTypes.bool
   },
 
   getInitialState () {
     return {
       docToRemove: null,
       dateRowObjects: [],
-      introJumbotronHeight: null
+      introJumbotronHeight: null,
+      showArchiveMessageHeight: null
     }
   },
 
   componentDidMount () {
     app.Actions.getEvents()
-    this.setIntroJumbotronHeight()
-    window.addEventListener('resize', _.debounce(this.setIntroJumbotronHeight, 50))
+    this.setIntroComponentsHeight()
+    window.addEventListener('resize', _.debounce(this.setIntroComponentsHeight, 50))
   },
 
   componentWillUnmount () {
-    window.removeEventListener('resize', _.debounce(this.setIntroJumbotronHeight, 50))
+    window.removeEventListener('resize', _.debounce(this.setIntroComponentsHeight, 50))
   },
 
-  setIntroJumbotronHeight () {
-    const { introJumbotronHeight: introJumbotronHeightOld } = this.state
+  setIntroComponentsHeight () {
+    const { introJumbotronHeight: introJumbotronHeightOld, showArchiveMessageHeight: showArchiveMessageHeightOld } = this.state
     const introJumbotronDomNode = this.introJumbotron ? ReactDOM.findDOMNode(this.introJumbotron) : null
     const introJumbotronHeight = introJumbotronDomNode ? introJumbotronDomNode.clientHeight : null
     if (introJumbotronHeight && introJumbotronHeight !== introJumbotronHeightOld) this.setState({ introJumbotronHeight })
+
+    const showArchiveMessageDomNode = this.archiveMessageComponent ? ReactDOM.findDOMNode(this.archiveMessageComponent) : null
+    const showArchiveMessageHeight = showArchiveMessageDomNode ? showArchiveMessageDomNode.clientHeight : null
+    if (showArchiveMessageHeight && showArchiveMessageHeight !== showArchiveMessageHeightOld) this.setState({ showArchiveMessageHeight })
   },
 
   onRemoveEvent (docToRemove) {
@@ -70,37 +77,76 @@ export default React.createClass({
     const { events, email } = this.props
     const dateRowObjects = getDaterowObjectsSinceOldestEvent(events)
     let dateRows = []
-    dateRowObjects.forEach((dRO, index) => {
-      const day = moment(dRO.date).format('D')
-      const endOfMonth = moment(dRO.date).endOf('month').format('DD')
-      const dROForDateRow = {
-        date: dRO.date,
-        migrationEvents: dRO.migrationEvents.filter((event) => !event.tags || !event.tags.includes('monthlyStatistics')),
-        politicsEvents: dRO.politicsEvents.filter((event) => !event.tags || !event.tags.includes('monthlyStatistics'))
-      }
-      const dROForMonthlyStatsRow = {
-        date: dRO.date,
-        migrationEvents: dRO.migrationEvents.filter((event) => event.tags && event.tags.includes('monthlyStatistics')),
-        politicsEvents: dRO.politicsEvents.filter((event) => event.tags && event.tags.includes('monthlyStatistics'))
-      }
-      const dROForMonthlyStatsHasEvents = dROForMonthlyStatsRow.migrationEvents.length > 0 || dROForMonthlyStatsRow.politicsEvents.length > 0
-      const needsMonthRow = day === endOfMonth || index === 0
-      const needsMonthlyStatisticsRow = day === endOfMonth && dROForMonthlyStatsHasEvents
-      if (needsMonthRow) {
-        dateRows.push(<MonthRow key={index + 'monthRow'} dateRowObject={dRO} />)
-      }
-      if (needsMonthlyStatisticsRow) {
-        dateRows.push(<MonthlyStatisticsRow key={index + 'monthlyStatisticsRow'} dateRowObject={dROForMonthlyStatsRow} email={email} onRemoveEvent={this.onRemoveEvent} />)
-      }
-      dateRows.push(<DateRow key={index} dateRowObject={dROForDateRow} email={email} onRemoveEvent={this.onRemoveEvent} />)
-    })
-    return dateRows
+    if (dateRowObjects.length > 0) {
+      dateRowObjects.forEach((dRO, index) => {
+        const day = moment(dRO.date).format('D')
+        const endOfMonth = moment(dRO.date).endOf('month').format('DD')
+        const dROForDateRow = {
+          date: dRO.date,
+          migrationEvents: dRO.migrationEvents.filter((event) => !event.tags || !event.tags.includes('monthlyStatistics')),
+          politicsEvents: dRO.politicsEvents.filter((event) => !event.tags || !event.tags.includes('monthlyStatistics'))
+        }
+        const dROForMonthlyStatsRow = {
+          date: dRO.date,
+          migrationEvents: dRO.migrationEvents.filter((event) => event.tags && event.tags.includes('monthlyStatistics')),
+          politicsEvents: dRO.politicsEvents.filter((event) => event.tags && event.tags.includes('monthlyStatistics'))
+        }
+        const dROForMonthlyStatsHasEvents = dROForMonthlyStatsRow.migrationEvents.length > 0 || dROForMonthlyStatsRow.politicsEvents.length > 0
+        const needsMonthRow = day === endOfMonth || index === 0
+        const needsMonthlyStatisticsRow = day === endOfMonth && dROForMonthlyStatsHasEvents
+        if (needsMonthRow) {
+          dateRows.push(
+            <MonthRow
+              key={index + 'monthRow'}
+              dateRowObject={dRO} />
+          )
+        }
+        if (needsMonthlyStatisticsRow) {
+          dateRows.push(
+            <MonthlyStatisticsRow
+              key={index + 'monthlyStatisticsRow'}
+              dateRowObject={dROForMonthlyStatsRow}
+              email={email}
+              onRemoveEvent={this.onRemoveEvent} />
+          )
+        }
+        dateRows.push(
+          <DateRow
+          key={index}
+          dateRowObject={dROForDateRow}
+          email={email}
+          onRemoveEvent={this.onRemoveEvent} />
+        )
+      })
+      return dateRows
+    } else {
+      return (
+        <tr>
+          <td colSpan='3'>
+            <p>Loading events...</p>
+          </td>
+        </tr>
+      )
+    }
+  },
+
+  archiveMessage () {
+    const { showArchiveMessage } = this.props
+    if (!showArchiveMessage) return null
+    return (
+      <div ref={(j) => this.archiveMessageComponent = j} >
+        <p style={{ marginTop: 15, marginBottom: 15, paddingLeft: 6 }}>Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.</p>
+      </div>
+    )
   },
 
   render () {
-    const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
-    const { docToRemove, introJumbotronHeight } = this.state
-    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 10 : 318
+    const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent, showArchiveMessage } = this.props
+    const { docToRemove, introJumbotronHeight, showArchiveMessageHeight } = this.state
+    let eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 10 : 318
+    if (showArchiveMessage && showArchiveMessageHeight && showArchiveMessageHeight > 0) {
+      eventsTableHeadTop = eventsTableHeadTop + showArchiveMessageHeight + 30
+    }
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }
@@ -112,6 +158,7 @@ export default React.createClass({
           <p><strong>The pur&shy;pose of this web&shy;site is to gain an over&shy;view by cove&shy;ring chro&shy;no&shy;lo&shy;gi&shy;cal&shy;ly both ma&shy;ri&shy;ti&shy;me and poli&shy;ti&shy;cal events.</strong></p>
           <p style={{ marginBottom: 0 }}>Maritime events in&shy;clude in&shy;for&shy;ma&shy;tion on em&shy;bar&shy;ka&shy;tion, ac&shy;ci&shy;dents, search and res&shy;cue (SAR) ope&shy;ra&shy;tions, vic&shy;tims and dis&shy;em&shy;bar&shy;ka&shy;tion. By po&shy;li&shy;ti&shy;cal events I mean the re&shy;ac&shy;tions and ac&shy;tions un&shy;der&shy;ta&shy;ken by na&shy;tio&shy;nal, re&shy;gio&shy;nal and glo&shy;bal ac&shy;tors, pub&shy;lic as well as private.</p>
         </Jumbotron>
+        {this.archiveMessage()}
         <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
           <colgroup>
             <col className='day' />
@@ -137,7 +184,11 @@ export default React.createClass({
               {this.dateRows()}
             </tbody>
           </Table>
-          <p style={{ marginTop: 20 }}>Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.</p>
+          {
+            !showArchiveMessage
+            ? <p style={{ marginTop: 20 }}>Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.</p>
+            : null
+          }
         </GeminiScrollbar>
         {
           activeEvent
