@@ -4,6 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
+import { sortBy } from 'lodash'
 import Statistic from './statistic.js'
 import NewStatistic from './newStatistic.js'
 import ModalRemoveStatistic from './modalRemoveStatistic.js'
@@ -139,8 +140,13 @@ export default React.createClass({
   },
 
   statisticsComponent () {
-    const { statistics, activeStatistic, editing, email, onSaveStatisticArticle } = this.props
+    const { activeStatistic, editing, email, onSaveStatisticArticle } = this.props
+    let { statistics } = this.props
     if (statistics.length > 0) {
+      statistics = sortBy(statistics, (stat) => {
+        if (stat.order) return stat.order
+        return 100
+      })
       return statistics.map((doc, index) => {
         const isActiveStatistic = activeStatistic ? doc._id === activeStatistic._id : false
         const showEditingGlyphons = !!email
