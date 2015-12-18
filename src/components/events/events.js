@@ -100,7 +100,7 @@ export default React.createClass({
   render () {
     const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove, introJumbotronHeight } = this.state
-    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 13 : 321
+    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 10 : 318
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }
