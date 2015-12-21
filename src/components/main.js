@@ -11,7 +11,6 @@ import Navbar from '../components/navbar.js'
 import Page from './pages/page.js'
 import Events from './events/events.js'
 import Commentaries from './commentaries/commentaries.js'
-import Statistics from './statistics/statistics.js'
 import Actors from './actors/actors.js'
 import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
 import Publications from './publications/publications.js'
@@ -35,14 +34,11 @@ export default React.createClass({
     activeCommentary: React.PropTypes.object,
     events: React.PropTypes.array,
     activeEvent: React.PropTypes.object,
-    statistics: React.PropTypes.array,
-    activeStatistic: React.PropTypes.object,
     actors: React.PropTypes.array,
     activeActor: React.PropTypes.object,
     editing: React.PropTypes.bool,
     showNewCommentary: React.PropTypes.bool,
     showNewEvent: React.PropTypes.bool,
-    showNewStatistic: React.PropTypes.bool,
     showNewActor: React.PropTypes.bool,
     showNewMonthlyEvent: React.PropTypes.bool,
     showNewPublication: React.PropTypes.bool,
@@ -65,14 +61,11 @@ export default React.createClass({
       commentaries: [],
       activeEvent: null,
       events: [],
-      activeStatistic: null,
-      statistics: [],
       activeActor: null,
       actors: [],
       editing: false,
       showNewCommentary: false,
       showNewEvent: false,
-      showNewStatistic: false,
       showNewActor: false,
       showNewMonthlyEvent: false,
       showNewPublication: false,
@@ -89,7 +82,6 @@ export default React.createClass({
     this.listenTo(app.publicationsStore, this.onPublicationsStoreChange)
     this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
     this.listenTo(app.eventsStore, this.onEventsStoreChange)
-    this.listenTo(app.statisticsStore, this.onStatisticsStoreChange)
     this.listenTo(app.actorsStore, this.onActorsStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onErrorStoreChange)
@@ -132,12 +124,6 @@ export default React.createClass({
     this.setState(state)
   },
 
-  onStatisticsStoreChange (statistics, activeStatistic) {
-    const { email } = this.state
-    if (!email) statistics = statistics.filter((statistic) => !statistic.draft)
-    this.setState({ statistics, activeStatistic })
-  },
-
   onActorsStoreChange (actors, activeActor) {
     const { email } = this.state
     if (!email) actors = actors.filter((actor) => !actor.draft)
@@ -167,10 +153,6 @@ export default React.createClass({
     this.setState({ showNewEvent: true })
   },
 
-  onClickNewStatistic () {
-    this.setState({ showNewStatistic: true })
-  },
-
   onClickNewActor () {
     this.setState({ showNewActor: true })
   },
@@ -189,10 +171,6 @@ export default React.createClass({
 
   onCloseNewEvent () {
     this.setState({ showNewEvent: false })
-  },
-
-  onCloseNewStatistic () {
-    this.setState({ showNewStatistic: false })
   },
 
   onCloseNewActor () {
@@ -235,12 +213,6 @@ export default React.createClass({
     app.Actions.saveCommentary(activeCommentary)
   },
 
-  onSaveStatisticArticle (articleEncoded) {
-    let { activeStatistic } = this.state
-    activeStatistic.article = articleEncoded
-    app.Actions.saveStatistic(activeStatistic)
-  },
-
   onSaveActorArticle (articleEncoded) {
     let { activeActor } = this.state
     activeActor.article = articleEncoded
@@ -253,20 +225,17 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, statistics, activeStatistic, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewStatistic, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, showArchiveMessage } = this.state
-    const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events', 'pages_statistics']
+    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, showArchiveMessage } = this.state
+    const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
-    const isStatisticPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_statistics'
     const isEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_events'
     const isActorPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_actors'
     const isMonthlyEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_monthlyEvents'
     const isPublicationsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_publications'
     const isCommentary = activePage.type && activePage.type === 'commentaries'
-    const isStatistic = activePage.type && activePage.type === 'statistics'
     const isActor = activePage.type && activePage.type === 'actors'
     const showCommentaryPage = isCommentariesPage || isCommentary
-    const showStatisticPage = isStatisticPage || isStatistic
     const showEventsPage = isEventsPage
     const showActorPage = isActorPage || isActor
     const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
@@ -287,13 +256,11 @@ export default React.createClass({
             activeMonthlyEvent={activeMonthlyEvent}
             activePublication={activePublication}
             activeCommentary={activeCommentary}
-            activeStatistic={activeStatistic}
             activeActor={activeActor}
             email={email}
             editing={editing}
             onClickEdit={this.onClickEdit}
             onClickNewCommentary={this.onClickNewCommentary}
-            onClickNewStatistic={this.onClickNewStatistic}
             onClickNewEvent={this.onClickNewEvent}
             onClickNewActor={this.onClickNewActor}
             onClickNewMonthlyEvent={this.onClickNewMonthlyEvent}
@@ -332,18 +299,6 @@ export default React.createClass({
                   onSaveCommentaryArticle={this.onSaveCommentaryArticle}
                   showNewCommentary={showNewCommentary}
                   onCloseNewCommentary={this.onCloseNewCommentary} />
-              : null
-            }
-            {
-              showStatisticPage
-              ? <Statistics
-                  statistics={statistics}
-                  activeStatistic={activeStatistic}
-                  editing={editing}
-                  email={email}
-                  onSaveStatisticArticle={this.onSaveStatisticArticle}
-                  showNewStatistic={showNewStatistic}
-                  onCloseNewStatistic={this.onCloseNewStatistic} />
               : null
             }
             {

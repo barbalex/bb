@@ -14,13 +14,11 @@ export default React.createClass({
     activeMonthlyEvent: React.PropTypes.object,
     activePublication: React.PropTypes.object,
     activeCommentary: React.PropTypes.object,
-    activeStatistic: React.PropTypes.object,
     activeActor: React.PropTypes.object,
     email: React.PropTypes.string,
     editing: React.PropTypes.bool,
     onClickEdit: React.PropTypes.func,
     onClickNewCommentary: React.PropTypes.func,
-    onClickNewStatistic: React.PropTypes.func,
     onClickNewEvent: React.PropTypes.func,
     onClickNewActor: React.PropTypes.func,
     onClickNewMonthlyEvent: React.PropTypes.func,
@@ -80,10 +78,6 @@ export default React.createClass({
     return <Tooltip id='newEvent'>new event</Tooltip>
   },
 
-  newStatisticTooltip () {
-    return <Tooltip id='newStatistic'>new statistic</Tooltip>
-  },
-
   newActorTooltip () {
     return <Tooltip id='newActor'>new actor</Tooltip>
   },
@@ -97,19 +91,18 @@ export default React.createClass({
   },
 
   render () {
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeStatistic, activeActor, email, editing, onClickNewCommentary, onClickNewEvent, onClickNewStatistic, onClickNewActor, onClickNewMonthlyEvent, onClickNewPublication } = this.props
+    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeActor, email, editing, onClickNewCommentary, onClickNewEvent, onClickNewActor, onClickNewMonthlyEvent, onClickNewPublication } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = activePage && activePage._id ? activePage._id : null
-    const nonEditableIds = ['pages_commentaries', 'pages_statistics', 'pages_monthlyEvents', 'pages_publications', 'pages_actors', 'pages_events']
-    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeStatistic, '_id') || _.has(activeActor, '_id') || _.has(activePublication, '_id'))
+    const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_actors', 'pages_events']
+    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeActor, '_id') || _.has(activePublication, '_id'))
     const showAddCommentary = email && activePage._id === 'pages_commentaries'
     const showAddEvent = email && activePage._id === 'pages_events'
-    const showAddStatistic = email && activePage._id === 'pages_statistics'
     const showAddActor = email && activePage._id === 'pages_actors'
     const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
     const showAddPublication = email && activePage._id === 'pages_publications'
-    const showNavbarRight = email || showEdit || showAddCommentary || showAddEvent || showAddStatistic || showAddActor || showAddMonthlyEvent
+    const showNavbarRight = email || showEdit || showAddCommentary || showAddEvent || showAddActor || showAddMonthlyEvent
     return (
       <div>
         <AffixWrapper id='nav-wrapper' offset={150}>
@@ -126,41 +119,34 @@ export default React.createClass({
               <Nav>
                 <NavItem
                   eventKey={0}
-                  active={id === 'pages_statistics'}
-                  onClick={this.onClickPage.bind(this, 'pages_statistics')}
-                >
-                  Statistics
-                </NavItem>
-                <NavItem
-                  eventKey={1}
                   active={id === 'pages_commentaries'}
                   onClick={this.onClickPage.bind(this, 'pages_commentaries')}
                 >
                   Commentaries
                 </NavItem>
                 <NavItem
-                  eventKey={2}
+                  eventKey={1}
                   active={id === 'pages_actors'}
                   onClick={this.onClickPage.bind(this, 'pages_actors')}
                 >
                   Actors
                 </NavItem>
                 <NavItem
-                  eventKey={3}
+                  eventKey={2}
                   active={id === 'pages_publications'}
                   onClick={this.onClickPage.bind(this, 'pages_publications')}
                 >
                   Publications
                 </NavItem>
                 <NavItem
-                  eventKey={4}
+                  eventKey={3}
                   active={id === 'pages_monthlyEvents'}
                   onClick={this.onClickPage.bind(this, 'pages_monthlyEvents')}
                 >
                   Archive
                 </NavItem>
                 <NavItem
-                  eventKey={5}
+                  eventKey={4}
                   active={id === 'pages_aboutUs'}
                   onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
                 >
@@ -200,18 +186,6 @@ export default React.createClass({
                         <NavItem
                           eventKey={2}
                           onClick={onClickNewEvent}
-                        >
-                          <Glyphicon glyph='plus' />
-                        </NavItem>
-                      </OverlayTrigger>
-                    : null
-                  }
-                  {
-                    showAddStatistic
-                    ? <OverlayTrigger placement='bottom' overlay={this.newStatisticTooltip()}>
-                        <NavItem
-                          eventKey={3}
-                          onClick={onClickNewStatistic}
                         >
                           <Glyphicon glyph='plus' />
                         </NavItem>
