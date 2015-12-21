@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom'
 import { Table, Jumbotron } from 'react-bootstrap'
 import moment from 'moment'
 import GeminiScrollbar from 'react-gemini-scrollbar'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
 import MonthlyStatisticsRow from './monthlyStatisticsRow.js'
@@ -45,11 +45,11 @@ export default React.createClass({
   componentDidMount () {
     app.Actions.getEvents()
     this.setIntroComponentsHeight()
-    window.addEventListener('resize', _.debounce(this.setIntroComponentsHeight, 50))
+    window.addEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
   },
 
   componentWillUnmount () {
-    window.removeEventListener('resize', _.debounce(this.setIntroComponentsHeight, 50))
+    window.removeEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
   },
 
   setIntroComponentsHeight () {

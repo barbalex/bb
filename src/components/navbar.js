@@ -3,7 +3,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Navbar, NavItem, Nav, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
-import _ from 'lodash'
+import { has } from 'lodash'
 import AffixWrapper from './affixWrapper.js'
 
 export default React.createClass({
@@ -96,7 +96,7 @@ export default React.createClass({
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = activePage && activePage._id ? activePage._id : null
     const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_actors', 'pages_events']
-    const showEdit = email && (!_.includes(nonEditableIds, id) || _.has(activeMonthlyEvent, '_id') || _.has(activeCommentary, '_id') || _.has(activeActor, '_id') || _.has(activePublication, '_id'))
+    const showEdit = email && (!nonEditableIds.includes(id) || has(activeMonthlyEvent, '_id') || has(activeCommentary, '_id') || has(activeActor, '_id') || has(activePublication, '_id'))
     const showAddCommentary = email && activePage._id === 'pages_commentaries'
     const showAddEvent = email && activePage._id === 'pages_events'
     const showAddActor = email && activePage._id === 'pages_actors'

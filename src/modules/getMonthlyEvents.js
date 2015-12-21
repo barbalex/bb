@@ -1,7 +1,7 @@
 'use strict'
 
 import app from 'ampersand-app'
-import _ from 'lodash'
+import { pluck } from 'lodash'
 import sortMonthlyEvents from './sortMonthlyEvents.js'
 
 export default () => {
@@ -13,7 +13,7 @@ export default () => {
     }
     app.db.allDocs(options)
       .then((result) => {
-        let monthlyEvents = _.pluck(result.rows, 'doc')
+        let monthlyEvents = pluck(result.rows, 'doc')
         monthlyEvents = sortMonthlyEvents(monthlyEvents)
         resolve(monthlyEvents)
       })

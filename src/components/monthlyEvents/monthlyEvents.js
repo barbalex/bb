@@ -3,7 +3,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
-import _ from 'lodash'
+import { uniq, has } from 'lodash'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import MonthlyEventsOfYear from './monthlyEventsOfYear.js'
 import NewMonthlyEvent from './newMonthlyEvent.js'
@@ -41,9 +41,9 @@ export default React.createClass({
 
   yearsOfEvents () {
     let { monthlyEvents } = this.props
-    const allYears = _.map(monthlyEvents, (doc) => getYearFromEventId(doc._id))
+    const allYears = monthlyEvents.map((doc) => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
-      const years = _.uniq(allYears)
+      const years = uniq(allYears)
       return years.sort().reverse()
     }
     return []
@@ -87,7 +87,7 @@ export default React.createClass({
   render () {
     const { activeMonthlyEvent, showNewMonthlyEvent, onCloseNewMonthlyEvent } = this.props
     let activeYear
-    if (_.has(activeMonthlyEvent, '_id')) {
+    if (has(activeMonthlyEvent, '_id')) {
       activeYear = getYearFromEventId(activeMonthlyEvent._id)
     } else {
       activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()

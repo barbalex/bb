@@ -5,7 +5,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import { ListenerMixin } from 'reflux'
-import _ from 'lodash'
+import { sortBy } from 'lodash'
 import Actor from './actor.js'
 import NewActor from './newActor.js'
 import ModalRemoveActor from './modalRemoveActor.js'
@@ -146,7 +146,7 @@ export default React.createClass({
     const { activeActor, editing, email, onSaveActorArticle } = this.props
     let { actors } = this.props
     if (actors.length > 0) {
-      actors = _.sortBy(actors, (actor) => {
+      actors = sortBy(actors, (actor) => {
         if (actor.order) return actor.order
         return 100
       })

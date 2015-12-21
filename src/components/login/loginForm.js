@@ -7,7 +7,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Input, Alert, Button } from 'react-bootstrap'
-import _ from 'lodash'
+import { isObject } from 'lodash'
 import validateEmail from './validateEmail.js'
 
 export default React.createClass({
@@ -109,7 +109,7 @@ export default React.createClass({
       marginBottom: 8
     }
     let error = loginError
-    if (_.isObject(loginError)) error = loginError.message
+    if (isObject(loginError)) error = loginError.message
     const isError = error && error.length > 0
 
     return (

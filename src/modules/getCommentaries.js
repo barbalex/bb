@@ -1,7 +1,7 @@
 'use strict'
 
 import app from 'ampersand-app'
-import _ from 'lodash'
+import { pluck } from 'lodash'
 import sortCommentaries from './sortCommentaries.js'
 
 export default () => {
@@ -13,7 +13,7 @@ export default () => {
     }
     app.db.allDocs(options)
       .then((result) => {
-        let commentaries = _.pluck(result.rows, 'doc')
+        let commentaries = pluck(result.rows, 'doc')
         commentaries = sortCommentaries(commentaries)
         resolve(commentaries)
       })

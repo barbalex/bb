@@ -18,7 +18,7 @@ import getPublications from './modules/getPublications.js'
 import sortPublications from './modules/sortPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
 import publicationTemplate from 'html!./components/publications/publicationTemplate.html'
-import _ from 'lodash'
+import { uniq } from 'lodash'
 
 export default (Actions) => {
   app.activePageStore = Reflux.createStore({
@@ -607,8 +607,8 @@ export default (Actions) => {
     },
 
     getPublicationCategories () {
-      const allCategories = _.map(this.publications, (publication) => publication.category)
-      const publicationCategories = _.uniq(allCategories)
+      const allCategories = this.publications.map((publication) => publication.category)
+      const publicationCategories = uniq(allCategories)
       return publicationCategories.sort()
     },
 

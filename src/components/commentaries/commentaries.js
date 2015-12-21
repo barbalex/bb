@@ -4,7 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
-import _ from 'lodash'
+import { has } from 'lodash'
 import Commentary from './commentary.js'
 import NewCommentary from './newCommentary.js'
 import ModalRemoveCommentary from './modalRemoveCommentary.js'
@@ -232,7 +232,7 @@ export default React.createClass({
   render () {
     const { activeCommentary, showNewCommentary, onCloseNewCommentary } = this.props
     const { docToRemove } = this.state
-    const activeCommentaryId = _.has(activeCommentary, '_id') ? activeCommentary._id : null
+    const activeCommentaryId = has(activeCommentary, '_id') ? activeCommentary._id : null
     return (
       <div className='commentaries'>
         <h1>

@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import _ from 'lodash'
+import { sortBy } from 'lodash'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import PublicationsOfCategory from './publicationsOfCategory.js'
 import NewPublication from './newPublication.js'
@@ -34,7 +34,7 @@ export default React.createClass({
     let publicationCategories = app.publicationsStore.getPublicationCategories()
 
     if (publications.length > 0 && publicationCategories.length > 0) {
-      publicationCategories = _.sortBy(publicationCategories, (cat) => {
+      publicationCategories = sortBy(publicationCategories, (cat) => {
         const orderByCategory = {
           'Academic': 3,
           'European Union': 1,

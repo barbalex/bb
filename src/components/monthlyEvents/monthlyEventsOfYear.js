@@ -4,7 +4,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { PanelGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import _ from 'lodash'
+import { has } from 'lodash'
 import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import getMonthFromEventId from '../../modules/getMonthFromEventId.js'
@@ -138,7 +138,7 @@ export default React.createClass({
     // filter only events of current year
     monthlyEvents = monthlyEvents.filter((monthlyEvent) => getYearFromEventId(monthlyEvent._id) === year)
     return monthlyEvents.map((doc, dIndex) => {
-      const isActiveMonthlyEvent = _.has(activeMonthlyEvent, '_id') ? doc._id === activeMonthlyEvent._id : false
+      const isActiveMonthlyEvent = has(activeMonthlyEvent, '_id') ? doc._id === activeMonthlyEvent._id : false
       const month = getMonthFromEventId(doc._id)
       const showEditingGlyphons = !!email
       const panelHeadingStyle = {
@@ -211,7 +211,7 @@ export default React.createClass({
   render () {
     const { year, activeMonthlyEvent } = this.props
     const { docToRemove } = this.state
-    const activeEventId = _.has(activeMonthlyEvent, '_id') ? activeMonthlyEvent._id : null
+    const activeEventId = has(activeMonthlyEvent, '_id') ? activeMonthlyEvent._id : null
     return (
       <PanelGroup activeKey={activeEventId} id={year} ref={(c) => this[year] = c} accordion>
         {this.monthlyEventsComponent(year)}

@@ -3,7 +3,6 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
-import _ from 'lodash'
 import DocumentTitle from 'react-document-title'
 import NavHelper from '../components/navHelper.js'
 import Header from '../components/header.js'
@@ -227,7 +226,7 @@ export default React.createClass({
     const { login } = this.props
     const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, showArchiveMessage } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
-    const isSimplePage = activePage.type && activePage.type === 'pages' && !_.includes(nonSimplePages, activePage._id)
+    const isSimplePage = activePage.type && activePage.type === 'pages' && !nonSimplePages.includes(activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
     const isEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_events'
     const isActorPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_actors'
@@ -245,7 +244,7 @@ export default React.createClass({
     const pageName = getPageNameFromDoc(activePage)
     const pageTitle = `blue-borders | ${pageName}`
     const pagesWitCopyright = ['pages_commentaries']
-    const showCopyright = activePage.type && activePage.type === 'pages' && _.includes(pagesWitCopyright, activePage._id)
+    const showCopyright = activePage.type && activePage.type === 'pages' && pagesWitCopyright.includes(activePage._id)
 
     return (
       <DocumentTitle title={pageTitle}>
