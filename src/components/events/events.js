@@ -136,7 +136,8 @@ export default React.createClass({
     const pStyle = {
       marginTop: 15,
       marginBottom: 15,
-      paddingLeft: 6
+      paddingLeft: 6,
+      textAlign: 'center'
     }
     return (
       <div
@@ -201,7 +202,7 @@ export default React.createClass({
           </Table>
           {
             !showArchiveMessage
-            ? <p style={{ marginTop: 20 }}>Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.</p>
+            ? <p style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.</p>
             : null
           }
         </GeminiScrollbar>
