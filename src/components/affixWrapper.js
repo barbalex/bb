@@ -68,10 +68,10 @@ export default React.createClass({
 
   render () {
     const affix = this.state.affix ? 'affix' : ''
-    const {className, offset, ...props} = this.props
+    const {...props} = this.props
 
     return (
-      <div {...props} className={classnames(className, affix)}>
+      <div {...props} className={classnames(null, affix)}>
         {this.props.children}
       </div>
     )
