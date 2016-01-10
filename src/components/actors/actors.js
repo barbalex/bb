@@ -96,7 +96,13 @@ export default React.createClass({
   },
 
   removeActorTooltip () {
-    return <Tooltip id='removeThisActor'>remove</Tooltip>
+    return (
+      <Tooltip
+        id='removeThisActor'
+      >
+        remove
+      </Tooltip>
+    )
   },
 
   removeActorGlyph (doc) {
@@ -108,15 +114,28 @@ export default React.createClass({
       color: '#edf4f8'
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.removeActorTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveActor.bind(this, doc)} />
+      <OverlayTrigger
+        placement='top'
+        overlay={this.removeActorTooltip()}
+      >
+        <Glyphicon
+          glyph='remove-circle'
+          style={glyphStyle}
+          onClick={this.onRemoveActor.bind(this, doc)} /
+        >
       </OverlayTrigger>
     )
   },
 
   toggleDraftTooltip (doc) {
     const text = doc.draft ? 'publish' : 'unpublish'
-    return <Tooltip id='toggleDraft'>{text}</Tooltip>
+    return (
+      <Tooltip
+        id='toggleDraft'
+      >
+        {text}
+      </Tooltip>
+    )
   },
 
   toggleDraftGlyph (doc) {
@@ -130,8 +149,15 @@ export default React.createClass({
       color: color
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.toggleDraftTooltip(doc)}>
-        <Glyphicon glyph={glyph} style={glyphStyle} onClick={this.onToggleDraft.bind(this, doc)} />
+      <OverlayTrigger
+        placement='top'
+        overlay={this.toggleDraftTooltip(doc)}
+      >
+        <Glyphicon
+          glyph={glyph}
+          style={glyphStyle}
+          onClick={this.onToggleDraft.bind(this, doc)} /
+        >
       </OverlayTrigger>
     )
   },
@@ -178,54 +204,58 @@ export default React.createClass({
           <div
             key={doc._id}
             ref={(c) => this[ref] = c}
-            className='panel panel-default'>
+            className='panel panel-default'
+          >
             <div
               className='panel-heading'
               role='tab'
               id={'heading' + index}
               onClick={this.onClickActor.bind(this, doc._id)}
-              style={panelHeadingStyle}>
+              style={panelHeadingStyle}
+            >
               <h4
-                className='panel-title'>
+                className='panel-title'
+              >
                 <a
                   role='button'
                   data-toggle='collapse'
                   data-parent='#actorsAccordion'
                   href={'#collapse' + index}
                   aria-expanded='false'
-                  aria-controls={'#collapse' + index}>
+                  aria-controls={'#collapse' + index}
+                >
                   {doc.category}
                 </a>
               </h4>
               {
-                showEditingGlyphons
-                ? this.toggleDraftGlyph(doc)
-                : null
+                showEditingGlyphons &&
+                this.toggleDraftGlyph(doc)
               }
               {
-                showEditingGlyphons
-                ? this.removeActorGlyph(doc)
-                : null
+                showEditingGlyphons &&
+                this.removeActorGlyph(doc)
               }
             </div>
             {
-              isActiveActor
-              ? <div
-                  id={'#collapse' + index}
-                  className='panel-collapse collapse in'
-                  role='tabpanel'
-                  aria-labelledby={'heading' + index}
-                  onClick={this.onClickActorCollapse}>
-                  <div
-                    className='panel-body'
-                    style={panelBodyStyle}>
-                    <Actor
-                      activeActor={activeActor}
-                      editing={editing}
-                      onSaveActorArticle={onSaveActorArticle} />
-                  </div>
+              isActiveActor &&
+              <div
+                id={'#collapse' + index}
+                className='panel-collapse collapse in'
+                role='tabpanel'
+                aria-labelledby={'heading' + index}
+                onClick={this.onClickActorCollapse}
+              >
+                <div
+                  className='panel-body'
+                  style={panelBodyStyle}
+                >
+                  <Actor
+                    activeActor={activeActor}
+                    editing={editing}
+                    onSaveActorArticle={onSaveActorArticle} /
+                  >
                 </div>
-              : null
+              </div>
             }
           </div>
         )
@@ -239,24 +269,28 @@ export default React.createClass({
     const { docToRemove } = this.state
     const activeId = activeActor ? activeActor._id : null
     return (
-      <div className='actors'>
+      <div
+        className='actors'
+      >
         <PanelGroup
           activeKey={activeId}
-          id='actorsAccordion' accordion>
+          id='actorsAccordion'
+          accordion
+        >
           {this.actorsComponent()}
         </PanelGroup>
         {
-          showNewActor
-          ? <NewActor
-              onCloseNewActor={onCloseNewActor} />
-          : null
+          showNewActor &&
+          <NewActor
+            onCloseNewActor={onCloseNewActor} /
+          >
         }
         {
-          docToRemove
-          ? <ModalRemoveActor
-              doc={docToRemove}
-              removeActor={this.removeActor} />
-          : null
+          docToRemove &&
+          <ModalRemoveActor
+            doc={docToRemove}
+            removeActor={this.removeActor} /
+          >
         }
       </div>
     )

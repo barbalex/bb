@@ -111,13 +111,12 @@ export default React.createClass({
               onChange={this.onChangeDate} />
           </div>
           {
-            error
-            ? <Alert
-                bsStyle='danger'
-                style={alertStyle}>
-              {error}
-            </Alert>
-            : null
+            error &&
+            <Alert
+              bsStyle='danger'
+              style={alertStyle}>
+            {error}
+          </Alert>
           }
         </Modal.Body>
 

@@ -201,30 +201,29 @@ export default React.createClass({
             </tbody>
           </Table>
           {
-            !showArchiveMessage
-            ? <p style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.</p>
-            : null
+            !showArchiveMessage &&
+            <p
+              style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
+              Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
+            </p>
           }
         </GeminiScrollbar>
         {
-          activeEvent
-          ? <EditEvent
-              activeEvent={activeEvent}
-              onChangeActiveEvent={onChangeActiveEvent} />
-          : null
+          activeEvent &&
+          <EditEvent
+            activeEvent={activeEvent}
+            onChangeActiveEvent={onChangeActiveEvent} />
         }
         {
-          showNewEvent
-          ? <NewEvent
-              onCloseNewEvent={onCloseNewEvent} />
-          : null
+          showNewEvent &&
+          <NewEvent
+            onCloseNewEvent={onCloseNewEvent} />
         }
         {
-          docToRemove
-          ? <ModalRemoveEvent
-              doc={docToRemove}
-              removeEvent={this.removeEvent} />
-          : null
+          docToRemove &&
+          <ModalRemoveEvent
+            doc={docToRemove}
+            removeEvent={this.removeEvent} />
         }
       </div>
     )

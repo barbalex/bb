@@ -109,18 +109,18 @@ export default React.createClass({
           <EventLinks
             activeEvent={activeEvent} />
           {
-            error
-            ? <Alert
-                bsStyle='danger'
-                style={alertStyle}>
-                {error}
-              </Alert>
-            : null
+            error &&
+            <Alert
+              bsStyle='danger'
+              style={alertStyle}>
+              {error}
+            </Alert>
           }
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.close}>
+          <Button
+            onClick={this.close}>
             close
           </Button>
         </Modal.Footer>

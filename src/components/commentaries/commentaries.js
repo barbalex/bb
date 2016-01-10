@@ -193,34 +193,31 @@ export default React.createClass({
                 </a>
               </h4>
               {
-                showEditingGlyphons
-                ? this.toggleDraftGlyph(doc)
-                : null
+                showEditingGlyphons &&
+                this.toggleDraftGlyph(doc)
               }
               {
-                showEditingGlyphons
-                ? this.removeCommentaryGlyph(doc)
-                : null
+                showEditingGlyphons &&
+                this.removeCommentaryGlyph(doc)
               }
             </div>
             {
-              isActiveCommentary
-              ? <div
-                  id={'#collapse' + index}
-                  className='panel-collapse collapse in'
-                  role='tabpanel'
-                  aria-labelledby={'heading' + index}
-                  onClick={this.onClickCommentaryCollapse}>
-                  <div
-                    className='panel-body'
-                    style={panelBodyStyle}>
-                    <Commentary
-                      activeCommentary={activeCommentary}
-                      editing={editing}
-                      onSaveCommentaryArticle={onSaveCommentaryArticle} />
-                  </div>
+              isActiveCommentary &&
+              <div
+                id={'#collapse' + index}
+                className='panel-collapse collapse in'
+                role='tabpanel'
+                aria-labelledby={'heading' + index}
+                onClick={this.onClickCommentaryCollapse}>
+                <div
+                  className='panel-body'
+                  style={panelBodyStyle}>
+                  <Commentary
+                    activeCommentary={activeCommentary}
+                    editing={editing}
+                    onSaveCommentaryArticle={onSaveCommentaryArticle} />
                 </div>
-              : null
+              </div>
             }
           </div>
         )
@@ -234,7 +231,8 @@ export default React.createClass({
     const { docToRemove } = this.state
     const activeCommentaryId = has(activeCommentary, '_id') ? activeCommentary._id : null
     return (
-      <div className='commentaries'>
+      <div
+        className='commentaries'>
         <h1>
           Commentaries
         </h1>
@@ -245,17 +243,15 @@ export default React.createClass({
           {this.commentariesComponent()}
         </PanelGroup>
         {
-          showNewCommentary
-          ? <NewCommentary
-              onCloseNewCommentary={onCloseNewCommentary} />
-          : null
+          showNewCommentary &&
+          <NewCommentary
+            onCloseNewCommentary={onCloseNewCommentary} />
         }
         {
-          docToRemove
-          ? <ModalRemoveCommentary
-              doc={docToRemove}
-              removeCommentary={this.removeCommentary} />
-          : null
+          docToRemove &&
+          <ModalRemoveCommentary
+            doc={docToRemove}
+            removeCommentary={this.removeCommentary} />
         }
       </div>
     )

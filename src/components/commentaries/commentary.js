@@ -50,11 +50,10 @@ export default React.createClass({
         <div
           className='commentary'>
           {
-            showMeta
-            ? <Meta
-                doc={activeCommentary}
-                onCloseMeta={this.onCloseMeta} />
-            : null
+            showMeta &&
+            <Meta
+              doc={activeCommentary}
+              onCloseMeta={this.onCloseMeta} />
           }
           <Editor
             doc={activeCommentary}

@@ -78,9 +78,8 @@ export default React.createClass({
           key={key}
           style={outerSpanStyle}>
           {
-            key > 0
-            ? ' '
-            : null
+            key > 0 &&
+            ' '
           }
           <a
             href={link.url}
@@ -95,18 +94,18 @@ export default React.createClass({
     })
 
     return (
-      <li className={classNames}>
-        <p className={classNames}>
+      <li
+        className={classNames}>
+        <p
+        className={classNames}>
           {event.title} <span>{links}</span>
           {
-            showEditingGlyphons
-            ? this.editEventGlyph()
-            : null
+            showEditingGlyphons &&
+            this.editEventGlyph()
           }
           {
-            showEditingGlyphons
-            ? this.removeEventGlyph()
-            : null
+            showEditingGlyphons &&
+            this.removeEventGlyph()
           }
         </p>
       </li>

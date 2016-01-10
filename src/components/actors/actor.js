@@ -48,16 +48,30 @@ export default React.createClass({
     if (editing) {
       return (
         <div className='actor'>
-          {showMeta ? <Meta doc={activeActor} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={activeActor} articleDecoded={articleDecoded} onSaveActorArticle={onSaveActorArticle} />
-          <Button style={metaButtonStyle} onClick={this.onClickMeta}>images</Button>
+          {
+            showMeta &&
+            <Meta
+              doc={activeActor}
+              onCloseMeta={this.onCloseMeta} />
+          }
+          <Editor
+            doc={activeActor}
+            articleDecoded={articleDecoded}
+            onSaveActorArticle={onSaveActorArticle} />
+          <Button
+            style={metaButtonStyle}
+            onClick={this.onClickMeta}>
+            images
+          </Button>
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
-      <div className='actor col500'>
-        <div dangerouslySetInnerHTML={createMarkup()} />
+      <div
+        className='actor col500'>
+        <div
+          dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )
   }
