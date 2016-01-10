@@ -26,18 +26,16 @@ export default React.createClass({
       <div>
         <h1>Login</h1>
         {
-          !email
-          ? <LoginForm />
-          : null
+          !email &&
+          <LoginForm />
         }
         {
-          email
-          ? <Button
-              className='btn-primary'
-              onClick={this.onClickLogout}>
-              log out
-            </Button>
-          : null
+          email &&
+          <Button
+            className='btn-primary'
+            onClick={this.onClickLogout}>
+            log out
+          </Button>
         }
       </div>
     )

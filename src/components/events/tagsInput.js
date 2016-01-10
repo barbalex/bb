@@ -49,7 +49,10 @@ export default React.createClass({
               type='checkbox'
               checked={checked}
               onChange={this.onChangeTag.bind(this, option.tag)} />
-              {option.iconText ? this.tagIcon(option) : null}
+              {
+                option.iconText &&
+                this.tagIcon(option)
+              }
               {option.tag}
           </label>
         </div>
@@ -62,11 +65,16 @@ export default React.createClass({
       fontWeight: 'bold',
       marginBottom: 2
     }
-    
+
     return (
-      <div style={{marginBottom: 20}}>
-        <div style={labelStyle}>Tags</div>
-        <div className='event-tags'>
+      <div
+        style={{marginBottom: 20}}>
+        <div
+          style={labelStyle}>
+          Tags
+        </div>
+        <div
+          className='event-tags'>
           {this.tags()}
         </div>
       </div>

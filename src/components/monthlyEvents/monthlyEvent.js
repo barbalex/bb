@@ -49,17 +49,34 @@ export default React.createClass({
     }
     if (editing) {
       return (
-        <div className='monthlyEvent'>
-          {showMeta ? <MonthlyEventMeta activeMonthlyEvent={activeMonthlyEvent} year={year} month={month} onCloseMeta={this.onCloseMeta} /> : null}
-          <Editor doc={activeMonthlyEvent} articleDecoded={articleDecoded} onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
-          <Button style={metaButtonStyle} onClick={this.onClickMeta}>arrivals & victims</Button>
+        <div
+          className='monthlyEvent'>
+          {
+            showMeta &&
+            <MonthlyEventMeta
+              activeMonthlyEvent={activeMonthlyEvent}
+              year={year}
+              month={month}
+              onCloseMeta={this.onCloseMeta} />
+          }
+          <Editor
+            doc={activeMonthlyEvent}
+            articleDecoded={articleDecoded}
+            onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+          <Button
+            style={metaButtonStyle}
+            onClick={this.onClickMeta}>
+            arrivals & victims
+          </Button>
         </div>
       )
     }
     const createMarkup = () => ({__html: articleDecoded})
     return (
-      <div className='monthlyEvent'>
-        <div dangerouslySetInnerHTML={createMarkup()} />
+      <div
+        className='monthlyEvent'>
+        <div
+          dangerouslySetInnerHTML={createMarkup()} />
       </div>
     )
   }

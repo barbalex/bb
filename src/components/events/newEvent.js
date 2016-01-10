@@ -61,20 +61,47 @@ export default React.createClass({
       marginBottom: 10
     }
     return (
-      <Modal show onHide={this.close} bsSize='large' dialogClassName='editEvent'>
+      <Modal
+        show
+        onHide={this.close}
+        bsSize='large'
+        dialogClassName='editEvent'>
         <Modal.Header>
-          <Modal.Title>New event</Modal.Title>
+          <Modal.Title>
+            New event
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='text' label='Title' value={title} onChange={this.onChangeTitle} autoFocus />
-          <DateInput date={date} onChangeDate={this.onChangeDate} />
-          {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
+          <Input
+            type='text'
+            label='Title'
+            value={title}
+            onChange={this.onChangeTitle}
+            autoFocus />
+          <DateInput
+            date={date}
+            onChangeDate={this.onChangeDate} />
+          {
+            error &&
+            <Alert
+              bsStyle='danger'
+              style={alertStyle}>
+              {error}
+            </Alert>
+          }
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewEvent}>create new event</Button>
+          <Button
+            onClick={this.close}>
+            discard input and close
+          </Button>
+          <Button
+            bsStyle='primary'
+            onClick={this.createNewEvent}>
+            create new event
+          </Button>
         </Modal.Footer>
 
       </Modal>

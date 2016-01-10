@@ -113,17 +113,63 @@ export default React.createClass({
     const isError = error && error.length > 0
 
     return (
-      <form className={'form'} autoComplete='off'>
-        <div className='formGroup'>
-          <Input type='email' id='email' label={'Email'} bsSize='small' className={'controls'} bsStyle={emailInputBsStyle} onBlur={this.onBlurEmail} onKeyDown={this.onKeyDownEmail} required autoFocus />
-          {invalidEmail ? <div className='validateDivAfterRBC'>Please check email</div> : ''}
+      <form
+        className='form'
+        autoComplete='off'>
+        <div
+          className='formGroup'>
+          <Input
+            type='email'
+            id='email'
+            label='Email'
+            bsSize='small'
+            className='controls'
+            bsStyle={emailInputBsStyle}
+            onBlur={this.onBlurEmail}
+            onKeyDown={this.onKeyDownEmail}
+            required
+            autoFocus />
+          {
+            invalidEmail &&
+            <div
+              className='validateDivAfterRBC'>
+              Please check email
+            </div>
+          }
         </div>
-        <div className='formGroup'>
-          <Input type='password' id='password' label={'Password'} className={'controls'} bsStyle={passwordInputBsStyle} onBlur={this.onBlurPassword} onKeyDown={this.onKeyDownPassword} required />
-          {invalidPassword ? <div className='validateDivAfterRBC'>Please check password</div> : ''}
+        <div
+          className='formGroup'>
+          <Input
+            type='password'
+            id='password'
+            label='Password'
+            className='controls'
+            bsStyle={passwordInputBsStyle}
+            onBlur={this.onBlurPassword}
+            onKeyDown={this.onKeyDownPassword}
+            required />
+          {
+            invalidPassword &&
+            <div
+              className='validateDivAfterRBC'>
+              Please check password
+            </div>
+          }
         </div>
-        {isError ? <Alert bsStyle='danger' onDismiss={this.onAlertDismiss} style={styleAlert}>Error: {error}</Alert> : null}
-        <Button className='btn-primary' onClick={this.onClickLogin}>log in</Button>
+        {
+          isError &&
+          <Alert
+            bsStyle='danger'
+            onDismiss={this.onAlertDismiss}
+            style={styleAlert}>
+            Error: {error}
+          </Alert>
+        }
+        <Button
+          className='btn-primary'
+          onClick={this.onClickLogin}>
+          log in
+        </Button>
       </form>
     )
   }

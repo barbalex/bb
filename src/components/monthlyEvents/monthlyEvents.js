@@ -97,12 +97,22 @@ export default React.createClass({
     }
 
     return (
-      <div id='monthlyEvents' style={divStyle}>
-        <h1>Events Archive</h1>
-        <PanelGroup activeKey={activeYear} accordion>
+      <div
+        id='monthlyEvents'
+        style={divStyle}>
+        <h1>
+          Events Archive
+        </h1>
+        <PanelGroup
+          activeKey={activeYear}
+          accordion>
           {this.eventYearsComponent(activeYear)}
         </PanelGroup>
-        {showNewMonthlyEvent ? <NewMonthlyEvent onCloseNewMonthlyEvent={onCloseNewMonthlyEvent} /> : null}
+        {
+          showNewMonthlyEvent &&
+          <NewMonthlyEvent
+            onCloseNewMonthlyEvent={onCloseNewMonthlyEvent} />
+        }
       </div>
     )
   }

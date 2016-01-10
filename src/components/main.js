@@ -267,87 +267,81 @@ export default React.createClass({
           <div className='container'>
             <Errors errors={errors} />
             {
-              isSimplePage
-              ? <Page
-                  activePage={activePage}
-                  editing={editing}
-                  onSavePageArticle={this.onSavePageArticle}
-                  onSavePage={this.onSavePage} />
-              : null
+              isSimplePage &&
+              <Page
+                activePage={activePage}
+                editing={editing}
+                onSavePageArticle={this.onSavePageArticle}
+                onSavePage={this.onSavePage} />
             }
             {
-              showEventsPage
-              ? <Events
-                  events={events}
-                  editing={editing}
-                  email={email}
-                  activeEvent={activeEvent}
-                  showNewEvent={showNewEvent}
-                  onChangeActiveEvent={this.onChangeActiveEvent}
-                  onCloseNewEvent={this.onCloseNewEvent}
-                  showArchiveMessage={showArchiveMessage} />
-              : null
+              showEventsPage &&
+              <Events
+                events={events}
+                editing={editing}
+                email={email}
+                activeEvent={activeEvent}
+                showNewEvent={showNewEvent}
+                onChangeActiveEvent={this.onChangeActiveEvent}
+                onCloseNewEvent={this.onCloseNewEvent}
+                showArchiveMessage={showArchiveMessage} />
             }
             {
-              showCommentaryPage
-              ? <Commentaries
-                  commentaries={commentaries}
-                  activeCommentary={activeCommentary}
-                  editing={editing}
-                  email={email}
-                  onSaveCommentaryArticle={this.onSaveCommentaryArticle}
-                  showNewCommentary={showNewCommentary}
-                  onCloseNewCommentary={this.onCloseNewCommentary} />
-              : null
+              showCommentaryPage &&
+              <Commentaries
+                commentaries={commentaries}
+                activeCommentary={activeCommentary}
+                editing={editing}
+                email={email}
+                onSaveCommentaryArticle={this.onSaveCommentaryArticle}
+                showNewCommentary={showNewCommentary}
+                onCloseNewCommentary={this.onCloseNewCommentary} />
             }
             {
-              showActorPage
-              ? <Actors
-                  actors={actors}
-                  activeActor={activeActor}
-                  editing={editing}
-                  email={email}
-                  onSaveActorArticle={this.onSaveActorArticle}
-                  showNewActor={showNewActor}
-                  onCloseNewActor={this.onCloseNewActor} />
-              : null
+              showActorPage &&
+              <Actors
+                actors={actors}
+                activeActor={activeActor}
+                editing={editing}
+                email={email}
+                onSaveActorArticle={this.onSaveActorArticle}
+                showNewActor={showNewActor}
+                onCloseNewActor={this.onCloseNewActor} />
             }
             {
-              showMonthlyEventsPage
-              ? <MonthlyEvents
-                  monthlyEvents={monthlyEvents}
-                  activeMonthlyEvent={activeMonthlyEvent}
-                  editing={editing}
-                  email={email}
-                  onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}
-                  showNewMonthlyEvent={showNewMonthlyEvent}
-                  onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
-              : null
+              showMonthlyEventsPage &&
+              <MonthlyEvents
+                monthlyEvents={monthlyEvents}
+                activeMonthlyEvent={activeMonthlyEvent}
+                editing={editing}
+                email={email}
+                onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}
+                showNewMonthlyEvent={showNewMonthlyEvent}
+                onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
             }
             {
-              showPublicationsPage
-              ? <Publications
-                  publications={publications}
-                  activePublicationCategory={activePublicationCategory}
-                  activePublication={activePublication}
-                  editing={editing}
-                  email={email}
-                  onSavePublicationArticle={this.onSavePublicationArticle}
-                  showNewPublication={showNewPublication}
-                  onCloseNewPublication={this.onCloseNewPublication} />
-              : null
+              showPublicationsPage &&
+              <Publications
+                publications={publications}
+                activePublicationCategory={activePublicationCategory}
+                activePublication={activePublication}
+                editing={editing}
+                email={email}
+                onSavePublicationArticle={this.onSavePublicationArticle}
+                showNewPublication={showNewPublication}
+                onCloseNewPublication={this.onCloseNewPublication} />
             }
             {
-              login
-              ? <Login email={email} />
-              : null
+              login &&
+              <Login
+                email={email} />
             }
             {
-              showCopyright
-              ? <p style={{marginTop: 70}}>
-                  &copy; Jürg Martin Gabriel. All Rights Reserved.
-                </p>
-              : null
+              showCopyright &&
+              <p
+                style={{marginTop: 70}}>
+                &copy; Jürg Martin Gabriel. All Rights Reserved.
+              </p>
             }
           </div>
         </NavHelper>
