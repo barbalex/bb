@@ -94,15 +94,28 @@ export default React.createClass({
       fontSize: 1.5 + 'em'
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.removePublicationTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemovePublication.bind(this, doc)} />
+      <OverlayTrigger
+        placement='top'
+        overlay={this.removePublicationTooltip()}
+      >
+        <Glyphicon
+          glyph='remove-circle'
+          style={glyphStyle}
+          onClick={this.onRemovePublication.bind(this, doc)} /
+        >
       </OverlayTrigger>
     )
   },
 
   toggleDraftTooltip (doc) {
     const text = doc.draft ? 'publish' : 'unpublish'
-    return <Tooltip id='toggleDraft'>{text}</Tooltip>
+    return (
+      <Tooltip
+        id='toggleDraft'
+      >
+        {text}
+      </Tooltip>
+    )
   },
 
   toggleDraftGlyph (doc) {
@@ -116,8 +129,15 @@ export default React.createClass({
       color: color
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.toggleDraftTooltip(doc)}>
-        <Glyphicon glyph={glyph} style={glyphStyle} onClick={this.onToggleDraft.bind(this, doc)} />
+      <OverlayTrigger
+        placement='top'
+        overlay={this.toggleDraftTooltip(doc)}
+      >
+        <Glyphicon
+          glyph={glyph}
+          style={glyphStyle}
+          onClick={this.onToggleDraft.bind(this, doc)} /
+        >
       </OverlayTrigger>
     )
   },
@@ -155,7 +175,11 @@ export default React.createClass({
       // use pure bootstrap.
       // advantage: can add edit icon to panel-heading
       return (
-        <div key={dIndex} ref={(c) => this[ref] = c} className='panel panel-default month'>
+        <div
+          key={dIndex}
+          ref={(c) => this[ref] = c}
+          className='panel panel-default month'
+        >
           <div
             className='panel-heading'
             role='tab'
@@ -163,7 +187,9 @@ export default React.createClass({
             onClick={this.onClickPublication.bind(this, doc._id)}
             style={panelHeadingStyle}
           >
-            <h4 className='panel-title'>
+            <h4
+              className='panel-title'
+            >
               <a
                 role='button'
                 data-toggle='collapse'
@@ -176,33 +202,34 @@ export default React.createClass({
               </a>
             </h4>
             {
-              showEditingGlyphons
-              ? this.toggleDraftGlyph(doc)
-              : null
+              showEditingGlyphons &&
+              this.toggleDraftGlyph(doc)
             }
             {
-              showEditingGlyphons
-              ? this.removePublicationGlyph(doc)
-              : null
+              showEditingGlyphons &&
+              this.removePublicationGlyph(doc)
             }
           </div>
           {
-            isActivePublication
-            ? <div
-                id={'#collapse' + dIndex}
-                className='panel-collapse collapse in'
-                role='tabpanel'
-                aria-labelledby={'heading' + dIndex}
-                onClick={this.onClickEventCollapse}>
-                <div className='panel-body' style={panelBodyStyle}>
-                  <Publication
-                    activePublication={activePublication}
-                    editing={editing}
-                    onSavePublicationArticle={onSavePublicationArticle}
-                  />
-                </div>
+            isActivePublication &&
+            <div
+              id={'#collapse' + dIndex}
+              className='panel-collapse collapse in'
+              role='tabpanel'
+              aria-labelledby={'heading' + dIndex}
+              onClick={this.onClickEventCollapse}
+            >
+              <div
+                className='panel-body'
+                style={panelBodyStyle}
+              >
+                <Publication
+                  activePublication={activePublication}
+                  editing={editing}
+                  onSavePublicationArticle={onSavePublicationArticle} /
+                >
               </div>
-            : null
+            </div>
           }
         </div>
       )
@@ -214,9 +241,20 @@ export default React.createClass({
     const { docToRemove } = this.state
     const activePublicationId = activePublication ? activePublication._id : null
     return (
-      <PanelGroup activeKey={activePublicationId} id={category} ref={(c) => this[category] = c} accordion>
+      <PanelGroup
+        activeKey={activePublicationId}
+        id={category}
+        ref={(c) => this[category] = c}
+        accordion
+      >
         {this.publicationsComponent(category)}
-        {docToRemove ? <ModalRemovePublication doc={docToRemove} removePublication={this.removePublication} /> : null}
+        {
+          docToRemove &&
+          <ModalRemovePublication
+            doc={docToRemove}
+            removePublication={this.removePublication} /
+          >
+        }
       </PanelGroup>
     )
   }

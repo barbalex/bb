@@ -49,21 +49,24 @@ export default React.createClass({
     }
     if (editing && activePage._id !== 'pages_actors') {
       return (
-        <div className='page'>
+        <div
+          className='page'>
           {
-            showMeta
-            ? <Meta
-                doc={activePage}
-                onCloseMeta={this.onCloseMeta} />
-            : null
+            showMeta &&
+            <Meta
+              doc={activePage}
+              onCloseMeta={this.onCloseMeta} /
+            >
           }
           <Editor
             doc={activePage}
             articleDecoded={articleDecoded}
-            onSavePageArticle={onSavePageArticle} />
+            onSavePageArticle={onSavePageArticle} /
+          >
           <Button
             style={metaButtonStyle}
-            onClick={this.onClickMeta}>
+            onClick={this.onClickMeta}
+          >
             images
           </Button>
         </div>
@@ -76,7 +79,8 @@ export default React.createClass({
           {title}
         </h1>
         <div
-          dangerouslySetInnerHTML={createMarkup()} />
+          dangerouslySetInnerHTML={createMarkup()} /
+        >
       </div>
     )
   }

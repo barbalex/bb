@@ -50,8 +50,21 @@ export default React.createClass({
         // but opening a category was way to hideous
         // const isActiveYear = category === activePublicationCategory
         return (
-          <Panel key={category} header={category} eventKey={category} className={className} onClick={this.onClickCategory.bind(this, category)}>
-            <PublicationsOfCategory category={category} publications={publications} activePublication={activePublication} editing={editing} email={email} onSavePublicationArticle={onSavePublicationArticle} />
+          <Panel
+            key={category}
+            header={category}
+            eventKey={category}
+            className={className}
+            onClick={this.onClickCategory.bind(this, category)}
+          >
+            <PublicationsOfCategory
+              category={category}
+              publications={publications}
+              activePublication={activePublication}
+              editing={editing}
+              email={email}
+              onSavePublicationArticle={onSavePublicationArticle} /
+            >
           </Panel>
         )
       })
@@ -66,12 +79,25 @@ export default React.createClass({
     }
 
     return (
-      <div id='publications' style={divStyle}>
-        <h1>Publications</h1>
-        <PanelGroup activeKey={activePublicationCategory} accordion>
+      <div
+        id='publications'
+        style={divStyle}
+      >
+        <h1>
+          Publications
+        </h1>
+        <PanelGroup
+          activeKey={activePublicationCategory}
+          accordion
+        >
           {this.publicationCategoriesComponent(activePublicationCategory)}
         </PanelGroup>
-        {showNewPublication ? <NewPublication onCloseNewPublication={onCloseNewPublication} /> : null}
+        {
+          showNewPublication &&
+          <NewPublication
+            onCloseNewPublication={onCloseNewPublication} /
+          >
+        }
       </div>
     )
   }

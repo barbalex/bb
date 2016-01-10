@@ -105,8 +105,13 @@ export default React.createClass({
     const showNavbarRight = email || showEdit || showAddCommentary || showAddEvent || showAddActor || showAddMonthlyEvent
     return (
       <div>
-        <AffixWrapper id='nav-wrapper' offset={150}>
-          <Navbar inverse expanded={navExpanded} onToggle={this.onToggleNav}>
+        <AffixWrapper
+          id='nav-wrapper'
+          offset={150}>
+          <Navbar
+            inverse
+            expanded={navExpanded}
+            onToggle={this.onToggleNav}>
             <Navbar.Header>
               <Navbar.Brand
                 onClick={this.onClickPage.bind(this, 'pages_events')}
@@ -115,7 +120,9 @@ export default React.createClass({
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
-            <Navbar.Collapse eventKey={0}>
+            <Navbar.Collapse
+              eventKey={0}
+            >
               <Nav>
                 <NavItem
                   eventKey={0}
@@ -154,90 +161,118 @@ export default React.createClass({
                 </NavItem>
               </Nav>
               {
-                showNavbarRight
-                ? <Nav navbar pullRight>
+                showNavbarRight &&
+                <Nav
+                  navbar
+                  pullRight
+                >
                   {
-                    showEdit
-                    ? <OverlayTrigger placement='bottom' overlay={this.editTooltip()}>
-                        <NavItem
-                          eventKey={1}
-                          onClick={this.onClickEdit}
+                    showEdit &&
+                    <OverlayTrigger
+                      placement='bottom'
+                      overlay={this.editTooltip()}>
+                      <NavItem
+                        eventKey={1}
+                        onClick={this.onClickEdit}
+                      >
+                        <Glyphicon
+                          glyph={glyph} /
                         >
-                          <Glyphicon glyph={glyph} />
-                        </NavItem>
-                      </OverlayTrigger>
-                    : null
+                      </NavItem>
+                    </OverlayTrigger>
                   }
                   {
-                    showAddCommentary
-                    ? <OverlayTrigger placement='bottom' overlay={this.newCommentaryTooltip()}>
-                        <NavItem
-                          eventKey={2}
-                          onClick={onClickNewCommentary}
+                    showAddCommentary &&
+                    <OverlayTrigger
+                      placement='bottom'
+                      overlay={this.newCommentaryTooltip()}>
+                      <NavItem
+                        eventKey={2}
+                        onClick={onClickNewCommentary}
+                      >
+                        <Glyphicon
+                          glyph='plus' /
                         >
-                          <Glyphicon glyph='plus' />
-                        </NavItem>
-                      </OverlayTrigger>
-                    : null
+                      </NavItem>
+                    </OverlayTrigger>
                   }
                   {
-                    showAddEvent
-                    ? <OverlayTrigger placement='bottom' overlay={this.newEventTooltip()}>
-                        <NavItem
-                          eventKey={2}
-                          onClick={onClickNewEvent}
+                    showAddEvent &&
+                    <OverlayTrigger
+                      placement='bottom'
+                      overlay={this.newEventTooltip()}>
+                      <NavItem
+                        eventKey={2}
+                        onClick={onClickNewEvent}
+                      >
+                        <Glyphicon
+                          glyph='plus' /
                         >
-                          <Glyphicon glyph='plus' />
-                        </NavItem>
-                      </OverlayTrigger>
-                    : null
+                      </NavItem>
+                    </OverlayTrigger>
                   }
                   {
-                    showAddActor
-                    ? <OverlayTrigger placement='bottom' overlay={this.newActorTooltip()}>
-                        <NavItem
-                          eventKey={3}
-                          onClick={onClickNewActor}
+                    showAddActor &&
+                    <OverlayTrigger
+                      placement='bottom'
+                      overlay={this.newActorTooltip()}
+                    >
+                      <NavItem
+                        eventKey={3}
+                        onClick={onClickNewActor}
+                      >
+                        <Glyphicon
+                          glyph='plus' /
                         >
-                          <Glyphicon glyph='plus' />
-                        </NavItem>
-                      </OverlayTrigger>
-                    : null
+                      </NavItem>
+                    </OverlayTrigger>
                   }
                   {
-                    showAddMonthlyEvent
-                    ? <OverlayTrigger placement='bottom' overlay={this.newMonthlyEventTooltip()}>
-                        <NavItem
-                          eventKey={4}
-                          onClick={onClickNewMonthlyEvent}
+                    showAddMonthlyEvent &&
+                    <OverlayTrigger
+                      placement='bottom'
+                      overlay={this.newMonthlyEventTooltip()}
+                    >
+                      <NavItem
+                        eventKey={4}
+                        onClick={onClickNewMonthlyEvent}
+                      >
+                        <Glyphicon
+                          glyph='plus' /
                         >
-                          <Glyphicon glyph='plus' />
-                        </NavItem>
-                      </OverlayTrigger>
-                    : null
+                      </NavItem>
+                    </OverlayTrigger>
                   }
                   {
-                    showAddPublication
-                    ? <OverlayTrigger placement='bottom' overlay={this.newPublicationTooltip()}>
-                        <NavItem
-                          eventKey={5}
-                          onClick={onClickNewPublication}
+                    showAddPublication &&
+                    <OverlayTrigger
+                      placement='bottom'
+                      overlay={this.newPublicationTooltip()}
+                    >
+                      <NavItem
+                        eventKey={5}
+                        onClick={onClickNewPublication}
+                      >
+                        <Glyphicon
+                          glyph='plus' /
                         >
-                          <Glyphicon glyph='plus' />
-                        </NavItem>
-                      </OverlayTrigger>
-                    : null
+                      </NavItem>
+                    </OverlayTrigger>
                   }
-                  <OverlayTrigger placement='bottom' overlay={this.logoutTooltip()}>
+                  <OverlayTrigger
+                    placement='bottom'
+                    overlay={this.logoutTooltip()}
+                  >
                     <NavItem
                       eventKey={6}
                       onClick={this.onClickLogout}
                     >
-                      <Glyphicon glyph='log-out' />
+                      <Glyphicon
+                        glyph='log-out' /
+                      >
                     </NavItem>
                   </OverlayTrigger>
                 </Nav>
-                : null
               }
             </Navbar.Collapse>
           </Navbar>

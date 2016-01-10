@@ -67,22 +67,56 @@ export default React.createClass({
       marginBottom: 10
     }
     return (
-      <Modal show onHide={this.close} bsSize='large'>
+      <Modal
+        show
+        onHide={this.close}
+        bsSize='large'
+      >
         <Modal.Header>
-          <Modal.Title>New publication</Modal.Title>
+          <Modal.Title>
+            New publication
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='string' label='Title' value={title} onChange={this.onChangeTitle} autoFocus />
-          <Input type='select' label='Category' value={category} onChange={this.onChangeCategory}>
+          <Input
+            type='string'
+            label='Title'
+            value={title}
+            onChange={this.onChangeTitle}
+            autoFocus /
+          >
+          <Input
+            type='select'
+            label='Category'
+            value={category}
+            onChange={this.onChangeCategory}
+          >
             {this.categoryOptions()}
           </Input>
-          {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
+          {
+            error &&
+            <Alert
+              bsStyle='danger'
+              style={alertStyle}
+            >
+              {error}
+            </Alert>
+          }
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewPublication}>create new publication</Button>
+          <Button
+            onClick={this.close}
+          >
+            discard input and close
+          </Button>
+          <Button
+            bsStyle='primary'
+            onClick={this.createNewPublication}
+          >
+            create new publication
+          </Button>
         </Modal.Footer>
 
       </Modal>

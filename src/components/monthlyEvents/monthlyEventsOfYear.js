@@ -98,8 +98,13 @@ export default React.createClass({
       fontSize: 1.5 + 'em'
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.removeMonthlyEventTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
+      <OverlayTrigger
+        placement='top'
+        overlay={this.removeMonthlyEventTooltip()}>
+        <Glyphicon
+          glyph='remove-circle'
+          style={glyphStyle}
+          onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
       </OverlayTrigger>
     )
   },
@@ -120,8 +125,13 @@ export default React.createClass({
       color: color
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.toggleDraftTooltip(doc)}>
-        <Glyphicon glyph={glyph} style={glyphStyle} onClick={this.onToggleDraft.bind(this, doc)} />
+      <OverlayTrigger
+        placement='top'
+        overlay={this.toggleDraftTooltip(doc)}>
+        <Glyphicon
+          glyph={glyph}
+          style={glyphStyle}
+          onClick={this.onToggleDraft.bind(this, doc)} />
       </OverlayTrigger>
     )
   },
@@ -152,7 +162,10 @@ export default React.createClass({
       // use pure bootstrap.
       // advantage: can add edit icon to panel-heading
       return (
-        <div key={dIndex} ref={(c) => this[ref] = c} className='panel panel-default month'>
+        <div
+          key={dIndex}
+          ref={(c) => this[ref] = c}
+          className='panel panel-default month'>
           <div
             className='panel-heading'
             role='tab'
@@ -173,35 +186,31 @@ export default React.createClass({
               </a>
             </h4>
             {
-              showEditingGlyphons
-              ? this.toggleDraftGlyph(doc)
-              : null
+              showEditingGlyphons &&
+              this.toggleDraftGlyph(doc)
             }
             {
-              showEditingGlyphons
-              ? this.removeMonthlyEventGlyph(doc)
-              : null
+              showEditingGlyphons &&
+              this.removeMonthlyEventGlyph(doc)
             }
           </div>
           {
-            isActiveMonthlyEvent
-            ? <div
-                id={'#collapse' + dIndex}
-                className='panel-collapse collapse in'
-                role='tabpanel'
-                aria-labelledby={'heading' + dIndex}
-                onClick={this.onClickEventCollapse}>
-                <div className='panel-body' style={panelBodyStyle}>
-                  <MonthlyEvent
-                    activeMonthlyEvent={activeMonthlyEvent}
-                    year={year}
-                    month={month}
-                    editing={editing}
-                    onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
-                  />
-                </div>
+            isActiveMonthlyEvent &&
+            <div
+              id={'#collapse' + dIndex}
+              className='panel-collapse collapse in'
+              role='tabpanel'
+              aria-labelledby={'heading' + dIndex}
+              onClick={this.onClickEventCollapse}>
+              <div className='panel-body' style={panelBodyStyle}>
+                <MonthlyEvent
+                  activeMonthlyEvent={activeMonthlyEvent}
+                  year={year}
+                  month={month}
+                  editing={editing}
+                  onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
               </div>
-            : null
+            </div>
           }
         </div>
       )
@@ -213,9 +222,18 @@ export default React.createClass({
     const { docToRemove } = this.state
     const activeEventId = has(activeMonthlyEvent, '_id') ? activeMonthlyEvent._id : null
     return (
-      <PanelGroup activeKey={activeEventId} id={year} ref={(c) => this[year] = c} accordion>
+      <PanelGroup
+        activeKey={activeEventId}
+        id={year}
+        ref={(c) => this[year] = c}
+        accordion>
         {this.monthlyEventsComponent(year)}
-        {docToRemove ? <ModalRemoveMonthlyEvent doc={docToRemove} removeMonthlyEvent={this.removeMonthlyEvent} /> : null}
+        {
+          docToRemove &&
+          <ModalRemoveMonthlyEvent
+            doc={docToRemove}
+            removeMonthlyEvent={this.removeMonthlyEvent} />
+        }
       </PanelGroup>
     )
   }

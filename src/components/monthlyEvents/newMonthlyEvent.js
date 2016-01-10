@@ -58,7 +58,14 @@ export default React.createClass({
 
   monthOptions () {
     const months = getMonths()
-    const options = Object.keys(months).map((key, index) => <option key={index} value={key}>{months[key]}</option>)
+    const options = Object.keys(months).map((key, index) =>
+      <option
+        key={index}
+        value={key}
+      >
+        {months[key]}
+      </option>
+    )
     return options
   },
 
@@ -68,22 +75,50 @@ export default React.createClass({
       marginBottom: 10
     }
     return (
-      <Modal show onHide={this.close} bsSize='large'>
+      <Modal
+        show
+        onHide={this.close}
+        bsSize='large'>
         <Modal.Header>
-          <Modal.Title>New monthly event</Modal.Title>
+          <Modal.Title>
+            New monthly event
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='number' label='Year' value={year} onChange={this.onChangeYear} autoFocus />
-          <Input type='select' label='Month' value={month} onChange={this.onChangeMonth}>
+          <Input
+            type='number'
+            label='Year'
+            value={year}
+            onChange={this.onChangeYear}
+            autoFocus />
+          <Input
+            type='select'
+            label='Month'
+            value={month}
+            onChange={this.onChangeMonth}>
             {this.monthOptions()}
           </Input>
-          {error ? <Alert bsStyle='danger' style={alertStyle}>{error}</Alert> : null}
+          {
+            error &&
+            <Alert
+              bsStyle='danger'
+              style={alertStyle}>
+              {error}
+            </Alert>
+          }
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.close}>discard input and close</Button>
-          <Button bsStyle='primary' onClick={this.createNewMonthlyEvent}>create new monthly event</Button>
+          <Button
+            onClick={this.close}>
+            discard input and close
+          </Button>
+          <Button
+            bsStyle='primary'
+            onClick={this.createNewMonthlyEvent}>
+            create new monthly event
+          </Button>
         </Modal.Footer>
 
       </Modal>
