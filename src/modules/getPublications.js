@@ -1,7 +1,7 @@
 'use strict'
 
 import app from 'ampersand-app'
-import { pluck } from 'lodash'
+import { map } from 'lodash'
 import sortPublications from './sortPublications.js'
 
 export default () => {
@@ -13,7 +13,7 @@ export default () => {
     }
     app.db.allDocs(options)
       .then((result) => {
-        let publications = pluck(result.rows, 'doc')
+        let publications = map(result.rows, 'doc')
         publications = sortPublications(publications)
         resolve(publications)
       })

@@ -1,7 +1,7 @@
 'use strict'
 
 import app from 'ampersand-app'
-import { pluck } from 'lodash'
+import { map } from 'lodash'
 import sortActors from './sortActors.js'
 
 export default () => {
@@ -13,7 +13,7 @@ export default () => {
     }
     app.db.allDocs(options)
       .then((result) => {
-        let actors = pluck(result.rows, 'doc')
+        let actors = map(result.rows, 'doc')
         actors = sortActors(actors)
         resolve(actors)
       })

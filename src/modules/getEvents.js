@@ -1,7 +1,7 @@
 'use strict'
 
 import app from 'ampersand-app'
-import { pluck } from 'lodash'
+import { map } from 'lodash'
 import sortEvents from './sortEvents.js'
 
 export default () => {
@@ -13,7 +13,7 @@ export default () => {
     }
     app.db.allDocs(options)
       .then((result) => {
-        let events = pluck(result.rows, 'doc')
+        let events = map(result.rows, 'doc')
         events = sortEvents(events)
         resolve(events)
       })
