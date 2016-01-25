@@ -24,7 +24,7 @@
   "dependencies": {
     "ampersand-app": "1.0.4",
     "ampersand-router": "3.0.2",
-    "autoprefixer-stylus": "0.8.1",
+    "autoprefixer-stylus": "0.9.1",
     "babel": "6.3.26",
     "babel-core": "6.4.5",
     "babel-loader": "6.2.1",
@@ -60,7 +60,7 @@
     "react": "0.14.6",
     "react-bootstrap": "0.28.2",
     "react-bootstrap-datetimepicker": "0.0.22",
-    "react-copy-to-clipboard": "3.0.4",
+    "react-copy-to-clipboard": "4.0.1",
     "react-document-title": "2.0.1",
     "react-dom": "0.14.6",
     "react-dropzone": "3.3.2",
@@ -73,9 +73,9 @@
     "style-loader": "0.13.0",
     "stylus-loader": "1.5.0",
     "surge": "0.17.7",
-    "tinymce": "4.3.1",
+    "tinymce": "4.3.3",
     "url-loader": "0.5.7",
-    "webpack": "1.12.11",
+    "webpack": "1.12.12",
     "yeticss": "7.0.5"
   },
   "devDependencies": {
