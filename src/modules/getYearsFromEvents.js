@@ -1,13 +1,11 @@
 'use strict'
 
 import moment from 'moment'
-import getDateFromEventId from './getDateFromEventId.js'
 
 export default (events) => {
   const oldestEvent = events[events.length - 1]
   if (oldestEvent) {
-    const oldestDate = getDateFromEventId(oldestEvent._id)
-    const oldestYear = moment(oldestDate).format('YYYY')
+    const oldestYear = 2015
     const thisYear = moment().format('YYYY')
     // create array of years between this and oldest
     const years = []

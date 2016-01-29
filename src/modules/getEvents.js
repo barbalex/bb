@@ -4,12 +4,12 @@ import app from 'ampersand-app'
 import { map } from 'lodash'
 import sortEvents from './sortEvents.js'
 
-export default () => {
+export default (year) => {
   return new Promise((resolve, reject) => {
     const options = {
       include_docs: true,
-      startkey: 'events_',
-      endkey: 'events_\uffff'
+      startkey: year ? `events_${year}` : 'events_',
+      endkey: year ? `events_${year}_\uffff` : `events_\uffff`
     }
     app.db.allDocs(options)
       .then((result) => {

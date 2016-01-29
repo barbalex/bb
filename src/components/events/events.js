@@ -44,7 +44,7 @@ export default React.createClass({
   },
 
   componentDidMount () {
-    app.Actions.getEvents()
+    app.Actions.getEvents(moment().format('YYYY'))
     this.setIntroComponentsHeight()
     window.addEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
   },
@@ -72,7 +72,8 @@ export default React.createClass({
 
   dateRows () {
     const { events, email } = this.props
-    const dateRowObjects = getDaterowObjectsSinceOldestEvent(events)
+    const { activeYear } = this.state
+    const dateRowObjects = getDaterowObjectsSinceOldestEvent(events, activeYear)
     let dateRows = []
     if (dateRowObjects.length > 0) {
       dateRowObjects.forEach((dRO, index) => {
@@ -153,6 +154,7 @@ export default React.createClass({
   },
 
   setActiveYear (activeYear) {
+    app.Actions.getEvents(activeYear)
     this.setState({ activeYear })
   },
 

@@ -3,14 +3,14 @@
 import moment from 'moment'
 import getDateFromEventId from './getDateFromEventId.js'
 
-export default (events) => {
+export default (events, activeYear) => {
   const oldestEvent = events[events.length - 1]
   if (oldestEvent) {
     const oldestDate = getDateFromEventId(oldestEvent._id)
     let daterowObjects = []
-    let date = moment()
+    const activeYearIsCurrentYear = moment().format('YYYY') === activeYear
+    let date = activeYearIsCurrentYear ? moment() : moment(`31.12.${activeYear}`, 'DD.MM.YYYY')
     while (date >= oldestDate) {
-      // console.log('date', moment(date).format('YYYY.MM.DD'))
       const year = moment(date).format('YYYY')
       const month = moment(date).format('MM')
       const day = moment(date).format('DD')

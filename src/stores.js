@@ -218,8 +218,8 @@ export default (Actions) => {
 
     getEventsCallback: null,
 
-    onGetEvents () {
-      getEvents()
+    onGetEvents (year) {
+      getEvents(year)
         .then((events) => {
           this.events = events
           if (this.getEventsCallback) {
