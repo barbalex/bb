@@ -1,15 +1,16 @@
 'use strict'
 
 import moment from 'moment'
+import { max } from 'lodash'
 import getDateFromEventId from './getDateFromEventId.js'
 
-export default (events, activeYear) => {
+export default (events, activeEventYears) => {
   const oldestEvent = events[events.length - 1]
   if (oldestEvent) {
     const oldestDate = getDateFromEventId(oldestEvent._id)
     let daterowObjects = []
-    const activeYearIsCurrentYear = parseInt(moment().format('YYYY'), 0) === activeYear
-    let date = activeYearIsCurrentYear ? moment() : moment(`31.12.${activeYear}`, 'DD.MM.YYYY')
+    const activeYearIsCurrentYear = activeEventYears.includes(parseInt(moment().format('YYYY'), 0))
+    let date = activeYearIsCurrentYear ? moment() : moment(`31.12.${max(activeEventYears)}`, 'DD.MM.YYYY')
     while (date >= oldestDate) {
       const year = moment(date).format('YYYY')
       const month = moment(date).format('MM')

@@ -4,6 +4,9 @@ import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
 import DocumentTitle from 'react-document-title'
+import moment from 'moment'
+import { min } from 'lodash'
+import $ from 'jquery'
 import NavHelper from '../components/navHelper.js'
 import Header from '../components/header.js'
 import Navbar from '../components/navbar.js'
@@ -44,7 +47,8 @@ export default React.createClass({
     login: React.PropTypes.bool,
     email: React.PropTypes.string,
     errors: React.PropTypes.array,
-    showArchiveMessage: React.PropTypes.bool
+    showArchiveMessage: React.PropTypes.bool,
+    activeEventYears: React.PropTypes.array
   },
 
   getInitialState () {
@@ -70,7 +74,8 @@ export default React.createClass({
       showNewPublication: false,
       email: email,
       errors: [],
-      showArchiveMessage: false
+      showArchiveMessage: false,
+      activeEventYears: [parseInt(moment().format('YYYY'), 0)]
     }
   },
 
@@ -117,10 +122,15 @@ export default React.createClass({
   },
 
   onEventsStoreChange (events, activeEvent) {
+    const { activeEventYears } = this.state
     let state = { events, activeEvent }
     // when new event was saved, hide component
     if (activeEvent) Object.assign(state, { showNewEvent: false })
     this.setState(state)
+    // if more than one activeEventYears exist, scroll div into view
+    const classes = `yearRow ${min(activeEventYears)}`
+    const eventsTable = document.getElementsByClassName(classes)[0]
+    if (eventsTable) eventsTable.scrollIntoView({ block: 'start', behavior: 'smooth' })
   },
 
   onActorsStoreChange (actors, activeActor) {
@@ -222,9 +232,13 @@ export default React.createClass({
     this.setState({ activeEvent })
   },
 
+  setActiveEventYears (activeEventYears) {
+    this.setState({ activeEventYears })
+  },
+
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, showArchiveMessage } = this.state
+    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, showArchiveMessage, activeEventYears } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !nonSimplePages.includes(activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
@@ -284,7 +298,9 @@ export default React.createClass({
                 showNewEvent={showNewEvent}
                 onChangeActiveEvent={this.onChangeActiveEvent}
                 onCloseNewEvent={this.onCloseNewEvent}
-                showArchiveMessage={showArchiveMessage} />
+                showArchiveMessage={showArchiveMessage}
+                activeEventYears={activeEventYears}
+                setActiveEventYears={this.setActiveEventYears} />
             }
             {
               showCommentaryPage &&

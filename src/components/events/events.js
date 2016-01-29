@@ -5,7 +5,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import moment from 'moment'
-import { debounce } from 'lodash'
+import { debounce, min } from 'lodash'
 import IntroJumbotron from './introJumbotron.js'
 import NewEvent from './newEvent.js'
 import EditEvent from './editEvent.js'
@@ -26,19 +26,19 @@ export default React.createClass({
     showNewEvent: React.PropTypes.bool,
     docToRemove: React.PropTypes.object,
     introJumbotronHeight: React.PropTypes.number,
-    activeYear: React.PropTypes.number
+    activeEventYears: React.PropTypes.array,
+    setActiveEventYears: React.PropTypes.func
   },
 
   getInitialState () {
     return {
       docToRemove: null,
-      introJumbotronHeight: null,
-      activeYear: parseInt(moment().format('YYYY'), 0)
+      introJumbotronHeight: null
     }
   },
 
   componentDidMount () {
-    app.Actions.getEvents(moment().format('YYYY'))
+    app.Actions.getEvents([parseInt(moment().format('YYYY'), 0)])
     this.setIntroComponentsHeight()
     window.addEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
   },
@@ -65,14 +65,13 @@ export default React.createClass({
   },
 
   yearButtons () {
-    const { events } = this.props
-    const { activeYear } = this.state
+    const { events, activeEventYears } = this.props
     const years = getYearsFromEvents(events)
     return years.map((year, index) => {
       return (
         <Button
           key={index}
-          active={year === activeYear}
+          active={activeEventYears.includes(year)}
           onClick={this.setActiveYear.bind(this, year)}
         >
           {year}
@@ -85,52 +84,18 @@ export default React.createClass({
     app.Actions.getPage('pages_monthlyEvents')
   },
 
-  setActiveYear (activeYear) {
-    app.Actions.getEvents(activeYear)
-    this.setState({ activeYear })
-  },
-
-  showNextYearButton () {
-    const { activeYear } = this.state
-    const divStyle = {
-      textAlign: 'center',
-      marginTop: 20,
-      marginBottom: 20
-    }
-    if (activeYear > 2015) {
-      return (
-        <div style={divStyle}>
-          <Button
-            onClick={this.showNextYear}
-          >
-            show {activeYear - 1}
-          </Button>
-        </div>
-      )
-    }
-    if (activeYear === 2015) {
-      return (
-        <p
-          style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
-          Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
-        </p>
-      )
-    }
-    if (activeYear < 2015) return null
-  },
-
-  showNextYear () {
-    let { activeYear } = this.state
-    activeYear--
-    app.Actions.getEvents(activeYear)
-    this.setState({ activeYear })
+  setActiveYear (activeEventYears) {
+    const { setActiveEventYears } = this.props
+    activeEventYears = [activeEventYears]
+    app.Actions.getEvents(activeEventYears)
+    setActiveEventYears(activeEventYears)
   },
 
   render () {
-    const { events, email, showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
-    const { docToRemove, introJumbotronHeight, activeYear } = this.state
-    const showEventsTable = activeYear > 2014
-    // const showArchive = activeYear === 2014
+    const { events, email, showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent, activeEventYears, setActiveEventYears } = this.props
+    const { docToRemove, introJumbotronHeight } = this.state
+    const showEventsTable = min(activeEventYears) > 2014
+    // const showArchive = activeEventYears === 2014
 
     return (
       <div className='events'>
@@ -150,13 +115,10 @@ export default React.createClass({
           <EventsTable
             events={events}
             email={email}
-            activeYear={activeYear}
+            activeEventYears={activeEventYears}
+            setActiveEventYears={setActiveEventYears}
             introJumbotronHeight={introJumbotronHeight}
             onRemoveEvent={this.onRemoveEvent} />
-        }
-        {
-          showEventsTable &&
-          this.showNextYearButton()
         }
         {
           activeEvent &&

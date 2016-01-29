@@ -12,12 +12,13 @@ export default React.createClass({
 
   render () {
     const { dateRowObject: dRO } = this.props
-    const year = moment(dRO.date).format('YYYY')
+    const year = parseInt(moment(dRO.date).format('YYYY'), 0)
     const month = moment(dRO.date).format('MMMM')
     const text = `${month} ${year}`
+    const className = month === 'December' ? `monthRow yearRow ${year}` : `monthRow`
 
     return (
-      <tr className='monthRow'>
+      <tr className={className}>
         <td colSpan='3'>
           {text}
         </td>

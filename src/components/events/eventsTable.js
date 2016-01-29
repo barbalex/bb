@@ -1,8 +1,10 @@
 'use strict'
 
+import app from 'ampersand-app'
 import React from 'react'
-import { Table } from 'react-bootstrap'
+import { Table, Button } from 'react-bootstrap'
 import moment from 'moment'
+import { min } from 'lodash'
 import GeminiScrollbar from 'react-gemini-scrollbar'
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
@@ -17,7 +19,8 @@ export default React.createClass({
     dateRowObjects: React.PropTypes.array,
     email: React.PropTypes.string,
     introJumbotronHeight: React.PropTypes.number,
-    activeYear: React.PropTypes.number,
+    activeEventYears: React.PropTypes.array,
+    setActiveEventYears: React.PropTypes.func,
     onRemoveEvent: React.PropTypes.func
   },
 
@@ -28,8 +31,8 @@ export default React.createClass({
   },
 
   dateRows () {
-    const { events, email, onRemoveEvent, activeYear } = this.props
-    const dateRowObjects = getDaterowObjectsSinceOldestEvent(events, activeYear)
+    const { events, email, onRemoveEvent, activeEventYears } = this.props
+    const dateRowObjects = getDaterowObjectsSinceOldestEvent(events, activeEventYears)
     let dateRows = []
     if (dateRowObjects.length > 0) {
       dateRowObjects.forEach((dRO, index) => {
@@ -92,8 +95,44 @@ export default React.createClass({
     }
   },
 
+  showNextYearButton () {
+    const { activeEventYears } = this.props
+    const divStyle = {
+      textAlign: 'center',
+      marginTop: 20,
+      marginBottom: 20
+    }
+    if (min(activeEventYears) > 2015) {
+      return (
+        <div style={divStyle}>
+          <Button
+            onClick={this.showNextYear}
+          >
+            show {min(activeEventYears) - 1}
+          </Button>
+        </div>
+      )
+    }
+    if (min(activeEventYears) === 2015) {
+      return (
+        <p
+          style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
+          Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
+        </p>
+      )
+    }
+    if (min(activeEventYears) < 2015) return null
+  },
+
+  showNextYear () {
+    let { activeEventYears, setActiveEventYears } = this.props
+    activeEventYears.push(min(activeEventYears) - 1)
+    app.Actions.getEvents(activeEventYears)
+    setActiveEventYears(activeEventYears)
+  },
+
   render () {
-    const { introJumbotronHeight } = this.props
+    const { introJumbotronHeight, activeEventYears } = this.props
     const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
@@ -105,6 +144,7 @@ export default React.createClass({
       textOverflox: 'ellipsis',
       textAlign: 'center'
     }
+    const showNextYearButton = min(activeEventYears) > 2014
 
     return (
       <div>
@@ -133,7 +173,12 @@ export default React.createClass({
               {this.dateRows()}
             </tbody>
           </Table>
+          {
+            showNextYearButton &&
+            this.showNextYearButton()
+          }
         </GeminiScrollbar>
+
       </div>
     )
   }

@@ -1,15 +1,15 @@
 'use strict'
 
 import app from 'ampersand-app'
-import { map } from 'lodash'
+import { map, min, max } from 'lodash'
 import sortEvents from './sortEvents.js'
 
-export default (year) => {
+export default (years) => {
   return new Promise((resolve, reject) => {
     const options = {
       include_docs: true,
-      startkey: year ? `events_${year}` : 'events_',
-      endkey: year ? `events_${year}_\uffff` : `events_\uffff`
+      startkey: `events_${min(years)}`,
+      endkey: `events_${max(years)}_\uffff`
     }
     app.db.allDocs(options)
       .then((result) => {
