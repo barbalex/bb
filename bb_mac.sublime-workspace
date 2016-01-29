@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"acti",
+				"activeYear"
+			],
+			[
+				"act",
+				"activeYear"
+			],
+			[
 				"TPop",
 				"TPopXKoord"
 			],
@@ -63,7 +71,15 @@
 			"file": "src/components/events/events.js",
 			"settings":
 			{
-				"buffer_size": 7579,
+				"buffer_size": 7831,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/components/events/eventsTable.js",
+			"settings":
+			{
+				"buffer_size": 5492,
 				"line_ending": "Unix"
 			}
 		},
@@ -76,10 +92,18 @@
 			}
 		},
 		{
-			"file": "src/modules/getEvents.js",
+			"file": "src/components/monthlyEvents/monthlyEvents.js",
 			"settings":
 			{
-				"buffer_size": 598,
+				"buffer_size": 3363,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/components/navbar.js",
+			"settings":
+			{
+				"buffer_size": 9408,
 				"line_ending": "Unix"
 			}
 		}
@@ -128,15 +152,18 @@
 		"/Users/alex/bb//src",
 		"/Users/alex/bb//src/components",
 		"/Users/alex/bb//src/components/events",
-		"/Users/alex/bb//src/modules"
+		"/Users/alex/bb//src/components/monthlyEvents"
 	],
 	"file_history":
 	[
+		"/Users/alex/bb/src/components/events/editEvent.js",
+		"/Users/alex/bb/src/modules/getEvents.js",
+		"/Users/alex/bb/src/modules/getYearsFromEvents.js",
+		"/Users/alex/bb/src/modules/getDaterowObjectsSinceOldestEvent.js",
 		"/Users/alex/bb/src/actions.js",
 		"/Users/alex/bb/package.json",
 		"/Users/alex/bb/src/components/main.js",
 		"/Users/alex/bb/src/stores.js",
-		"/Users/alex/bb/src/components/events/editEvent.js",
 		"/Users/alex/bb/src/components/events/event.js",
 		"/Users/alex/bb/src/components/events/newEvent.js",
 		"/Users/alex/bb/src/components/pages/page.js",
@@ -256,10 +283,7 @@
 		"/Users/alex/artendb/vendor/couchapp/_attachments/modules/holeDatenUrlFuerTreeOberstesLevel.js",
 		"/Users/alex/artendb/vendor/couchapp/_attachments/modules/holeDatenUrlFuerTreeUntereLevel.js",
 		"/Users/alex/artendb/vendor/couchapp/_attachments/modules/initiiereLrParentAuswahlliste.js",
-		"/Users/alex/artendb/vendor/couchapp/_attachments/modules/initiiereSuchfeld_2.js",
-		"/Users/alex/artendb/vendor/couchapp/_attachments/lib/jquery.couch.js",
-		"/Users/alex/artendb/package.json",
-		"/Users/alex/artendb/vendor/couchapp/_attachments/modules/_vorlage.js"
+		"/Users/alex/artendb/vendor/couchapp/_attachments/modules/initiiereSuchfeld_2.js"
 	],
 	"find":
 	{
@@ -286,6 +310,9 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"setIntroComponentsHeight",
+			"onRemoveEvent",
+			"removeEvent",
 			"moment",
 			"getEvents",
 			"Button",
@@ -410,10 +437,7 @@
 			"erstelleHierarchieFuerFeldAusHierarchieobjekteArray",
 			"erstelleHtmlFuerDatensammlung",
 			"erstelleHtmlFuerBeziehung",
-			"initiiere_art_2",
-			"initiiere_art",
-			"oeffneNodeNachIdArray",
-			"oeffneBaumZuId"
+			"initiiere_art_2"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -535,7 +559,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -544,15 +568,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7579,
+						"buffer_size": 7831,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1541,
-								1541
+								0,
+								7831
 							]
 						],
 						"settings":
@@ -562,27 +586,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 457.0,
+						"translation.y": 2494.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "src/components/events/events.js",
+					"buffer": 2,
+					"file": "src/components/events/eventsTable.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7579,
+						"buffer_size": 5492,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1454,
-								1431
+								1531,
+								1544
 							]
 						],
 						"settings":
@@ -592,57 +616,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 616.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/stores.js",
+					"buffer": 1,
+					"file": "src/components/events/events.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 28117,
+						"buffer_size": 7831,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7713,
-								7713
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3436.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/modules/getEvents.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 598,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								343,
-								343
+								767,
+								780
 							]
 						],
 						"settings":
@@ -656,6 +650,96 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/stores.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 28117,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1118,
+								1127
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 218.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/components/monthlyEvents/monthlyEvents.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 3363,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/components/navbar.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9408,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1032,
+								1039
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 411.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
 					"type": "text"
 				}
 			]

@@ -3,20 +3,16 @@
 import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Table, ButtonGroup, Button } from 'react-bootstrap'
+import { ButtonGroup, Button } from 'react-bootstrap'
 import moment from 'moment'
-import GeminiScrollbar from 'react-gemini-scrollbar'
 import { debounce } from 'lodash'
 import IntroJumbotron from './introJumbotron.js'
-import DateRow from './dateRow.js'
-import MonthRow from './monthRow.js'
-import MonthlyStatisticsRow from './monthlyStatisticsRow.js'
 import NewEvent from './newEvent.js'
 import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
-import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
-import getYearsFromEvents from '../../modules/getYearsFromEvents.js'
 import MonthlyEvents from '../monthlyEvents/monthlyEvents.js'
+import EventsTable from './eventsTable.js'
+import getYearsFromEvents from '../../modules/getYearsFromEvents.js'
 
 export default React.createClass({
   displayName: 'Events',
@@ -24,7 +20,6 @@ export default React.createClass({
   propTypes: {
     events: React.PropTypes.array,
     activeEvent: React.PropTypes.object,
-    dateRowObjects: React.PropTypes.array,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onCloseNewEvent: React.PropTypes.func,
@@ -38,7 +33,6 @@ export default React.createClass({
   getInitialState () {
     return {
       docToRemove: null,
-      dateRowObjects: [],
       introJumbotronHeight: null,
       activeYear: moment().format('YYYY')
     }
@@ -71,72 +65,6 @@ export default React.createClass({
     this.setState({ docToRemove: null })
   },
 
-  dateRows () {
-    const { events, email } = this.props
-    const { activeYear } = this.state
-    const dateRowObjects = getDaterowObjectsSinceOldestEvent(events, activeYear)
-    let dateRows = []
-    if (dateRowObjects.length > 0) {
-      dateRowObjects.forEach((dRO, index) => {
-        const day = moment(dRO.date).format('D')
-        const endOfMonth = moment(dRO.date).endOf('month').format('DD')
-        const dROForDateRow = {
-          date: dRO.date,
-          migrationEvents: dRO.migrationEvents.filter((event) =>
-            !event.tags || !event.tags.includes('monthlyStatistics')
-          ),
-          politicsEvents: dRO.politicsEvents.filter((event) =>
-            !event.tags || !event.tags.includes('monthlyStatistics')
-          )
-        }
-        const dROForMonthlyStatsRow = {
-          date: dRO.date,
-          migrationEvents: dRO.migrationEvents.filter((event) =>
-            event.tags && event.tags.includes('monthlyStatistics')
-          ),
-          politicsEvents: dRO.politicsEvents.filter((event) =>
-            event.tags && event.tags.includes('monthlyStatistics')
-          )
-        }
-        const dROForMonthlyStatsHasEvents = dROForMonthlyStatsRow.migrationEvents.length > 0 || dROForMonthlyStatsRow.politicsEvents.length > 0
-        const needsMonthRow = day === endOfMonth || index === 0
-        const needsMonthlyStatisticsRow = day === endOfMonth && dROForMonthlyStatsHasEvents
-        if (needsMonthRow) {
-          dateRows.push(
-            <MonthRow
-              key={index + 'monthRow'}
-              dateRowObject={dRO} />
-          )
-        }
-        if (needsMonthlyStatisticsRow) {
-          dateRows.push(
-            <MonthlyStatisticsRow
-              key={index + 'monthlyStatisticsRow'}
-              dateRowObject={dROForMonthlyStatsRow}
-              email={email}
-              onRemoveEvent={this.onRemoveEvent} />
-          )
-        }
-        dateRows.push(
-          <DateRow
-          key={index}
-          dateRowObject={dROForDateRow}
-          email={email}
-          onRemoveEvent={this.onRemoveEvent} />
-        )
-      })
-      return dateRows
-    } else {
-      return (
-        <tr>
-          <td colSpan='3'>
-            <p>Loading events...</p>
-          </td>
-        </tr>
-      )
-    }
-  },
-
   yearButtons () {
     const { events } = this.props
     const { activeYear } = this.state
@@ -160,19 +88,8 @@ export default React.createClass({
   },
 
   render () {
-    const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
+    const { events, email, showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove, introJumbotronHeight, activeYear } = this.state
-    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
-    const eventsTableHeadStyle = {
-      top: eventsTableHeadTop
-    }
-    const fontSize = window.innerWidth < 500 ? 20 : 21
-    const headerStyle = {
-      fontSize: fontSize,
-      whiteSpace: 'nowrap',
-      textOverflox: 'ellipsis',
-      textAlign: 'center'
-    }
     const showEventsTable = activeYear > 2014
     const showArchive = activeYear === 2013
 
@@ -185,36 +102,12 @@ export default React.createClass({
             <Button>2014 - 2011</Button>
           </ButtonGroup>
         </div>
-        <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
-          <colgroup>
-            <col className='day' />
-            <col className='migration' />
-            <col className='politics' />
-          </colgroup>
-          <thead>
-            <tr>
-              <th className='day' style={headerStyle}></th>
-              <th className='migration' style={headerStyle}>Maritime Events</th>
-              <th className='politics' style={headerStyle}>Political Events</th>
-            </tr>
-          </thead>
-        </Table>
-        <GeminiScrollbar id='eventsTableBody' autoshow>
-          <Table condensed hover>
-            <colgroup>
-              <col className='day' />
-              <col className='migration' />
-              <col className='politics' />
-            </colgroup>
-            <tbody>
-              {this.dateRows()}
-            </tbody>
-          </Table>
-          <p
-            style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
-            Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
-          </p>
-        </GeminiScrollbar>
+        <EventsTable
+          events={events}
+          email={email}
+          activeYear={activeYear}
+          introJumbotronHeight={introJumbotronHeight}
+          onRemoveEvent={this.onRemoveEvent} />
         {
           activeEvent &&
           <EditEvent
