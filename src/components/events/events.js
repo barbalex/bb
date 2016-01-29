@@ -28,17 +28,14 @@ export default React.createClass({
     onChangeActiveEvent: React.PropTypes.func,
     showNewEvent: React.PropTypes.bool,
     docToRemove: React.PropTypes.object,
-    introJumbotronHeight: React.PropTypes.number,
-    showArchiveMessageHeight: React.PropTypes.number,
-    showArchiveMessage: React.PropTypes.bool
+    introJumbotronHeight: React.PropTypes.number
   },
 
   getInitialState () {
     return {
       docToRemove: null,
       dateRowObjects: [],
-      introJumbotronHeight: null,
-      showArchiveMessageHeight: null
+      introJumbotronHeight: null
     }
   },
 
@@ -53,14 +50,10 @@ export default React.createClass({
   },
 
   setIntroComponentsHeight () {
-    const { introJumbotronHeight: introJumbotronHeightOld, showArchiveMessageHeight: showArchiveMessageHeightOld } = this.state
+    const { introJumbotronHeight: introJumbotronHeightOld } = this.state
     const introJumbotronDomNode = this.introJumbotron ? ReactDOM.findDOMNode(this.introJumbotron) : null
     const introJumbotronHeight = introJumbotronDomNode ? introJumbotronDomNode.clientHeight : null
     if (introJumbotronHeight && introJumbotronHeight !== introJumbotronHeightOld) this.setState({ introJumbotronHeight })
-
-    const showArchiveMessageDomNode = this.archiveMessageComponent ? ReactDOM.findDOMNode(this.archiveMessageComponent) : null
-    const showArchiveMessageHeight = showArchiveMessageDomNode ? showArchiveMessageDomNode.clientHeight : null
-    if (showArchiveMessageHeight && showArchiveMessageHeight !== showArchiveMessageHeightOld) this.setState({ showArchiveMessageHeight })
   },
 
   onRemoveEvent (docToRemove) {
@@ -130,33 +123,10 @@ export default React.createClass({
     }
   },
 
-  archiveMessage () {
-    const { showArchiveMessage } = this.props
-    if (!showArchiveMessage) return null
-    const pStyle = {
-      marginTop: 15,
-      marginBottom: 15,
-      paddingLeft: 6,
-      textAlign: 'center'
-    }
-    return (
-      <div
-        ref={(j) => this.archiveMessageComponent = j} >
-        <p
-          style={pStyle}>
-          Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
-        </p>
-      </div>
-    )
-  },
-
   render () {
-    const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent, showArchiveMessage } = this.props
-    const { docToRemove, introJumbotronHeight, showArchiveMessageHeight } = this.state
-    let eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 10 : 318
-    if (showArchiveMessage && showArchiveMessageHeight && showArchiveMessageHeight > 0) {
-      eventsTableHeadTop = eventsTableHeadTop + showArchiveMessageHeight + 30
-    }
+    const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
+    const { docToRemove, introJumbotronHeight } = this.state
+    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 10 : 318
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }
@@ -174,7 +144,6 @@ export default React.createClass({
           <p style={{ fontSize: 19 }}><strong>The pur&shy;pose of this web&shy;site is to gain an over&shy;view by cove&shy;ring chro&shy;no&shy;lo&shy;gi&shy;cal&shy;ly both ma&shy;ri&shy;ti&shy;me and poli&shy;ti&shy;cal events.</strong></p>
           <p style={{ marginBottom: 0 }}>Maritime events in&shy;clude in&shy;for&shy;ma&shy;tion on em&shy;bar&shy;ka&shy;tion, ac&shy;ci&shy;dents, search and res&shy;cue (SAR) ope&shy;ra&shy;tions, vic&shy;tims and dis&shy;em&shy;bar&shy;ka&shy;tion. By po&shy;li&shy;ti&shy;cal events I mean the re&shy;ac&shy;tions and ac&shy;tions un&shy;der&shy;ta&shy;ken by na&shy;tio&shy;nal, re&shy;gio&shy;nal and glo&shy;bal ac&shy;tors, pub&shy;lic as well as private.</p>
         </Jumbotron>
-        {this.archiveMessage()}
         <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
           <colgroup>
             <col className='day' />
@@ -200,13 +169,10 @@ export default React.createClass({
               {this.dateRows()}
             </tbody>
           </Table>
-          {
-            !showArchiveMessage &&
-            <p
-              style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
-              Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
-            </p>
-          }
+          <p
+            style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
+            Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
+          </p>
         </GeminiScrollbar>
         {
           activeEvent &&
