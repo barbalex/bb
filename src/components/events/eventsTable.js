@@ -133,10 +133,6 @@ export default React.createClass({
               {this.dateRows()}
             </tbody>
           </Table>
-          <p
-            style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
-            Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
-          </p>
         </GeminiScrollbar>
       </div>
     )

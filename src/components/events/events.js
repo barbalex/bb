@@ -90,6 +90,42 @@ export default React.createClass({
     this.setState({ activeYear })
   },
 
+  showNextYearButton () {
+    const { activeYear } = this.state
+    const divStyle = {
+      textAlign: 'center',
+      marginTop: 20,
+      marginBottom: 20
+    }
+    if (activeYear > 2015) {
+      return (
+        <div style={divStyle}>
+          <Button
+            onClick={this.showNextYear}
+          >
+            show {activeYear - 1}
+          </Button>
+        </div>
+      )
+    }
+    if (activeYear === 2015) {
+      return (
+        <p
+          style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
+          Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
+        </p>
+      )
+    }
+    if (activeYear < 2015) return null
+  },
+
+  showNextYear () {
+    let { activeYear } = this.state
+    activeYear--
+    app.Actions.getEvents(activeYear)
+    this.setState({ activeYear })
+  },
+
   render () {
     const { events, email, showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove, introJumbotronHeight, activeYear } = this.state
@@ -117,6 +153,10 @@ export default React.createClass({
             activeYear={activeYear}
             introJumbotronHeight={introJumbotronHeight}
             onRemoveEvent={this.onRemoveEvent} />
+        }
+        {
+          showEventsTable &&
+          this.showNextYearButton()
         }
         {
           activeEvent &&
