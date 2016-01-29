@@ -8,8 +8,7 @@ export default (events) => {
   if (oldestEvent) {
     const oldestDate = getDateFromEventId(oldestEvent._id)
     const oldestYear = moment(oldestDate).format('YYYY')
-    const date = moment()
-    const thisYear = moment(date).format('YYYY')
+    const thisYear = moment().format('YYYY')
     // create array of years between this and oldest
     const years = []
     let year = thisYear

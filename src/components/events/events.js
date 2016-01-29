@@ -30,14 +30,16 @@ export default React.createClass({
     onChangeActiveEvent: React.PropTypes.func,
     showNewEvent: React.PropTypes.bool,
     docToRemove: React.PropTypes.object,
-    introJumbotronHeight: React.PropTypes.number
+    introJumbotronHeight: React.PropTypes.number,
+    activeYear: React.PropTypes.number
   },
 
   getInitialState () {
     return {
       docToRemove: null,
       dateRowObjects: [],
-      introJumbotronHeight: null
+      introJumbotronHeight: null,
+      activeYear: moment().format('YYYY')
     }
   },
 
@@ -135,16 +137,29 @@ export default React.createClass({
 
   yearButtons () {
     const { events } = this.props
+    const { activeYear } = this.state
     const years = getYearsFromEvents(events)
     return years.map((year, index) => {
-      return <Button key={index} active={index === 0}>{year}</Button>
+      return (
+        <Button
+          key={index}
+          active={year === activeYear}
+          onClick={this.setActiveYear(year)}
+        >
+          {year}
+        </Button>
+      )
     })
+  },
+
+  setActiveYear (activeYear) {
+    console.log('clicked, activeYear', activeYear)
+    //this.setState({ activeYear })
   },
 
   render () {
     const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove, introJumbotronHeight } = this.state
-    // const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 10 : 318
     const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
