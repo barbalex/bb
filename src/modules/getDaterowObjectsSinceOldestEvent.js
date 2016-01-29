@@ -8,7 +8,7 @@ export default (events, activeYear) => {
   if (oldestEvent) {
     const oldestDate = getDateFromEventId(oldestEvent._id)
     let daterowObjects = []
-    const activeYearIsCurrentYear = moment().format('YYYY') === activeYear
+    const activeYearIsCurrentYear = parseInt(moment().format('YYYY'), 0) === activeYear
     let date = activeYearIsCurrentYear ? moment() : moment(`31.12.${activeYear}`, 'DD.MM.YYYY')
     while (date >= oldestDate) {
       const year = moment(date).format('YYYY')

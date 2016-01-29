@@ -10,7 +10,6 @@ import IntroJumbotron from './introJumbotron.js'
 import NewEvent from './newEvent.js'
 import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
-import MonthlyEvents from '../monthlyEvents/monthlyEvents.js'
 import EventsTable from './eventsTable.js'
 import getYearsFromEvents from '../../modules/getYearsFromEvents.js'
 
@@ -34,7 +33,7 @@ export default React.createClass({
     return {
       docToRemove: null,
       introJumbotronHeight: null,
-      activeYear: moment().format('YYYY')
+      activeYear: parseInt(moment().format('YYYY'), 0)
     }
   },
 
@@ -82,6 +81,10 @@ export default React.createClass({
     })
   },
 
+  showArchive () {
+    app.Actions.getPage('pages_monthlyEvents')
+  },
+
   setActiveYear (activeYear) {
     app.Actions.getEvents(activeYear)
     this.setState({ activeYear })
@@ -91,7 +94,7 @@ export default React.createClass({
     const { events, email, showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove, introJumbotronHeight, activeYear } = this.state
     const showEventsTable = activeYear > 2014
-    const showArchive = activeYear === 2013
+    // const showArchive = activeYear === 2014
 
     return (
       <div className='events'>
@@ -99,15 +102,22 @@ export default React.createClass({
         <div style={{ textAlign: 'center' }}>Choose a year:&nbsp;
           <ButtonGroup>
             {this.yearButtons()}
-            <Button>2014 - 2011</Button>
+            <Button
+              onClick={this.showArchive}
+            >
+              2014 - 2011
+            </Button>
           </ButtonGroup>
         </div>
-        <EventsTable
-          events={events}
-          email={email}
-          activeYear={activeYear}
-          introJumbotronHeight={introJumbotronHeight}
-          onRemoveEvent={this.onRemoveEvent} />
+        {
+          showEventsTable &&
+          <EventsTable
+            events={events}
+            email={email}
+            activeYear={activeYear}
+            introJumbotronHeight={introJumbotronHeight}
+            onRemoveEvent={this.onRemoveEvent} />
+        }
         {
           activeEvent &&
           <EditEvent
