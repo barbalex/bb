@@ -116,7 +116,7 @@ export default React.createClass({
               <Navbar.Brand
                 onClick={this.onClickPage.bind(this, 'pages_events')}
               >
-                Home
+                Events
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
