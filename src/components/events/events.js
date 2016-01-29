@@ -174,7 +174,7 @@ export default React.createClass({
       textAlign: 'center'
     }
     const showEventsTable = activeYear > 2014
-    const showArchive = activeYear = 2013
+    const showArchive = activeYear === 2013
 
     return (
       <div className='events'>
