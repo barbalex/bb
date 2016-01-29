@@ -3,7 +3,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Table, Jumbotron } from 'react-bootstrap'
+import { Table, ButtonGroup, Button } from 'react-bootstrap'
 import moment from 'moment'
 import GeminiScrollbar from 'react-gemini-scrollbar'
 import { debounce } from 'lodash'
@@ -15,6 +15,7 @@ import NewEvent from './newEvent.js'
 import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
 import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
+import getYearsFromEvents from '../../modules/getYearsFromEvents.js'
 
 export default React.createClass({
   displayName: 'Events',
@@ -124,6 +125,15 @@ export default React.createClass({
     }
   },
 
+  yearButtons () {
+    const { events } = this.props
+    const years = getYearsFromEvents(events)
+    return years.map((year, index) => {
+      if (index === 0) return <Button active>{year}</Button>
+      return <Button>{year}</Button>
+    })
+  },
+
   render () {
     const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove, introJumbotronHeight } = this.state
@@ -141,6 +151,11 @@ export default React.createClass({
     return (
       <div className='events'>
         <IntroJumbotron ref={(j) => this.introJumbotron = j} />
+        <ButtonGroup>
+          {this.yearButtons()}
+          <Button>2014 - 2011</Button>
+          }
+        </ButtonGroup>
         <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
           <colgroup>
             <col className='day' />

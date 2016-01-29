@@ -14,8 +14,12 @@ export default (events) => {
       const year = moment(date).format('YYYY')
       const month = moment(date).format('MM')
       const day = moment(date).format('DD')
-      const migrationEvents = events.filter((event) => event._id.startsWith(`events_${year}_${month}_${day}`) && event.eventType === 'migration')
-      const politicsEvents = events.filter((event) => event._id.startsWith(`events_${year}_${month}_${day}`) && event.eventType === 'politics')
+      const migrationEvents = events.filter((event) =>
+        event._id.startsWith(`events_${year}_${month}_${day}`) && event.eventType === 'migration'
+      )
+      const politicsEvents = events.filter((event) =>
+        event._id.startsWith(`events_${year}_${month}_${day}`) && event.eventType === 'politics'
+      )
       const daterowObject = { date, migrationEvents, politicsEvents }
       daterowObjects.push(daterowObject)
       date = moment(date).subtract(1, 'days')
