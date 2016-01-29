@@ -16,6 +16,7 @@ import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
 import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
 import getYearsFromEvents from '../../modules/getYearsFromEvents.js'
+import MonthlyEvents from '../monthlyEvents/monthlyEvents.js'
 
 export default React.createClass({
   displayName: 'Events',
@@ -160,7 +161,7 @@ export default React.createClass({
 
   render () {
     const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
-    const { docToRemove, introJumbotronHeight } = this.state
+    const { docToRemove, introJumbotronHeight, activeYear } = this.state
     const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
@@ -172,6 +173,8 @@ export default React.createClass({
       textOverflox: 'ellipsis',
       textAlign: 'center'
     }
+    const showEventsTable = activeYear > 2014
+    const showArchive = activeYear = 2013
 
     return (
       <div className='events'>
