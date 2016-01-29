@@ -144,7 +144,7 @@ export default React.createClass({
         <Button
           key={index}
           active={year === activeYear}
-          onClick={this.setActiveYear(year)}
+          onClick={this.setActiveYear.bind(this, year)}
         >
           {year}
         </Button>
@@ -153,8 +153,7 @@ export default React.createClass({
   },
 
   setActiveYear (activeYear) {
-    console.log('clicked, activeYear', activeYear)
-    //this.setState({ activeYear })
+    this.setState({ activeYear })
   },
 
   render () {
@@ -175,12 +174,12 @@ export default React.createClass({
     return (
       <div className='events'>
         <IntroJumbotron ref={(j) => this.introJumbotron = j} />
-        <span>Choose a year:&nbsp;
+        <div style={{ textAlign: 'center' }}>Choose a year:&nbsp;
           <ButtonGroup>
             {this.yearButtons()}
             <Button>2014 - 2011</Button>
           </ButtonGroup>
-        </span>
+        </div>
         <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
           <colgroup>
             <col className='day' />
