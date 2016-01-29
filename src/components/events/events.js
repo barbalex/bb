@@ -78,13 +78,21 @@ export default React.createClass({
         const endOfMonth = moment(dRO.date).endOf('month').format('DD')
         const dROForDateRow = {
           date: dRO.date,
-          migrationEvents: dRO.migrationEvents.filter((event) => !event.tags || !event.tags.includes('monthlyStatistics')),
-          politicsEvents: dRO.politicsEvents.filter((event) => !event.tags || !event.tags.includes('monthlyStatistics'))
+          migrationEvents: dRO.migrationEvents.filter((event) =>
+            !event.tags || !event.tags.includes('monthlyStatistics')
+          ),
+          politicsEvents: dRO.politicsEvents.filter((event) =>
+            !event.tags || !event.tags.includes('monthlyStatistics')
+          )
         }
         const dROForMonthlyStatsRow = {
           date: dRO.date,
-          migrationEvents: dRO.migrationEvents.filter((event) => event.tags && event.tags.includes('monthlyStatistics')),
-          politicsEvents: dRO.politicsEvents.filter((event) => event.tags && event.tags.includes('monthlyStatistics'))
+          migrationEvents: dRO.migrationEvents.filter((event) =>
+            event.tags && event.tags.includes('monthlyStatistics')
+          ),
+          politicsEvents: dRO.politicsEvents.filter((event) =>
+            event.tags && event.tags.includes('monthlyStatistics')
+          )
         }
         const dROForMonthlyStatsHasEvents = dROForMonthlyStatsRow.migrationEvents.length > 0 || dROForMonthlyStatsRow.politicsEvents.length > 0
         const needsMonthRow = day === endOfMonth || index === 0
@@ -129,15 +137,15 @@ export default React.createClass({
     const { events } = this.props
     const years = getYearsFromEvents(events)
     return years.map((year, index) => {
-      if (index === 0) return <Button active>{year}</Button>
-      return <Button>{year}</Button>
+      return <Button key={index} active={index === 0}>{year}</Button>
     })
   },
 
   render () {
     const { showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent } = this.props
     const { docToRemove, introJumbotronHeight } = this.state
-    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 10 : 318
+    // const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 10 : 318
+    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }
@@ -145,17 +153,19 @@ export default React.createClass({
     const headerStyle = {
       fontSize: fontSize,
       whiteSpace: 'nowrap',
-      textOverflox: 'ellipsis'
+      textOverflox: 'ellipsis',
+      textAlign: 'center'
     }
 
     return (
       <div className='events'>
         <IntroJumbotron ref={(j) => this.introJumbotron = j} />
-        <ButtonGroup>
-          {this.yearButtons()}
-          <Button>2014 - 2011</Button>
-          }
-        </ButtonGroup>
+        <span>Choose a year:&nbsp;
+          <ButtonGroup>
+            {this.yearButtons()}
+            <Button>2014 - 2011</Button>
+          </ButtonGroup>
+        </span>
         <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
           <colgroup>
             <col className='day' />
@@ -164,7 +174,7 @@ export default React.createClass({
           </colgroup>
           <thead>
             <tr>
-              <th className='day' style={headerStyle}>Date</th>
+              <th className='day' style={headerStyle}></th>
               <th className='migration' style={headerStyle}>Maritime Events</th>
               <th className='politics' style={headerStyle}>Political Events</th>
             </tr>
