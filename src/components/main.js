@@ -127,10 +127,6 @@ export default React.createClass({
     // when new event was saved, hide component
     if (activeEvent) Object.assign(state, { showNewEvent: false })
     this.setState(state)
-    // if more than one activeEventYears exist, scroll div into view
-    const classes = `yearRow ${min(activeEventYears)}`
-    const eventsTable = document.getElementsByClassName(classes)[0]
-    if (eventsTable) eventsTable.scrollIntoView({ block: 'start', behavior: 'smooth' })
   },
 
   onActorsStoreChange (actors, activeActor) {
