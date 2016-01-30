@@ -27,10 +27,7 @@ config.module.loaders.push(
   {
     test: /\.jsx?$/,
     exclude: /(node_modules|bower_components)/,
-    loader: 'babel',
-    query: {
-      presets: ['es2015', 'react', 'stage-0', 'react-hmre']
-    }
+    loader: 'babel'
   }
 )
 

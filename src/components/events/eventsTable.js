@@ -100,7 +100,7 @@ export default React.createClass({
     const divStyle = {
       textAlign: 'center',
       marginTop: 20,
-      marginBottom: 20
+      marginBottom: 30
     }
     if (min(activeEventYears) > 2015) {
       return (
@@ -108,7 +108,7 @@ export default React.createClass({
           <Button
             onClick={this.showNextYear}
           >
-            show {min(activeEventYears) - 1}
+            load events for {min(activeEventYears) - 1}
           </Button>
         </div>
       )
