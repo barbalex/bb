@@ -115,10 +115,13 @@ export default React.createClass({
     }
     if (min(activeEventYears) === 2015) {
       return (
-        <p
-          style={{ marginTop: 40, textAlign: 'center', marginBottom: 40 }}>
-          Looking for Events between 2011 and 2014? Visit the <a href='/monthlyEvents'>archive</a>.
-        </p>
+        <div style={divStyle}>
+          <Button
+            onClick={this.showArchive}
+          >
+            see events between 2011 and 2014 in the archive
+          </Button>
+        </div>
       )
     }
     if (min(activeEventYears) < 2015) return null
@@ -131,13 +134,17 @@ export default React.createClass({
     setActiveEventYears(activeEventYears)
   },
 
+  showArchive () {
+    app.Actions.getPage('pages_monthlyEvents')
+  },
+
   render () {
     const { introJumbotronHeight, activeEventYears } = this.props
     const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }
-    const fontSize = window.innerWidth < 500 ? 20 : 21
+    const fontSize = window.innerWidth < 500 ? 20 : 24
     const headerStyle = {
       fontSize: fontSize,
       whiteSpace: 'nowrap',
