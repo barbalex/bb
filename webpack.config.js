@@ -1,8 +1,8 @@
 'use strict'
 
-var getConfig = require('hjs-webpack')
-var indexTemplate = require('./src/indexTemplate.js')
-var NpmInstallPlugin = require('npm-install-webpack-plugin')
+const getConfig = require('hjs-webpack')
+const NpmInstallPlugin = require('npm-install-webpack-plugin')
+const indexTemplate = require('./src/indexTemplate.js')
 
 let config = getConfig({
   in: 'src/app.js',
