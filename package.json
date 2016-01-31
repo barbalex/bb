@@ -81,6 +81,7 @@
   "devDependencies": {
     "expose-loader": "0.7.1",
     "gulp-sftp": "0.1.5",
+    "npm-install-webpack-plugin": "^2.0.0",
     "webpack-dev-server": "1.14.1"
   }
 }
