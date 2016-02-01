@@ -38,12 +38,12 @@ export default React.createClass({
           <Button
             className={eventType === 'migration' ? 'active' : ''}
             onClick={this.onChangeEventType.bind(this, 'migration')}>
-            maritime events
+            maritime events / monthly statistics
           </Button>
           <Button
             className={eventType === 'politics' ? 'active' : ''}
             onClick={this.onChangeEventType.bind(this, 'politics')}>
-            political events
+            political events / total statistics
           </Button>
         </ButtonGroup>
       </div>
