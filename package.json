@@ -36,13 +36,17 @@
     "bootstrap": "3.3.6",
     "bootstrap-webpack": "0.0.5",
     "classnames": "2.2.3",
+    "css": "^2.2.1",
     "css-loader": "0.23.1",
     "exports-loader": "0.6.2",
+    "expose": "^0.1.4",
     "extract-text-webpack-plugin": "1.0.1",
+    "file": "^0.2.2",
     "file-loader": "0.8.5",
     "gemini-scrollbar": "1.3.1",
     "gulp": "3.9.0",
     "hjs-webpack": "7.0.0",
+    "html": "0.0.10",
     "html-loader": "0.4.0",
     "imports-loader": "0.6.5",
     "jquery": "2.2.0",
@@ -66,16 +70,19 @@
     "react-dropzone": "3.3.2",
     "react-gemini-scrollbar": "2.1.0",
     "react-hot-loader": "1.3.0",
+    "react-transform-hmr": "^1.0.1",
     "reflux": "0.3.0",
     "require-dir": "0.3.0",
     "script-loader": "0.6.1",
     "slug": "0.9.1",
+    "style": "0.0.3",
     "style-loader": "0.13.0",
     "stylus-loader": "1.5.1",
     "surge": "0.17.7",
     "tinymce": "4.3.3",
     "url-loader": "0.5.7",
     "webpack": "1.12.12",
+    "webpack-hot-middleware": "^2.6.4",
     "yeticss": "7.2.0"
   },
   "devDependencies": {
@@ -85,7 +92,7 @@
     "webpack-dev-server": "1.14.1"
   },
   "repository": {
-      "type": "git",
-      "url": "git://github.com/barbalex/bb.git"
+    "type": "git",
+    "url": "git://github.com/barbalex/bb.git"
   }
 }
