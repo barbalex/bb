@@ -147,13 +147,6 @@ export default React.createClass({
                 </NavItem>
                 <NavItem
                   eventKey={3}
-                  active={id === 'pages_monthlyEvents'}
-                  onClick={this.onClickPage.bind(this, 'pages_monthlyEvents')}
-                >
-                  Archive
-                </NavItem>
-                <NavItem
-                  eventKey={4}
                   active={id === 'pages_aboutUs'}
                   onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
                 >
