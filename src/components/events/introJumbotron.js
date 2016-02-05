@@ -8,10 +8,10 @@ export default React.createClass({
 
   render () {
     return (
-      <Jumbotron className='eventsIntro'>
+      <Jumbotron className='eventsIntro' style={{ hyphens: 'manual' }}>
         <p>
-          Most mi&shy;grants and re&shy;fu&shy;gees ar&shy;ri&shy;ving in Eu&shy;ro&shy;pe cross the blue bor&shy;­ders of the Eas&shy;­tern and Cen&shy;­tral Me&shy;­di&shy;­ter&shy;­ra&shy;­ne­an.<br/>
-          The flow is mas&shy;sive and high&shy;ly com&shy;plex.
+          Most mi&shy;grants and re&shy;fu&shy;gees ar&shy;ri&shy;ving in Eu&shy;ro&shy;pe cross the blue bor&shy;­ders of the Eas&shy;­tern and Cen&shy;­tral Me­diterrane­an.<br/>
+          The flow is massive and high&shy;ly com&shy;plex.
         </p>
         <p style={{ marginBottom: 0 }}>
           <strong>
