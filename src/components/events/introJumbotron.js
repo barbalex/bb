@@ -14,9 +14,7 @@ export default React.createClass({
           The flow is massive and high&shy;ly com&shy;plex.
         </p>
         <p style={{ marginBottom: 0 }}>
-          <strong>
-            The main pur&shy;­pose of this web&shy;­si&shy;te is to gain a rough over&shy;­view by co&shy;ve&shy;­ring chro&shy;­no&shy;­lo&shy;­gi&shy;­cal&shy;­ly both ma­ri&shy;­ti­me and po&shy;li&shy;­ti&shy;­cal events.
-          </strong>
+          The main pur&shy;­pose of this web&shy;­si&shy;te is to gain a rough over&shy;­view by co&shy;ve&shy;­ring chro&shy;­no&shy;­lo&shy;­gi&shy;­cal&shy;­ly both ma­ri&shy;­ti­me and po&shy;li&shy;­ti&shy;­cal events.
         </p>
       </Jumbotron>
     )
