@@ -66,18 +66,22 @@ export default React.createClass({
 
   yearButtons () {
     const { events, activeEventYears } = this.props
-    const years = getYearsFromEvents(events)
-    return years.map((year, index) => {
-      return (
-        <Button
-          key={index}
-          active={activeEventYears.includes(year)}
-          onClick={this.setActiveYear.bind(this, year)}
-        >
-          {year}
-        </Button>
-      )
-    })
+    return getYearsFromEvents(events)
+      .then((years) => {
+        console.log('events.js, yearButtons, years', years)
+        return years.map((year, index) => {
+          return (
+            <Button
+              key={index}
+              active={activeEventYears.includes(year)}
+              onClick={this.setActiveYear.bind(this, year)}
+            >
+              {year}
+            </Button>
+          )
+        })
+      })
+      .catch((error) => console.log(error))
   },
 
   showArchive () {
@@ -105,7 +109,7 @@ export default React.createClass({
             <Button
               onClick={this.showArchive}
             >
-              2014 - 2011 (Archive)
+              2014 - 2011
             </Button>
           </ButtonGroup>
         </div>
