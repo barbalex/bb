@@ -35,6 +35,7 @@ export default React.createClass({
     commentaries: React.PropTypes.array,
     activeCommentary: React.PropTypes.object,
     events: React.PropTypes.array,
+    yearsOfEvents: React.PropTypes.array,
     activeEvent: React.PropTypes.object,
     actors: React.PropTypes.array,
     activeActor: React.PropTypes.object,
@@ -63,6 +64,7 @@ export default React.createClass({
       commentaries: [],
       activeEvent: null,
       events: [],
+      yearsOfEvents: [],
       activeActor: null,
       actors: [],
       editing: false,
@@ -84,6 +86,7 @@ export default React.createClass({
     this.listenTo(app.publicationsStore, this.onPublicationsStoreChange)
     this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
     this.listenTo(app.eventsStore, this.onEventsStoreChange)
+    this.listenTo(app.yearsOfEventsStore, this.onYearsOfEventsStoreChange)
     this.listenTo(app.actorsStore, this.onActorsStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onErrorStoreChange)
@@ -112,11 +115,14 @@ export default React.createClass({
   },
 
   onEventsStoreChange (events, activeEvent) {
-    const { activeEventYears } = this.state
     let state = { events, activeEvent }
     // when new event was saved, hide component
     if (activeEvent) Object.assign(state, { showNewEvent: false })
     this.setState(state)
+  },
+
+  onYearsOfEventsStoreChange (yearsOfEvents) {
+    this.setState({ yearsOfEvents })
   },
 
   onActorsStoreChange (actors, activeActor) {
@@ -224,7 +230,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, activeEventYears } = this.state
+    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, yearsOfEvents, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, activeEventYears } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !nonSimplePages.includes(activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
@@ -263,7 +269,8 @@ export default React.createClass({
             onClickNewEvent={this.onClickNewEvent}
             onClickNewActor={this.onClickNewActor}
             onClickNewMonthlyEvent={this.onClickNewMonthlyEvent}
-            onClickNewPublication={this.onClickNewPublication} />
+            onClickNewPublication={this.onClickNewPublication}
+          />
           <div className='container'>
             <Errors errors={errors} />
             {
@@ -272,12 +279,14 @@ export default React.createClass({
                 activePage={activePage}
                 editing={editing}
                 onSavePageArticle={this.onSavePageArticle}
-                onSavePage={this.onSavePage} />
+                onSavePage={this.onSavePage}
+              />
             }
             {
               showEventsPage &&
               <Events
                 events={events}
+                yearsOfEvents={yearsOfEvents}
                 editing={editing}
                 email={email}
                 activeEvent={activeEvent}
@@ -285,7 +294,8 @@ export default React.createClass({
                 onChangeActiveEvent={this.onChangeActiveEvent}
                 onCloseNewEvent={this.onCloseNewEvent}
                 activeEventYears={activeEventYears}
-                setActiveEventYears={this.setActiveEventYears} />
+                setActiveEventYears={this.setActiveEventYears}
+              />
             }
             {
               showCommentaryPage &&

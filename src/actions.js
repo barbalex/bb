@@ -10,6 +10,7 @@ export default () => {
     removePageAttachment: {},
     getEvents: {},
     getEvent: {},
+    getYearsOfEvents: {},
     saveEvent: {},
     newEvent: {},
     removeEvent: {},

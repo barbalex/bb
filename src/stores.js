@@ -14,6 +14,7 @@ import getMonthlyEvents from './modules/getMonthlyEvents.js'
 import sortMonthlyEvents from './modules/sortMonthlyEvents.js'
 import getEvents from './modules/getEvents.js'
 import sortEvents from './modules/sortEvents.js'
+import getYearsOfEvents from './modules/getYearsOfEvents.js'
 import getPublications from './modules/getPublications.js'
 import sortPublications from './modules/sortPublications.js'
 import monthlyEventTemplate from 'html!./components/monthlyEvents/monthlyEventTemplate.html'
@@ -198,6 +199,23 @@ export default (Actions) => {
 
     triggerStore () {
       this.trigger(this.monthlyEvents, this.activeMonthlyEvent())
+    }
+  })
+
+  app.yearsOfEventsStore = Reflux.createStore({
+
+    listenables: Actions,
+
+    yearsOfEvents: [parseInt(moment().format('YYYY'), 0)],
+
+    onGetYearsOfEvents () {
+      this.trigger(this.yearsOfEvents)
+      getYearsOfEvents()
+        .then((years) => {
+          this.yearsOfEvents = years
+          this.trigger(this.yearsOfEvents)
+        })
+        .catch((error) => console.log('yearsOfEventsStore, error getting years of events', error))
     }
   })
 

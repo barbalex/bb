@@ -11,13 +11,13 @@ import NewEvent from './newEvent.js'
 import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
 import EventsTable from './eventsTable.js'
-import getYearsFromEvents from '../../modules/getYearsFromEvents.js'
 
 export default React.createClass({
   displayName: 'Events',
 
   propTypes: {
     events: React.PropTypes.array,
+    yearsOfEvents: React.PropTypes.array,
     activeEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
@@ -39,6 +39,7 @@ export default React.createClass({
 
   componentDidMount () {
     app.Actions.getEvents([parseInt(moment().format('YYYY'), 0)])
+    app.Actions.getYearsOfEvents()
     this.setIntroComponentsHeight()
     window.addEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
   },
@@ -65,23 +66,18 @@ export default React.createClass({
   },
 
   yearButtons () {
-    const { events, activeEventYears } = this.props
-    return getYearsFromEvents(events)
-      .then((years) => {
-        console.log('events.js, yearButtons, years', years)
-        return years.map((year, index) => {
-          return (
-            <Button
-              key={index}
-              active={activeEventYears.includes(year)}
-              onClick={this.setActiveYear.bind(this, year)}
-            >
-              {year}
-            </Button>
-          )
-        })
-      })
-      .catch((error) => console.log(error))
+    const { yearsOfEvents, activeEventYears } = this.props
+    return yearsOfEvents.map((year, index) => {
+      return (
+        <Button
+          key={index}
+          active={activeEventYears.includes(year)}
+          onClick={this.setActiveYear.bind(this, year)}
+        >
+          {year}
+        </Button>
+      )
+    })
   },
 
   showArchive () {
