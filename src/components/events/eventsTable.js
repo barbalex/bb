@@ -145,7 +145,7 @@ export default React.createClass({
   render () {
     const { introJumbotronHeight, activeEventYears } = this.props
     // const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
-    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 70 : 368
+    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 88 : 368
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }

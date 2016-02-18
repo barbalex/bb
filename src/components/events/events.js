@@ -99,13 +99,13 @@ export default React.createClass({
     return (
       <div className='events'>
         <IntroJumbotron ref={(j) => this.introJumbotron = j} />
-        <div style={{ textAlign: 'center' }}>Choose a year:&nbsp;
+        <div style={{ textAlign: 'center' }}>
           <ButtonGroup>
             {this.yearButtons()}
             <Button
               onClick={this.showArchive}
             >
-              2014 - 2011 (Archive)
+              2014 - 2011
             </Button>
           </ButtonGroup>
         </div>
