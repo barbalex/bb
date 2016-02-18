@@ -16,6 +16,7 @@ export default React.createClass({
 
   propTypes: {
     events: React.PropTypes.array,
+    yearsOfEvents: React.PropTypes.array,
     dateRowObjects: React.PropTypes.array,
     email: React.PropTypes.string,
     introJumbotronHeight: React.PropTypes.number,
@@ -96,13 +97,16 @@ export default React.createClass({
   },
 
   showNextYearButton () {
-    const { activeEventYears } = this.props
+    const { activeEventYears, yearsOfEvents } = this.props
+    const firstActiveEventYear = min(activeEventYears)
+    const firstEventYear = yearsOfEvents.length > 0 ? min(yearsOfEvents) : 2015
+    console.log('firstEventYear', firstEventYear)
     const divStyle = {
       textAlign: 'center',
       marginTop: 20,
       marginBottom: 30
     }
-    if (min(activeEventYears) > 2015) {
+    if (firstActiveEventYear > firstEventYear) {
       return (
         <div style={divStyle}>
           <Button
@@ -113,7 +117,7 @@ export default React.createClass({
         </div>
       )
     }
-    if (min(activeEventYears) === 2015) {
+    if (firstActiveEventYear === firstEventYear) {
       return (
         <div style={divStyle}>
           <Button
@@ -124,7 +128,7 @@ export default React.createClass({
         </div>
       )
     }
-    if (min(activeEventYears) < 2015) return null
+    if (firstActiveEventYear < firstEventYear) return null
   },
 
   showNextYear () {
@@ -140,7 +144,8 @@ export default React.createClass({
 
   render () {
     const { introJumbotronHeight, activeEventYears } = this.props
-    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
+    // const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
+    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 70 : 368
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }

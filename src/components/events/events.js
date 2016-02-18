@@ -92,7 +92,7 @@ export default React.createClass({
   },
 
   render () {
-    const { events, email, showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent, activeEventYears, setActiveEventYears } = this.props
+    const { events, yearsOfEvents, email, showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent, activeEventYears, setActiveEventYears } = this.props
     const { docToRemove, introJumbotronHeight } = this.state
     const showEventsTable = min(activeEventYears) > 2014
 
@@ -105,7 +105,7 @@ export default React.createClass({
             <Button
               onClick={this.showArchive}
             >
-              2014 - 2011
+              2014 - 2011 (Archive)
             </Button>
           </ButtonGroup>
         </div>
@@ -113,6 +113,7 @@ export default React.createClass({
           showEventsTable &&
           <EventsTable
             events={events}
+            yearsOfEvents={yearsOfEvents}
             email={email}
             activeEventYears={activeEventYears}
             setActiveEventYears={setActiveEventYears}
