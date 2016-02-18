@@ -47,7 +47,6 @@ export default React.createClass({
     login: React.PropTypes.bool,
     email: React.PropTypes.string,
     errors: React.PropTypes.array,
-    showArchiveMessage: React.PropTypes.bool,
     activeEventYears: React.PropTypes.array
   },
 
@@ -74,7 +73,6 @@ export default React.createClass({
       showNewPublication: false,
       email: email,
       errors: [],
-      showArchiveMessage: false,
       activeEventYears: [parseInt(moment().format('YYYY'), 0)]
     }
   },
@@ -89,14 +87,6 @@ export default React.createClass({
     this.listenTo(app.actorsStore, this.onActorsStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onErrorStoreChange)
-    this.manageArchiveMessage()
-  },
-
-  manageArchiveMessage () {
-    this.setState({ showArchiveMessage: true })
-    setTimeout(() => {
-      this.setState({ showArchiveMessage: false })
-    }, 10000)
   },
 
   onActivePageStoreChange (activePage) {
@@ -234,7 +224,7 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, showArchiveMessage, activeEventYears } = this.state
+    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, activeEventYears } = this.state
     const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
     const isSimplePage = activePage.type && activePage.type === 'pages' && !nonSimplePages.includes(activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
@@ -294,7 +284,6 @@ export default React.createClass({
                 showNewEvent={showNewEvent}
                 onChangeActiveEvent={this.onChangeActiveEvent}
                 onCloseNewEvent={this.onCloseNewEvent}
-                showArchiveMessage={showArchiveMessage}
                 activeEventYears={activeEventYears}
                 setActiveEventYears={this.setActiveEventYears} />
             }
