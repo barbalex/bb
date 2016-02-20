@@ -22,13 +22,22 @@ export default React.createClass({
     introJumbotronHeight: React.PropTypes.number,
     activeEventYears: React.PropTypes.array,
     setActiveEventYears: React.PropTypes.func,
-    onRemoveEvent: React.PropTypes.func
+    onRemoveEvent: React.PropTypes.func,
+    showNextButton: React.PropTypes.bool
   },
 
   getInitialState () {
     return {
-      dateRowObjects: []
+      dateRowObjects: [],
+      showNextButton: false
     }
+  },
+
+  componentWillMount () {
+    // delay showing of next buttons
+    setTimeout(() => {
+      this.setState({ showNextButton: true })
+    }, 1000)
   },
 
   dateRows () {
@@ -98,9 +107,9 @@ export default React.createClass({
 
   showNextYearButton () {
     const { activeEventYears, yearsOfEvents } = this.props
+    const { showNextButton } = this.state
     const firstActiveEventYear = min(activeEventYears)
     const firstEventYear = yearsOfEvents.length > 0 ? min(yearsOfEvents) : 2015
-    console.log('firstEventYear', firstEventYear)
     const divStyle = {
       textAlign: 'center',
       marginTop: 20,
@@ -108,7 +117,9 @@ export default React.createClass({
     }
     if (firstActiveEventYear > firstEventYear) {
       return (
-        <div style={divStyle}>
+        <div
+          style={divStyle}
+          className={showNextButton ? '' : 'hidden'} >
           <Button
             onClick={this.showNextYear}
           >
@@ -119,11 +130,13 @@ export default React.createClass({
     }
     if (firstActiveEventYear === firstEventYear) {
       return (
-        <div style={divStyle}>
+        <div
+          style={divStyle}
+          className={showNextButton ? '' : 'hidden'} >
           <Button
             onClick={this.showArchive}
           >
-            see events between 2011 and 2014 in the archive
+            load events from 2011 to 2014
           </Button>
         </div>
       )
@@ -144,8 +157,7 @@ export default React.createClass({
 
   render () {
     const { introJumbotronHeight, activeEventYears } = this.props
-    // const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 65 : 373
-    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 88 : 368
+    const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 88 : 396
     const eventsTableHeadStyle = {
       top: eventsTableHeadTop
     }
