@@ -21,6 +21,11 @@ export default (events, activeEventYears) => {
       const politicsEvents = events.filter((event) =>
         event._id.startsWith(`events_${year}_${month}_${day}`) && event.eventType === 'politics'
       )
+      // order
+      migrationEvents.forEach((event) => event.order = (event.order || 99))
+      migrationEvents.sort((a, b) => a.order - b.order)
+      politicsEvents.forEach((event) => event.order = (event.order || 99))
+      politicsEvents.sort((a, b) => a.order - b.order)
       const daterowObject = { date, migrationEvents, politicsEvents }
       daterowObjects.push(daterowObject)
       date = moment(date).subtract(1, 'days')

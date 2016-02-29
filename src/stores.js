@@ -249,14 +249,14 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewEvent (date, title, links, eventType, tags) {
+    onNewEvent (event) {
+      const { date, title } = event
       const year = moment(date).year()
       const month = moment(date).format('MM')
       const day = moment(date).format('DD')
-      const _id = `events_${year}_${month}_${day}_${slug(title)}`
-      const type = 'events'
-      const event = { _id, type, title, links, eventType, tags }
-      this.activeEventId = _id
+      event._id = `events_${year}_${month}_${day}_${slug(title)}`
+      event.type = 'events'
+      this.activeEventId = event._id
       this.onSaveEvent(event)
     },
 
@@ -334,12 +334,12 @@ export default (Actions) => {
         })
     },
 
-    onReplaceEvent (eventToReplace, date, title, links, eventType, tags) {
+    onReplaceEvent (event) {
       /**
        * if an event's title or date are changed, it has to be replaced with a new one
        */
-      this.onNewEvent(date, title, links, eventType, tags)
-      this.onRemoveEvent(eventToReplace)
+      this.onNewEvent(event)
+      this.onRemoveEvent(event)
     },
 
     triggerStore () {

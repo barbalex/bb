@@ -40,18 +40,18 @@ export default React.createClass({
 
   onBlurTitle (e) {
     const { activeEvent } = this.props
-    const title = e.target.value
-    if (title) {
-      const date = getDateFromEventId(activeEvent._id)
-      app.Actions.replaceEvent(activeEvent, date, title, activeEvent.links, activeEvent.eventType, activeEvent.tags)
+    activeEvent.title = e.target.value
+    if (activeEvent.title) {
+      activeEvent.date = getDateFromEventId(activeEvent._id)
+      app.Actions.replaceEvent(activeEvent)
     }
   },
 
   onChangeDate (datePassed) {
     const { activeEvent } = this.props
     if (datePassed) {
-      const date = moment(datePassed, 'DD.MM.YYYY')
-      app.Actions.replaceEvent(activeEvent, date, activeEvent.title, activeEvent.links, activeEvent.eventType, activeEvent.tags)
+      activeEvent.date = moment(datePassed, 'DD.MM.YYYY')
+      app.Actions.replaceEvent(activeEvent)
     } else {
       const error = 'Please choose a date'
       this.setState({ error })
@@ -61,6 +61,19 @@ export default React.createClass({
   onChangeEventType (eventType) {
     let { activeEvent } = this.props
     activeEvent.eventType = eventType
+    app.Actions.saveEvent(activeEvent)
+  },
+
+  onChangeOrder (e) {
+    let { activeEvent, onChangeActiveEvent } = this.props
+    activeEvent.order = e.target.value
+    onChangeActiveEvent(activeEvent)
+    this.setState({ error: null })
+  },
+
+  onBlurOrder (e) {
+    const { activeEvent } = this.props
+    activeEvent.order = e.target.value
     app.Actions.saveEvent(activeEvent)
   },
 
@@ -104,6 +117,12 @@ export default React.createClass({
           <EventTypeButtonGroup
             eventType={activeEvent.eventType}
             onChangeEventType={this.onChangeEventType} />
+          <Input
+            type='number'
+            label='Order'
+            value={activeEvent.order}
+            onChange={this.onChangeOrder}
+            onBlur={this.onBlurOrder} />
           <TagsInput
             activeEvent={activeEvent} />
           <EventLinks

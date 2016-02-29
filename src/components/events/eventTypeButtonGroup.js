@@ -29,9 +29,12 @@ export default React.createClass({
       marginBottom: 5
     }
     return (
-      <div style={{marginBottom: 20}}>
+      <div
+        style={{marginBottom: 20}}
+      >
         <div
-          style={labelStyle}>
+          style={labelStyle}
+        >
           Column
         </div>
         <ButtonGroup>
@@ -42,7 +45,8 @@ export default React.createClass({
           </Button>
           <Button
             className={eventType === 'politics' ? 'active' : ''}
-            onClick={this.onChangeEventType.bind(this, 'politics')}>
+            onClick={this.onChangeEventType.bind(this, 'politics')}
+          >
             political events / total statistics
           </Button>
         </ButtonGroup>
