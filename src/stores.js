@@ -249,15 +249,18 @@ export default (Actions) => {
         .catch((error) => app.Actions.showError({msg: error}))
     },
 
-    onNewEvent (event) {
-      const { date, title } = event
+    onNewEvent (date, title) {
       const year = moment(date).year()
       const month = moment(date).format('MM')
       const day = moment(date).format('DD')
-      event._id = `events_${year}_${month}_${day}_${slug(title)}`
-      event.type = 'events'
-      event.order = 99
-      this.activeEventId = event._id
+      const _id = `events_${year}_${month}_${day}_${slug(title)}`
+      const type = 'events'
+      const eventType = 'migration'
+      const links = []
+      const order = 99
+      const tags = []
+      const event = { _id, type, title, links, eventType, order, tags }
+      this.activeEventId = _id
       this.onSaveEvent(event)
     },
 
