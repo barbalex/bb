@@ -92,6 +92,9 @@ export default React.createClass({
       marginTop: 10,
       marginBottom: 10
     }
+    const inputStyle = {
+      marginBottom: 20
+    }
     return (
       <Modal
         show
@@ -110,28 +113,37 @@ export default React.createClass({
             label='Title'
             value={activeEvent.title}
             onChange={this.onChangeTitle}
-            onBlur={this.onBlurTitle} />
+            onBlur={this.onBlurTitle}
+            style={inputStyle}
+          />
           <DateInput
             date={date}
-            onChangeDate={this.onChangeDate} />
+            onChangeDate={this.onChangeDate}
+          />
           <EventTypeButtonGroup
             eventType={activeEvent.eventType}
-            onChangeEventType={this.onChangeEventType} />
+            onChangeEventType={this.onChangeEventType}
+          />
           <Input
             type='number'
             label='Order'
             value={activeEvent.order}
             onChange={this.onChangeOrder}
-            onBlur={this.onBlurOrder} />
+            onBlur={this.onBlurOrder}
+            style={inputStyle}
+          />
           <TagsInput
-            activeEvent={activeEvent} />
+            activeEvent={activeEvent}
+          />
           <EventLinks
-            activeEvent={activeEvent} />
+            activeEvent={activeEvent}
+          />
           {
             error &&
             <Alert
               bsStyle='danger'
-              style={alertStyle}>
+              style={alertStyle}
+            >
               {error}
             </Alert>
           }
@@ -139,7 +151,8 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button
-            onClick={this.close}>
+            onClick={this.close}
+          >
             close
           </Button>
         </Modal.Footer>

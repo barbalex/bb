@@ -256,6 +256,7 @@ export default (Actions) => {
       const day = moment(date).format('DD')
       event._id = `events_${year}_${month}_${day}_${slug(title)}`
       event.type = 'events'
+      event.order = 99
       this.activeEventId = event._id
       this.onSaveEvent(event)
     },
@@ -335,9 +336,7 @@ export default (Actions) => {
     },
 
     onReplaceEvent (event) {
-      /**
-       * if an event's title or date are changed, it has to be replaced with a new one
-       */
+      // if an event's title or date are changed, it has to be replaced with a new one
       this.onNewEvent(event)
       this.onRemoveEvent(event)
     },
