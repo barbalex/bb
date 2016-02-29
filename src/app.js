@@ -19,6 +19,20 @@ import 'bootstrap-webpack'
 // make webpack import server.js
 import 'file?name=server.js!../server.js'
 
+// some old browsers can't deal with ArrayBuffer
+// pouchdb needs it
+// give the users an explanation instead of an empty page
+if (!window.ArrayBuffer) {
+  window.alert(`blue-borders.ch nutzt moderne Technologien, welche von Ihrem Browser nicht unterstützt werden.
+
+Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
+- Chrome
+- Firefox
+- Safari
+- Internet Explorer (ab Version 10)
+- Edge`)
+}
+
 /**
  * set up pouchdb plugins
  */
