@@ -2,10 +2,13 @@
 
 import app from 'ampersand-app'
 import React from 'react'
+import { ListenerMixin } from 'reflux'
 import { Input, Row, Col, Tooltip, OverlayTrigger, Glyphicon } from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'EventLink',
+
+  mixins: [ListenerMixin],
 
   propTypes: {
     activeEvent: React.PropTypes.object,
@@ -14,10 +17,21 @@ export default React.createClass({
     key: React.PropTypes.number
   },
 
+  componentDidMount () {
+    this.listenTo(app.eventsStore, this.onEventsStoreChange)
+  },
+
   getInitialState () {
     return {
       link: this.props.link
     }
+  },
+
+  onEventsStoreChange () {
+    // this is a bad hack
+    // without it state is not changed when activeEvent changes
+    // > if a link is deleted, the wrong one keeps being shown
+    this.state.link = this.props.link
   },
 
   onChangeUrl (e) {
@@ -53,10 +67,7 @@ export default React.createClass({
   onRemoveLink () {
     let { activeEvent } = this.props
     const { link: linkToRemove } = this.props
-    console.log('linkToRemove', linkToRemove)
-    console.log('links before filtering', activeEvent.links)
     activeEvent.links = activeEvent.links.filter((link) => link.label !== linkToRemove.label && link.url !== linkToRemove.url)
-    console.log('links after filtering', activeEvent.links)
     app.Actions.saveEvent(activeEvent)
   },
 
@@ -81,9 +92,6 @@ export default React.createClass({
     const { focus, key } = this.props
     const { link } = this.state
     const focusLabel = focus && !link.label
-
-    // console.log('EventLink, render: props', this.props)
-    // console.log('EventLink, render: state', this.state)
 
     return (
       <Row

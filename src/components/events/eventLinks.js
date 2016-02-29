@@ -24,11 +24,6 @@ export default React.createClass({
 
   eventLinks () {
     const { activeEvent } = this.props
-
-    // TODO: for unknown reason when deleting link
-    // this renders with correct props but shows wrong data!!!!????
-    console.log('eventLinks, rendering links', activeEvent.links)
-
     return activeEvent.links.map((link, index) => (
         <EventLink
           activeEvent={activeEvent}
