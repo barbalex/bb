@@ -249,6 +249,7 @@ export default React.createClass({
     const pageTitle = `blue-borders | ${pageName}`
     const pagesWitCopyright = ['pages_commentaries']
     const showCopyright = activePage.type && activePage.type === 'pages' && pagesWitCopyright.includes(activePage._id)
+    const showErrors = errors && errors.length > 0
 
     return (
       <DocumentTitle title={pageTitle}>
@@ -270,7 +271,10 @@ export default React.createClass({
             onClickNewPublication={this.onClickNewPublication}
           />
           <div className='container'>
-            <Errors errors={errors} />
+            {
+              showErrors &&
+              <Errors errors={errors} />
+            }
             {
               isSimplePage &&
               <Page

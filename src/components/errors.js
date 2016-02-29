@@ -51,23 +51,24 @@ export default React.createClass({
     ))
     const glyphStyle = {
       position: 'absolute',
-      top: 3 + 'px',
-      right: 3 + 'px',
-      fontSize: 18 + 'px',
+      top: 3,
+      right: 3,
+      fontSize: 18,
       cursor: 'pointer'
     }
 
     return (
       <Overlay
         show={show}
-        container={this}
-        placement='top'
       >
-        <div id='errors'>
+        <div
+          id='errors'
+        >
           <Glyphicon
             glyph='remove-circle'
             style={glyphStyle}
-            onClick={this.onClickRemove} />
+            onClick={this.onClickRemove}
+          />
           {errorMessages}
         </div>
       </Overlay>

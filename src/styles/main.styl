@@ -492,6 +492,13 @@ table >
 
 #errors
   position: absolute
+  // misteriously a top and left value of 0
+  // are added directly to the element
+  // must be react-bootstraps Overlay element
+  // but is not documented?
+  // > counter it
+  top: auto !important
+  left: auto !important
   bottom: 8px
   right: 8px
   margin-left: 8px
