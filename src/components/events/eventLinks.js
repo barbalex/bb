@@ -27,15 +27,15 @@ export default React.createClass({
 
     // TODO: for unknown reason when deleting link
     // this renders with correct props but shows wrong data!!!!????
-    // console.log('eventLinks, rendering links', activeEvent.links)
+    console.log('eventLinks, rendering links', activeEvent.links)
 
     return activeEvent.links.map((link, index) => (
-        <div key={index}>
-          <EventLink
-            activeEvent={activeEvent}
-            link={link}
-            focus={index === activeEvent.links.length - 1} />
-        </div>
+        <EventLink
+          activeEvent={activeEvent}
+          link={link}
+          focus={index === activeEvent.links.length - 1}
+          key={index}
+        />
       )
     )
   },
@@ -54,18 +54,43 @@ export default React.createClass({
 
     return (
       <div>
-        <div style={titleStyle}>Links</div>
+        <div
+          style={titleStyle}
+        >
+          Links
+        </div>
         <Row>
-          <Col sm={3} lg={2}>
-            <p style={labelStyle}>{labelText}</p>
+          <Col
+            sm={3}
+            lg={2}
+          >
+            <p
+              style={labelStyle}
+            >
+              {labelText}
+            </p>
           </Col>
-          <Col sm={7} lg={8}>
-            <p style={labelStyle}>{urlText}</p>
+          <Col
+            sm={7}
+            lg={8}
+          >
+            <p
+              style={labelStyle}
+            >
+              {urlText}
+            </p>
           </Col>
-          <Col sm={1} lg={1} />
+          <Col
+            sm={1}
+            lg={1}
+          />
         </Row>
         {this.eventLinks()}
-        <Button onClick={this.onNewLink}>new link</Button>
+        <Button
+          onClick={this.onNewLink}
+        >
+          new link
+        </Button>
       </div>
     )
   }

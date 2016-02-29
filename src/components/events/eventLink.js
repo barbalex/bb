@@ -10,7 +10,8 @@ export default React.createClass({
   propTypes: {
     activeEvent: React.PropTypes.object,
     link: React.PropTypes.object,
-    focus: React.PropTypes.bool
+    focus: React.PropTypes.bool,
+    key: React.PropTypes.number
   },
 
   getInitialState () {
@@ -52,7 +53,10 @@ export default React.createClass({
   onRemoveLink () {
     let { activeEvent } = this.props
     const { link: linkToRemove } = this.props
+    console.log('linkToRemove', linkToRemove)
+    console.log('links before filtering', activeEvent.links)
     activeEvent.links = activeEvent.links.filter((link) => link.label !== linkToRemove.label && link.url !== linkToRemove.url)
+    console.log('links after filtering', activeEvent.links)
     app.Actions.saveEvent(activeEvent)
   },
 
@@ -74,19 +78,46 @@ export default React.createClass({
   },
 
   render () {
-    const { focus } = this.props
+    const { focus, key } = this.props
     const { link } = this.state
     const focusLabel = focus && !link.label
 
+    // console.log('EventLink, render: props', this.props)
+    // console.log('EventLink, render: state', this.state)
+
     return (
-      <Row>
-        <Col sm={3} lg={2}>
-          <Input type='text' value={link.label} bsSize='small' onChange={this.onChangeLabel} onBlur={this.onBlurLabel} autoFocus={focusLabel} />
+      <Row
+        key={key}
+      >
+        <Col
+          sm={3}
+          lg={2}
+        >
+          <Input
+            type='text'
+            value={link.label}
+            bsSize='small'
+            onChange={this.onChangeLabel}
+            onBlur={this.onBlurLabel}
+            autoFocus={focusLabel}
+          />
         </Col>
-        <Col sm={8} lg={9}>
-          <Input type='url' value={link.url} bsSize='small' onChange={this.onChangeUrl} onBlur={this.onBlurUrl} />
+        <Col
+          sm={8}
+          lg={9}
+        >
+          <Input
+            type='url'
+            value={link.url}
+            bsSize='small'
+            onChange={this.onChangeUrl}
+            onBlur={this.onBlurUrl}
+          />
         </Col>
-        <Col sm={1} lg={1}>
+        <Col
+          sm={1}
+          lg={1}
+        >
           {this.removeLinkGlyph()}
         </Col>
       </Row>
