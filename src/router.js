@@ -11,6 +11,7 @@ export default Router.extend({
     '': 'home',
     'home': 'home',
     'aboutUs': 'aboutUs',
+    'links': 'links',
     'european-union-publications': 'europeanUnionPublications',
     'io-and-ngo-publications': 'ioAndNgoPublications',
     'commentaries': 'commentaries',
@@ -33,6 +34,11 @@ export default Router.extend({
 
   aboutUs () {
     const id = 'pages_aboutUs'
+    this.render(id)
+  },
+
+  links () {
+    const id = 'pages_links'
     this.render(id)
   },
 

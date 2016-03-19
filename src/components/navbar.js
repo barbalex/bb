@@ -147,6 +147,13 @@ export default React.createClass({
                 </NavItem>
                 <NavItem
                   eventKey={3}
+                  active={id === 'pages_links'}
+                  onClick={this.onClickPage.bind(this, 'pages_links')}
+                >
+                  Links
+                </NavItem>
+                <NavItem
+                  eventKey={4}
                   active={id === 'pages_aboutUs'}
                   onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
                 >
@@ -195,7 +202,7 @@ export default React.createClass({
                       placement='bottom'
                       overlay={this.newEventTooltip()}>
                       <NavItem
-                        eventKey={2}
+                        eventKey={3}
                         onClick={onClickNewEvent}
                       >
                         <Glyphicon
@@ -211,7 +218,7 @@ export default React.createClass({
                       overlay={this.newActorTooltip()}
                     >
                       <NavItem
-                        eventKey={3}
+                        eventKey={4}
                         onClick={onClickNewActor}
                       >
                         <Glyphicon
@@ -227,7 +234,7 @@ export default React.createClass({
                       overlay={this.newMonthlyEventTooltip()}
                     >
                       <NavItem
-                        eventKey={4}
+                        eventKey={5}
                         onClick={onClickNewMonthlyEvent}
                       >
                         <Glyphicon
@@ -243,7 +250,7 @@ export default React.createClass({
                       overlay={this.newPublicationTooltip()}
                     >
                       <NavItem
-                        eventKey={5}
+                        eventKey={6}
                         onClick={onClickNewPublication}
                       >
                         <Glyphicon
@@ -257,7 +264,7 @@ export default React.createClass({
                     overlay={this.logoutTooltip()}
                   >
                     <NavItem
-                      eventKey={6}
+                      eventKey={7}
                       onClick={this.onClickLogout}
                     >
                       <Glyphicon
