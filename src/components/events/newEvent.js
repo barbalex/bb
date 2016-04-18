@@ -18,7 +18,7 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      title: null,
+      title: '',
       date: moment(),
       error: null
     }
