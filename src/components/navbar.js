@@ -107,7 +107,8 @@ export default React.createClass({
       <div>
         <AffixWrapper
           id='nav-wrapper'
-          offset={150}>
+          offsetTop={150}
+        >
           <Navbar
             inverse
             expanded={navExpanded}
