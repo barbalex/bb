@@ -1,7 +1,6 @@
 'use strict'
 
 const getConfig = require('hjs-webpack')
-const NpmInstallPlugin = require('npm-install-webpack-plugin')
 const indexTemplate = require('./src/indexTemplate.js')
 
 let config = getConfig({
@@ -31,8 +30,6 @@ config.module.loaders.push(
     loader: 'babel'
   }
 )
-
-config.plugins.push(new NpmInstallPlugin({ save: true }))
 
 config.resolve.alias = {
   tinymce: 'tinymce/tinymce.js'
