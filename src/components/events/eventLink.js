@@ -44,7 +44,9 @@ export default React.createClass({
     let { activeEvent } = this.props
     const { link: oldLink } = this.props
     const { link: newLink } = this.state
-    const index = activeEvent.links.findIndex((link) => link.label === oldLink.label && link.url === oldLink.url)
+    const index = activeEvent.links.findIndex((link) =>
+      link.label === oldLink.label && link.url === oldLink.url
+    )
     activeEvent.links[index] = newLink
     app.Actions.saveEvent(activeEvent)
   },
@@ -59,7 +61,9 @@ export default React.createClass({
     let { activeEvent } = this.props
     const { link: oldLink } = this.props
     const { link: newLink } = this.state
-    const index = activeEvent.links.findIndex((link) => link.url === oldLink.url && link.label === oldLink.label)
+    const index = activeEvent.links.findIndex((link) =>
+      link.url === oldLink.url && link.label === oldLink.label
+    )
     activeEvent.links[index] = newLink
     app.Actions.saveEvent(activeEvent)
   },
@@ -67,7 +71,9 @@ export default React.createClass({
   onRemoveLink () {
     let { activeEvent } = this.props
     const { link: linkToRemove } = this.props
-    activeEvent.links = activeEvent.links.filter((link) => link.label !== linkToRemove.label && link.url !== linkToRemove.url)
+    activeEvent.links = activeEvent.links.filter((link) =>
+      link.label !== linkToRemove.label && link.url !== linkToRemove.url
+    )
     app.Actions.saveEvent(activeEvent)
   },
 
@@ -82,8 +88,15 @@ export default React.createClass({
       cursor: 'pointer'
     }
     return (
-      <OverlayTrigger placement='right' overlay={this.removeLinkTooltip()}>
-        <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.onRemoveLink} />
+      <OverlayTrigger
+        placement='right'
+        overlay={this.removeLinkTooltip()}
+      >
+        <Glyphicon
+          glyph='remove-circle'
+          style={glyphStyle}
+          onClick={this.onRemoveLink}
+        />
       </OverlayTrigger>
     )
   },
