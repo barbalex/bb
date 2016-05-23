@@ -6,7 +6,6 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Input, Alert, Button } from 'react-bootstrap'
 import { isObject } from 'lodash'
 import validateEmail from './validateEmail.js'
 
@@ -120,8 +119,6 @@ export default React.createClass({
     if (isObject(loginError)) error = loginError.message
     const isError = error && error.length > 0
 
-    console.log('loginForm.js, render')
-
     return (
       <form
         className='form'
@@ -138,26 +135,14 @@ export default React.createClass({
               type='email'
               id='email'
               bsSize='small'
+              className='controls'
               bsStyle={emailInputBsStyle}
-              value={activeEvent.title}
               onBlur={this.onBlurEmail}
               onKeyDown={this.onKeyDownEmail}
               required
               autoFocus
             />
           </FormGroup>
-          <Input
-            type='email'
-            id='email'
-            label='Email'
-            bsSize='small'
-            className='controls'
-            bsStyle={emailInputBsStyle}
-            onBlur={this.onBlurEmail}
-            onKeyDown={this.onKeyDownEmail}
-            required
-            autoFocus
-          />
           {
             invalidEmail &&
             <div
@@ -170,16 +155,21 @@ export default React.createClass({
         <div
           className='formGroup'
         >
-          <Input
-            type='password'
-            id='password'
-            label='Password'
-            className='controls'
-            bsStyle={passwordInputBsStyle}
-            onBlur={this.onBlurPassword}
-            onKeyDown={this.onKeyDownPassword}
-            required
-          />
+          <FormGroup
+            controlId="password"
+          >
+            <ControlLabel>Password</ControlLabel>
+            <FormControl
+              type='password'
+              id='password'
+              bsSize='small'
+              className='controls'
+              bsStyle={passwordInputBsStyle}
+              onBlur={this.onBlurPassword}
+              onKeyDown={this.onKeyDownPassword}
+              required
+            />
+          </FormGroup>
           {
             invalidPassword &&
             <div
