@@ -41,7 +41,12 @@ export default React.createClass({
   },
 
   dateRows () {
-    const { events, email, onRemoveEvent, activeEventYears } = this.props
+    const {
+      events,
+      email,
+      onRemoveEvent,
+      activeEventYears
+    } = this.props
     const dateRowObjects = getDaterowObjectsSinceOldestEvent(events, activeEventYears)
     let dateRows = []
     if (dateRowObjects.length > 0) {
@@ -66,9 +71,18 @@ export default React.createClass({
             event.tags && event.tags.includes('monthlyStatistics')
           )
         }
-        const dROForMonthlyStatsHasEvents = dROForMonthlyStatsRow.migrationEvents.length > 0 || dROForMonthlyStatsRow.politicsEvents.length > 0
-        const needsMonthRow = day === endOfMonth || index === 0
-        const needsMonthlyStatisticsRow = day === endOfMonth && dROForMonthlyStatsHasEvents
+        const dROForMonthlyStatsHasEvents = (
+          dROForMonthlyStatsRow.migrationEvents.length > 0 ||
+          dROForMonthlyStatsRow.politicsEvents.length > 0
+        )
+        const needsMonthRow = (
+          day === endOfMonth ||
+          index === 0
+        )
+        const needsMonthlyStatisticsRow = (
+          day === endOfMonth &&
+          dROForMonthlyStatsHasEvents
+        )
         if (needsMonthRow) {
           dateRows.push(
             <MonthRow
@@ -97,15 +111,14 @@ export default React.createClass({
         )
       })
       return dateRows
-    } else {
-      return (
-        <tr>
-          <td colSpan='3'>
-            <p>Loading events...</p>
-          </td>
-        </tr>
-      )
     }
+    return (
+      <tr>
+        <td colSpan='3'>
+          <p>Loading events...</p>
+        </td>
+      </tr>
+    )
   },
 
   showNextYearButton () {
@@ -175,7 +188,12 @@ export default React.createClass({
 
     return (
       <div>
-        <Table id='eventsTableHead' condensed hover style={eventsTableHeadStyle}>
+        <Table
+          id='eventsTableHead'
+          condensed
+          hover
+          style={eventsTableHeadStyle}
+        >
           <colgroup>
             <col className='day' />
             <col className='migration' />
