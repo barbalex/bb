@@ -52,15 +52,18 @@ export default React.createClass({
             showMeta &&
             <Meta
               doc={activeActor}
-              onCloseMeta={this.onCloseMeta} />
+              onCloseMeta={this.onCloseMeta}
+            />
           }
           <Editor
             doc={activeActor}
             articleDecoded={articleDecoded}
-            onSaveActorArticle={onSaveActorArticle} />
+            onSaveActorArticle={onSaveActorArticle}
+          />
           <Button
             style={metaButtonStyle}
-            onClick={this.onClickMeta}>
+            onClick={this.onClickMeta}
+          >
             images
           </Button>
         </div>
@@ -71,7 +74,8 @@ export default React.createClass({
       <div
         className='actor col500'>
         <div
-          dangerouslySetInnerHTML={createMarkup()} />
+          dangerouslySetInnerHTML={createMarkup()}
+        />
       </div>
     )
   }
