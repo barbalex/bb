@@ -14,64 +14,62 @@ import app from 'ampersand-app'
 import React from 'react'
 import { Overlay, Glyphicon } from 'react-bootstrap'
 
-export default React.createClass({
-  displayName: 'Errors',
-
-  propTypes: {
-    errors: React.PropTypes.array
-  },
-
-  onClickRemove () {
-    app.Actions.showError()
-  },
-
-  render () {
-    const { errors } = this.props
-    const show = errors.length > 0
-    const errorMessages = errors.map((error, index) => (
-      <div className='errorContainer' key={index}>
-        <div className='error'>
-          {
-            error.title &&
-            <p>
-              {error.title}
-            </p>
-          }
-          <p>
-            <em>
-              {error.msg}
-            </em>
-          </p>
-        </div>
+const errorMessages = (errors) =>
+  errors.map((error, index) =>
+    <div
+      className='errorContainer'
+      key={index}
+    >
+      <div className='error'>
         {
-          index + 1 < errors.length &&
-          <hr/>
+          error.title &&
+          <p>
+            {error.title}
+          </p>
         }
+        <p>
+          <em>
+            {error.msg}
+          </em>
+        </p>
       </div>
-    ))
-    const glyphStyle = {
-      position: 'absolute',
-      top: 3,
-      right: 3,
-      fontSize: 18,
-      cursor: 'pointer'
-    }
+      {
+        index + 1 < errors.length &&
+        <hr/>
+      }
+    </div>
+  )
 
-    return (
-      <Overlay
-        show={show}
-      >
-        <div
-          id='errors'
-        >
-          <Glyphicon
-            glyph='remove-circle'
-            style={glyphStyle}
-            onClick={this.onClickRemove}
-          />
-          {errorMessages}
-        </div>
-      </Overlay>
-    )
-  }
-})
+const glyphStyle = {
+  position: 'absolute',
+  top: 3,
+  right: 3,
+  fontSize: 18,
+  cursor: 'pointer'
+}
+
+const Errors = ({ errors }) =>
+  <Overlay
+    show={errors.length > 0}
+  >
+    <div
+      id='errors'
+    >
+      <Glyphicon
+        glyph='remove-circle'
+        style={glyphStyle}
+        onClick={() =>
+          app.Actions.showError()
+        }
+      />
+      {errorMessages(errors)}
+    </div>
+  </Overlay>
+
+Errors.displayName = 'Errors'
+
+Errors.propTypes = {
+  errors: React.PropTypes.array
+}
+
+export default Errors
