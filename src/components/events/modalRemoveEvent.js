@@ -5,8 +5,7 @@ import { Modal, Button } from 'react-bootstrap'
 
 const ModalRemoveEvent = ({ doc, removeEvent }) =>
   <div className='static-modal'>
-    <Modal.Dialog
-      onHide={this.onHide}>
+    <Modal.Dialog>
       <Modal.Header>
         <Modal.Title>
           Remove event "{doc.title}"
@@ -14,17 +13,23 @@ const ModalRemoveEvent = ({ doc, removeEvent }) =>
       </Modal.Header>
       <Modal.Body>
         <p>
-          Are you sure, you want to remove event "{doc.title}"?
+          Are you sure you want to remove event "{doc.title}"?
         </p>
       </Modal.Body>
       <Modal.Footer>
         <Button
           bsStyle='danger'
-          onClick={() => removeEvent(true)}>
+          onClick={() =>
+            removeEvent(true)
+          }
+        >
           yes, remove!
         </Button>
         <Button
-          onClick={() => removeEvent(false)}>
+          onClick={() =>
+            removeEvent(false)
+          }
+        >
           no!
         </Button>
       </Modal.Footer>
