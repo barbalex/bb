@@ -91,18 +91,53 @@ export default React.createClass({
   },
 
   render () {
-    const { activePage, activeMonthlyEvent, activePublication, activeCommentary, activeActor, email, editing, onClickNewCommentary, onClickNewEvent, onClickNewActor, onClickNewMonthlyEvent, onClickNewPublication } = this.props
+    const {
+      activePage,
+      activeMonthlyEvent,
+      activePublication,
+      activeCommentary,
+      activeActor,
+      email,
+      editing,
+      onClickNewCommentary,
+      onClickNewEvent,
+      onClickNewActor,
+      onClickNewMonthlyEvent,
+      onClickNewPublication
+    } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
     const id = activePage && activePage._id ? activePage._id : null
-    const nonEditableIds = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_actors', 'pages_events']
-    const showEdit = email && (!nonEditableIds.includes(id) || has(activeMonthlyEvent, '_id') || has(activeCommentary, '_id') || has(activeActor, '_id') || has(activePublication, '_id'))
+    const nonEditableIds = [
+      'pages_commentaries',
+      'pages_monthlyEvents',
+      'pages_publications',
+      'pages_actors',
+      'pages_events'
+    ]
+    const showEdit = (
+      email &&
+      (
+        !nonEditableIds.includes(id) ||
+        has(activeMonthlyEvent, '_id') ||
+        has(activeCommentary, '_id') ||
+        has(activeActor, '_id') ||
+        has(activePublication, '_id')
+      )
+    )
     const showAddCommentary = email && activePage._id === 'pages_commentaries'
     const showAddEvent = email && activePage._id === 'pages_events'
     const showAddActor = email && activePage._id === 'pages_actors'
     const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
     const showAddPublication = email && activePage._id === 'pages_publications'
-    const showNavbarRight = email || showEdit || showAddCommentary || showAddEvent || showAddActor || showAddMonthlyEvent
+    const showNavbarRight = (
+      email ||
+      showEdit ||
+      showAddCommentary ||
+      showAddEvent ||
+      showAddActor ||
+      showAddMonthlyEvent
+    )
     return (
       <div>
         <AffixWrapper
@@ -112,7 +147,8 @@ export default React.createClass({
           <Navbar
             inverse
             expanded={navExpanded}
-            onToggle={this.onToggleNav}>
+            onToggle={this.onToggleNav}
+          >
             <Navbar.Header>
               <Navbar.Brand
                 onClick={this.onClickPage.bind(this, 'pages_events')}
@@ -171,14 +207,15 @@ export default React.createClass({
                     showEdit &&
                     <OverlayTrigger
                       placement='bottom'
-                      overlay={this.editTooltip()}>
+                      overlay={this.editTooltip()}
+                    >
                       <NavItem
                         eventKey={1}
                         onClick={this.onClickEdit}
                       >
                         <Glyphicon
-                          glyph={glyph} /
-                        >
+                          glyph={glyph}
+                        />
                       </NavItem>
                     </OverlayTrigger>
                   }
@@ -186,14 +223,15 @@ export default React.createClass({
                     showAddCommentary &&
                     <OverlayTrigger
                       placement='bottom'
-                      overlay={this.newCommentaryTooltip()}>
+                      overlay={this.newCommentaryTooltip()}
+                    >
                       <NavItem
                         eventKey={2}
                         onClick={onClickNewCommentary}
                       >
                         <Glyphicon
-                          glyph='plus' /
-                        >
+                          glyph='plus'
+                        />
                       </NavItem>
                     </OverlayTrigger>
                   }
@@ -201,14 +239,15 @@ export default React.createClass({
                     showAddEvent &&
                     <OverlayTrigger
                       placement='bottom'
-                      overlay={this.newEventTooltip()}>
+                      overlay={this.newEventTooltip()}
+                    >
                       <NavItem
                         eventKey={3}
                         onClick={onClickNewEvent}
                       >
                         <Glyphicon
-                          glyph='plus' /
-                        >
+                          glyph='plus'
+                        />
                       </NavItem>
                     </OverlayTrigger>
                   }
@@ -223,8 +262,8 @@ export default React.createClass({
                         onClick={onClickNewActor}
                       >
                         <Glyphicon
-                          glyph='plus' /
-                        >
+                          glyph='plus'
+                        />
                       </NavItem>
                     </OverlayTrigger>
                   }
@@ -239,8 +278,8 @@ export default React.createClass({
                         onClick={onClickNewMonthlyEvent}
                       >
                         <Glyphicon
-                          glyph='plus' /
-                        >
+                          glyph='plus'
+                        />
                       </NavItem>
                     </OverlayTrigger>
                   }
@@ -255,8 +294,8 @@ export default React.createClass({
                         onClick={onClickNewPublication}
                       >
                         <Glyphicon
-                          glyph='plus' /
-                        >
+                          glyph='plus'
+                        />
                       </NavItem>
                     </OverlayTrigger>
                   }
@@ -269,8 +308,8 @@ export default React.createClass({
                       onClick={this.onClickLogout}
                     >
                       <Glyphicon
-                        glyph='log-out' /
-                      >
+                        glyph='log-out'
+                      />
                     </NavItem>
                   </OverlayTrigger>
                 </Nav>
