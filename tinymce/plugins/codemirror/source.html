@@ -31,9 +31,9 @@ function inArray(key, arr)
 
 	tinymce = parent.tinymce;
 	editor = tinymce.activeEditor;
-	var i, userSettings = editor.settings.codemirror ? editor.settings.codemirror : null;
+	var i, userSettings = editor.settings.codemirror ? editor.settings.codemirror : {};
 	CMsettings = {
-		path: userSettings.path || 'CodeMirror',
+		path: userSettings.path || 'codemirror-4.8',
 		indentOnInit: userSettings.indentOnInit || false,
 		config: {// Default config
 			mode: 'htmlmixed',
@@ -118,8 +118,9 @@ function start()
 	div.style.left = div.style.bottom = '5px';
 	head.appendChild(div);
 
-	// Set CodeMirror cursor to same position as cursor was in TinyMCE:
+	// Set CodeMirror cursor and bookmark to same position as cursor was in TinyMCE:
 	var html = editor.getContent({source_view: true});
+	editor.selection.getBookmark();
 	html = html.replace(/<span\s+class="CmCaReT"([^>]*)>([^<]*)<\/span>/gm, String.fromCharCode(chr));
 	editor.dom.remove(editor.dom.select('.CmCaReT'));
 
@@ -189,7 +190,7 @@ function submit()
 	if (findDepth(curLineHTML, cc) !== 0) {
 		// Cursor is inside a <tag>, don't set cursor:
 		curLineHTML = curLineHTML.replace(cc, '');
-		doc.setLine(pos.line, curLineHTML);
+		doc.replaceRange(curLineHTML, CodeMirror.Pos(pos.line, 0), CodeMirror.Pos(pos.line));
 	}
 
 	// Submit HTML to TinyMCE:
