@@ -45,18 +45,40 @@ export default React.createClass({
     const { year, month } = this.props
     const { arrivals, victims } = this.state
     return (
-      <Modal show onHide={this.close} bsSize='medium'>
+      <Modal
+        show
+        onHide={this.close}
+        bsSize='medium'
+      >
         <Modal.Header>
-          <Modal.Title>Arrivals & Victims in {month} {year}</Modal.Title>
+          <Modal.Title>
+            Arrivals & Victims in {month} {year}
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <Input type='number' label='Arrivals' defaultValue={arrivals} onBlur={this.onChangeValue.bind(this, 'arrivals')} autoFocus />
-          <Input type='number' label='Victims' defaultValue={victims} onBlur={this.onChangeValue.bind(this, 'victims')} />
+          <Input
+            type='number'
+            label='Arrivals'
+            defaultValue={arrivals}
+            onBlur={this.onChangeValue.bind(this, 'arrivals')}
+            autoFocus
+          />
+          <Input
+            type='number'
+            label='Victims'
+            defaultValue={victims}
+            onBlur={this.onChangeValue.bind(this, 'victims')}
+          />
         </Modal.Body>
 
         <Modal.Footer>
-          <Button bsStyle='primary' onClick={this.close}>close</Button>
+          <Button
+            bsStyle='primary'
+            onClick={this.close}
+          >
+            close
+          </Button>
         </Modal.Footer>
 
       </Modal>
