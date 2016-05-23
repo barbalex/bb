@@ -10,14 +10,19 @@ const mapEventComponents = (events, onRemoveEvent, email) =>
       key={key}
       event={ev}
       email={email}
-      onRemoveEvent={onRemoveEvent} />
+      onRemoveEvent={onRemoveEvent}
+    />
   )
 
 const DateRow = ({ dateRowObject: dRO, onRemoveEvent, email }) => {
   const day = moment(dRO.date).format('D')
   const migrationEvents = mapEventComponents(dRO.migrationEvents, onRemoveEvent, email)
   const politicsEvents = mapEventComponents(dRO.politicsEvents, onRemoveEvent, email)
-  const dayClassName = migrationEvents.length > 0 || politicsEvents.length > 0 ? 'day dayWithEvents' : 'day'
+  const dayClassName = (
+    migrationEvents.length > 0 || politicsEvents.length > 0 ?
+    'day dayWithEvents' :
+    'day'
+  )
 
   return (
     <tr>
