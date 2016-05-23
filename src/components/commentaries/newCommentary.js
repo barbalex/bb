@@ -2,7 +2,14 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Alert, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import {
+  Modal,
+  Button,
+  Alert,
+  FormGroup,
+  ControlLabel,
+  FormControl
+} from 'react-bootstrap'
 import moment from 'moment'
 import DateInput from '../events/dateInput.js'
 
@@ -47,31 +54,9 @@ export default React.createClass({
     }
   },
 
-  close () {
-    const { onCloseNewCommentary } = this.props
-    onCloseNewCommentary()
-  },
-
-  onHide () {
-    // seems that this method is needed ???
-  },
-
-  handleDateTimeFieldFocus (e) {
-    const parent = e.target.parentElement
-    const children = parent.childNodes
-    for (let i = 0; i < children.length; i++) {
-      if (children[i].tagName.toLowerCase() === 'span') return children[i].click()
-    }
-  },
-
   render () {
+    const { onCloseNewCommentary } = this.props
     const { title, date, error } = this.state
-    const that = this
-    const dateTimeFieldInputProps = {
-      onFocus (e) {
-        that.handleDateTimeFieldFocus(e)
-      }
-    }
     const alertStyle = {
       marginBottom: 10
     }
@@ -83,7 +68,10 @@ export default React.createClass({
       marginBottom: 20
     }
     return (
-      <Modal show onHide={this.close} bsSize='large'>
+      <Modal
+        show
+        bsSize='large'
+      >
         <Modal.Header>
           <Modal.Title>
             New commentary
@@ -119,12 +107,14 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button
-            onClick={this.close}>
+            onClick={() => onCloseNewCommentary()}
+          >
             discard input and close
           </Button>
           <Button
             bsStyle='primary'
-            onClick={this.createNewCommentary}>
+            onClick={this.createNewCommentary}
+          >
             create new commentary
           </Button>
         </Modal.Footer>
