@@ -9,28 +9,23 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import LoginForm from './loginForm.js'
 
-const Login = ({ email }) => {
-  console.log('login.js, email', email)
-  console.log('login.js, !email', !email)
-  return (
-    <div>
-      <h1>Login</h1>
-      {
-        !email &&
-        <LoginForm />
-      }
-      {
-        email &&
-        <Button
-          className='btn-primary'
-          onClick={() => app.Actions.logout()}
-        >
-          log out
-        </Button>
-      }
-    </div>
-  )
-}
+const Login = ({ email }) =>
+  <div>
+    <h1>Login</h1>
+    {
+      !email &&
+      <LoginForm />
+    }
+    {
+      email &&
+      <Button
+        className='btn-primary'
+        onClick={() => app.Actions.logout()}
+      >
+        log out
+      </Button>
+    }
+  </div>
 
 Login.displayName = 'Login'
 
