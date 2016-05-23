@@ -2,7 +2,14 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Input, Alert } from 'react-bootstrap'
+import {
+  Modal,
+  Button,
+  Alert,
+  FormGroup,
+  ControlLabel,
+  FormControl
+} from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'NewActorCategory',
@@ -37,16 +44,8 @@ export default React.createClass({
     }
   },
 
-  close () {
-    const { onCloseNewActor } = this.props
-    onCloseNewActor()
-  },
-
-  onHide () {
-    // seems that this method is needed ???
-  },
-
   render () {
+    const { onCloseNewActor } = this.props
     const { category, error } = this.state
     const alertStyle = {
       marginBottom: 10
@@ -54,7 +53,6 @@ export default React.createClass({
     return (
       <Modal
         show
-        onHide={this.close}
         bsSize='large'>
         <Modal.Header>
           <Modal.Title>
@@ -63,12 +61,17 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input
-            type='text'
-            label='Category'
-            value={category}
-            onChange={this.onChangeCategory}
-            autoFocus />
+          <FormGroup
+            controlId="actorCategory"
+          >
+            <ControlLabel>Category</ControlLabel>
+            <FormControl
+              type='text'
+              value={category}
+              onChange={this.onChangeCategory}
+              autoFocus
+            />
+          </FormGroup>
           {
             error &&
             <Alert
@@ -81,12 +84,14 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button
-            onClick={this.close}>
+            onClick={() => onCloseNewActor()}
+          >
             discard input and close
           </Button>
           <Button
             bsStyle='primary'
-            onClick={this.createNewActor}>
+            onClick={this.createNewActor}
+          >
             create new actor
           </Button>
         </Modal.Footer>
