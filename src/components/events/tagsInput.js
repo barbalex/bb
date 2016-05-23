@@ -26,12 +26,16 @@ const tags = (activeEvent) => {
     return (
       <div
         key={index}
-        className='form-group event-tag'>
+        className='form-group event-tag'
+      >
         <label>
           <input
             type='checkbox'
             checked={checked}
-            onChange={(event) => onChangeTag(option.tag, event, activeEvent)} />
+            onChange={(event) =>
+              onChangeTag(option.tag, event, activeEvent)
+            }
+          />
             {
               option.iconText &&
               tagIcon(option)
