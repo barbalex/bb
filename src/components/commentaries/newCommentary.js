@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Input, Alert } from 'react-bootstrap'
+import { Modal, Button, Alert, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import moment from 'moment'
 import DateInput from '../events/dateInput.js'
 
@@ -18,7 +18,7 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      title: null,
+      title: '',
       date: moment(),
       error: null
     }
@@ -91,13 +91,18 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input
-            type='text'
-            label='Title'
-            value={title}
-            onChange={this.onChangeTitle}
-            autoFocus
-          />
+          <FormGroup
+            controlId="commentaryTitle"
+          >
+            <ControlLabel>Title</ControlLabel>
+            <FormControl
+              type='text'
+              value={title}
+              onChange={this.onChangeTitle}
+              autoFocus
+              tabIndex={1}
+            />
+          </FormGroup>
           <DateInput
             date={date}
             onChangeDatePicker={this.onChangeDate}
