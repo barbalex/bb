@@ -279,10 +279,6 @@ export default React.createClass({
     const showCopyright = activePage.type && activePage.type === 'pages' && pagesWitCopyright.includes(activePage._id)
     const showErrors = errors && errors.length > 0
 
-    console.log('login', login)
-    console.log('email', email)
-    console.log('activePage', activePage)
-
     return (
       <DocumentTitle
         title={pageTitle}
