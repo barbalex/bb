@@ -3,53 +3,44 @@
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 
-export default React.createClass({
-  displayName: 'ModalRemoveActor',
+const ModalRemoveActor = ({ doc, removeActor }) =>
+  <div className='static-modal'>
+    <Modal.Dialog>
+      <Modal.Header>
+        <Modal.Title>
+          Remove actor "{doc.category}"
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>
+          Are you sure you want to remove actor "{doc.category}"?
+        </p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          bsStyle='danger'
+          onClick={() =>
+            removeActor(true)
+          }
+        >
+          yes, remove!
+        </Button>
+        <Button
+          onClick={() =>
+            removeActor(false)
+          }
+        >
+          no!
+        </Button>
+      </Modal.Footer>
+    </Modal.Dialog>
+  </div>
 
-  propTypes: {
-    doc: React.PropTypes.object,
-    removeActor: React.PropTypes.func
-  },
+ModalRemoveActor.displayName = 'ModalRemoveActor'
 
-  onHide () {
-    console.log('onHide')
-  },
+ModalRemoveActor.propTypes = {
+  doc: React.PropTypes.object,
+  removeActor: React.PropTypes.func
+}
 
-  onClickRemove () {
-    const { removeActor } = this.props
-    removeActor(true)
-  },
-
-  close () {
-    const { removeActor } = this.props
-    removeActor(false)
-  },
-
-  render () {
-    const { doc } = this.props
-
-    return (
-      <div className='static-modal'>
-        <Modal.Dialog onHide={this.onHide}>
-          <Modal.Header>
-            <Modal.Title>Remove actor "{doc.category}"</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>Are you sure, you want to remove actor "{doc.category}"?</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              bsStyle='danger'
-              onClick={this.onClickRemove}>
-              yes, remove!
-            </Button>
-            <Button
-              onClick={this.close}>
-              no!
-            </Button>
-          </Modal.Footer>
-        </Modal.Dialog>
-      </div>
-    )
-  }
-})
+export default ModalRemoveActor
