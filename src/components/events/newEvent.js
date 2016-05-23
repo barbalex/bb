@@ -2,7 +2,14 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Alert, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import {
+  Modal,
+  Button,
+  Alert,
+  FormGroup,
+  ControlLabel,
+  FormControl
+} from 'react-bootstrap'
 import moment from 'moment'
 import DateInput from './dateInput.js'
 
