@@ -5,14 +5,6 @@ import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
 import { FormGroup, ControlLabel, FormControl, InputGroup } from 'react-bootstrap'
 
-const handleDateTimeFieldFocus = (e) => {
-  const parent = e.target.parentElement
-  const children = parent.childNodes
-  for (let i = 0; i < children.length; i++) {
-    if (children[i].tagName.toLowerCase() === 'span') return children[i].click()
-  }
-}
-
 const EventDate = ({ date, onChangeDatePicker }) => {
   return (
     <FormGroup

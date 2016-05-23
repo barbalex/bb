@@ -3,8 +3,8 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Modal, Button, Input, Alert } from 'react-bootstrap'
-import DateTimeField from 'react-bootstrap-datetimepicker'
 import moment from 'moment'
+import DateInput from '../events/dateInput.js'
 
 export default React.createClass({
   displayName: 'NewCommentary',
@@ -29,7 +29,8 @@ export default React.createClass({
     this.setState({ title })
   },
 
-  onChangeDate (date) {
+  onChangeDate (event, picker) {
+    const date = moment(picker.startDate, 'DD.MM.YYYY')
     this.setState({ date })
   },
 
@@ -95,21 +96,12 @@ export default React.createClass({
             label='Title'
             value={title}
             onChange={this.onChangeTitle}
-            autoFocus />
-          <div
-            style={dateLabelStyle}>
-            Date
-          </div>
-          <div
-            style={dtfStyle}>
-            <DateTimeField
-              dateTime={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
-              format='DD.MM.YYYY'
-              inputFormat ='DD.MM.YYYY'
-              mode='date'
-              inputProps={dateTimeFieldInputProps}
-              onChange={this.onChangeDate} />
-          </div>
+            autoFocus
+          />
+          <DateInput
+            date={date}
+            onChangeDatePicker={this.onChangeDate}
+          />
           {
             error &&
             <Alert
