@@ -48,20 +48,24 @@ export default React.createClass({
     if (editing) {
       return (
         <div
-          className='commentary'>
+          className='commentary'
+        >
           {
             showMeta &&
             <Meta
               doc={activeCommentary}
-              onCloseMeta={this.onCloseMeta} />
+              onCloseMeta={this.onCloseMeta}
+            />
           }
           <Editor
             doc={activeCommentary}
             articleDecoded={articleDecoded}
-            onSaveCommentaryArticle={onSaveCommentaryArticle} />
+            onSaveCommentaryArticle={onSaveCommentaryArticle}
+          />
           <Button
             style={metaButtonStyle}
-            onClick={this.onClickMeta}>
+            onClick={this.onClickMeta}
+          >
             images
           </Button>
         </div>
@@ -70,9 +74,11 @@ export default React.createClass({
     const createMarkup = () => ({__html: articleDecoded})
     return (
       <div
-        className='commentary'>
+        className='commentary'
+      >
         <div
-          dangerouslySetInnerHTML={createMarkup()} />
+          dangerouslySetInnerHTML={createMarkup()}
+        />
       </div>
     )
   }
