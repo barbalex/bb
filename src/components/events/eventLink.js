@@ -3,7 +3,16 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
-import { Input, Row, Col, Tooltip, OverlayTrigger, Glyphicon } from 'react-bootstrap'
+import {
+  Row,
+  Col,
+  Tooltip,
+  OverlayTrigger,
+  Glyphicon,
+  FormGroup,
+  ControlLabel,
+  FormControl
+} from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'EventLink',
@@ -114,26 +123,34 @@ export default React.createClass({
           sm={3}
           lg={2}
         >
-          <Input
-            type='text'
-            value={link.label}
-            bsSize='small'
-            onChange={this.onChangeLabel}
-            onBlur={this.onBlurLabel}
-            autoFocus={focusLabel}
-          />
+          <FormGroup
+            controlId="eventLink"
+          >
+            <FormControl
+              type='text'
+              bsSize='small'
+              value={link.label}
+              onChange={(event) => this.onChangeLabel(event)}
+              onBlur={() => this.onBlurLabel()}
+              autoFocus={focusLabel}
+            />
+          </FormGroup>
         </Col>
         <Col
           sm={8}
           lg={9}
         >
-          <Input
-            type='url'
-            value={link.url}
-            bsSize='small'
-            onChange={this.onChangeUrl}
-            onBlur={this.onBlurUrl}
-          />
+          <FormGroup
+            controlId="eventUrl"
+          >
+            <FormControl
+              type='url'
+              bsSize='small'
+              value={link.url}
+              onChange={(event) => this.onChangeUrl(event)}
+              onBlur={() => this.onBlurUrl()}
+            />
+          </FormGroup>
         </Col>
         <Col
           sm={1}
