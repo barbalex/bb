@@ -9,19 +9,9 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import LoginForm from './loginForm.js'
 
-export default React.createClass({
-  displayName: 'Login',
-
-  propTypes: {
-    email: React.PropTypes.string
-  },
-
-  onClickLogout () {
-    app.Actions.logout()
-  },
-
-  render () {
-    const { email } = this.props
+const Login = ({ email }) =>
+  {
+    console.log('login.js, email', email)
     return (
       <div>
         <h1>Login</h1>
@@ -33,11 +23,19 @@ export default React.createClass({
           email &&
           <Button
             className='btn-primary'
-            onClick={this.onClickLogout}>
+            onClick={() => app.Actions.logout()}
+          >
             log out
           </Button>
         }
       </div>
     )
   }
-})
+
+Login.displayName = 'Login'
+
+Login.propTypes = {
+  email: React.PropTypes.string
+}
+
+export default Login
