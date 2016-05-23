@@ -169,7 +169,12 @@ export default React.createClass({
   },
 
   actorsComponent () {
-    const { activeActor, editing, email, onSaveActorArticle } = this.props
+    const {
+      activeActor,
+      editing,
+      email,
+      onSaveActorArticle
+    } = this.props
     let { actors } = this.props
     if (actors.length > 0) {
       actors = sortBy(actors, (actor) => {
@@ -252,8 +257,8 @@ export default React.createClass({
                   <Actor
                     activeActor={activeActor}
                     editing={editing}
-                    onSaveActorArticle={onSaveActorArticle} /
-                  >
+                    onSaveActorArticle={onSaveActorArticle}
+                  />
                 </div>
               </div>
             }
@@ -282,15 +287,15 @@ export default React.createClass({
         {
           showNewActor &&
           <NewActor
-            onCloseNewActor={onCloseNewActor} /
-          >
+            onCloseNewActor={onCloseNewActor}
+          />
         }
         {
           docToRemove &&
           <ModalRemoveActor
             doc={docToRemove}
-            removeActor={this.removeActor} /
-          >
+            removeActor={this.removeActor}
+          />
         }
       </div>
     )
