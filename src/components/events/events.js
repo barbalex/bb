@@ -52,7 +52,9 @@ export default React.createClass({
     const { introJumbotronHeight: introJumbotronHeightOld } = this.state
     const introJumbotronDomNode = this.introJumbotron ? ReactDOM.findDOMNode(this.introJumbotron) : null
     const introJumbotronHeight = introJumbotronDomNode ? introJumbotronDomNode.clientHeight : null
-    if (introJumbotronHeight && introJumbotronHeight !== introJumbotronHeightOld) this.setState({ introJumbotronHeight })
+    if (introJumbotronHeight && introJumbotronHeight !== introJumbotronHeightOld) {
+      this.setState({ introJumbotronHeight })
+    }
   },
 
   onRemoveEvent (docToRemove) {
@@ -67,17 +69,15 @@ export default React.createClass({
 
   yearButtons () {
     const { yearsOfEvents, activeEventYears } = this.props
-    return yearsOfEvents.map((year, index) => {
-      return (
-        <Button
-          key={index}
-          active={activeEventYears.includes(year)}
-          onClick={this.setActiveYear.bind(this, year)}
-        >
-          {year}
-        </Button>
-      )
-    })
+    return yearsOfEvents.map((year, index) =>
+      <Button
+        key={index}
+        active={activeEventYears.includes(year)}
+        onClick={this.setActiveYear.bind(this, year)}
+      >
+        {year}
+      </Button>
+    )
   },
 
   showArchive () {
@@ -92,14 +92,31 @@ export default React.createClass({
   },
 
   render () {
-    const { events, yearsOfEvents, email, showNewEvent, onCloseNewEvent, activeEvent, onChangeActiveEvent, activeEventYears, setActiveEventYears } = this.props
-    const { docToRemove, introJumbotronHeight } = this.state
+    const {
+      events,
+      yearsOfEvents,
+      email,
+      showNewEvent,
+      onCloseNewEvent,
+      activeEvent,
+      onChangeActiveEvent,
+      activeEventYears,
+      setActiveEventYears
+    } = this.props
+    const {
+      docToRemove,
+      introJumbotronHeight
+    } = this.state
     const showEventsTable = min(activeEventYears) > 2014
 
     return (
       <div className='events'>
-        <IntroJumbotron ref={(j) => this.introJumbotron = j} />
-        <div style={{ textAlign: 'center' }}>
+        <IntroJumbotron
+          ref={(j) => this.introJumbotron = j}
+        />
+        <div
+          style={{ textAlign: 'center' }}
+        >
           <ButtonGroup>
             {this.yearButtons()}
             <Button
@@ -118,24 +135,28 @@ export default React.createClass({
             activeEventYears={activeEventYears}
             setActiveEventYears={setActiveEventYears}
             introJumbotronHeight={introJumbotronHeight}
-            onRemoveEvent={this.onRemoveEvent} />
+            onRemoveEvent={this.onRemoveEvent}
+          />
         }
         {
           activeEvent &&
           <EditEvent
             activeEvent={activeEvent}
-            onChangeActiveEvent={onChangeActiveEvent} />
+            onChangeActiveEvent={onChangeActiveEvent}
+          />
         }
         {
           showNewEvent &&
           <NewEvent
-            onCloseNewEvent={onCloseNewEvent} />
+            onCloseNewEvent={onCloseNewEvent}
+          />
         }
         {
           docToRemove &&
           <ModalRemoveEvent
             doc={docToRemove}
-            removeEvent={this.removeEvent} />
+            removeEvent={this.removeEvent}
+          />
         }
       </div>
     )
