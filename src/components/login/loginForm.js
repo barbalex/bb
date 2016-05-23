@@ -56,8 +56,12 @@ export default React.createClass({
   checkSignin (newEmail, password) {
     if (this.validSignin(newEmail, password)) {
       app.db.login(newEmail, password)
-        .then((response) => app.Actions.login(newEmail))
-        .catch((error) => this.setState({ newEmail: null, loginError: error }))
+        .then((response) =>
+          app.Actions.login(newEmail)
+        )
+        .catch((error) =>
+          this.setState({ newEmail: null, loginError: error })
+        )
     }
   },
 
@@ -102,7 +106,11 @@ export default React.createClass({
   },
 
   render () {
-    const { invalidEmail, invalidPassword, loginError } = this.state
+    const {
+      invalidEmail,
+      invalidPassword,
+      loginError
+    } = this.state
     const emailInputBsStyle = invalidEmail ? 'error' : null
     const passwordInputBsStyle = invalidPassword ? 'error' : null
     const styleAlert = {
@@ -112,12 +120,32 @@ export default React.createClass({
     if (isObject(loginError)) error = loginError.message
     const isError = error && error.length > 0
 
+    console.log('loginForm.js, render')
+
     return (
       <form
         className='form'
-        autoComplete='off'>
+        autoComplete='off'
+      >
         <div
-          className='formGroup'>
+          className='formGroup'
+        >
+          <FormGroup
+            controlId="email"
+          >
+            <ControlLabel>Email</ControlLabel>
+            <FormControl
+              type='email'
+              id='email'
+              bsSize='small'
+              bsStyle={emailInputBsStyle}
+              value={activeEvent.title}
+              onBlur={this.onBlurEmail}
+              onKeyDown={this.onKeyDownEmail}
+              required
+              autoFocus
+            />
+          </FormGroup>
           <Input
             type='email'
             id='email'
@@ -128,17 +156,20 @@ export default React.createClass({
             onBlur={this.onBlurEmail}
             onKeyDown={this.onKeyDownEmail}
             required
-            autoFocus />
+            autoFocus
+          />
           {
             invalidEmail &&
             <div
-              className='validateDivAfterRBC'>
+              className='validateDivAfterRBC'
+            >
               Please check email
             </div>
           }
         </div>
         <div
-          className='formGroup'>
+          className='formGroup'
+        >
           <Input
             type='password'
             id='password'
@@ -147,11 +178,13 @@ export default React.createClass({
             bsStyle={passwordInputBsStyle}
             onBlur={this.onBlurPassword}
             onKeyDown={this.onKeyDownPassword}
-            required />
+            required
+          />
           {
             invalidPassword &&
             <div
-              className='validateDivAfterRBC'>
+              className='validateDivAfterRBC'
+            >
               Please check password
             </div>
           }
@@ -161,13 +194,15 @@ export default React.createClass({
           <Alert
             bsStyle='danger'
             onDismiss={this.onAlertDismiss}
-            style={styleAlert}>
+            style={styleAlert}
+          >
             Error: {error}
           </Alert>
         }
         <Button
           className='btn-primary'
-          onClick={this.onClickLogin}>
+          onClick={this.onClickLogin}
+        >
           log in
         </Button>
       </form>
