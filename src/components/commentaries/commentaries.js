@@ -106,11 +106,13 @@ export default React.createClass({
     return (
       <OverlayTrigger
         placement='top'
-        overlay={this.removeCommentaryTooltip()}>
+        overlay={this.removeCommentaryTooltip()}
+      >
         <Glyphicon
           glyph='remove-circle'
           style={glyphStyle}
-          onClick={this.onRemoveCommentary.bind(this, doc)} />
+          onClick={this.onRemoveCommentary.bind(this, doc)}
+        />
       </OverlayTrigger>
     )
   },
@@ -131,8 +133,15 @@ export default React.createClass({
       color: color
     }
     return (
-      <OverlayTrigger placement='top' overlay={this.toggleDraftTooltip(doc)}>
-        <Glyphicon glyph={glyph} style={glyphStyle} onClick={this.onToggleDraft.bind(this, doc)} />
+      <OverlayTrigger
+        placement='top'
+        overlay={this.toggleDraftTooltip(doc)}
+      >
+        <Glyphicon
+          glyph={glyph}
+          style={glyphStyle}
+          onClick={this.onToggleDraft.bind(this, doc)}
+        />
       </OverlayTrigger>
     )
   },
@@ -144,7 +153,13 @@ export default React.createClass({
   },
 
   commentariesComponent () {
-    const { commentaries, activeCommentary, editing, email, onSaveCommentaryArticle } = this.props
+    const {
+      commentaries,
+      activeCommentary,
+      editing,
+      email,
+      onSaveCommentaryArticle
+    } = this.props
 
     if (commentaries.length > 0) {
       return commentaries.map((doc, index) => {
@@ -173,22 +188,29 @@ export default React.createClass({
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
-          <div key={doc._id} ref={(c) => this[ref] = c} className='panel panel-default'>
+          <div
+            key={doc._id}
+            ref={(c) => this[ref] = c}
+            className='panel panel-default'
+          >
             <div
               className='panel-heading'
               role='tab'
               id={'heading' + index}
               onClick={this.onClickCommentary.bind(this, doc._id)}
-              style={panelHeadingStyle}>
+              style={panelHeadingStyle}
+            >
               <h4
-                className='panel-title'>
+                className='panel-title'
+              >
                 <a
                   role='button'
                   data-toggle='collapse'
                   data-parent='#commentariesAccordion'
                   href={'#collapse' + index}
                   aria-expanded='false'
-                  aria-controls={'#collapse' + index}>
+                  aria-controls={'#collapse' + index}
+                >
                   {doc.title}
                 </a>
               </h4>
@@ -204,18 +226,21 @@ export default React.createClass({
             {
               isActiveCommentary &&
               <div
-                id={'#collapse' + index}
+                id={`#collapse${index}`}
                 className='panel-collapse collapse in'
                 role='tabpanel'
-                aria-labelledby={'heading' + index}
-                onClick={this.onClickCommentaryCollapse}>
+                aria-labelledby={`heading${index}`}
+                onClick={this.onClickCommentaryCollapse}
+              >
                 <div
                   className='panel-body'
-                  style={panelBodyStyle}>
+                  style={panelBodyStyle}
+                >
                   <Commentary
                     activeCommentary={activeCommentary}
                     editing={editing}
-                    onSaveCommentaryArticle={onSaveCommentaryArticle} />
+                    onSaveCommentaryArticle={onSaveCommentaryArticle}
+                  />
                 </div>
               </div>
             }
@@ -227,31 +252,43 @@ export default React.createClass({
   },
 
   render () {
-    const { activeCommentary, showNewCommentary, onCloseNewCommentary } = this.props
+    const {
+      activeCommentary,
+      showNewCommentary,
+      onCloseNewCommentary
+    } = this.props
     const { docToRemove } = this.state
-    const activeCommentaryId = has(activeCommentary, '_id') ? activeCommentary._id : null
+    const activeCommentaryId = (
+      has(activeCommentary, '_id') ?
+      activeCommentary._id :
+      null
+    )
     return (
       <div
-        className='commentaries'>
+        className='commentaries'
+      >
         <h1>
           Commentaries
         </h1>
         <PanelGroup
           activeKey={activeCommentaryId}
           id='commentariesAccordion'
-          accordion>
+          accordion
+        >
           {this.commentariesComponent()}
         </PanelGroup>
         {
           showNewCommentary &&
           <NewCommentary
-            onCloseNewCommentary={onCloseNewCommentary} />
+            onCloseNewCommentary={onCloseNewCommentary}
+          />
         }
         {
           docToRemove &&
           <ModalRemoveCommentary
             doc={docToRemove}
-            removeCommentary={this.removeCommentary} />
+            removeCommentary={this.removeCommentary}
+          />
         }
       </div>
     )
