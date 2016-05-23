@@ -47,10 +47,11 @@ export default React.createClass({
     }
   },
 
-  onChangeDate (datePassed) {
+  onChangeDatePicker (event, picker) {
     const { activeEvent } = this.props
+    const datePassed = moment(picker.startDate, 'DD.MM.YYYY')
     if (datePassed) {
-      activeEvent.date = moment(datePassed, 'DD.MM.YYYY')
+      activeEvent.date = datePassed
       app.Actions.replaceEvent(activeEvent)
     } else {
       const error = 'Please choose a date'
@@ -118,7 +119,7 @@ export default React.createClass({
           />
           <DateInput
             date={date}
-            onChangeDate={this.onChangeDate}
+            onChangeDatePicker={this.onChangeDatePicker}
           />
           <EventTypeButtonGroup
             eventType={activeEvent.eventType}

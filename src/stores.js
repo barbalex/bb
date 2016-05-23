@@ -215,7 +215,9 @@ export default (Actions) => {
           this.yearsOfEvents = years
           this.trigger(this.yearsOfEvents)
         })
-        .catch((error) => console.log('yearsOfEventsStore, error getting years of events', error))
+        .catch((error) =>
+          console.log('yearsOfEventsStore, error getting years of events', error)
+        )
     }
   })
 
@@ -231,7 +233,9 @@ export default (Actions) => {
     activeEventId: null,
 
     activeEvent () {
-      return this.events.find((event) => event._id === this.activeEventId)
+      return this.events.find((event) =>
+        event._id === this.activeEventId
+      )
     },
 
     getEventsCallback: null,
@@ -246,22 +250,33 @@ export default (Actions) => {
           }
           this.triggerStore()
         })
-        .catch((error) => app.Actions.showError({msg: error}))
+        .catch((error) =>
+          app.Actions.showError({msg: error})
+        )
     },
 
-    onNewEvent (date, title) {
-      const year = moment(date).year()
-      const month = moment(date).format('MM')
-      const day = moment(date).format('DD')
+    onNewEvent (event) {
+      const title = event.title
+      const year = moment(event.date).year()
+      const month = moment(event.date).format('MM')
+      const day = moment(event.date).format('DD')
       const _id = `events_${year}_${month}_${day}_${slug(title)}`
       const type = 'events'
       const eventType = 'migration'
       const links = []
       const order = 99
       const tags = []
-      const event = { _id, type, title, links, eventType, order, tags }
+      const newEvent = {
+        _id,
+        type,
+        title,
+        links,
+        eventType,
+        order,
+        tags
+      }
       this.activeEventId = _id
-      this.onSaveEvent(event)
+      this.onSaveEvent(newEvent)
     },
 
     onGetEvent (id) {
@@ -282,7 +297,9 @@ export default (Actions) => {
 
     updateEventsInCache (event) {
       // first update the event in this.events
-      this.events = this.events.filter((thisEvent) => thisEvent._id !== event._id)
+      this.events = this.events.filter((thisEvent) =>
+        thisEvent._id !== event._id
+      )
       this.events.push(event)
       this.events = sortEvents(this.events)
       // now tell every one!

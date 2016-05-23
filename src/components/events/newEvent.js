@@ -29,11 +29,6 @@ export default React.createClass({
     this.setState({ title })
   },
 
-  onBlurDate (event) {
-    const date = moment(event.value.target, 'DD.MM.YYYY')
-    this.setState({ date })
-  },
-
   onChangeDatePicker (event, picker) {
     const date = moment(picker.startDate, 'DD.MM.YYYY')
     this.setState({ date })
@@ -42,7 +37,7 @@ export default React.createClass({
   createNewEvent () {
     const { title, date } = this.state
     if (title && date) {
-      app.Actions.newEvent(date, title)
+      app.Actions.newEvent({ date, title })
     } else {
       let error = 'Please choose a date'
       if (!title) error = 'Please add a title'
@@ -87,11 +82,11 @@ export default React.createClass({
               value={title}
               onChange={this.onChangeTitle}
               autoFocus
+              tabIndex={1}
             />
           </FormGroup>
           <DateInput
             date={date}
-            onBlurDate={this.onBlurDate}
             onChangeDatePicker={this.onChangeDatePicker}
           />
           {

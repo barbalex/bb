@@ -3,7 +3,7 @@
 import React from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
-import { FormGroup, ControlLabel, FormControl, InputGroup, Glyphicon } from 'react-bootstrap'
+import { FormGroup, ControlLabel, FormControl, InputGroup } from 'react-bootstrap'
 
 const handleDateTimeFieldFocus = (e) => {
   const parent = e.target.parentElement
@@ -13,42 +13,31 @@ const handleDateTimeFieldFocus = (e) => {
   }
 }
 
-const EventDate = ({ date, onBlurDate, onChangeDatePicker }) => {
-  const dateTimeFieldInputProps = {
-    onFocus(e) {
-      handleDateTimeFieldFocus(e)
-    }
-  }
-  const dateLabelStyle = {
-    fontWeight: 'bold',
-    marginBottom: 5
-  }
-  const dtfStyle = {
-    marginBottom: 20
-  }
+const EventDate = ({ date, onChangeDatePicker }) => {
   return (
     <FormGroup
       controlId="date"
     >
       <ControlLabel>Date</ControlLabel>
-      <InputGroup>
-        <FormControl
-          type="text"
-          value={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
-          onChange={onBlurDate}
-          bsSize="small"
-          tabIndex={2}
-        />
-        <InputGroup.Addon>
-          <DateRangePicker
-            singleDatePicker
-            drops="up"
-            opens="left"
-            onApply={onChangeDatePicker}
-          >
-            <Glyphicon glyph="calendar" />
-          </DateRangePicker>
-        </InputGroup.Addon>
+      <InputGroup
+        style={{
+          width: `${100}%`
+        }}
+      >
+        <DateRangePicker
+          singleDatePicker
+          drops="up"
+          opens="left"
+          onApply={onChangeDatePicker}
+        >
+          <FormControl
+            type="text"
+            value={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
+            onChange={() => {/* react wants an onChange handler */}}
+            bsSize="small"
+            tabIndex={2}
+          />
+        </DateRangePicker>
       </InputGroup>
     </FormGroup>
   )
@@ -58,7 +47,6 @@ EventDate.displayName = 'EventDate'
 
 EventDate.propTypes = {
   date: React.PropTypes.object,
-  onBlurDate: React.PropTypes.func,
   onChangeDatePicker: React.PropTypes.func
 }
 
