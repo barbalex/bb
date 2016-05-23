@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Input, Alert } from 'react-bootstrap'
+import { Modal, Button, Alert, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import moment from 'moment'
 import EventTypeButtonGroup from './eventTypeButtonGroup.js'
 import DateInput from './dateInput.js'
@@ -109,14 +109,18 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input
-            type='text'
-            label='Title'
-            value={activeEvent.title}
-            onChange={this.onChangeTitle}
-            onBlur={this.onBlurTitle}
-            style={inputStyle}
-          />
+          <FormGroup
+            controlId="eventTitle"
+          >
+            <ControlLabel>Title</ControlLabel>
+            <FormControl
+              type='text'
+              value={activeEvent.title}
+              onChange={this.onChangeTitle}
+              onBlur={this.onBlurTitle}
+              tabIndex={1}
+            />
+          </FormGroup>
           <DateInput
             date={date}
             onChangeDatePicker={this.onChangeDatePicker}
@@ -125,14 +129,19 @@ export default React.createClass({
             eventType={activeEvent.eventType}
             onChangeEventType={this.onChangeEventType}
           />
-          <Input
-            type='number'
-            label='Order'
-            value={activeEvent.order}
-            onChange={this.onChangeOrder}
-            onBlur={this.onBlurOrder}
-            style={inputStyle}
-          />
+          <FormGroup
+            controlId="eventOrder"
+          >
+            <ControlLabel>Order</ControlLabel>
+            <FormControl
+              type='number'
+              value={activeEvent.order}
+              onChange={this.onChangeOrder}
+              onBlur={this.onBlurOrder}
+              tabIndex={4}
+              style={inputStyle}
+            />
+          </FormGroup>
           <TagsInput
             activeEvent={activeEvent}
           />
