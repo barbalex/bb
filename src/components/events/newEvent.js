@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Input, Alert } from 'react-bootstrap'
+import { Modal, Button, Alert, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import moment from 'moment'
 import DateInput from './dateInput.js'
 
@@ -29,8 +29,13 @@ export default React.createClass({
     this.setState({ title })
   },
 
-  onChangeDate (datePassed) {
-    const date = moment(datePassed, 'DD.MM.YYYY')
+  onBlurDate (event) {
+    const date = moment(event.value.target, 'DD.MM.YYYY')
+    this.setState({ date })
+  },
+
+  onChangeDatePicker (event, picker) {
+    const date = moment(picker.startDate, 'DD.MM.YYYY')
     this.setState({ date })
   },
 
@@ -73,15 +78,22 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input
-            type='text'
-            label='Title'
-            value={title}
-            onChange={this.onChangeTitle}
-            autoFocus />
+          <FormGroup
+            controlId="newEventTitle"
+          >
+            <ControlLabel>Title</ControlLabel>
+            <FormControl
+              type='text'
+              value={title}
+              onChange={this.onChangeTitle}
+              autoFocus
+            />
+          </FormGroup>
           <DateInput
             date={date}
-            onChangeDate={this.onChangeDate} />
+            onBlurDate={this.onBlurDate}
+            onChangeDatePicker={this.onChangeDatePicker}
+          />
           {
             error &&
             <Alert

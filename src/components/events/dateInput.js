@@ -2,7 +2,9 @@
 
 import React from 'react'
 import DateTimeField from 'react-bootstrap-datetimepicker'
+import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
+import { FormGroup, ControlLabel, FormControl, InputGroup, Glyphicon } from 'react-bootstrap'
 
 const handleDateTimeFieldFocus = (e) => {
   const parent = e.target.parentElement
@@ -12,7 +14,7 @@ const handleDateTimeFieldFocus = (e) => {
   }
 }
 
-const EventDate = ({ date, onChangeDate }) => {
+const EventDate = ({ date, onBlurDate, onChangeDatePicker }) => {
   const dateTimeFieldInputProps = {
     onFocus(e) {
       handleDateTimeFieldFocus(e)
@@ -27,20 +29,30 @@ const EventDate = ({ date, onChangeDate }) => {
   }
   return (
     <div>
-      <div
-        style={dateLabelStyle}>
-        Date
-      </div>
-      <div
-        style={dtfStyle}>
-        <DateTimeField
-          dateTime={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
-          format='DD.MM.YYYY'
-          inputFormat ='DD.MM.YYYY'
-          mode='date'
-          inputProps={dateTimeFieldInputProps}
-          onChange={onChangeDate} />
-      </div>
+      <FormGroup
+        controlId="date"
+      >
+        <ControlLabel>Date</ControlLabel>
+        <InputGroup>
+          <FormControl
+            type="text"
+            value={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
+            onChange={onBlurDate}
+            bsSize="small"
+            tabIndex={2}
+          />
+          <InputGroup.Addon>
+            <DateRangePicker
+              singleDatePicker
+              drops="up"
+              opens="left"
+              onApply={onChangeDatePicker}
+            >
+              <Glyphicon glyph="calendar" />
+            </DateRangePicker>
+          </InputGroup.Addon>
+        </InputGroup>
+      </FormGroup>
     </div>
   )
 }
@@ -49,7 +61,8 @@ EventDate.displayName = 'EventDate'
 
 EventDate.propTypes = {
   date: React.PropTypes.object,
-  onChangeDate: React.PropTypes.func
+  onBlurDate: React.PropTypes.func,
+  onChangeDatePicker: React.PropTypes.func
 }
 
 export default EventDate
