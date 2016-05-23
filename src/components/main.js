@@ -281,6 +281,7 @@ export default React.createClass({
 
     console.log('login', login)
     console.log('email', email)
+    console.log('activePage', activePage)
 
     return (
       <DocumentTitle
