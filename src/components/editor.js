@@ -17,11 +17,22 @@ export default React.createClass({
   },
 
   componentDidMount () {
-    const { doc, onSavePageArticle, onSaveMonthlyEventArticle, onSavePublicationArticle, onSaveCommentaryArticle, onSaveActorArticle } = this.props
+    const {
+      doc,
+      onSavePageArticle,
+      onSaveMonthlyEventArticle,
+      onSavePublicationArticle,
+      onSaveCommentaryArticle,
+      onSaveActorArticle
+    } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
-    if (onSaveMonthlyEventArticle || onSavePublicationArticle) height = window.innerHeight - 52 - 74 - 76
-    if (onSaveCommentaryArticle || onSaveActorArticle) height = window.innerHeight - 52 - 74 - 90
+    if (onSaveMonthlyEventArticle || onSavePublicationArticle) {
+      height = window.innerHeight - 52 - 74 - 76
+    }
+    if (onSaveCommentaryArticle || onSaveActorArticle) {
+      height = window.innerHeight - 52 - 74 - 90
+    }
     const instanceSelector = `#${doc._id}`
     // need to add specific classes to the iframe body because my css will not apply otherwise
     let bodyClass = ''
@@ -72,7 +83,7 @@ export default React.createClass({
       },
       // options for http://www.avoid.org/codemirror-for-tinymce4
       codemirror: {
-        path: 'http://46.101.159.23/tinymce/plugins/codemirror/codemirror-5.9',
+        path: 'http://46.101.159.23/tinymce/plugins/codemirror/codemirror-5.15',
         indentOnInit: true
       }
     })
@@ -102,7 +113,8 @@ export default React.createClass({
     return (
       <textarea
         id={doc._id}
-        defaultValue={articleDecoded} />
+        defaultValue={articleDecoded}
+      />
     )
   }
 })
