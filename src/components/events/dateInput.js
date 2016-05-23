@@ -1,7 +1,6 @@
 'use strict'
 
 import React from 'react'
-import DateTimeField from 'react-bootstrap-datetimepicker'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
 import { FormGroup, ControlLabel, FormControl, InputGroup, Glyphicon } from 'react-bootstrap'
@@ -28,32 +27,30 @@ const EventDate = ({ date, onBlurDate, onChangeDatePicker }) => {
     marginBottom: 20
   }
   return (
-    <div>
-      <FormGroup
-        controlId="date"
-      >
-        <ControlLabel>Date</ControlLabel>
-        <InputGroup>
-          <FormControl
-            type="text"
-            value={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
-            onChange={onBlurDate}
-            bsSize="small"
-            tabIndex={2}
-          />
-          <InputGroup.Addon>
-            <DateRangePicker
-              singleDatePicker
-              drops="up"
-              opens="left"
-              onApply={onChangeDatePicker}
-            >
-              <Glyphicon glyph="calendar" />
-            </DateRangePicker>
-          </InputGroup.Addon>
-        </InputGroup>
-      </FormGroup>
-    </div>
+    <FormGroup
+      controlId="date"
+    >
+      <ControlLabel>Date</ControlLabel>
+      <InputGroup>
+        <FormControl
+          type="text"
+          value={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
+          onChange={onBlurDate}
+          bsSize="small"
+          tabIndex={2}
+        />
+        <InputGroup.Addon>
+          <DateRangePicker
+            singleDatePicker
+            drops="up"
+            opens="left"
+            onApply={onChangeDatePicker}
+          >
+            <Glyphicon glyph="calendar" />
+          </DateRangePicker>
+        </InputGroup.Addon>
+      </InputGroup>
+    </FormGroup>
   )
 }
 
