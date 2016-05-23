@@ -228,8 +228,36 @@ export default React.createClass({
 
   render () {
     const { login } = this.props
-    const { activePage, monthlyEvents, activeMonthlyEvent, publications, activePublicationCategory, activePublication, events, yearsOfEvents, activeEvent, commentaries, activeCommentary, actors, activeActor, editing, showNewCommentary, showNewEvent, showNewActor, showNewMonthlyEvent, showNewPublication, email, errors, activeEventYears } = this.state
-    const nonSimplePages = ['pages_commentaries', 'pages_monthlyEvents', 'pages_publications', 'pages_events']
+    const {
+      activePage,
+      monthlyEvents,
+      activeMonthlyEvent,
+      publications,
+      activePublicationCategory,
+      activePublication,
+      events,
+      yearsOfEvents,
+      activeEvent,
+      commentaries,
+      activeCommentary,
+      actors,
+      activeActor,
+      editing,
+      showNewCommentary,
+      showNewEvent,
+      showNewActor,
+      showNewMonthlyEvent,
+      showNewPublication,
+      email,
+      errors,
+      activeEventYears
+    } = this.state
+    const nonSimplePages = [
+      'pages_commentaries',
+      'pages_monthlyEvents',
+      'pages_publications',
+      'pages_events'
+    ]
     const isSimplePage = activePage.type && activePage.type === 'pages' && !nonSimplePages.includes(activePage._id)
     const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
     const isEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_events'
@@ -251,8 +279,13 @@ export default React.createClass({
     const showCopyright = activePage.type && activePage.type === 'pages' && pagesWitCopyright.includes(activePage._id)
     const showErrors = errors && errors.length > 0
 
+    console.log('login', login)
+    console.log('email', email)
+
     return (
-      <DocumentTitle title={pageTitle}>
+      <DocumentTitle
+        title={pageTitle}
+      >
         <NavHelper>
           <Header />
           <Navbar
@@ -308,7 +341,8 @@ export default React.createClass({
                 email={email}
                 onSaveCommentaryArticle={this.onSaveCommentaryArticle}
                 showNewCommentary={showNewCommentary}
-                onCloseNewCommentary={this.onCloseNewCommentary} />
+                onCloseNewCommentary={this.onCloseNewCommentary}
+              />
             }
             {
               showActorPage &&
@@ -319,7 +353,8 @@ export default React.createClass({
                 email={email}
                 onSaveActorArticle={this.onSaveActorArticle}
                 showNewActor={showNewActor}
-                onCloseNewActor={this.onCloseNewActor} />
+                onCloseNewActor={this.onCloseNewActor}
+              />
             }
             {
               showMonthlyEventsPage &&
@@ -330,7 +365,8 @@ export default React.createClass({
                 email={email}
                 onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}
                 showNewMonthlyEvent={showNewMonthlyEvent}
-                onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent} />
+                onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent}
+              />
             }
             {
               showPublicationsPage &&
@@ -342,17 +378,20 @@ export default React.createClass({
                 email={email}
                 onSavePublicationArticle={this.onSavePublicationArticle}
                 showNewPublication={showNewPublication}
-                onCloseNewPublication={this.onCloseNewPublication} />
+                onCloseNewPublication={this.onCloseNewPublication}
+              />
             }
             {
               login &&
               <Login
-                email={email} />
+                email={email}
+              />
             }
             {
               showCopyright &&
               <p
-                style={{marginTop: 70}}>
+                style={{marginTop: 70}}
+              >
                 &copy; Jürg Martin Gabriel. All Rights Reserved.
               </p>
             }
