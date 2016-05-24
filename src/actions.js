@@ -2,8 +2,8 @@
 
 import Reflux from 'reflux'
 
-export default () => {
-  let Actions = Reflux.createActions({
+export default () =>
+  Reflux.createActions({
     getPage: {},
     savePage: {},
     addPageAttachments: {},
@@ -44,5 +44,3 @@ export default () => {
     logout: {},
     showError: {}
   })
-  return Actions
-}
