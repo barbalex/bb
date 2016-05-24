@@ -1,7 +1,7 @@
 'use strict'
 
-export default () => {
-  return {
+export default () => (
+  {
     '01': 'January',
     '02': 'February',
     '03': 'March',
@@ -15,4 +15,4 @@ export default () => {
     '11': 'November',
     '12': 'December'
   }
-}
+)
