@@ -71,7 +71,10 @@ export default React.createClass({
     const {...props} = this.props
 
     return (
-      <div {...props} className={classnames(null, affix)}>
+      <div
+        {...props}
+        className={classnames(null, affix)}
+      >
         {this.props.children}
       </div>
     )
