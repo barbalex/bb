@@ -78,7 +78,8 @@ export default React.createClass({
       <Modal
         show
         onHide={this.close}
-        bsSize='large'>
+        bsSize='large'
+      >
         <Modal.Header>
           <Modal.Title>
             New monthly event
@@ -91,19 +92,22 @@ export default React.createClass({
             label='Year'
             value={year}
             onChange={this.onChangeYear}
-            autoFocus />
+            autoFocus
+          />
           <Input
             type='select'
             label='Month'
             value={month}
-            onChange={this.onChangeMonth}>
+            onChange={this.onChangeMonth}
+          >
             {this.monthOptions()}
           </Input>
           {
             error &&
             <Alert
               bsStyle='danger'
-              style={alertStyle}>
+              style={alertStyle}
+            >
               {error}
             </Alert>
           }
@@ -111,12 +115,14 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button
-            onClick={this.close}>
+            onClick={this.close}
+          >
             discard input and close
           </Button>
           <Button
             bsStyle='primary'
-            onClick={this.createNewMonthlyEvent}>
+            onClick={this.createNewMonthlyEvent}
+          >
             create new monthly event
           </Button>
         </Modal.Footer>
