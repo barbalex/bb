@@ -2,7 +2,14 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Input, Alert } from 'react-bootstrap'
+import {
+  Modal,
+  Button,
+  Alert,
+  FormGroup,
+  ControlLabel,
+  FormControl
+} from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'NewMonthlyEvent',
@@ -56,7 +63,9 @@ export default React.createClass({
 
   categoryOptions () {
     const publicationCategories = app.publicationsStore.getPublicationCategories()
-    let options = publicationCategories.map((category, index) => <option key={index + 1} value={category}>{category}</option>)
+    let options = publicationCategories.map((category, index) =>
+      <option key={index + 1} value={category}>{category}</option>
+    )
     options.unshift(<option key={0} value={null}></option>)
     return options
   },
@@ -79,21 +88,31 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input
-            type='string'
-            label='Title'
-            value={title}
-            onChange={this.onChangeTitle}
-            autoFocus /
+          <FormGroup
+            controlId="event"
           >
-          <Input
-            type='select'
-            label='Category'
-            value={category}
-            onChange={this.onChangeCategory}
+            <ControlLabel>Title</ControlLabel>
+            <FormControl
+              type='text'
+              value={title}
+              onChange={this.onChangeTitle}
+              tabIndex={1}
+              autoFocus
+            />
+          </FormGroup>
+          <FormGroup
+            controlId="category"
           >
-            {this.categoryOptions()}
-          </Input>
+            <ControlLabel>Category</ControlLabel>
+            <FormControl
+              componentClass="select"
+              value={category}
+              onChange={this.onChangeCategory}
+              tabIndex={2}
+            >
+              {this.categoryOptions()}
+            </FormControl>
+          </FormGroup>
           {
             error &&
             <Alert
