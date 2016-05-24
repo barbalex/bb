@@ -30,7 +30,7 @@ server.register(Inert, () => {
   server.route({
     method: 'GET',
     path: '/',
-    handler: function (request, reply) {
+    handler (request, reply) {
       reply.file('index.html')
     }
   })
@@ -38,7 +38,7 @@ server.register(Inert, () => {
   server.route({
     method: 'GET',
     path: '/index.html',
-    handler: function (request, reply) {
+    handler (request, reply) {
       reply.file('index.html')
     }
   })

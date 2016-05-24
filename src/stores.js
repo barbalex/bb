@@ -35,11 +35,11 @@ export default (Actions) => {
           .then((doc) => {
             this.activePage = doc
             const path = getPathFromDoc(doc)
-            app.router.navigate('/' + path)
+            app.router.navigate(`/${path}`)
             this.trigger(doc)
           })
           .catch((error) =>
-            app.Actions.showError({title: 'Error loading ' + id + ':', msg: error})
+            app.Actions.showError({title: `Error loading ${id}:`, msg: error})
           )
       }
     },
@@ -52,7 +52,9 @@ export default (Actions) => {
           this.activePage = doc
           this.trigger(doc)
         })
-        .catch((error) => app.Actions.showError({title: 'Error in activePageStore, onSavePage:', msg: error}))
+        .catch((error) =>
+          app.Actions.showError({title: 'Error in activePageStore, onSavePage:', msg: error})
+        )
     },
 
     // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
@@ -80,7 +82,9 @@ export default (Actions) => {
     activeMonthlyEventId: null,
 
     activeMonthlyEvent () {
-      return this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === this.activeMonthlyEventId)
+      return this.monthlyEvents.find((monthlyEvent) =>
+        monthlyEvent._id === this.activeMonthlyEventId
+      )
     },
 
     getMonthlyEventsCallback: null,
@@ -95,7 +99,9 @@ export default (Actions) => {
           }
           this.triggerStore()
         })
-        .catch((error) => app.Actions.showError({msg: error}))
+        .catch((error) =>
+          app.Actions.showError({msg: error})
+        )
     },
 
     onNewMonthlyEvent (year, month) {
@@ -117,15 +123,19 @@ export default (Actions) => {
           // on first load monthlyEvents is empty
           // need to wait until onGetMonthlyEvents fires
           this.getMonthlyEventsCallback = () => {
-            const monthlyEvent = this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === id)
+            const monthlyEvent = this.monthlyEvents.find((monthlyEvent) =>
+              monthlyEvent._id === id
+            )
             const path = getPathFromDoc(monthlyEvent)
-            app.router.navigate('/' + path)
+            app.router.navigate(`/${path}`)
             this.activeMonthlyEventId = id
           }
         } else {
-          const monthlyEvent = this.monthlyEvents.find((monthlyEvent) => monthlyEvent._id === id)
+          const monthlyEvent = this.monthlyEvents.find((monthlyEvent) =>
+            monthlyEvent._id === id
+          )
           const path = getPathFromDoc(monthlyEvent)
-          app.router.navigate('/' + path)
+          app.router.navigate(`/${path}`)
           this.activeMonthlyEventId = id
           this.triggerStore()
         }
@@ -134,7 +144,9 @@ export default (Actions) => {
 
     updateMonthlyEventsInCache (monthlyEvent) {
       // first update the monthlyEvent in this.monthlyEvents
-      this.monthlyEvents = this.monthlyEvents.filter((thisMonthlyEvent) => thisMonthlyEvent._id !== monthlyEvent._id)
+      this.monthlyEvents = this.monthlyEvents.filter((thisMonthlyEvent) =>
+        thisMonthlyEvent._id !== monthlyEvent._id
+      )
       this.monthlyEvents.push(monthlyEvent)
       this.monthlyEvents = sortMonthlyEvents(this.monthlyEvents)
       // now tell every one!
@@ -167,7 +179,9 @@ export default (Actions) => {
 
     removeMonthlyEventFromCache (monthlyEvent) {
       // first update the monthlyEvent in this.monthlyEvents
-      this.monthlyEvents = this.monthlyEvents.filter((thisMonthlyEvent) => thisMonthlyEvent._id !== monthlyEvent._id)
+      this.monthlyEvents = this.monthlyEvents.filter((thisMonthlyEvent) =>
+        thisMonthlyEvent._id !== monthlyEvent._id
+      )
       this.monthlyEvents = sortMonthlyEvents(this.monthlyEvents)
       // now update this.activeMonthlyEventId if it is the active monthlyEvent's _id
       const isActiveMonthlyEvent = this.activeMonthlyEventId === monthlyEvent._id
@@ -334,7 +348,9 @@ export default (Actions) => {
 
     removeEventFromCache (event) {
       // first update the event in this.events
-      this.events = this.events.filter((thisEvent) => thisEvent._id !== event._id)
+      this.events = this.events.filter((thisEvent) =>
+        thisEvent._id !== event._id
+      )
       this.events = sortEvents(this.events)
       // now update it in this.activeEvent if it is the active event
       const isActiveEvent = this.activeEventId === event._id
@@ -380,7 +396,9 @@ export default (Actions) => {
     activeCommentaryId: null,
 
     activeCommentary () {
-      return this.commentaries.find((commentary) => commentary._id === this.activeCommentaryId)
+      return this.commentaries.find((commentary) =>
+        commentary._id === this.activeCommentaryId
+      )
     },
 
     getCommentariesCallback: null,
@@ -421,14 +439,18 @@ export default (Actions) => {
           // on first load commentaries is empty
           // need to wait until onGetCommentaries fires
           this.getCommentariesCallback = () => {
-            const commentary = this.commentaries.find((commentary) => commentary._id === id)
+            const commentary = this.commentaries.find((commentary) =>
+              commentary._id === id
+            )
             const path = getPathFromDoc(commentary)
-            app.router.navigate('/' + path)
+            app.router.navigate(`/${path}`)
           }
         } else {
-          const commentary = this.commentaries.find((commentary) => commentary._id === id)
+          const commentary = this.commentaries.find((commentary) =>
+            commentary._id === id
+          )
           const path = getPathFromDoc(commentary)
-          app.router.navigate('/' + path)
+          app.router.navigate(`/${path}`)
           this.triggerStore()
         }
       }
@@ -436,7 +458,9 @@ export default (Actions) => {
 
     updateCommentariesInCache (commentary) {
       // first update the commentary in this.commentaries
-      this.commentaries = this.commentaries.filter((thisCommentary) => thisCommentary._id !== commentary._id)
+      this.commentaries = this.commentaries.filter((thisCommentary) =>
+        thisCommentary._id !== commentary._id
+      )
       this.commentaries.push(commentary)
       this.commentaries = sortCommentaries(this.commentaries)
       // now tell every one!
@@ -470,7 +494,9 @@ export default (Actions) => {
 
     removeCommentaryFromCache (commentary) {
       // first update the commentary in this.commentaries
-      this.commentaries = this.commentaries.filter((thisCommentary) => thisCommentary._id !== commentary._id)
+      this.commentaries = this.commentaries.filter((thisCommentary) =>
+        thisCommentary._id !== commentary._id
+      )
       this.commentaries = sortCommentaries(this.commentaries)
       // now update this.activeCommentaryId if it is the active commentary's _id
       const isActiveCommentary = this.activeCommentaryId === commentary._id
@@ -518,7 +544,9 @@ export default (Actions) => {
     activePublicationId: null,
 
     activePublication () {
-      return this.publications.find((publication) => publication._id === this.activePublicationId) || null
+      return this.publications.find((publication) =>
+        publication._id === this.activePublicationId
+      ) || null
     },
 
     getPublicationsCallback: null,
@@ -559,16 +587,20 @@ export default (Actions) => {
           // on first load publications is empty
           // need to wait until onGetPublications fires
           this.getPublicationsCallback = () => {
-            const publication = this.publications.find((publication) => publication._id === id)
+            const publication = this.publications.find((publication) =>
+              publication._id === id
+            )
             this.activePublicationCategory = publication.category
             const path = getPathFromDoc(publication)
-            app.router.navigate('/' + path)
+            app.router.navigate(`/${path}`)
           }
         } else {
-          const publication = this.publications.find((publication) => publication._id === id)
+          const publication = this.publications.find((publication) =>
+            publication._id === id
+          )
           this.activePublicationCategory = publication.category
           const path = getPathFromDoc(publication)
-          app.router.navigate('/' + path)
+          app.router.navigate(`/${path}`)
           this.triggerStore()
         }
       }
@@ -576,14 +608,20 @@ export default (Actions) => {
 
     updatePublicationInCache (publication) {
       // first update the publication in this.publications
-      this.publications = this.publications.filter((thisPublication) => thisPublication._id !== publication._id)
+      this.publications = this.publications.filter((thisPublication) =>
+        thisPublication._id !== publication._id
+      )
       this.publications.push(publication)
       this.publications = sortPublications(this.publications)
       // now tell every one!
       this.triggerStore()
     },
 
-    revertCache (oldPublications, oldActivePublicationId, oldActivePublicationCategory) {
+    revertCache (
+      oldPublications,
+      oldActivePublicationId,
+      oldActivePublicationCategory
+    ) {
       this.publications = oldPublications
       this.activePublicationId = oldActivePublicationId
       this.activePublicationCategory = oldActivePublicationCategory
@@ -612,7 +650,9 @@ export default (Actions) => {
 
     removePublicationFromCache (publication) {
       // first update the publication in this.publications
-      this.publications = this.publications.filter((thisPublication) => thisPublication._id !== publication._id)
+      this.publications = this.publications.filter((thisPublication) =>
+        thisPublication._id !== publication._id
+      )
       this.publications = sortPublications(this.publications)
       // now update this.activePublicationId if it is the active publication's _id
       const isActivePublication = this.activePublicationId === publication._id
@@ -646,7 +686,9 @@ export default (Actions) => {
     },
 
     getPublicationCategories () {
-      const allCategories = this.publications.map((publication) => publication.category)
+      const allCategories = this.publications.map((publication) =>
+        publication.category
+      )
       const publicationCategories = uniq(allCategories)
       return publicationCategories.sort()
     },
@@ -676,7 +718,9 @@ export default (Actions) => {
     activeActorId: null,
 
     activeActor () {
-      return this.actors.find((actor) => actor._id === this.activeActorId)
+      return this.actors.find((actor) =>
+        actor._id === this.activeActorId
+      )
     },
 
     getActorsCallback: null,
@@ -691,7 +735,9 @@ export default (Actions) => {
           }
           this.triggerStore()
         })
-        .catch((error) => app.Actions.showError({msg: error}))
+        .catch((error) =>
+          app.Actions.showError({msg: error})
+        )
     },
 
     onNewActor (category) {
@@ -715,14 +761,18 @@ export default (Actions) => {
           // on first load actors is empty
           // need to wait until onGetActors fires
           this.getActorsCallback = () => {
-            const actor = this.actors.find((actor) => actor._id === id)
+            const actor = this.actors.find((actor) =>
+              actor._id === id
+            )
             const path = getPathFromDoc(actor)
-            app.router.navigate('/' + path)
+            app.router.navigate(`/${path}`)
           }
         } else {
-          const actor = this.actors.find((actor) => actor._id === id)
+          const actor = this.actors.find((actor) =>
+            actor._id === id
+          )
           const path = getPathFromDoc(actor)
-          app.router.navigate('/' + path)
+          app.router.navigate(`/${path}`)
           this.triggerStore()
         }
       }
@@ -730,7 +780,9 @@ export default (Actions) => {
 
     updateActorsInCache (actor) {
       // first update the actor in this.actors
-      this.actors = this.actors.filter((thisActor) => thisActor._id !== actor._id)
+      this.actors = this.actors.filter((thisActor) =>
+        thisActor._id !== actor._id
+      )
       this.actors.push(actor)
       this.actors = sortActors(this.actors)
       // now tell every one!
@@ -764,7 +816,9 @@ export default (Actions) => {
 
     removeActorFromCache (actor) {
       // first update the actor in this.actors
-      this.actors = this.actors.filter((thisActor) => thisActor._id !== actor._id)
+      this.actors = this.actors.filter((thisActor) =>
+        thisActor._id !== actor._id
+      )
       this.actors = sortActors(this.actors)
       // now update this.activeActorId if it is the active actor's _id
       const isActiveActor = this.activeActorId === actor._id
