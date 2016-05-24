@@ -73,7 +73,7 @@ export default React.createClass({
       <Button
         key={index}
         active={activeEventYears.includes(year)}
-        onClick={this.setActiveYear.bind(this, year)}
+        onClick={() => this.setActiveYear(year)}
       >
         {year}
       </Button>
