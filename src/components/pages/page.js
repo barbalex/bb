@@ -50,19 +50,20 @@ export default React.createClass({
     if (editing && activePage._id !== 'pages_actors') {
       return (
         <div
-          className='page'>
+          className='page'
+        >
           {
             showMeta &&
             <Meta
               doc={activePage}
-              onCloseMeta={this.onCloseMeta} /
-            >
+              onCloseMeta={this.onCloseMeta}
+            />
           }
           <Editor
             doc={activePage}
             articleDecoded={articleDecoded}
-            onSavePageArticle={onSavePageArticle} /
-          >
+            onSavePageArticle={onSavePageArticle}
+          />
           <Button
             style={metaButtonStyle}
             onClick={this.onClickMeta}
@@ -79,8 +80,8 @@ export default React.createClass({
           {title}
         </h1>
         <div
-          dangerouslySetInnerHTML={createMarkup()} /
-        >
+          dangerouslySetInnerHTML={createMarkup()}
+        />
       </div>
     )
   }
