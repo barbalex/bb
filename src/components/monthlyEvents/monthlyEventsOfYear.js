@@ -37,7 +37,10 @@ export default React.createClass({
 
   componentDidUpdate (prevProps) {
     if (this.props.activeMonthlyEvent) {
-      const activeMonthlyEventChanged = !prevProps.activeMonthlyEvent || this.props.activeMonthlyEvent._id !== prevProps.activeMonthlyEvent._id
+      const activeMonthlyEventChanged = (
+        !prevProps.activeMonthlyEvent ||
+        this.props.activeMonthlyEvent._id !== prevProps.activeMonthlyEvent._id
+      )
       if (activeMonthlyEventChanged) {
         // this is later rerender
         // only scroll into view if the active item changed last render
@@ -50,7 +53,11 @@ export default React.createClass({
     const { activeMonthlyEvent } = this.props
     // prevent higher level panels from reacting
     event.stopPropagation()
-    const idToGet = (!activeMonthlyEvent || activeMonthlyEvent._id && activeMonthlyEvent._id !== id) ? id : null
+    const idToGet = (
+      (!activeMonthlyEvent || activeMonthlyEvent._id && activeMonthlyEvent._id !== id) ?
+      id :
+      null
+    )
     app.Actions.getMonthlyEvent(idToGet)
   },
 
@@ -100,11 +107,13 @@ export default React.createClass({
     return (
       <OverlayTrigger
         placement='top'
-        overlay={this.removeMonthlyEventTooltip()}>
+        overlay={this.removeMonthlyEventTooltip()}
+      >
         <Glyphicon
           glyph='remove-circle'
           style={glyphStyle}
-          onClick={this.onRemoveMonthlyEvent.bind(this, doc)} />
+          onClick={this.onRemoveMonthlyEvent.bind(this, doc)}
+        />
       </OverlayTrigger>
     )
   },
@@ -127,11 +136,13 @@ export default React.createClass({
     return (
       <OverlayTrigger
         placement='top'
-        overlay={this.toggleDraftTooltip(doc)}>
+        overlay={this.toggleDraftTooltip(doc)}
+      >
         <Glyphicon
           glyph={glyph}
           style={glyphStyle}
-          onClick={this.onToggleDraft.bind(this, doc)} />
+          onClick={this.onToggleDraft.bind(this, doc)}
+        />
       </OverlayTrigger>
     )
   },
@@ -143,12 +154,23 @@ export default React.createClass({
   },
 
   monthlyEventsComponent (year) {
-    const { activeMonthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
+    const {
+      activeMonthlyEvent,
+      editing,
+      email,
+      onSaveMonthlyEventArticle
+    } = this.props
     let { monthlyEvents } = this.props
     // filter only events of current year
-    monthlyEvents = monthlyEvents.filter((monthlyEvent) => getYearFromEventId(monthlyEvent._id) === year)
+    monthlyEvents = monthlyEvents.filter((monthlyEvent) =>
+      getYearFromEventId(monthlyEvent._id) === year
+    )
     return monthlyEvents.map((doc, dIndex) => {
-      const isActiveMonthlyEvent = has(activeMonthlyEvent, '_id') ? doc._id === activeMonthlyEvent._id : false
+      const isActiveMonthlyEvent = (
+        has(activeMonthlyEvent, '_id') ?
+        doc._id === activeMonthlyEvent._id :
+        false
+      )
       const month = getMonthFromEventId(doc._id)
       const showEditingGlyphons = !!email
       const panelHeadingStyle = {
@@ -158,14 +180,15 @@ export default React.createClass({
         maxHeight: window.innerHeight - 127,
         overflowY: 'auto'
       }
-      const ref = isActiveMonthlyEvent ? '_activeMonthlyEventPanel' : '_monthlyEventPanel' + doc._id
+      const ref = isActiveMonthlyEvent ? '_activeMonthlyEventPanel' : `_monthlyEventPanel${doc._id}`
       // use pure bootstrap.
       // advantage: can add edit icon to panel-heading
       return (
         <div
           key={dIndex}
           ref={(c) => this[ref] = c}
-          className='panel panel-default month'>
+          className='panel panel-default month'
+        >
           <div
             className='panel-heading'
             role='tab'
@@ -201,14 +224,19 @@ export default React.createClass({
               className='panel-collapse collapse in'
               role='tabpanel'
               aria-labelledby={'heading' + dIndex}
-              onClick={this.onClickEventCollapse}>
-              <div className='panel-body' style={panelBodyStyle}>
+              onClick={this.onClickEventCollapse}
+            >
+              <div
+                className='panel-body'
+                style={panelBodyStyle}
+              >
                 <MonthlyEvent
                   activeMonthlyEvent={activeMonthlyEvent}
                   year={year}
                   month={month}
                   editing={editing}
-                  onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+                  onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
+                />
               </div>
             </div>
           }
@@ -226,13 +254,15 @@ export default React.createClass({
         activeKey={activeEventId}
         id={year}
         ref={(c) => this[year] = c}
-        accordion>
+        accordion
+      >
         {this.monthlyEventsComponent(year)}
         {
           docToRemove &&
           <ModalRemoveMonthlyEvent
             doc={docToRemove}
-            removeMonthlyEvent={this.removeMonthlyEvent} />
+            removeMonthlyEvent={this.removeMonthlyEvent}
+          />
         }
       </PanelGroup>
     )
