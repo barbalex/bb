@@ -38,7 +38,9 @@ export default (Actions) => {
             app.router.navigate('/' + path)
             this.trigger(doc)
           })
-          .catch((error) => app.Actions.showError({title: 'Error loading ' + id + ':', msg: error}))
+          .catch((error) =>
+            app.Actions.showError({title: 'Error loading ' + id + ':', msg: error})
+          )
       }
     },
 
