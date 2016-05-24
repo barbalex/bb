@@ -55,7 +55,7 @@
     "less": "2.7.1",
     "less-loader": "2.2.3",
     "local-links": "1.4.0",
-    "lodash": "4.12.0",
+    "lodash": "4.13.1",
     "moment": "2.13.0",
     "postcss-loader": "0.9.1",
     "pouchdb": "5.3.2",
