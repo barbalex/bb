@@ -86,7 +86,7 @@ export default React.createClass({
         if (needsMonthRow) {
           dateRows.push(
             <MonthRow
-              key={index + 'monthRow'}
+              key={`${index}monthRow`}
               dateRowObject={dRO}
             />
           )
@@ -94,7 +94,7 @@ export default React.createClass({
         if (needsMonthlyStatisticsRow) {
           dateRows.push(
             <MonthlyStatisticsRow
-              key={index + 'monthlyStatisticsRow'}
+              key={`${index}monthlyStatisticsRow`}
               dateRowObject={dROForMonthlyStatsRow}
               email={email}
               onRemoveEvent={onRemoveEvent}
