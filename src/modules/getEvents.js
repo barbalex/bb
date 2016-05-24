@@ -4,8 +4,8 @@ import app from 'ampersand-app'
 import { map, min, max } from 'lodash'
 import sortEvents from './sortEvents.js'
 
-export default (years) => {
-  return new Promise((resolve, reject) => {
+export default (years) =>
+  new Promise((resolve, reject) => {
     const options = {
       include_docs: true,
       startkey: `events_${min(years)}`,
@@ -17,6 +17,7 @@ export default (years) => {
         events = sortEvents(events)
         resolve(events)
       })
-      .catch((error) => reject('Error fetching events:', error))
+      .catch((error) =>
+        reject('Error fetching events:', error)
+      )
   })
-}
