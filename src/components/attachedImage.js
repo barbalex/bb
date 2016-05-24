@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Input, Button, Glyphicon } from 'react-bootstrap'
+import { Input, Button, Glyphicon, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import getCouchUrl from '../modules/getCouchUrl.js'
 
@@ -49,18 +49,45 @@ export default React.createClass({
     }
     const urlCopiedButtonBsStyle = urlCopied === url ? 'success' : 'default'
     const innerButton = (
-      <CopyToClipboard text={url} onCopy={this.copyUrl.bind(this, url)}>
-        <Button bsStyle={urlCopiedButtonBsStyle}>{urlCopied === url ? 'copied' : 'copy'}</Button>
+      <CopyToClipboard
+        text={url}
+        onCopy={this.copyUrl.bind(this, url)}
+      >
+        <Button
+          bsStyle={urlCopiedButtonBsStyle}
+        >
+          {urlCopied === url ? 'copied' : 'copy'}
+        </Button>
       </CopyToClipboard>
     )
     return (
-      <div key={id} style={divStyle}>
-        <div className='media-left' style={mediaLeftStyle}>
-          <img src={url} className='media-object' alt={attName} style={imgStyle} />
-          <Glyphicon glyph='remove-circle' style={glyphStyle} onClick={this.removeImage} />
+      <div
+        key={id}
+        style={divStyle}
+      >
+        <div
+          className='media-left'
+          style={mediaLeftStyle}
+        >
+          <img
+            src={url}
+            className='media-object'
+            alt={attName}
+            style={imgStyle}
+          />
+          <Glyphicon
+            glyph='remove-circle'
+            style={glyphStyle}
+            onClick={this.removeImage}
+          />
         </div>
         <div className='media-body media-middle'>
-          <Input type='text' buttonAfter={innerButton} value={url} disabled />
+          <Input
+            type='text'
+            buttonAfter={innerButton}
+            value={url}
+            disabled
+          />
         </div>
       </div>
     )
