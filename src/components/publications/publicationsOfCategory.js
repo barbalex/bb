@@ -34,7 +34,10 @@ export default React.createClass({
 
   componentDidUpdate (prevProps) {
     if (this.props.activePublication) {
-      if (!prevProps.activePublication || this.props.activePublication._id !== prevProps.activePublication._id) {
+      if (
+        !prevProps.activePublication ||
+        this.props.activePublication._id !== prevProps.activePublication._id
+      ) {
         // this is later rerender
         // only scroll into view if the active item changed last render
         this.scrollToActivePanel()
@@ -101,8 +104,8 @@ export default React.createClass({
         <Glyphicon
           glyph='remove-circle'
           style={glyphStyle}
-          onClick={this.onRemovePublication.bind(this, doc)} /
-        >
+          onClick={this.onRemovePublication.bind(this, doc)}
+        />
       </OverlayTrigger>
     )
   },
@@ -136,8 +139,8 @@ export default React.createClass({
         <Glyphicon
           glyph={glyph}
           style={glyphStyle}
-          onClick={this.onToggleDraft.bind(this, doc)} /
-        >
+          onClick={this.onToggleDraft.bind(this, doc)}
+        />
       </OverlayTrigger>
     )
   },
@@ -149,10 +152,17 @@ export default React.createClass({
   },
 
   publicationsComponent (category) {
-    const { activePublication, editing, email, onSavePublicationArticle } = this.props
+    const {
+      activePublication,
+      editing,
+      email,
+      onSavePublicationArticle
+    } = this.props
     let { publications } = this.props
     // filter only publication of current category
-    publications = publications.filter((publication) => publication.category === category)
+    publications = publications.filter((publication) =>
+      publication.category === category
+    )
     publications = publications.sort((a, b) => {
       if (a.order && b.order) {
         if (a.order < b.order) return -1
@@ -162,7 +172,11 @@ export default React.createClass({
       return 1
     })
     return publications.map((doc, dIndex) => {
-      const isActivePublication = activePublication ? doc._id === activePublication._id : false
+      const isActivePublication = (
+        activePublication ?
+        doc._id === activePublication._id :
+        false
+      )
       const showEditingGlyphons = !!email
       const panelHeadingStyle = {
         position: 'relative'
@@ -171,7 +185,11 @@ export default React.createClass({
         maxHeight: window.innerHeight - 127,
         overflowY: 'auto'
       }
-      const ref = isActivePublication ? '_activePublicationPanel' : '_publicationPanel' + doc._id
+      const ref = (
+        isActivePublication ?
+        '_activePublicationPanel' :
+        `_publicationPanel${doc._id}`
+      )
       // use pure bootstrap.
       // advantage: can add edit icon to panel-heading
       return (
@@ -226,8 +244,8 @@ export default React.createClass({
                 <Publication
                   activePublication={activePublication}
                   editing={editing}
-                  onSavePublicationArticle={onSavePublicationArticle} /
-                >
+                  onSavePublicationArticle={onSavePublicationArticle}
+                />
               </div>
             </div>
           }
@@ -252,8 +270,8 @@ export default React.createClass({
           docToRemove &&
           <ModalRemovePublication
             doc={docToRemove}
-            removePublication={this.removePublication} /
-          >
+            removePublication={this.removePublication}
+          />
         }
       </PanelGroup>
     )
