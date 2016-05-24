@@ -30,7 +30,13 @@ export default React.createClass({
   },
 
   publicationCategoriesComponent (activePublicationCategory) {
-    const { publications, activePublication, editing, email, onSavePublicationArticle } = this.props
+    const {
+      publications,
+      activePublication,
+      editing,
+      email,
+      onSavePublicationArticle
+    } = this.props
     let publicationCategories = app.publicationsStore.getPublicationCategories()
 
     if (publications.length > 0 && publicationCategories.length > 0) {
@@ -45,7 +51,11 @@ export default React.createClass({
         return order
       })
       return publicationCategories.map((category, yIndex) => {
-        const className = category === activePublicationCategory ? 'category active' : 'category not-active'
+        const className = (
+          category === activePublicationCategory ?
+          'category active' :
+          'category not-active'
+        )
         // wanted to only build publicationsOfCategory if isActiveYear
         // but opening a category was way to hideous
         // const isActiveYear = category === activePublicationCategory
@@ -63,8 +73,8 @@ export default React.createClass({
               activePublication={activePublication}
               editing={editing}
               email={email}
-              onSavePublicationArticle={onSavePublicationArticle} /
-            >
+              onSavePublicationArticle={onSavePublicationArticle}
+            />
           </Panel>
         )
       })
@@ -73,7 +83,11 @@ export default React.createClass({
   },
 
   render () {
-    const { activePublicationCategory, showNewPublication, onCloseNewPublication } = this.props
+    const {
+      activePublicationCategory,
+      showNewPublication,
+      onCloseNewPublication
+    } = this.props
     const divStyle = {
       marginBottom: 20
     }
@@ -95,8 +109,8 @@ export default React.createClass({
         {
           showNewPublication &&
           <NewPublication
-            onCloseNewPublication={onCloseNewPublication} /
-          >
+            onCloseNewPublication={onCloseNewPublication}
+          />
         }
       </div>
     )
