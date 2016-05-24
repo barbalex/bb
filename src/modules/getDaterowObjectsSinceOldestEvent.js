@@ -9,8 +9,14 @@ export default (events, activeEventYears) => {
   if (oldestEvent) {
     const oldestDate = getDateFromEventId(oldestEvent._id)
     let daterowObjects = []
-    const activeYearIsCurrentYear = activeEventYears.includes(parseInt(moment().format('YYYY'), 0))
-    let date = activeYearIsCurrentYear ? moment() : moment(`31.12.${max(activeEventYears)}`, 'DD.MM.YYYY')
+    const activeYearIsCurrentYear = activeEventYears.includes(
+      parseInt(moment().format('YYYY'), 0)
+    )
+    let date = (
+      activeYearIsCurrentYear ?
+      moment() :
+      moment(`31.12.${max(activeEventYears)}`, 'DD.MM.YYYY')
+    )
     while (date >= oldestDate) {
       const year = moment(date).format('YYYY')
       const month = moment(date).format('MM')
@@ -22,11 +28,23 @@ export default (events, activeEventYears) => {
         event._id.startsWith(`events_${year}_${month}_${day}`) && event.eventType === 'politics'
       )
       // order
-      migrationEvents.forEach((event) => event.order = (event.order || 99))
-      migrationEvents.sort((a, b) => a.order - b.order)
-      politicsEvents.forEach((event) => event.order = (event.order || 99))
-      politicsEvents.sort((a, b) => a.order - b.order)
-      const daterowObject = { date, migrationEvents, politicsEvents }
+      migrationEvents.forEach((event) =>
+        event.order = (event.order || 99)
+      )
+      migrationEvents.sort((a, b) =>
+        a.order - b.order
+      )
+      politicsEvents.forEach((event) =>
+        event.order = (event.order || 99)
+      )
+      politicsEvents.sort((a, b) =>
+        a.order - b.order
+      )
+      const daterowObject = {
+        date,
+        migrationEvents,
+        politicsEvents
+      }
       daterowObjects.push(daterowObject)
       date = moment(date).subtract(1, 'days')
     }
