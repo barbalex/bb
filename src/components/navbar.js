@@ -2,7 +2,14 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Navbar, NavItem, Nav, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import {
+  Navbar,
+  NavItem,
+  Nav,
+  Glyphicon,
+  Tooltip,
+  OverlayTrigger
+} from 'react-bootstrap'
 import { has } from 'lodash'
 import AffixWrapper from './affixWrapper.js'
 
