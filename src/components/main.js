@@ -96,19 +96,29 @@ export default React.createClass({
 
   onMonthlyEventsStoreChange (monthlyEvents, activeMonthlyEvent) {
     const { email } = this.state
-    if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) => !monthlyEvent.draft)
+    if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) =>
+      !monthlyEvent.draft
+    )
     this.setState({ monthlyEvents, activeMonthlyEvent })
   },
 
   onPublicationsStoreChange (publications, activePublicationCategory, activePublication) {
     const { email } = this.state
-    if (!email) publications = publications.filter((publication) => !publication.draft)
-    this.setState({ publications, activePublicationCategory, activePublication })
+    if (!email) publications = publications.filter((publication) =>
+      !publication.draft
+    )
+    this.setState({
+      publications,
+      activePublicationCategory,
+      activePublication
+    })
   },
 
   onCommentariesStoreChange (commentaries, activeCommentary) {
     const { email } = this.state
-    if (!email) commentaries = commentaries.filter((commentary) => !commentary.draft)
+    if (!email) commentaries = commentaries.filter((commentary) =>
+      !commentary.draft
+    )
     this.setState({ commentaries, activeCommentary })
   },
 
@@ -258,13 +268,40 @@ export default React.createClass({
       'pages_publications',
       'pages_events'
     ]
-    const isSimplePage = activePage.type && activePage.type === 'pages' && !nonSimplePages.includes(activePage._id)
-    const isCommentariesPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_commentaries'
-    const isEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_events'
-    const isActorPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_actors'
-    const isMonthlyEventsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_monthlyEvents'
-    const isPublicationsPage = activePage.type && activePage.type === 'pages' && activePage._id === 'pages_publications'
-    const isCommentary = activePage.type && activePage.type === 'commentaries'
+    const isSimplePage = (
+      activePage.type &&
+      activePage.type === 'pages' &&
+      !nonSimplePages.includes(activePage._id)
+    )
+    const isCommentariesPage = (
+      activePage.type &&
+      activePage.type === 'pages' &&
+      activePage._id === 'pages_commentaries'
+    )
+    const isEventsPage = (
+      activePage.type &&
+      activePage.type === 'pages' &&
+      activePage._id === 'pages_events'
+    )
+    const isActorPage = (
+      activePage.type &&
+      activePage.type === 'pages'
+      && activePage._id === 'pages_actors'
+    )
+    const isMonthlyEventsPage = (
+      activePage.type &&
+      activePage.type === 'pages' &&
+      activePage._id === 'pages_monthlyEvents'
+    )
+    const isPublicationsPage = (
+      activePage.type &&
+      activePage.type === 'pages' &&
+      activePage._id === 'pages_publications'
+    )
+    const isCommentary = (
+      activePage.type &&
+      activePage.type === 'commentaries'
+    )
     const isActor = activePage.type && activePage.type === 'actors'
     const showCommentaryPage = isCommentariesPage || isCommentary
     const showEventsPage = isEventsPage
@@ -276,7 +313,11 @@ export default React.createClass({
     const pageName = getPageNameFromDoc(activePage)
     const pageTitle = `blue-borders | ${pageName}`
     const pagesWitCopyright = ['pages_commentaries']
-    const showCopyright = activePage.type && activePage.type === 'pages' && pagesWitCopyright.includes(activePage._id)
+    const showCopyright = (
+      activePage.type &&
+      activePage.type === 'pages' &&
+      pagesWitCopyright.includes(activePage._id)
+    )
     const showErrors = errors && errors.length > 0
 
     return (
