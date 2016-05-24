@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Input } from 'react-bootstrap'
+import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'MonthlyEventMeta',
@@ -37,10 +37,6 @@ export default React.createClass({
     onCloseMeta()
   },
 
-  onHide () {
-    // seems that this method is needed ???
-  },
-
   render () {
     const { year, month } = this.props
     const { arrivals, victims } = this.state
@@ -57,19 +53,28 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input
-            type='number'
-            label='Arrivals'
-            defaultValue={arrivals}
-            onBlur={this.onChangeValue.bind(this, 'arrivals')}
-            autoFocus
-          />
-          <Input
-            type='number'
-            label='Victims'
-            defaultValue={victims}
-            onBlur={this.onChangeValue.bind(this, 'victims')}
-          />
+          <FormGroup
+            controlId="arrivals"
+          >
+            <ControlLabel>Arrivals</ControlLabel>
+            <FormControl
+              type='number'
+              defaultValue={arrivals}
+              onBlur={this.onChangeValue.bind(this, 'arrivals')}
+              autoFocus
+            />
+          </FormGroup>
+          <FormGroup
+            controlId="victims"
+          >
+            <ControlLabel>Victims</ControlLabel>
+            <FormControl
+              type='number'
+              defaultValue={victims}
+              onBlur={this.onChangeValue.bind(this, 'victims')}
+              autoFocus
+            />
+          </FormGroup>
         </Modal.Body>
 
         <Modal.Footer>
