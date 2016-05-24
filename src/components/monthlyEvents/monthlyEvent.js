@@ -38,7 +38,13 @@ export default React.createClass({
   },
 
   render () {
-    const { activeMonthlyEvent, year, month, editing, onSaveMonthlyEventArticle } = this.props
+    const {
+      activeMonthlyEvent,
+      year,
+      month,
+      editing,
+      onSaveMonthlyEventArticle
+    } = this.props
     const { showMeta } = this.state
     const articleEncoded = activeMonthlyEvent.article
     const articleDecoded = Base64.decode(articleEncoded)
@@ -50,22 +56,26 @@ export default React.createClass({
     if (editing) {
       return (
         <div
-          className='monthlyEvent'>
+          className='monthlyEvent'
+        >
           {
             showMeta &&
             <MonthlyEventMeta
               activeMonthlyEvent={activeMonthlyEvent}
               year={year}
               month={month}
-              onCloseMeta={this.onCloseMeta} />
+              onCloseMeta={this.onCloseMeta}
+            />
           }
           <Editor
             doc={activeMonthlyEvent}
             articleDecoded={articleDecoded}
-            onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+            onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
+          />
           <Button
             style={metaButtonStyle}
-            onClick={this.onClickMeta}>
+            onClick={this.onClickMeta}
+          >
             arrivals & victims
           </Button>
         </div>
@@ -74,9 +84,11 @@ export default React.createClass({
     const createMarkup = () => ({__html: articleDecoded})
     return (
       <div
-        className='monthlyEvent'>
+        className='monthlyEvent'
+      >
         <div
-          dangerouslySetInnerHTML={createMarkup()} />
+          dangerouslySetInnerHTML={createMarkup()}
+        />
       </div>
     )
   }
