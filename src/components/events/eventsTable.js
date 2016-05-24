@@ -3,15 +3,9 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Table, Button } from 'react-bootstrap'
-import moment from 'moment'
 import { min } from 'lodash'
 import GeminiScrollbar from 'react-gemini-scrollbar'
-import ReactList from 'react-list'
-import DateRow from './dateRow.js'
 import createDateRows from './createDateRows.js'
-import MonthRow from './monthRow.js'
-import MonthlyStatisticsRow from './monthlyStatisticsRow.js'
-import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
 
 export default React.createClass({
   displayName: 'Events',
