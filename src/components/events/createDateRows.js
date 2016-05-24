@@ -72,6 +72,7 @@ export default function(events, email, activeEventYears, onRemoveEvent) {
         />
       )
     })
+    // TODO: return virtualized version
     return dateRows
   }
   return (
