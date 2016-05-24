@@ -41,7 +41,9 @@ export default React.createClass({
 
   yearsOfEvents () {
     let { monthlyEvents } = this.props
-    const allYears = monthlyEvents.map((doc) => getYearFromEventId(doc._id))
+    const allYears = monthlyEvents.map((doc) =>
+      getYearFromEventId(doc._id)
+    )
     if (allYears.length > 0) {
       const years = uniq(allYears)
       return years.sort().reverse()
@@ -55,7 +57,12 @@ export default React.createClass({
   },
 
   eventYearsComponent (activeYear) {
-    const { activeMonthlyEvent, editing, email, onSaveMonthlyEventArticle } = this.props
+    const {
+      activeMonthlyEvent,
+      editing,
+      email,
+      onSaveMonthlyEventArticle
+    } = this.props
     let { monthlyEvents } = this.props
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
@@ -85,7 +92,11 @@ export default React.createClass({
   },
 
   render () {
-    const { activeMonthlyEvent, showNewMonthlyEvent, onCloseNewMonthlyEvent } = this.props
+    const {
+      activeMonthlyEvent,
+      showNewMonthlyEvent,
+      onCloseNewMonthlyEvent
+    } = this.props
     let activeYear
     if (has(activeMonthlyEvent, '_id')) {
       activeYear = getYearFromEventId(activeMonthlyEvent._id)
@@ -99,19 +110,22 @@ export default React.createClass({
     return (
       <div
         id='monthlyEvents'
-        style={divStyle}>
+        style={divStyle}
+      >
         <h1>
           Events Archive
         </h1>
         <PanelGroup
           activeKey={activeYear}
-          accordion>
+          accordion
+        >
           {this.eventYearsComponent(activeYear)}
         </PanelGroup>
         {
           showNewMonthlyEvent &&
           <NewMonthlyEvent
-            onCloseNewMonthlyEvent={onCloseNewMonthlyEvent} />
+            onCloseNewMonthlyEvent={onCloseNewMonthlyEvent}
+          />
         }
       </div>
     )
