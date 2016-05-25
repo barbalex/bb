@@ -8,7 +8,12 @@ import MonthRow from './monthRow.js'
 import MonthlyStatisticsRow from './monthlyStatisticsRow.js'
 import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
 
-const DateRows = ({ events, email, activeEventYears, onRemoveEvent }) => {
+const DateRows = ({
+  events,
+  email,
+  activeEventYears,
+  onRemoveEvent
+}) => {
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(events, activeEventYears)
   let dateRows = []
   if (dateRowObjects.length > 0) {
