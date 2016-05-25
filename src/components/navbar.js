@@ -11,7 +11,6 @@ import {
   OverlayTrigger
 } from 'react-bootstrap'
 import { has } from 'lodash'
-import AffixWrapper from './affixWrapper.js'
 
 export default React.createClass({
   displayName: 'Header',
@@ -146,185 +145,179 @@ export default React.createClass({
       showAddMonthlyEvent
     )
     return (
-      <div>
-        <AffixWrapper
-          id='nav-wrapper'
-          offsetTop={150}
-        >
-          <Navbar
-            inverse
-            expanded={navExpanded}
-            onToggle={this.onToggleNav}
+      <Navbar
+        inverse
+        fixedTop
+        expanded={navExpanded}
+        onToggle={this.onToggleNav}
+      >
+        <Navbar.Header>
+          <Navbar.Brand
+            onClick={this.onClickPage.bind(this, 'pages_events')}
           >
-            <Navbar.Header>
-              <Navbar.Brand
-                onClick={this.onClickPage.bind(this, 'pages_events')}
-              >
-                Events
-              </Navbar.Brand>
-              <Navbar.Toggle />
-            </Navbar.Header>
-            <Navbar.Collapse
+            Events
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse
+          eventKey={0}
+        >
+          <Nav>
+            <NavItem
               eventKey={0}
+              active={id === 'pages_commentaries'}
+              onClick={this.onClickPage.bind(this, 'pages_commentaries')}
             >
-              <Nav>
-                <NavItem
-                  eventKey={0}
-                  active={id === 'pages_commentaries'}
-                  onClick={this.onClickPage.bind(this, 'pages_commentaries')}
-                >
-                  Commentaries
-                </NavItem>
-                <NavItem
-                  eventKey={1}
-                  active={id === 'pages_actors'}
-                  onClick={this.onClickPage.bind(this, 'pages_actors')}
-                >
-                  Actors
-                </NavItem>
-                <NavItem
-                  eventKey={2}
-                  active={id === 'pages_publications'}
-                  onClick={this.onClickPage.bind(this, 'pages_publications')}
-                >
-                  Publications
-                </NavItem>
-                <NavItem
-                  eventKey={3}
-                  active={id === 'pages_links'}
-                  onClick={this.onClickPage.bind(this, 'pages_links')}
-                >
-                  Links
-                </NavItem>
-                <NavItem
-                  eventKey={4}
-                  active={id === 'pages_aboutUs'}
-                  onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
-                >
-                  About us
-                </NavItem>
-              </Nav>
+              Commentaries
+            </NavItem>
+            <NavItem
+              eventKey={1}
+              active={id === 'pages_actors'}
+              onClick={this.onClickPage.bind(this, 'pages_actors')}
+            >
+              Actors
+            </NavItem>
+            <NavItem
+              eventKey={2}
+              active={id === 'pages_publications'}
+              onClick={this.onClickPage.bind(this, 'pages_publications')}
+            >
+              Publications
+            </NavItem>
+            <NavItem
+              eventKey={3}
+              active={id === 'pages_links'}
+              onClick={this.onClickPage.bind(this, 'pages_links')}
+            >
+              Links
+            </NavItem>
+            <NavItem
+              eventKey={4}
+              active={id === 'pages_aboutUs'}
+              onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
+            >
+              About us
+            </NavItem>
+          </Nav>
+          {
+            showNavbarRight &&
+            <Nav
+              navbar
+              pullRight
+            >
               {
-                showNavbarRight &&
-                <Nav
-                  navbar
-                  pullRight
+                showEdit &&
+                <OverlayTrigger
+                  placement='bottom'
+                  overlay={this.editTooltip()}
                 >
-                  {
-                    showEdit &&
-                    <OverlayTrigger
-                      placement='bottom'
-                      overlay={this.editTooltip()}
-                    >
-                      <NavItem
-                        eventKey={1}
-                        onClick={this.onClickEdit}
-                      >
-                        <Glyphicon
-                          glyph={glyph}
-                        />
-                      </NavItem>
-                    </OverlayTrigger>
-                  }
-                  {
-                    showAddCommentary &&
-                    <OverlayTrigger
-                      placement='bottom'
-                      overlay={this.newCommentaryTooltip()}
-                    >
-                      <NavItem
-                        eventKey={2}
-                        onClick={onClickNewCommentary}
-                      >
-                        <Glyphicon
-                          glyph='plus'
-                        />
-                      </NavItem>
-                    </OverlayTrigger>
-                  }
-                  {
-                    showAddEvent &&
-                    <OverlayTrigger
-                      placement='bottom'
-                      overlay={this.newEventTooltip()}
-                    >
-                      <NavItem
-                        eventKey={3}
-                        onClick={onClickNewEvent}
-                      >
-                        <Glyphicon
-                          glyph='plus'
-                        />
-                      </NavItem>
-                    </OverlayTrigger>
-                  }
-                  {
-                    showAddActor &&
-                    <OverlayTrigger
-                      placement='bottom'
-                      overlay={this.newActorTooltip()}
-                    >
-                      <NavItem
-                        eventKey={4}
-                        onClick={onClickNewActor}
-                      >
-                        <Glyphicon
-                          glyph='plus'
-                        />
-                      </NavItem>
-                    </OverlayTrigger>
-                  }
-                  {
-                    showAddMonthlyEvent &&
-                    <OverlayTrigger
-                      placement='bottom'
-                      overlay={this.newMonthlyEventTooltip()}
-                    >
-                      <NavItem
-                        eventKey={5}
-                        onClick={onClickNewMonthlyEvent}
-                      >
-                        <Glyphicon
-                          glyph='plus'
-                        />
-                      </NavItem>
-                    </OverlayTrigger>
-                  }
-                  {
-                    showAddPublication &&
-                    <OverlayTrigger
-                      placement='bottom'
-                      overlay={this.newPublicationTooltip()}
-                    >
-                      <NavItem
-                        eventKey={6}
-                        onClick={onClickNewPublication}
-                      >
-                        <Glyphicon
-                          glyph='plus'
-                        />
-                      </NavItem>
-                    </OverlayTrigger>
-                  }
-                  <OverlayTrigger
-                    placement='bottom'
-                    overlay={this.logoutTooltip()}
+                  <NavItem
+                    eventKey={1}
+                    onClick={this.onClickEdit}
                   >
-                    <NavItem
-                      eventKey={7}
-                      onClick={this.onClickLogout}
-                    >
-                      <Glyphicon
-                        glyph='log-out'
-                      />
-                    </NavItem>
-                  </OverlayTrigger>
-                </Nav>
+                    <Glyphicon
+                      glyph={glyph}
+                    />
+                  </NavItem>
+                </OverlayTrigger>
               }
-            </Navbar.Collapse>
-          </Navbar>
-        </AffixWrapper>
-      </div>
+              {
+                showAddCommentary &&
+                <OverlayTrigger
+                  placement='bottom'
+                  overlay={this.newCommentaryTooltip()}
+                >
+                  <NavItem
+                    eventKey={2}
+                    onClick={onClickNewCommentary}
+                  >
+                    <Glyphicon
+                      glyph='plus'
+                    />
+                  </NavItem>
+                </OverlayTrigger>
+              }
+              {
+                showAddEvent &&
+                <OverlayTrigger
+                  placement='bottom'
+                  overlay={this.newEventTooltip()}
+                >
+                  <NavItem
+                    eventKey={3}
+                    onClick={onClickNewEvent}
+                  >
+                    <Glyphicon
+                      glyph='plus'
+                    />
+                  </NavItem>
+                </OverlayTrigger>
+              }
+              {
+                showAddActor &&
+                <OverlayTrigger
+                  placement='bottom'
+                  overlay={this.newActorTooltip()}
+                >
+                  <NavItem
+                    eventKey={4}
+                    onClick={onClickNewActor}
+                  >
+                    <Glyphicon
+                      glyph='plus'
+                    />
+                  </NavItem>
+                </OverlayTrigger>
+              }
+              {
+                showAddMonthlyEvent &&
+                <OverlayTrigger
+                  placement='bottom'
+                  overlay={this.newMonthlyEventTooltip()}
+                >
+                  <NavItem
+                    eventKey={5}
+                    onClick={onClickNewMonthlyEvent}
+                  >
+                    <Glyphicon
+                      glyph='plus'
+                    />
+                  </NavItem>
+                </OverlayTrigger>
+              }
+              {
+                showAddPublication &&
+                <OverlayTrigger
+                  placement='bottom'
+                  overlay={this.newPublicationTooltip()}
+                >
+                  <NavItem
+                    eventKey={6}
+                    onClick={onClickNewPublication}
+                  >
+                    <Glyphicon
+                      glyph='plus'
+                    />
+                  </NavItem>
+                </OverlayTrigger>
+              }
+              <OverlayTrigger
+                placement='bottom'
+                overlay={this.logoutTooltip()}
+              >
+                <NavItem
+                  eventKey={7}
+                  onClick={this.onClickLogout}
+                >
+                  <Glyphicon
+                    glyph='log-out'
+                  />
+                </NavItem>
+              </OverlayTrigger>
+            </Nav>
+          }
+        </Navbar.Collapse>
+      </Navbar>
     )
   }
 })
