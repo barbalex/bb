@@ -76,10 +76,10 @@ export default function(events, email, activeEventYears, onRemoveEvent) {
     return dateRows
   }
   return (
-    <tr>
-      <td colSpan='3'>
+    <div className="eventsTable-body-row">
+      <div className="eventsTable-body-cell">
         <p>Loading events...</p>
-      </td>
-    </tr>
+      </div>
+    </div>
   )
 }

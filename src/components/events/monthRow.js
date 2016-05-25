@@ -7,14 +7,14 @@ const MonthRow = ({ dateRowObject: dRO }) => {
   const year = parseInt(moment(dRO.date).format('YYYY'), 0)
   const month = moment(dRO.date).format('MMMM')
   const text = `${month} ${year}`
-  const className = month === 'December' ? `monthRow yearRow ${year}` : 'monthRow'
+  const className = month === 'December' ? `eventsTable-body-monthRow yearRow ${year}` : 'eventsTable-body-monthRow'
 
   return (
-    <tr className={className}>
-      <td colSpan='3'>
+    <div className={['eventsTable-body-row', className].join(' ')}>
+      <div className="eventsTable-body-cell">
         {text}
-      </td>
-    </tr>
+      </div>
+    </div>
   )
 }
 

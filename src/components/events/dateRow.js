@@ -20,31 +20,31 @@ const DateRow = ({ dateRowObject: dRO, onRemoveEvent, email }) => {
   const politicsEvents = mapEventComponents(dRO.politicsEvents, onRemoveEvent, email)
   const dayClassName = (
     migrationEvents.length > 0 || politicsEvents.length > 0 ?
-    'day dayWithEvents' :
-    'day'
+    'eventsTable-cell-day dayWithEvents' :
+    'eventsTable-cell-day'
   )
 
   return (
-    <tr>
-      <td
-        className={dayClassName}>
+    <div className="eventsTable-body-row">
+      <div
+        className={['eventsTable-body-cell', dayClassName].join(' ')}>
         <p>
           {day}
         </p>
-      </td>
-      <td
-        className='migration'>
+      </div>
+      <div
+        className="eventsTable-body-cell eventsTable-cell-migration">
         <ul>
           {migrationEvents}
         </ul>
-      </td>
-      <td
-        className='politics'>
+      </div>
+      <div
+        className="eventsTable-body-cell eventsTable-cell-politics">
         <ul>
           {politicsEvents}
         </ul>
-      </td>
-    </tr>
+      </div>
+    </div>
   )
 }
 

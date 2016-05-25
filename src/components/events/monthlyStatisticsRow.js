@@ -20,25 +20,22 @@ const MonthlyStatisticsRow = ({ dateRowObject: dRO, onRemoveEvent, email }) => {
 
   if (migrationEvents.length > 0 || politicsEvents.length > 0) {
     return (
-      <tr className='monthlyStatisticsRow'>
-        <td
-          className='day'>
+      <div className="eventsTable-body-row monthlyStatisticsRow">
+        <div className="eventsTable-body-cell eventsTable-cell-day">
           <p>
           </p>
-        </td>
-        <td
-          className='migration'>
+        </div>
+        <div className="eventsTable-body-cell eventsTable-cell-migration">
           <ul>
             {migrationEvents}
           </ul>
-        </td>
-        <td
-          className='politics'>
+        </div>
+        <div className="eventsTable-body-cell eventsTable-cell-politics">
           <ul>
             {politicsEvents}
           </ul>
-        </td>
-      </tr>
+        </div>
+      </div>
     )
   }
   return null

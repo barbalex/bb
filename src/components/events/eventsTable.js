@@ -88,48 +88,31 @@ export default React.createClass({
     const { introJumbotronHeight, activeEventYears, events, email, onRemoveEvent } = this.props
     const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 88 : 396
     const eventsTableHeadStyle = {
-      top: eventsTableHeadTop
+      top: eventsTableHeadTop,
+      position: 'absolute'
     }
     const fontSize = window.innerWidth < 500 ? 20 : 24
-    const headerStyle = {
-      fontSize: fontSize,
-      whiteSpace: 'nowrap',
-      textOverflox: 'ellipsis',
-      textAlign: 'center'
-    }
+    const headerStyle = { fontSize }
     const showNextYearButton = min(activeEventYears) > 2014
 
     return (
-      <div>
-        <Table
-          id='eventsTableHead'
-          condensed
-          hover
+      <div className="eventsTable">
+        <div
           style={eventsTableHeadStyle}
+          className="eventsTable-header"
         >
-          <colgroup>
-            <col className='day' />
-            <col className='migration' />
-            <col className='politics' />
-          </colgroup>
-          <thead>
-            <tr>
-              <th className='day' style={headerStyle}></th>
-              <th className='migration' style={headerStyle}>Maritime Events</th>
-              <th className='politics' style={headerStyle}>Political Events</th>
-            </tr>
-          </thead>
-        </Table>
-        <Table condensed hover>
-          <colgroup>
-            <col className='day' />
-            <col className='migration' />
-            <col className='politics' />
-          </colgroup>
-          <tbody>
+          <div className="eventsTable-header-row">
+            <div className='eventsTable-header-cell eventsTable-cell-day' style={headerStyle}></div>
+            <div className='eventsTable-header-cell eventsTable-cell-migration' style={headerStyle}>Maritime Events</div>
+            <div className='eventsTable-header-cell eventsTable-cell-politics' style={headerStyle}>Political Events</div>
+          </div>
+        </div>
+        {/* TODO: add hover to rows */}
+        <div className="eventsTable-body">
+          <GeminiScrollbar id='eventsTableBody' autoshow>
             {createDateRows(events, email, activeEventYears, onRemoveEvent)}
-          </tbody>
-        </Table>
+          </GeminiScrollbar>
+        </div>
         {
           showNextYearButton &&
           this.showNextYearButton()

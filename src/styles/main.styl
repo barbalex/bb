@@ -29,8 +29,13 @@ a:link
 	margin-top 30px
 	margin-bottom 50px
 
+/*
+ * if {} and : are not set here,
+ * an error occurs
+ * must be a stylus issue
+ */
 .introHeader {
-	margin-top: -10px
+  margin-top: 42px 
 	height: 150px
   padding: 15px
 }
@@ -41,7 +46,7 @@ a:link
   display block
   position absolute
   left 0
-  top 0
+  top 52px
   width 100%
   height 150px
   z-index: -1
@@ -199,71 +204,86 @@ body .navbar
   margin-top 30px
   margin-bottom 10px
 
-.events table
-  display table
-  table-layout fixed
+.eventsTable
   width 100%
   margin-bottom 0
-.events table tr td
+  
+// fix table header
+.events
+  position relative
+.eventsTable-body
+  overflow auto
+  height calc(100vh - 178px)
+  margin-top 77px
+  border-top 1px solid #ECECEC
+  border-bottom 1px solid #ECECEC
+
+.eventsTable-header,
+.eventsTable-body
+  width 100%
+.eventsTable-header
+  font-weight bold
+
+.eventsTable-header-cell,
+.eventsTable-body-cell
+  padding 5px
+  flex 1
+
+.eventsTable-header-cell
+  white-space nowrap
+  text-overflow ellipsis
+  text-align center
+
+.eventsTable-header-row,
+.eventsTable-body-row
+  display: flex
+
+.eventsTable-body-row
   border-top 1px solid #ECECEC !important
-.events .monthRow
-  // border-radius 3px
-  // background-clip padding-box
-  // border-collapse separate
+.eventsTable-body-row:hover
+  background-color #f5f5f5
+.eventsTable-body-monthRow
   background-image url('../../images/oceanDark.jpg')
   color #EDF4F8
   font-weight bold
-.events .monthRow td
+.eventsTable-body-monthRow .eventsTable-body-cell
   padding-left 10px
   
 .events .monthlyStatisticsRow
   background-color rgba(0, 109, 255, 0.05)
 
-.events .day
+.eventsTable-cell-day
   width 60px
-  column-width 60px
+  max-width 60px
   padding-right 20px
   text-align right
 .events .dayWithEvents p
   margin-top 5px
-.events .migration,
-.events .politics
+.eventsTable-cell-migration,
+.eventsTable-cell-politics
   width 50%
-  column-width 50%
+  max-width 50%
   word-wrap break-word
-.events .migration
+.eventsTable-cell-migration
   padding-right 10px
-.events .politics
+.eventsTable-cell-politics
   padding-left 10px
-.events td ul
+.eventsTable-body-row ul
   padding-left 10px
   margin-bottom 0
-.events td ul li
+.eventsTable-body-row ul li
   margin-bottom 5px
   margin-top 5px
-.events td ul li+li
+.eventsTable-body-row ul li+li
   margin-top 10px
-.events td p
+.eventsTable-body-row p
   margin-bottom 0
-  
-// fix table header
-.events
-  position: relative
-#eventsTableBody
-  overflow auto
-  height calc(100vh - 92px)
-  margin-top 77px
-  border-top 1px solid #ECECEC
-  border-bottom 1px solid #ECECEC
-#eventsTableHead
-  position absolute
 
 // make sure glyphicon and link text are on same line
-.events td a
+.eventsTable-body-row a
   white-space nowrap
   
 .events p.event-weather
-  // font-weight bold
   position relative
 .events li.event-weather
   list-style-type none
