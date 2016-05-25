@@ -83,10 +83,14 @@ export default React.createClass({
           />
         )
       })
-      // TODO: return virtualized version
+      const renderDateRow = (index, key) => dateRows[index]
       return (
         <div>
-          {dateRows}
+          <ReactList
+            itemRenderer={renderDateRow}
+            length={dateRows.length}
+            type='variable'
+          />
         </div>
       )
     }
