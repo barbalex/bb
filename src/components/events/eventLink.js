@@ -86,10 +86,6 @@ export default React.createClass({
     app.Actions.saveEvent(activeEvent)
   },
 
-  removeLinkTooltip () {
-    return <Tooltip id='removeLink'>remove</Tooltip>
-  },
-
   removeLinkGlyph () {
     const glyphStyle = {
       fontSize: 1.5 + 'em',
@@ -99,7 +95,11 @@ export default React.createClass({
     return (
       <OverlayTrigger
         placement='right'
-        overlay={this.removeLinkTooltip()}
+        overlay={
+          <Tooltip id='removeLink'>
+            remove
+          </Tooltip>
+        }
       >
         <Glyphicon
           glyph='remove-circle'

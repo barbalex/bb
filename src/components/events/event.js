@@ -2,56 +2,9 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
-
-const removeEventGlyph = (event, onRemoveEvent) => {
-  const glyphStyle = {
-    fontSize: 0.9 + 'em',
-    color: 'red',
-    paddingLeft: 8,
-    cursor: 'pointer'
-  }
-  return (
-    <OverlayTrigger
-      placement='top'
-      overlay={
-        <Tooltip id='removeThisEvent'>remove</Tooltip>
-      }
-    >
-      <Glyphicon
-        glyph='remove-circle'
-        style={glyphStyle}
-        onClick={() =>
-          onRemoveEvent(event)
-        }
-      />
-    </OverlayTrigger>
-  )
-}
-
-const editEventGlyph = (event) => {
-  const glyphStyle = {
-    fontSize: 0.9 + 'em',
-    paddingLeft: 8,
-    cursor: 'pointer'
-  }
-  return (
-    <OverlayTrigger
-      placement='top'
-      overlay={
-        <Tooltip id='editThisEvent'>edit</Tooltip>
-      }
-    >
-      <Glyphicon
-        glyph='pencil'
-        style={glyphStyle}
-        onClick={() =>
-          app.Actions.getEvent(event._id)
-        }
-      />
-    </OverlayTrigger>
-  )
-}
+import { Glyphicon } from 'react-bootstrap'
+import RemoveEventGlyph from './removeEventGlyph.js'
+import EditEventGlyph from './editEventGlyph.js'
 
 const Event = ({ event, email, onRemoveEvent }) => {
   const showEditingGlyphons = !!email
@@ -96,11 +49,16 @@ const Event = ({ event, email, onRemoveEvent }) => {
         {event.title} <span>{links}</span>
         {
           showEditingGlyphons &&
-          editEventGlyph(event)
+          <EditEventGlyph
+            event={event}
+          />
         }
         {
           showEditingGlyphons &&
-          removeEventGlyph(event, onRemoveEvent)
+          <RemoveEventGlyph
+            event={event}
+            onRemoveEvent={onRemoveEvent}
+          />
         }
       </p>
     </li>
