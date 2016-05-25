@@ -66,36 +66,6 @@ export default React.createClass({
     return documentWidth <= 750
   },
 
-  logoutTooltip () {
-    return <Tooltip id='logout'>log out</Tooltip>
-  },
-
-  editTooltip () {
-    const { editing } = this.props
-    const text = editing ? 'preview' : 'edit'
-    return <Tooltip id={text}>{text}</Tooltip>
-  },
-
-  newCommentaryTooltip () {
-    return <Tooltip id='newCommentary'>new commentary</Tooltip>
-  },
-
-  newEventTooltip () {
-    return <Tooltip id='newEvent'>new event</Tooltip>
-  },
-
-  newActorTooltip () {
-    return <Tooltip id='newActor'>new actor</Tooltip>
-  },
-
-  newMonthlyEventTooltip () {
-    return <Tooltip id='newMonthlyEvent'>new monthly event</Tooltip>
-  },
-
-  newPublicationTooltip () {
-    return <Tooltip id='newPublication'>new publication</Tooltip>
-  },
-
   render () {
     const {
       activePage,
@@ -195,7 +165,9 @@ export default React.createClass({
             <NavItem
               eventKey={4}
               active={id === 'pages_aboutUs'}
-              onClick={() => onClickPage('pages_aboutUs')}
+              onClick={() =>
+                this.onClickPage('pages_aboutUs')
+              }
             >
               About us
             </NavItem>
@@ -210,7 +182,13 @@ export default React.createClass({
                 showEdit &&
                 <OverlayTrigger
                   placement='bottom'
-                  overlay={this.editTooltip()}
+                  overlay={
+                    <Tooltip
+                      id={editing ? 'preview' : 'edit'}
+                    >
+                      {editing ? 'preview' : 'edit'}
+                    </Tooltip>
+                  }
                 >
                   <NavItem
                     eventKey={1}
@@ -226,7 +204,11 @@ export default React.createClass({
                 showAddCommentary &&
                 <OverlayTrigger
                   placement='bottom'
-                  overlay={this.newCommentaryTooltip()}
+                  overlay={
+                    <Tooltip id='newCommentary'>
+                      new commentary
+                    </Tooltip>
+                  }
                 >
                   <NavItem
                     eventKey={2}
@@ -242,7 +224,11 @@ export default React.createClass({
                 showAddEvent &&
                 <OverlayTrigger
                   placement='bottom'
-                  overlay={this.newEventTooltip()}
+                  overlay={
+                    <Tooltip id='newEvent'>
+                      new event
+                    </Tooltip>
+                  }
                 >
                   <NavItem
                     eventKey={3}
@@ -258,7 +244,11 @@ export default React.createClass({
                 showAddActor &&
                 <OverlayTrigger
                   placement='bottom'
-                  overlay={this.newActorTooltip()}
+                  overlay={
+                    <Tooltip id='newActor'>
+                      new actor
+                    </Tooltip>
+                  }
                 >
                   <NavItem
                     eventKey={4}
@@ -274,7 +264,11 @@ export default React.createClass({
                 showAddMonthlyEvent &&
                 <OverlayTrigger
                   placement='bottom'
-                  overlay={this.newMonthlyEventTooltip()}
+                  overlay={
+                    <Tooltip id='newMonthlyEvent'>
+                      new monthly event
+                    </Tooltip>
+                  }
                 >
                   <NavItem
                     eventKey={5}
@@ -290,7 +284,11 @@ export default React.createClass({
                 showAddPublication &&
                 <OverlayTrigger
                   placement='bottom'
-                  overlay={this.newPublicationTooltip()}
+                  overlay={
+                    <Tooltip id='newPublication'>
+                      new publication
+                    </Tooltip>
+                  }
                 >
                   <NavItem
                     eventKey={6}
@@ -304,7 +302,11 @@ export default React.createClass({
               }
               <OverlayTrigger
                 placement='bottom'
-                overlay={this.logoutTooltip()}
+                overlay={
+                  <Tooltip id='logout'>
+                    log out
+                  </Tooltip>
+                }
               >
                 <NavItem
                   eventKey={7}

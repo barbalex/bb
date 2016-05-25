@@ -80,10 +80,6 @@ export default React.createClass({
     )
   },
 
-  showArchive () {
-    app.Actions.getPage('pages_monthlyEvents')
-  },
-
   setActiveYear (activeEventYears) {
     const { setActiveEventYears } = this.props
     activeEventYears = [activeEventYears]
@@ -120,7 +116,9 @@ export default React.createClass({
           <ButtonGroup>
             {this.yearButtons()}
             <Button
-              onClick={this.showArchive}
+              onClick={() =>
+                app.Actions.getPage('pages_monthlyEvents')
+              }
             >
               2014 - 2011
             </Button>
