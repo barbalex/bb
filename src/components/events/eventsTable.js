@@ -120,23 +120,20 @@ export default React.createClass({
             </tr>
           </thead>
         </Table>
-        <GeminiScrollbar id='eventsTableBody' autoshow>
-          <Table condensed hover>
-            <colgroup>
-              <col className='day' />
-              <col className='migration' />
-              <col className='politics' />
-            </colgroup>
-            <tbody>
-              {createDateRows(events, email, activeEventYears, onRemoveEvent)}
-            </tbody>
-          </Table>
-          {
-            showNextYearButton &&
-            this.showNextYearButton()
-          }
-        </GeminiScrollbar>
-
+        <Table condensed hover>
+          <colgroup>
+            <col className='day' />
+            <col className='migration' />
+            <col className='politics' />
+          </colgroup>
+          <tbody>
+            {createDateRows(events, email, activeEventYears, onRemoveEvent)}
+          </tbody>
+        </Table>
+        {
+          showNextYearButton &&
+          this.showNextYearButton()
+        }
       </div>
     )
   }
