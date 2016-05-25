@@ -23,8 +23,8 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      title: null,
-      category: null,
+      title: '',
+      category: '',
       error: null
     }
   },

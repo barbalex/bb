@@ -22,7 +22,7 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      category: null,
+      category: '',
       error: null
     }
   },
