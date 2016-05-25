@@ -5,7 +5,7 @@ import React from 'react'
 import { Table, Button } from 'react-bootstrap'
 import { min } from 'lodash'
 import GeminiScrollbar from 'react-gemini-scrollbar'
-import createDateRows from './createDateRows.js'
+import DateRows from './dateRows.js'
 
 export default React.createClass({
   displayName: 'Events',
@@ -123,7 +123,12 @@ export default React.createClass({
         </div>
         <div className="eventsTable-body">
           <GeminiScrollbar id='eventsTableBody' autoshow>
-            {createDateRows(events, email, activeEventYears, onRemoveEvent)}
+            <DateRows
+              events={events}
+              email={email}
+              activeEventYears={activeEventYears}
+              onRemoveEvent={onRemoveEvent}
+            />
           </GeminiScrollbar>
         </div>
         {
