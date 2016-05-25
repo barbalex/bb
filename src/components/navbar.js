@@ -154,7 +154,7 @@ export default React.createClass({
       >
         <Navbar.Header>
           <Navbar.Brand
-            onClick={this.onClickPage.bind(this, 'pages_events')}
+            onClick={() => this.onClickPage('pages_events')}
           >
             Events
           </Navbar.Brand>
@@ -167,35 +167,35 @@ export default React.createClass({
             <NavItem
               eventKey={0}
               active={id === 'pages_commentaries'}
-              onClick={this.onClickPage.bind(this, 'pages_commentaries')}
+              onClick={() => this.onClickPage('pages_commentaries')}
             >
               Commentaries
             </NavItem>
             <NavItem
               eventKey={1}
               active={id === 'pages_actors'}
-              onClick={this.onClickPage.bind(this, 'pages_actors')}
+              onClick={() => this.onClickPage('pages_actors')}
             >
               Actors
             </NavItem>
             <NavItem
               eventKey={2}
               active={id === 'pages_publications'}
-              onClick={this.onClickPage.bind(this, 'pages_publications')}
+              onClick={() => this.onClickPage('pages_publications')}
             >
               Publications
             </NavItem>
             <NavItem
               eventKey={3}
               active={id === 'pages_links'}
-              onClick={this.onClickPage.bind(this, 'pages_links')}
+              onClick={() => this.onClickPage('pages_links')}
             >
               Links
             </NavItem>
             <NavItem
               eventKey={4}
               active={id === 'pages_aboutUs'}
-              onClick={this.onClickPage.bind(this, 'pages_aboutUs')}
+              onClick={() => onClickPage('pages_aboutUs')}
             >
               About us
             </NavItem>
