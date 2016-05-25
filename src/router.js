@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom'
 import { whyDidYouUpdate } from 'why-did-you-update'
 import Main from './components/main.js'
 
-whyDidYouUpdate(React)
+// whyDidYouUpdate(React)
 
 export default Router.extend({
   routes: {

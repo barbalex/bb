@@ -91,10 +91,6 @@ export default React.createClass({
     this.setState({ docToRemove: null })
   },
 
-  removeCommentaryTooltip () {
-    return <Tooltip id='removeThisCommentary'>remove</Tooltip>
-  },
-
   removeCommentaryGlyph (doc) {
     const glyphStyle = {
       position: 'absolute',
@@ -106,7 +102,11 @@ export default React.createClass({
     return (
       <OverlayTrigger
         placement='top'
-        overlay={this.removeCommentaryTooltip()}
+        overlay={
+          <Tooltip id='removeThisCommentary'>
+            remove
+          </Tooltip>
+        }
       >
         <Glyphicon
           glyph='remove-circle'
@@ -115,11 +115,6 @@ export default React.createClass({
         />
       </OverlayTrigger>
     )
-  },
-
-  toggleDraftTooltip (doc) {
-    const text = doc.draft ? 'publish' : 'unpublish'
-    return <Tooltip id='toggleDraft'>{text}</Tooltip>
   },
 
   toggleDraftGlyph (doc) {
@@ -135,7 +130,11 @@ export default React.createClass({
     return (
       <OverlayTrigger
         placement='top'
-        overlay={this.toggleDraftTooltip(doc)}
+        overlay={
+          <Tooltip id='toggleDraft'>
+            {doc.draft ? 'publish' : 'unpublish'}
+          </Tooltip>
+        }
       >
         <Glyphicon
           glyph={glyph}
