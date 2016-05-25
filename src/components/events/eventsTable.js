@@ -41,8 +41,8 @@ export default React.createClass({
     const firstEventYear = yearsOfEvents.length > 0 ? min(yearsOfEvents) : 2015
     const divStyle = {
       textAlign: 'center',
-      marginTop: 20,
-      marginBottom: 30
+      marginTop: 10,
+      marginBottom: 10
     }
     if (firstActiveEventYear > firstEventYear) {
       return (
@@ -132,8 +132,8 @@ export default React.createClass({
           </GeminiScrollbar>
         </div>
         {
-          showNextYearButton &&
-          this.showNextYearButton()
+          /*showNextYearButton &&
+          this.showNextYearButton()*/
         }
       </div>
     )
