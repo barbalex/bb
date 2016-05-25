@@ -4,14 +4,6 @@ import app from 'ampersand-app'
 import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
-const removeEventTooltip = () => (
-  <Tooltip id='removeThisEvent'>remove</Tooltip>
-)
-
-const editEventTooltip = () => (
-  <Tooltip id='editThisEvent'>edit</Tooltip>
-)
-
 const removeEventGlyph = (event, onRemoveEvent) => {
   const glyphStyle = {
     fontSize: 0.9 + 'em',
@@ -22,7 +14,9 @@ const removeEventGlyph = (event, onRemoveEvent) => {
   return (
     <OverlayTrigger
       placement='top'
-      overlay={removeEventTooltip()}
+      overlay={
+        <Tooltip id='removeThisEvent'>remove</Tooltip>
+      }
     >
       <Glyphicon
         glyph='remove-circle'
@@ -44,7 +38,9 @@ const editEventGlyph = (event) => {
   return (
     <OverlayTrigger
       placement='top'
-      overlay={editEventTooltip()}
+      overlay={
+        <Tooltip id='editThisEvent'>edit</Tooltip>
+      }
     >
       <Glyphicon
         glyph='pencil'
