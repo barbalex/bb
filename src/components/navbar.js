@@ -146,6 +146,7 @@ export default React.createClass({
     )
     return (
       <Navbar
+        id='nav-wrapper'
         inverse
         fixedTop
         expanded={navExpanded}
