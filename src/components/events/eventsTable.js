@@ -102,12 +102,25 @@ export default React.createClass({
           className="eventsTable-header"
         >
           <div className="eventsTable-header-row">
-            <div className='eventsTable-header-cell eventsTable-cell-day' style={headerStyle}></div>
-            <div className='eventsTable-header-cell eventsTable-cell-migration' style={headerStyle}>Maritime Events</div>
-            <div className='eventsTable-header-cell eventsTable-cell-politics' style={headerStyle}>Political Events</div>
+            <div
+              className='eventsTable-header-cell eventsTable-cell-day'
+              style={headerStyle}
+            >
+            </div>
+            <div
+              className='eventsTable-header-cell eventsTable-cell-migration'
+              style={headerStyle}
+            >
+              Maritime Events
+            </div>
+            <div
+              className='eventsTable-header-cell eventsTable-cell-politics'
+              style={headerStyle}
+            >
+              Political Events
+            </div>
           </div>
         </div>
-        {/* TODO: add hover to rows */}
         <div className="eventsTable-body">
           <GeminiScrollbar id='eventsTableBody' autoshow>
             {createDateRows(events, email, activeEventYears, onRemoveEvent)}
