@@ -4,7 +4,10 @@ import app from 'ampersand-app'
 import Router from 'ampersand-router'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { whyDidYouUpdate } from 'why-did-you-update'
 import Main from './components/main.js'
+
+whyDidYouUpdate(React)
 
 export default Router.extend({
   routes: {
