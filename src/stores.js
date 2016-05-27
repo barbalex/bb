@@ -278,10 +278,10 @@ export default (Actions) => {
       const day = moment(event.date).format('DD')
       const _id = `events_${year}_${month}_${day}_${slug(title)}`
       const type = 'events'
-      const eventType = 'migration'
-      const links = []
-      const order = 99
-      const tags = []
+      const eventType = event.eventType || 'migration'
+      const links = event.links || []
+      const order = event.order || 99
+      const tags = event.tags || []
       const newEvent = {
         _id,
         type,

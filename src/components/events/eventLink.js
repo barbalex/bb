@@ -23,7 +23,7 @@ export default React.createClass({
     activeEvent: React.PropTypes.object,
     link: React.PropTypes.object,
     focus: React.PropTypes.bool,
-    key: React.PropTypes.number
+    index: React.PropTypes.number
   },
 
   componentDidMount () {
@@ -111,13 +111,13 @@ export default React.createClass({
   },
 
   render () {
-    const { focus, key } = this.props
+    const { focus, index } = this.props
     const { link } = this.state
     const focusLabel = focus && !link.label
 
     return (
       <Row
-        key={key}
+        key={index}
       >
         <Col
           sm={3}

@@ -53,7 +53,9 @@ const onChangeTag = (tag, event, activeEvent) => {
     activeEvent.tags.push(tag)
     app.Actions.saveEvent(activeEvent)
   } else {
-    activeEvent.tags = activeEvent.tags.filter((_tag) => _tag !== tag)
+    activeEvent.tags = activeEvent.tags.filter((_tag) =>
+      _tag !== tag
+    )
     app.Actions.saveEvent(activeEvent)
   }
 }
@@ -64,14 +66,11 @@ const labelStyle = {
 }
 
 const EventTags = ({ activeEvent }) =>
-  <div
-    style={{marginBottom: 20}}>
-    <div
-      style={labelStyle}>
+  <div style={{marginBottom: 20}}>
+    <div style={labelStyle}>
       Tags
     </div>
-    <div
-      className='event-tags'>
+    <div className='event-tags'>
       {tags(activeEvent)}
     </div>
   </div>
