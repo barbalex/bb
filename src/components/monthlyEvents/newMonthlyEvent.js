@@ -2,7 +2,7 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Input, Alert } from 'react-bootstrap'
+import { Modal, Button, Input, FormGroup, ControlLabel, FormControl, Alert } from 'react-bootstrap'
 import moment from 'moment'
 import getMonths from '../../modules/getMonths.js'
 
@@ -87,21 +87,25 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <Input
-            type='number'
-            label='Year'
-            value={year}
-            onChange={this.onChangeYear}
-            autoFocus
-          />
-          <Input
-            type='select'
-            label='Month'
-            value={month}
-            onChange={this.onChangeMonth}
-          >
-            {this.monthOptions()}
-          </Input>
+          <FormGroup id="yearInput">
+            <ControlLabel>Year</ControlLabel>
+            <FormControl
+              type='number'
+              value={year}
+              onChange={this.onChangeYear}
+              autoFocus
+            />
+          </FormGroup>
+          <FormGroup id="monthInput">
+            <ControlLabel>Month</ControlLabel>
+            <FormControl
+              componentClass='select'
+              value={month}
+              onChange={this.onChangeMonth}
+            >
+              {this.monthOptions()}
+            </FormControl>
+          </FormGroup>
           {
             error &&
             <Alert
