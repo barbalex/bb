@@ -17,7 +17,7 @@ const EventDate = ({ date, onChangeDatePicker }) =>
     >
       <DateRangePicker
         singleDatePicker
-        drops="up"
+        drops="down"
         opens="left"
         onApply={onChangeDatePicker}
       >
