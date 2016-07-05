@@ -3,14 +3,14 @@
 const getConfig = require('hjs-webpack')
 const indexTemplate = require('./src/indexTemplate.js')
 
-let config = getConfig({
+const config = getConfig({
   in: 'src/app.js',
   out: 'public',
   isDev: process.env.NODE_ENV !== 'production',
   // the excluded files are not cleared
   // and not hashed as would be if webpack imports them
   clearBeforeBuild: '!(tinymce|favicons|images)',
-  html: function (context) {
+  html() {
     return {
       'index.html': indexTemplate()
     }
