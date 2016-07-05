@@ -1,9 +1,4 @@
-'use strict'
-
-import app from 'ampersand-app'
 import React from 'react'
-import { Table, Button } from 'react-bootstrap'
-import { min } from 'lodash'
 import GeminiScrollbar from 'react-gemini-scrollbar'
 import DateRows from './dateRows.js'
 
@@ -18,73 +13,9 @@ export default React.createClass({
     activeEventYears: React.PropTypes.array,
     setActiveEventYears: React.PropTypes.func,
     onRemoveEvent: React.PropTypes.func,
-    showNextButton: React.PropTypes.bool
   },
 
-  getInitialState () {
-    return {
-      showNextButton: false
-    }
-  },
-
-  componentWillMount () {
-    // delay showing of next buttons
-    setTimeout(() => {
-      this.setState({ showNextButton: true })
-    }, 1000)
-  },
-
-  showNextYearButton () {
-    const { activeEventYears, yearsOfEvents } = this.props
-    const { showNextButton } = this.state
-    const firstActiveEventYear = min(activeEventYears)
-    const firstEventYear = yearsOfEvents.length > 0 ? min(yearsOfEvents) : 2015
-    const divStyle = {
-      textAlign: 'center',
-      marginTop: 10,
-      marginBottom: 10
-    }
-    if (firstActiveEventYear > firstEventYear) {
-      return (
-        <div
-          style={divStyle}
-          className={showNextButton ? '' : 'hidden'} >
-          <Button
-            onClick={this.showNextYear}
-          >
-            load events for {min(activeEventYears) - 1}
-          </Button>
-        </div>
-      )
-    }
-    if (firstActiveEventYear === firstEventYear) {
-      return (
-        <div
-          style={divStyle}
-          className={showNextButton ? '' : 'hidden'} >
-          <Button
-            onClick={this.showArchive}
-          >
-            load events from 2011 to 2014
-          </Button>
-        </div>
-      )
-    }
-    if (firstActiveEventYear < firstEventYear) return null
-  },
-
-  showNextYear () {
-    let { activeEventYears, setActiveEventYears } = this.props
-    activeEventYears.push(min(activeEventYears) - 1)
-    app.Actions.getEvents(activeEventYears)
-    setActiveEventYears(activeEventYears)
-  },
-
-  showArchive () {
-    app.Actions.getPage('pages_monthlyEvents')
-  },
-
-  render () {
+  render() {
     const { introJumbotronHeight, activeEventYears, events, email, onRemoveEvent } = this.props
     const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 88 : 396
     const eventsTableHeadStyle = {
@@ -93,7 +24,6 @@ export default React.createClass({
     }
     const fontSize = window.innerWidth < 500 ? 20 : 24
     const headerStyle = { fontSize }
-    const showNextYearButton = min(activeEventYears) > 2014
 
     return (
       <div className="eventsTable">
@@ -103,18 +33,18 @@ export default React.createClass({
         >
           <div className="eventsTable-header-row">
             <div
-              className='eventsTable-header-cell eventsTable-cell-day'
+              className="eventsTable-header-cell eventsTable-cell-day"
               style={headerStyle}
             >
             </div>
             <div
-              className='eventsTable-header-cell eventsTable-cell-migration'
+              className="eventsTable-header-cell eventsTable-cell-migration"
               style={headerStyle}
             >
               Maritime Events
             </div>
             <div
-              className='eventsTable-header-cell eventsTable-cell-politics'
+              className="eventsTable-header-cell eventsTable-cell-politics"
               style={headerStyle}
             >
               Political Events
@@ -122,7 +52,7 @@ export default React.createClass({
           </div>
         </div>
         <div className="eventsTable-body">
-          <GeminiScrollbar id='eventsTableBody' autoshow>
+          <GeminiScrollbar id="eventsTableBody" autoshow>
             <DateRows
               events={events}
               email={email}
@@ -131,10 +61,6 @@ export default React.createClass({
             />
           </GeminiScrollbar>
         </div>
-        {
-          /*showNextYearButton &&
-          this.showNextYearButton()*/
-        }
       </div>
     )
   }
