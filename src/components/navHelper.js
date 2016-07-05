@@ -25,7 +25,7 @@ export default React.createClass({
     children: React.PropTypes.node
   },
 
-  render () {
+  render() {
     return (
       <div
         {...this.props}

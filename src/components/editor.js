@@ -16,7 +16,7 @@ export default React.createClass({
     onSaveActorArticle: React.PropTypes.func
   },
 
-  componentDidMount () {
+  componentDidMount() {
     const {
       doc,
       onSavePageArticle,
@@ -51,7 +51,7 @@ export default React.createClass({
       ],
       menubar: 'edit insert view format table tools',
       toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
-      height: height,
+      height,
       browser_spellcheck: true,
       automatic_uploads: false,
       statusbar: false,
@@ -70,8 +70,8 @@ export default React.createClass({
       valid_elements: '*[*]',
       */
       // enable auto-saving
-      setup (editor) {
-        editor.on('change undo redo', (e) => {
+      setup(editor) {
+        editor.on('change undo redo', () => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
           if (onSavePageArticle) onSavePageArticle(articleEncoded)
@@ -95,12 +95,12 @@ export default React.createClass({
     }
   },
 
-  shouldComponentUpdate () {
+  shouldComponentUpdate() {
     // make sure react does not update this component
     return false
   },
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     // this is needed for correct behaviour, see
     // http://stackoverflow.com/questions/29169158/react-html-editor-tinymce
     const { doc } = this.props
@@ -108,7 +108,7 @@ export default React.createClass({
     window.tinymce.remove(instanceSelector)
   },
 
-  render () {
+  render() {
     const { doc, articleDecoded } = this.props
     return (
       <textarea

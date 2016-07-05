@@ -8,7 +8,7 @@ import {
   Nav,
   Glyphicon,
   Tooltip,
-  OverlayTrigger
+  OverlayTrigger,
 } from 'react-bootstrap'
 import { has } from 'lodash'
 
@@ -32,41 +32,41 @@ export default React.createClass({
     navExpanded: React.PropTypes.bool
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       navExpanded: false
     }
   },
 
-  onClickPage (id) {
+  onClickPage(id) {
     app.Actions.getPage(id)
     // if home was clicked, do not toggle nav
     if (id !== 'pages_events') this.onToggleNav()
   },
 
-  onClickEdit () {
+  onClickEdit() {
     const { onClickEdit } = this.props
     onClickEdit()
     this.onToggleNav()
   },
 
-  onClickLogout () {
+  onClickLogout() {
     app.Actions.logout()
     this.onToggleNav()
   },
 
-  onToggleNav () {
+  onToggleNav() {
     const navIsMobile = this.isNavMobile()
     // toggle only if nav is in mobile mode
     if (navIsMobile) this.setState({ navExpanded: !this.state.navExpanded })
   },
 
-  isNavMobile () {
+  isNavMobile() {
     const documentWidth = document.getElementById('content').clientWidth
     return documentWidth <= 750
   },
 
-  render () {
+  render() {
     const {
       activePage,
       activeMonthlyEvent,
@@ -79,7 +79,7 @@ export default React.createClass({
       onClickNewEvent,
       onClickNewActor,
       onClickNewMonthlyEvent,
-      onClickNewPublication
+      onClickNewPublication,
     } = this.props
     const { navExpanded } = this.state
     const glyph = editing ? 'eye-open' : 'pencil'
@@ -116,7 +116,7 @@ export default React.createClass({
     )
     return (
       <Navbar
-        id='nav-wrapper'
+        id="nav-wrapper"
         inverse
         fixedTop
         expanded={navExpanded}
@@ -181,7 +181,7 @@ export default React.createClass({
               {
                 showEdit &&
                 <OverlayTrigger
-                  placement='bottom'
+                  placement="bottom"
                   overlay={
                     <Tooltip
                       id={editing ? 'preview' : 'edit'}
@@ -203,9 +203,9 @@ export default React.createClass({
               {
                 showAddCommentary &&
                 <OverlayTrigger
-                  placement='bottom'
+                  placement="bottom"
                   overlay={
-                    <Tooltip id='newCommentary'>
+                    <Tooltip id="newCommentary">
                       new commentary
                     </Tooltip>
                   }
@@ -215,7 +215,7 @@ export default React.createClass({
                     onClick={onClickNewCommentary}
                   >
                     <Glyphicon
-                      glyph='plus'
+                      glyph="plus"
                     />
                   </NavItem>
                 </OverlayTrigger>
@@ -223,9 +223,9 @@ export default React.createClass({
               {
                 showAddEvent &&
                 <OverlayTrigger
-                  placement='bottom'
+                  placement="bottom"
                   overlay={
-                    <Tooltip id='newEvent'>
+                    <Tooltip id="newEvent">
                       new event
                     </Tooltip>
                   }
@@ -235,7 +235,7 @@ export default React.createClass({
                     onClick={onClickNewEvent}
                   >
                     <Glyphicon
-                      glyph='plus'
+                      glyph="plus"
                     />
                   </NavItem>
                 </OverlayTrigger>
@@ -243,9 +243,9 @@ export default React.createClass({
               {
                 showAddActor &&
                 <OverlayTrigger
-                  placement='bottom'
+                  placement="bottom"
                   overlay={
-                    <Tooltip id='newActor'>
+                    <Tooltip id="newActor">
                       new actor
                     </Tooltip>
                   }
@@ -255,7 +255,7 @@ export default React.createClass({
                     onClick={onClickNewActor}
                   >
                     <Glyphicon
-                      glyph='plus'
+                      glyph="plus"
                     />
                   </NavItem>
                 </OverlayTrigger>
@@ -263,9 +263,9 @@ export default React.createClass({
               {
                 showAddMonthlyEvent &&
                 <OverlayTrigger
-                  placement='bottom'
+                  placement="bottom"
                   overlay={
-                    <Tooltip id='newMonthlyEvent'>
+                    <Tooltip id="newMonthlyEvent">
                       new monthly event
                     </Tooltip>
                   }
@@ -275,7 +275,7 @@ export default React.createClass({
                     onClick={onClickNewMonthlyEvent}
                   >
                     <Glyphicon
-                      glyph='plus'
+                      glyph="plus"
                     />
                   </NavItem>
                 </OverlayTrigger>
@@ -283,9 +283,9 @@ export default React.createClass({
               {
                 showAddPublication &&
                 <OverlayTrigger
-                  placement='bottom'
+                  placement="bottom"
                   overlay={
-                    <Tooltip id='newPublication'>
+                    <Tooltip id="newPublication">
                       new publication
                     </Tooltip>
                   }
@@ -295,15 +295,15 @@ export default React.createClass({
                     onClick={onClickNewPublication}
                   >
                     <Glyphicon
-                      glyph='plus'
+                      glyph="plus"
                     />
                   </NavItem>
                 </OverlayTrigger>
               }
               <OverlayTrigger
-                placement='bottom'
+                placement="bottom"
                 overlay={
-                  <Tooltip id='logout'>
+                  <Tooltip id="logout">
                     log out
                   </Tooltip>
                 }
@@ -313,7 +313,7 @@ export default React.createClass({
                   onClick={this.onClickLogout}
                 >
                   <Glyphicon
-                    glyph='log-out'
+                    glyph="log-out"
                   />
                 </NavItem>
               </OverlayTrigger>
