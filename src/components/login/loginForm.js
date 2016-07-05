@@ -2,8 +2,6 @@
  * contains ui for login
  */
 
-'use strict'
-
 import app from 'ampersand-app'
 import React from 'react'
 import {

@@ -2,8 +2,6 @@
  * contains ui for a login/signup modal
  */
 
-'use strict'
-
 import app from 'ampersand-app'
 import React from 'react'
 import { Button } from 'react-bootstrap'
