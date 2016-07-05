@@ -4,15 +4,15 @@
 
 'use strict'
 
-var /*serverOptionsDevelopment = {    // wird nur in Entwicklung genutzt
+/*const serverOptionsDevelopment = {    // wird nur in Entwicklung genutzt
     debug: {
       log: ['error'],
       request: ['error']
     }
-  },*/
-  Hapi = require('hapi'),
-  Inert = require('inert'),
-  server = new Hapi.Server()
+  }*/
+const Hapi = require('hapi')
+const Inert = require('inert')
+const server = new Hapi.Server()
 
 server.register(Inert, () => {
   server.connection({
@@ -30,7 +30,7 @@ server.register(Inert, () => {
   server.route({
     method: 'GET',
     path: '/',
-    handler (request, reply) {
+    handler(request, reply) {
       reply.file('index.html')
     }
   })
@@ -38,7 +38,7 @@ server.register(Inert, () => {
   server.route({
     method: 'GET',
     path: '/index.html',
-    handler (request, reply) {
+    handler(request, reply) {
       reply.file('index.html')
     }
   })
@@ -61,9 +61,8 @@ server.register(Inert, () => {
       if (request.response.output.statusCode === 404) {
         // let index.html handle this
         return reply.file('index.html')
-      } else {
-        return reply.redirect('/')
       }
+      return reply.redirect('/')
     }
     return reply.continue()
   })
