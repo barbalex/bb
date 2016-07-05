@@ -9,7 +9,9 @@ const Events = ({
   email,
   onRemoveEvent,
 }) => {
-  const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 88 : 396
+  console.log('EventsTable.js, introJumbotronHeight:', introJumbotronHeight)
+
+  const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 88 : 173
   const eventsTableHeadStyle = {
     top: eventsTableHeadTop,
     position: 'absolute'

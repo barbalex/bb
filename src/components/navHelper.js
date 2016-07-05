@@ -18,21 +18,18 @@ const onClick = (event) => {
   }
 }
 
-export default React.createClass({
-  displayName: 'NavHelper',
+const NavHelper = (props) =>
+  <div
+    {...props}
+    onClick={(event) => onClick(event)}
+  >
+    {props.children}
+  </div>
 
-  propTypes: {
-    children: React.PropTypes.node
-  },
+NavHelper.displayName = 'NavHelper'
 
-  render() {
-    return (
-      <div
-        {...this.props}
-        onClick={(event) => onClick(event)}
-      >
-        {this.props.children}
-      </div>
-    )
-  }
-})
+NavHelper.propTypes = {
+  children: React.PropTypes.node
+}
+
+export default NavHelper
