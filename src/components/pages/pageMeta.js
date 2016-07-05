@@ -7,7 +7,7 @@ import AttachedImages from '../attachedImages.js'
 const PageMeta = ({ doc, onCloseMeta }) =>
   <Modal
     show
-      bsSize='large'
+    bsSize="large"
   >
     <Modal.Header>
       <Modal.Title>
@@ -21,7 +21,7 @@ const PageMeta = ({ doc, onCloseMeta }) =>
 
     <Modal.Footer>
       <Button
-        bsStyle='primary'
+        bsStyle="primary"
         onClick={() => onCloseMeta()}
       >
         close

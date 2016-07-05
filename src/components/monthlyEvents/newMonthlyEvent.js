@@ -1,5 +1,3 @@
-'use strict'
-
 import app from 'ampersand-app'
 import React from 'react'
 import {
@@ -8,7 +6,7 @@ import {
   FormGroup,
   ControlLabel,
   FormControl,
-  Alert
+  Alert,
 } from 'react-bootstrap'
 import moment from 'moment'
 import getMonths from '../../modules/getMonths.js'
@@ -23,7 +21,7 @@ export default React.createClass({
     error: React.PropTypes.string
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       year: moment().format('YYYY'),
       month: moment().format('MM'),
@@ -31,17 +29,17 @@ export default React.createClass({
     }
   },
 
-  onChangeYear (event) {
+  onChangeYear(event) {
     const year = event.target.value
     this.setState({ year })
   },
 
-  onChangeMonth (event) {
+  onChangeMonth(event) {
     const month = event.target.value
     this.setState({ month })
   },
 
-  createNewMonthlyEvent () {
+  createNewMonthlyEvent() {
     const { onCloseNewMonthlyEvent } = this.props
     const { year, month } = this.state
     if (year && month) {
@@ -54,16 +52,12 @@ export default React.createClass({
     }
   },
 
-  close () {
+  close() {
     const { onCloseNewMonthlyEvent } = this.props
     onCloseNewMonthlyEvent()
   },
 
-  onHide () {
-    // seems that this method is needed ???
-  },
-
-  monthOptions () {
+  monthOptions() {
     const months = getMonths()
     const options = Object.keys(months).map((key, index) =>
       <option
@@ -76,7 +70,7 @@ export default React.createClass({
     return options
   },
 
-  render () {
+  render() {
     const { year, month, error } = this.state
     const alertStyle = {
       marginBottom: 10
@@ -85,7 +79,7 @@ export default React.createClass({
       <Modal
         show
         onHide={this.close}
-        bsSize='large'
+        bsSize="large"
       >
         <Modal.Header>
           <Modal.Title>
@@ -97,7 +91,7 @@ export default React.createClass({
           <FormGroup id="yearInput">
             <ControlLabel>Year</ControlLabel>
             <FormControl
-              type='number'
+              type="number"
               value={year}
               onChange={this.onChangeYear}
               autoFocus
@@ -106,7 +100,7 @@ export default React.createClass({
           <FormGroup id="monthInput">
             <ControlLabel>Month</ControlLabel>
             <FormControl
-              componentClass='select'
+              componentClass="select"
               value={month}
               onChange={this.onChangeMonth}
             >
@@ -116,7 +110,7 @@ export default React.createClass({
           {
             error &&
             <Alert
-              bsStyle='danger'
+              bsStyle="danger"
               style={alertStyle}
             >
               {error}
@@ -131,7 +125,7 @@ export default React.createClass({
             discard input and close
           </Button>
           <Button
-            bsStyle='primary'
+            bsStyle="primary"
             onClick={this.createNewMonthlyEvent}
           >
             create new monthly event

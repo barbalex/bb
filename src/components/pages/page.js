@@ -17,27 +17,31 @@ export default React.createClass({
     onSavePage: React.PropTypes.func
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       showMeta: false
     }
   },
 
-  onClickMeta () {
+  onClickMeta() {
     const { showMeta } = this.state
     this.setState({
       showMeta: !showMeta
     })
   },
 
-  onCloseMeta () {
+  onCloseMeta() {
     this.setState({
       showMeta: false
     })
   },
 
-  render () {
-    const { activePage, editing, onSavePageArticle } = this.props
+  render() {
+    const {
+      activePage,
+      editing,
+      onSavePageArticle,
+    } = this.props
     const { showMeta } = this.state
     const articleEncoded = activePage.article
     const articleDecoded = Base64.decode(articleEncoded)
@@ -50,7 +54,7 @@ export default React.createClass({
     if (editing && activePage._id !== 'pages_actors') {
       return (
         <div
-          className='page'
+          className="page"
         >
           {
             showMeta &&
@@ -73,9 +77,9 @@ export default React.createClass({
         </div>
       )
     }
-    const createMarkup = () => ({__html: articleDecoded})
+    const createMarkup = () => ({ __html: articleDecoded })
     return (
-      <div className='page'>
+      <div className="page">
         <h1>
           {title}
         </h1>
