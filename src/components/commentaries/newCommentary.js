@@ -23,7 +23,7 @@ export default React.createClass({
     error: React.PropTypes.string
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       title: '',
       date: moment(),
@@ -31,17 +31,17 @@ export default React.createClass({
     }
   },
 
-  onChangeTitle (event) {
+  onChangeTitle(event) {
     const title = event.target.value
     this.setState({ title })
   },
 
-  onChangeDate (event, picker) {
+  onChangeDate(event, picker) {
     const date = moment(picker.startDate, 'DD.MM.YYYY')
     this.setState({ date })
   },
 
-  createNewCommentary () {
+  createNewCommentary() {
     const { onCloseNewCommentary } = this.props
     const { title, date } = this.state
     if (title && date) {
@@ -54,23 +54,16 @@ export default React.createClass({
     }
   },
 
-  render () {
+  render() {
     const { onCloseNewCommentary } = this.props
     const { title, date, error } = this.state
     const alertStyle = {
       marginBottom: 10
     }
-    const dateLabelStyle = {
-      fontWeight: 'bold',
-      marginBottom: 5
-    }
-    const dtfStyle = {
-      marginBottom: 20
-    }
     return (
       <Modal
         show
-        bsSize='large'
+        bsSize="large"
       >
         <Modal.Header>
           <Modal.Title>
@@ -84,7 +77,7 @@ export default React.createClass({
           >
             <ControlLabel>Title</ControlLabel>
             <FormControl
-              type='text'
+              type="text"
               value={title}
               onChange={this.onChangeTitle}
               autoFocus
@@ -98,10 +91,11 @@ export default React.createClass({
           {
             error &&
             <Alert
-              bsStyle='danger'
-              style={alertStyle}>
-            {error}
-          </Alert>
+              bsStyle="danger"
+              style={alertStyle}
+            >
+              {error}
+            </Alert>
           }
         </Modal.Body>
 
@@ -112,7 +106,7 @@ export default React.createClass({
             discard input and close
           </Button>
           <Button
-            bsStyle='primary'
+            bsStyle="primary"
             onClick={this.createNewCommentary}
           >
             create new commentary

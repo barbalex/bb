@@ -24,7 +24,7 @@ const EventDate = ({ date, onChangeDatePicker }) =>
         <FormControl
           type="text"
           value={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
-          onChange={() => {/* react wants an onChange handler */}}
+          onChange={() => { /* react wants an onChange handler */ }}
           bsSize="small"
           tabIndex={2}
         />

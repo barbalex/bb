@@ -4,7 +4,7 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 
 const ModalRemoveCommentary = ({ doc, removeCommentary }) =>
-  <div className='static-modal'>
+  <div className="static-modal">
     <Modal.Dialog>
       <Modal.Header>
         <Modal.Title>
@@ -18,7 +18,7 @@ const ModalRemoveCommentary = ({ doc, removeCommentary }) =>
       </Modal.Body>
       <Modal.Footer>
         <Button
-          bsStyle='danger'
+          bsStyle="danger"
           onClick={() =>
             removeCommentary(true)
           }
