@@ -16,26 +16,26 @@ export default React.createClass({
     onSaveCommentaryArticle: React.PropTypes.func
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       showMeta: false
     }
   },
 
-  onClickMeta () {
+  onClickMeta() {
     const { showMeta } = this.state
     this.setState({
       showMeta: !showMeta
     })
   },
 
-  onCloseMeta () {
+  onCloseMeta() {
     this.setState({
       showMeta: false
     })
   },
 
-  render () {
+  render() {
     const { activeCommentary, editing, onSaveCommentaryArticle } = this.props
     const { showMeta } = this.state
     const articleEncoded = activeCommentary.article
@@ -48,7 +48,7 @@ export default React.createClass({
     if (editing) {
       return (
         <div
-          className='commentary'
+          className="commentary"
         >
           {
             showMeta &&
@@ -71,10 +71,10 @@ export default React.createClass({
         </div>
       )
     }
-    const createMarkup = () => ({__html: articleDecoded})
+    const createMarkup = () => ({ __html: articleDecoded })
     return (
       <div
-        className='commentary'
+        className="commentary"
       >
         <div
           dangerouslySetInnerHTML={createMarkup()}

@@ -1,5 +1,3 @@
-'use strict'
-
 import app from 'ampersand-app'
 import React from 'react'
 import {
@@ -20,19 +18,19 @@ export default React.createClass({
     error: React.PropTypes.string
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       category: '',
       error: null
     }
   },
 
-  onChangeCategory (event) {
+  onChangeCategory(event) {
     const category = event.target.value
     this.setState({ category })
   },
 
-  createNewActor () {
+  createNewActor() {
     const { onCloseNewActor } = this.props
     const { category } = this.state
     if (category) {
@@ -44,7 +42,7 @@ export default React.createClass({
     }
   },
 
-  render () {
+  render() {
     const { onCloseNewActor } = this.props
     const { category, error } = this.state
     const alertStyle = {
@@ -53,7 +51,8 @@ export default React.createClass({
     return (
       <Modal
         show
-        bsSize='large'>
+        bsSize="large"
+      >
         <Modal.Header>
           <Modal.Title>
             New actor category
@@ -66,7 +65,7 @@ export default React.createClass({
           >
             <ControlLabel>Category</ControlLabel>
             <FormControl
-              type='text'
+              type="text"
               value={category}
               onChange={this.onChangeCategory}
               autoFocus
@@ -75,8 +74,9 @@ export default React.createClass({
           {
             error &&
             <Alert
-              bsStyle='danger'
-              style={alertStyle}>
+              bsStyle="danger"
+              style={alertStyle}
+            >
               {error}
             </Alert>
           }
@@ -89,7 +89,7 @@ export default React.createClass({
             discard input and close
           </Button>
           <Button
-            bsStyle='primary'
+            bsStyle="primary"
             onClick={this.createNewActor}
           >
             create new actor

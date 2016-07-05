@@ -3,7 +3,12 @@
 import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
+import {
+  Glyphicon,
+  Tooltip,
+  OverlayTrigger,
+  PanelGroup,
+} from 'react-bootstrap'
 import { has } from 'lodash'
 import Commentary from './commentary.js'
 import NewCommentary from './newCommentary.js'
@@ -23,17 +28,17 @@ export default React.createClass({
     docToRemove: React.PropTypes.object
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       docToRemove: null
     }
   },
 
-  componentDidMount () {
+  componentDidMount() {
     app.Actions.getCommentaries()
   },
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (this.props.activeCommentary) {
       if (!prevProps.activeCommentary) {
         /**
@@ -53,7 +58,7 @@ export default React.createClass({
     }
   },
 
-  onClickCommentary (id, e) {
+  onClickCommentary(id, e) {
     const { activeCommentary } = this.props
     // prevent higher level panels from reacting
     e.stopPropagation()
@@ -61,18 +66,24 @@ export default React.createClass({
     app.Actions.getCommentary(idToGet)
   },
 
-  onClickCommentaryCollapse (event) {
+  onClickCommentaryCollapse(event) {
     // prevent higher level panels from reacting
     event.stopPropagation()
   },
 
-  onRemoveCommentary (docToRemove, event) {
+  onRemoveCommentary(docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
   },
 
-  scrollToActivePanel () {
+  onToggleDraft(doc, event) {
+    event.preventDefault()
+    event.stopPropagation()
+    app.Actions.toggleDraftOfCommentary(doc)
+  },
+
+  scrollToActivePanel() {
     const node = ReactDOM.findDOMNode(this._activeCommentaryPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
@@ -85,31 +96,31 @@ export default React.createClass({
     }
   },
 
-  removeCommentary (remove) {
+  removeCommentary(remove) {
     const { docToRemove } = this.state
     if (remove) app.Actions.removeCommentary(docToRemove)
     this.setState({ docToRemove: null })
   },
 
-  removeCommentaryGlyph (doc) {
+  removeCommentaryGlyph(doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 10,
       top: 6,
-      fontSize: 1.5 + 'em',
+      fontSize: '1.5em',
       color: '#edf4f8'
     }
     return (
       <OverlayTrigger
-        placement='top'
+        placement="top"
         overlay={
-          <Tooltip id='removeThisCommentary'>
+          <Tooltip id="removeThisCommentary">
             remove
           </Tooltip>
         }
       >
         <Glyphicon
-          glyph='remove-circle'
+          glyph="remove-circle"
           style={glyphStyle}
           onClick={this.onRemoveCommentary.bind(this, doc)}
         />
@@ -117,21 +128,21 @@ export default React.createClass({
     )
   },
 
-  toggleDraftGlyph (doc) {
+  toggleDraftGlyph(doc) {
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : '#00D000'
     const glyphStyle = {
       position: 'absolute',
       right: 40,
       top: 6,
-      fontSize: 1.5 + 'em',
-      color: color
+      fontSize: '1.5em',
+      color
     }
     return (
       <OverlayTrigger
-        placement='top'
+        placement="top"
         overlay={
-          <Tooltip id='toggleDraft'>
+          <Tooltip id="toggleDraft">
             {doc.draft ? 'publish' : 'unpublish'}
           </Tooltip>
         }
@@ -145,13 +156,7 @@ export default React.createClass({
     )
   },
 
-  onToggleDraft (doc, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    app.Actions.toggleDraftOfCommentary(doc)
-  },
-
-  commentariesComponent () {
+  commentariesComponent() {
     const {
       commentaries,
       activeCommentary,
@@ -170,7 +175,7 @@ export default React.createClass({
           cursor: 'pointer'
         }
         const panelBodyPadding = editing ? 0 : 15
-        const panelBodyMarginTop = editing ? -1 + 'px' : 0
+        const panelBodyMarginTop = editing ? '-1px' : 0
         const panelBodyStyle = {
           padding: panelBodyPadding,
           marginTop: panelBodyMarginTop,
@@ -183,32 +188,34 @@ export default React.createClass({
             borderBottomLeftRadius: 3
           })
         }
-        const ref = isActiveCommentary ? '_activeCommentaryPanel' : '_commentaryPanel' + doc._id
+        const ref = isActiveCommentary ? '_activeCommentaryPanel' : `_commentaryPanel${doc._id}`
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
           <div
             key={doc._id}
-            ref={(c) => this[ref] = c}
-            className='panel panel-default'
+            ref={(c) => {
+              this[ref] = c
+            }}
+            className="panel panel-default"
           >
             <div
-              className='panel-heading'
-              role='tab'
-              id={'heading' + index}
+              className="panel-heading"
+              role="tab"
+              id={`heading${index}`}
               onClick={this.onClickCommentary.bind(this, doc._id)}
               style={panelHeadingStyle}
             >
               <h4
-                className='panel-title'
+                className="panel-title"
               >
                 <a
-                  role='button'
-                  data-toggle='collapse'
-                  data-parent='#commentariesAccordion'
-                  href={'#collapse' + index}
-                  aria-expanded='false'
-                  aria-controls={'#collapse' + index}
+                  role="button"
+                  data-toggle="collapse"
+                  data-parent="#commentariesAccordion"
+                  href={`#collapse${index}`}
+                  aria-expanded="false"
+                  aria-controls={`#collapse${index}`}
                 >
                   {doc.title}
                 </a>
@@ -226,13 +233,13 @@ export default React.createClass({
               isActiveCommentary &&
               <div
                 id={`#collapse${index}`}
-                className='panel-collapse collapse in'
-                role='tabpanel'
+                className="panel-collapse collapse in"
+                role="tabpanel"
                 aria-labelledby={`heading${index}`}
                 onClick={this.onClickCommentaryCollapse}
               >
                 <div
-                  className='panel-body'
+                  className="panel-body"
                   style={panelBodyStyle}
                 >
                   <Commentary
@@ -250,7 +257,7 @@ export default React.createClass({
     return null
   },
 
-  render () {
+  render() {
     const {
       activeCommentary,
       showNewCommentary,
@@ -264,14 +271,14 @@ export default React.createClass({
     )
     return (
       <div
-        className='commentaries'
+        className="commentaries"
       >
         <h1>
           Commentaries
         </h1>
         <PanelGroup
           activeKey={activeCommentaryId}
-          id='commentariesAccordion'
+          id="commentariesAccordion"
           accordion
         >
           {this.commentariesComponent()}
