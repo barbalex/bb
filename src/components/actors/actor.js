@@ -1,42 +1,47 @@
 'use strict'
 
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
 import Editor from '../editor.js'
 import Meta from '../pages/pageMeta.js'
 
-export default React.createClass({
-  displayName: 'Actor',
+class Actor extends Component {
+  static propTypes = {
+    activeActor: PropTypes.object,
+    editing: PropTypes.bool,
+    showMeta: PropTypes.bool,
+    onSaveActorArticle: PropTypes.func
+  }
 
-  propTypes: {
-    activeActor: React.PropTypes.object,
-    editing: React.PropTypes.bool,
-    showMeta: React.PropTypes.bool,
-    onSaveActorArticle: React.PropTypes.func
-  },
-
-  getInitialState () {
-    return {
+  constructor(props) {
+    super(props)
+    this.state = {
       showMeta: false
     }
-  },
+    this.onClickMeta = this.onClickMeta.bind(this)
+    this.onCloseMeta = this.onCloseMeta.bind(this)
+  }
 
-  onClickMeta () {
+  onClickMeta() {
     const { showMeta } = this.state
     this.setState({
       showMeta: !showMeta
     })
-  },
+  }
 
-  onCloseMeta () {
+  onCloseMeta() {
     this.setState({
       showMeta: false
     })
-  },
+  }
 
-  render () {
-    const { activeActor, editing, onSaveActorArticle } = this.props
+  render() {
+    const {
+      activeActor,
+      editing,
+      onSaveActorArticle,
+    } = this.props
     const { showMeta } = this.state
     const articleEncoded = activeActor.article
     const articleDecoded = Base64.decode(articleEncoded)
@@ -47,7 +52,7 @@ export default React.createClass({
     }
     if (editing) {
       return (
-        <div className='actor'>
+        <div className="actor">
           {
             showMeta &&
             <Meta
@@ -69,14 +74,19 @@ export default React.createClass({
         </div>
       )
     }
-    const createMarkup = () => ({__html: articleDecoded})
+    const createMarkup = () => ({ __html: articleDecoded })
     return (
       <div
-        className='actor col500'>
+        className="actor col500"
+      >
         <div
           dangerouslySetInnerHTML={createMarkup()}
         />
       </div>
     )
   }
-})
+}
+
+Actor.displayName = 'Actor'
+
+export default Actor
