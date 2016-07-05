@@ -5,7 +5,7 @@ import React from 'react'
 import Dropzone from 'react-dropzone'
 
 const onDrop = (files, doc) => {
-  let attachments = {}
+  const attachments = {}
   files.forEach((file) => {
     /**
      * create an attachments object of this form:
@@ -36,12 +36,12 @@ const onDrop = (files, doc) => {
 }
 
 const AttachImages = ({ doc }) =>
-  <div className='dropzone'>
+  <div className="dropzone">
     <Dropzone
       onDrop={(event) => onDrop(event, doc)}
     >
       <div>
-        Drop some files here.<br/>
+        Drop some files here.<br />
         Or click to select files to upload.
       </div>
     </Dropzone>

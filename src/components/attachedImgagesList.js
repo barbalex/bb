@@ -11,22 +11,27 @@ export default React.createClass({
     urlCopied: React.PropTypes.string
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       urlCopied: null
     }
   },
 
-  onCopyUrl (urlCopied) {
+  onCopyUrl(urlCopied) {
     this.setState({ urlCopied })
   },
 
-  images () {
+  images() {
     const { doc } = this.props
     const { urlCopied } = this.state
     const wantedContentTypes = ['image/jpeg', 'image/png']
     const imageNameArray = []
-    if (!doc._attachments || Object.keys(doc._attachments).length === 0) return []
+    if (
+      !doc._attachments ||
+      Object.keys(doc._attachments).length === 0
+    ) {
+      return []
+    }
     Object.keys(doc._attachments).forEach((key) => {
       if (wantedContentTypes.includes(doc._attachments[key].content_type)) {
         imageNameArray.push(key)
@@ -44,7 +49,7 @@ export default React.createClass({
     return images
   },
 
-  render () {
+  render() {
     const divStyle = {
       overflow: 'auto',
       maxHeight: 400,
@@ -52,7 +57,7 @@ export default React.createClass({
     }
     return (
       <div
-        className='media'
+        className="media"
         style={divStyle}
       >
         {this.images()}
