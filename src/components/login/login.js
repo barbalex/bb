@@ -19,7 +19,7 @@ const Login = ({ email }) =>
     {
       email &&
       <Button
-        className='btn-primary'
+        className="btn-primary"
         onClick={() => app.Actions.logout()}
       >
         log out

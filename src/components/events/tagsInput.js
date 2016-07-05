@@ -8,8 +8,8 @@ import allTags from './tags.js'
 const tagIcon = (option) => {
   const top = option.top ? option.top : 0
   const glyphStyle = {
-    top: top,
-    fontSize: 1.5 + 'em'
+    top,
+    fontSize: '1.5em'
   }
   return (
     <Glyphicon
@@ -26,11 +26,11 @@ const tags = (activeEvent) => {
     return (
       <div
         key={index}
-        className='form-group event-tag'
+        className="form-group event-tag"
       >
         <label>
           <input
-            type='checkbox'
+            type="checkbox"
             checked={checked}
             onChange={(event) =>
               onChangeTag(option.tag, event, activeEvent)
@@ -66,11 +66,11 @@ const labelStyle = {
 }
 
 const EventTags = ({ activeEvent }) =>
-  <div style={{marginBottom: 20}}>
+  <div style={{ marginBottom: 20 }}>
     <div style={labelStyle}>
       Tags
     </div>
-    <div className='event-tags'>
+    <div className="event-tags">
       {tags(activeEvent)}
     </div>
   </div>

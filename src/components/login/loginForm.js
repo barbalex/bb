@@ -6,7 +6,13 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Alert, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import {
+  Alert,
+  Button,
+  FormGroup,
+  ControlLabel,
+  FormControl,
+} from 'react-bootstrap'
 import { isObject } from 'lodash'
 import validateEmail from './validateEmail.js'
 
@@ -21,7 +27,7 @@ export default React.createClass({
     loginError: React.PropTypes.string
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       invalidEmail: false,
       invalidPassword: false,
@@ -31,7 +37,7 @@ export default React.createClass({
     }
   },
 
-  onKeyDownEmail (event) {
+  onKeyDownEmail(event) {
     const { password } = this.state
     const enter = 13
     if (event.keyCode === enter) {
@@ -42,7 +48,7 @@ export default React.createClass({
     }
   },
 
-  onKeyDownPassword (event) {
+  onKeyDownPassword(event) {
     const { newEmail } = this.state
     const enter = 13
     if (event.keyCode === enter) {
@@ -53,10 +59,30 @@ export default React.createClass({
     }
   },
 
-  checkSignin (newEmail, password) {
+  onBlurEmail(event) {
+    const newEmail = event.target.value
+    this.setState({ newEmail })
+    this.validEmail(newEmail)
+  },
+
+  onBlurPassword(event) {
+    const password = event.target.value
+    this.setState({ password })
+  },
+
+  onAlertDismiss() {
+    this.setState({ loginError: null })
+  },
+
+  onClickLogin() {
+    const { newEmail, password } = this.state
+    this.checkSignin(newEmail, password)
+  },
+
+  checkSignin(newEmail, password) {
     if (this.validSignin(newEmail, password)) {
       app.db.login(newEmail, password)
-        .then((response) =>
+        .then(() =>
           app.Actions.login(newEmail)
         )
         .catch((error) =>
@@ -65,47 +91,27 @@ export default React.createClass({
     }
   },
 
-  onBlurEmail (event) {
-    const newEmail = event.target.value
-    this.setState({ newEmail })
-    this.validEmail(newEmail)
-  },
-
-  onBlurPassword (event) {
-    const password = event.target.value
-    this.setState({ password })
-  },
-
-  onAlertDismiss () {
-    this.setState({ loginError: null })
-  },
-
-  onClickLogin () {
-    const { newEmail, password } = this.state
-    this.checkSignin(newEmail, password)
-  },
-
-  validEmail (newEmail) {
+  validEmail(newEmail) {
     const validEmail = newEmail && validateEmail(newEmail)
     const invalidEmail = !validEmail
     this.setState({ invalidEmail })
     return validEmail
   },
 
-  validPassword (password) {
+  validPassword(password) {
     const validPassword = !!password
     const invalidPassword = !validPassword
     this.setState({ invalidPassword })
     return validPassword
   },
 
-  validSignin (newEmail, password) {
+  validSignin(newEmail, password) {
     const validEmail = this.validEmail(newEmail)
     const validPassword = this.validPassword(password)
     return validEmail && validPassword
   },
 
-  render () {
+  render() {
     const {
       invalidEmail,
       invalidPassword,
@@ -122,21 +128,21 @@ export default React.createClass({
 
     return (
       <form
-        className='form'
-        autoComplete='off'
+        className="form"
+        autoComplete="off"
       >
         <div
-          className='formGroup'
+          className="formGroup"
         >
           <FormGroup
             controlId="email"
           >
             <ControlLabel>Email</ControlLabel>
             <FormControl
-              type='email'
-              id='email'
-              bsSize='small'
-              className='controls'
+              type="email"
+              id="email"
+              bsSize="small"
+              className="controls"
               bsStyle={emailInputBsStyle}
               onBlur={this.onBlurEmail}
               onKeyDown={this.onKeyDownEmail}
@@ -147,24 +153,24 @@ export default React.createClass({
           {
             invalidEmail &&
             <div
-              className='validateDivAfterRBC'
+              className="validateDivAfterRBC"
             >
               Please check email
             </div>
           }
         </div>
         <div
-          className='formGroup'
+          className="formGroup"
         >
           <FormGroup
             controlId="password"
           >
             <ControlLabel>Password</ControlLabel>
             <FormControl
-              type='password'
-              id='password'
-              bsSize='small'
-              className='controls'
+              type="password"
+              id="password"
+              bsSize="small"
+              className="controls"
               bsStyle={passwordInputBsStyle}
               onBlur={this.onBlurPassword}
               onKeyDown={this.onKeyDownPassword}
@@ -174,7 +180,7 @@ export default React.createClass({
           {
             invalidPassword &&
             <div
-              className='validateDivAfterRBC'
+              className="validateDivAfterRBC"
             >
               Please check password
             </div>
@@ -183,7 +189,7 @@ export default React.createClass({
         {
           isError &&
           <Alert
-            bsStyle='danger'
+            bsStyle="danger"
             onDismiss={this.onAlertDismiss}
             style={styleAlert}
           >
@@ -191,7 +197,7 @@ export default React.createClass({
           </Alert>
         }
         <Button
-          className='btn-primary'
+          className="btn-primary"
           onClick={this.onClickLogin}
         >
           log in
