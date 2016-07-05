@@ -17,10 +17,10 @@ import { Overlay, Glyphicon } from 'react-bootstrap'
 const errorMessages = (errors) =>
   errors.map((error, index) =>
     <div
-      className='errorContainer'
+      className="errorContainer"
       key={index}
     >
-      <div className='error'>
+      <div className="error">
         {
           error.title &&
           <p>
@@ -35,7 +35,7 @@ const errorMessages = (errors) =>
       </div>
       {
         index + 1 < errors.length &&
-        <hr/>
+        <hr />
       }
     </div>
   )
@@ -53,10 +53,10 @@ const Errors = ({ errors }) =>
     show={errors.length > 0}
   >
     <div
-      id='errors'
+      id="errors"
     >
       <Glyphicon
-        glyph='remove-circle'
+        glyph="remove-circle"
         style={glyphStyle}
         onClick={() =>
           app.Actions.showError()

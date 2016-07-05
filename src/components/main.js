@@ -21,8 +21,6 @@ import getPageNameFromDoc from '../modules/getPageNameFromDoc.js'
 export default React.createClass({
   displayName: 'Main',
 
-  mixins: [ListenerMixin],
-
   propTypes: {
     activePage: React.PropTypes.object,
     monthlyEvents: React.PropTypes.array,
@@ -49,7 +47,9 @@ export default React.createClass({
     activeEventYears: React.PropTypes.array
   },
 
-  getInitialState () {
+  mixins: [ListenerMixin],
+
+  getInitialState() {
     const email = window.localStorage.email
     return {
       activePage: {},
@@ -71,13 +71,13 @@ export default React.createClass({
       showNewActor: false,
       showNewMonthlyEvent: false,
       showNewPublication: false,
-      email: email,
+      email,
       errors: [],
       activeEventYears: [parseInt(moment().format('YYYY'), 0)]
     }
   },
 
-  componentDidMount () {
+  componentDidMount() {
     // listen to stores
     this.listenTo(app.activePageStore, this.onActivePageStoreChange)
     this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
@@ -90,23 +90,27 @@ export default React.createClass({
     this.listenTo(app.errorStore, this.onErrorStoreChange)
   },
 
-  onActivePageStoreChange (activePage) {
+  onActivePageStoreChange(activePage) {
     this.setState({ activePage })
   },
 
-  onMonthlyEventsStoreChange (monthlyEvents, activeMonthlyEvent) {
+  onMonthlyEventsStoreChange(monthlyEvents, activeMonthlyEvent) {
     const { email } = this.state
-    if (!email) monthlyEvents = monthlyEvents.filter((monthlyEvent) =>
-      !monthlyEvent.draft
-    )
+    if (!email) {
+      monthlyEvents = monthlyEvents.filter((monthlyEvent) =>
+        !monthlyEvent.draft
+      )
+    }
     this.setState({ monthlyEvents, activeMonthlyEvent })
   },
 
-  onPublicationsStoreChange (publications, activePublicationCategory, activePublication) {
+  onPublicationsStoreChange(publications, activePublicationCategory, activePublication) {
     const { email } = this.state
-    if (!email) publications = publications.filter((publication) =>
-      !publication.draft
-    )
+    if (!email) {
+      publications = publications.filter((publication) =>
+        !publication.draft
+      )
+    }
     this.setState({
       publications,
       activePublicationCategory,
@@ -114,129 +118,133 @@ export default React.createClass({
     })
   },
 
-  onCommentariesStoreChange (commentaries, activeCommentary) {
+  onCommentariesStoreChange(commentaries, activeCommentary) {
     const { email } = this.state
-    if (!email) commentaries = commentaries.filter((commentary) =>
-      !commentary.draft
-    )
+    if (!email) {
+      commentaries = commentaries.filter((commentary) =>
+        !commentary.draft
+      )
+    }
     this.setState({ commentaries, activeCommentary })
   },
 
-  onEventsStoreChange (events, activeEvent) {
-    let state = { events, activeEvent }
+  onEventsStoreChange(events, activeEvent) {
+    const state = { events, activeEvent }
     // when new event was saved, hide component
     if (activeEvent) Object.assign(state, { showNewEvent: false })
     this.setState(state)
   },
 
-  onYearsOfEventsStoreChange (yearsOfEvents) {
+  onYearsOfEventsStoreChange(yearsOfEvents) {
     this.setState({ yearsOfEvents })
   },
 
-  onActorsStoreChange (actors, activeActor) {
+  onActorsStoreChange(actors, activeActor) {
     const { email } = this.state
-    if (!email) actors = actors.filter((actor) => !actor.draft)
+    if (!email) {
+      actors = actors.filter((actor) => !actor.draft)
+    }
     this.setState({ actors, activeActor })
   },
 
-  onLoginStoreChange (email) {
+  onLoginStoreChange(email) {
     this.setState({ email })
     if (email) app.Actions.getPage('pages_events')
   },
 
-  onErrorStoreChange (errors) {
+  onErrorStoreChange(errors) {
     this.setState({ errors })
   },
 
-  onClickEdit () {
+  onClickEdit() {
     let { editing } = this.state
     editing = !editing
     this.setState({ editing })
   },
 
-  onClickNewCommentary () {
+  onClickNewCommentary() {
     this.setState({ showNewCommentary: true })
   },
 
-  onClickNewEvent () {
+  onClickNewEvent() {
     this.setState({ showNewEvent: true })
   },
 
-  onClickNewActor () {
+  onClickNewActor() {
     this.setState({ showNewActor: true })
   },
 
-  onClickNewMonthlyEvent () {
+  onClickNewMonthlyEvent() {
     this.setState({ showNewMonthlyEvent: true })
   },
 
-  onClickNewPublication () {
+  onClickNewPublication() {
     this.setState({ showNewPublication: true })
   },
 
-  onCloseNewCommentary () {
+  onCloseNewCommentary() {
     this.setState({ showNewCommentary: false })
   },
 
-  onCloseNewEvent () {
+  onCloseNewEvent() {
     this.setState({ showNewEvent: false })
   },
 
-  onCloseNewActor () {
+  onCloseNewActor() {
     this.setState({ showNewActor: false })
   },
 
-  onCloseNewMonthlyEvent () {
+  onCloseNewMonthlyEvent() {
     this.setState({ showNewMonthlyEvent: false })
   },
 
-  onCloseNewPublication () {
+  onCloseNewPublication() {
     this.setState({ showNewPublication: false })
   },
 
-  onSavePage (activePage) {
+  onSavePage(activePage) {
     app.Actions.savePage(activePage)
   },
 
-  onSavePageArticle (articleEncoded) {
-    let { activePage } = this.state
+  onSavePageArticle(articleEncoded) {
+    const { activePage } = this.state
     activePage.article = articleEncoded
     app.Actions.savePage(activePage)
   },
 
-  onSaveMonthlyEventArticle (articleEncoded) {
-    let { activeMonthlyEvent } = this.state
+  onSaveMonthlyEventArticle(articleEncoded) {
+    const { activeMonthlyEvent } = this.state
     activeMonthlyEvent.article = articleEncoded
     app.Actions.saveMonthlyEvent(activeMonthlyEvent)
   },
 
-  onSavePublicationArticle (articleEncoded) {
-    let { activePublication } = this.state
+  onSavePublicationArticle(articleEncoded) {
+    const { activePublication } = this.state
     activePublication.article = articleEncoded
     app.Actions.savePublication(activePublication)
   },
 
-  onSaveCommentaryArticle (articleEncoded) {
-    let { activeCommentary } = this.state
+  onSaveCommentaryArticle(articleEncoded) {
+    const { activeCommentary } = this.state
     activeCommentary.article = articleEncoded
     app.Actions.saveCommentary(activeCommentary)
   },
 
-  onSaveActorArticle (articleEncoded) {
-    let { activeActor } = this.state
+  onSaveActorArticle(articleEncoded) {
+    const { activeActor } = this.state
     activeActor.article = articleEncoded
     app.Actions.saveActor(activeActor)
   },
 
-  onChangeActiveEvent (activeEvent) {
+  onChangeActiveEvent(activeEvent) {
     this.setState({ activeEvent })
   },
 
-  setActiveEventYears (activeEventYears) {
+  setActiveEventYears(activeEventYears) {
     this.setState({ activeEventYears })
   },
 
-  render () {
+  render() {
     const { login } = this.props
     const {
       activePage,
@@ -260,7 +268,7 @@ export default React.createClass({
       showNewPublication,
       email,
       errors,
-      activeEventYears
+      activeEventYears,
     } = this.state
     const nonSimplePages = [
       'pages_commentaries',
@@ -341,7 +349,7 @@ export default React.createClass({
             onClickNewMonthlyEvent={this.onClickNewMonthlyEvent}
             onClickNewPublication={this.onClickNewPublication}
           />
-          <div className='container'>
+          <div className="container">
             {
               showErrors &&
               <Errors errors={errors} />
@@ -428,7 +436,7 @@ export default React.createClass({
             {
               showCopyright &&
               <p
-                style={{marginTop: 70}}
+                style={{ marginTop: 70 }}
               >
                 &copy; Jürg Martin Gabriel. All Rights Reserved.
               </p>
