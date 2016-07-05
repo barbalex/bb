@@ -8,7 +8,7 @@ import {
   Alert,
   FormGroup,
   ControlLabel,
-  FormControl
+  FormControl,
 } from 'react-bootstrap'
 
 export default React.createClass({
@@ -21,7 +21,7 @@ export default React.createClass({
     error: React.PropTypes.string
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       title: '',
       category: '',
@@ -29,17 +29,17 @@ export default React.createClass({
     }
   },
 
-  onChangeTitle (event) {
+  onChangeTitle(event) {
     const title = event.target.value
     this.setState({ title })
   },
 
-  onChangeCategory (event) {
+  onChangeCategory(event) {
     const category = event.target.value
     this.setState({ category })
   },
 
-  createNewPublication () {
+  createNewPublication() {
     const { onCloseNewPublication } = this.props
     const { title, category } = this.state
     if (title && category) {
@@ -52,25 +52,21 @@ export default React.createClass({
     }
   },
 
-  close () {
+  close() {
     const { onCloseNewPublication } = this.props
     onCloseNewPublication()
   },
 
-  onHide () {
-    // seems that this method is needed ???
-  },
-
-  categoryOptions () {
+  categoryOptions() {
     const publicationCategories = app.publicationsStore.getPublicationCategories()
-    let options = publicationCategories.map((category, index) =>
+    const options = publicationCategories.map((category, index) =>
       <option key={index + 1} value={category}>{category}</option>
     )
     options.unshift(<option key={0} value={null}></option>)
     return options
   },
 
-  render () {
+  render() {
     const { title, category, error } = this.state
     const alertStyle = {
       marginBottom: 10
@@ -79,7 +75,7 @@ export default React.createClass({
       <Modal
         show
         onHide={this.close}
-        bsSize='large'
+        bsSize="large"
       >
         <Modal.Header>
           <Modal.Title>
@@ -93,7 +89,7 @@ export default React.createClass({
           >
             <ControlLabel>Title</ControlLabel>
             <FormControl
-              type='text'
+              type="text"
               value={title}
               onChange={this.onChangeTitle}
               tabIndex={1}
@@ -116,7 +112,7 @@ export default React.createClass({
           {
             error &&
             <Alert
-              bsStyle='danger'
+              bsStyle="danger"
               style={alertStyle}
             >
               {error}
@@ -131,7 +127,7 @@ export default React.createClass({
             discard input and close
           </Button>
           <Button
-            bsStyle='primary'
+            bsStyle="primary"
             onClick={this.createNewPublication}
           >
             create new publication

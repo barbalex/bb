@@ -4,12 +4,16 @@ import React from 'react'
 import { Base64 } from 'js-base64'
 import Editor from '../editor.js'
 
-const Publication = ({ activePublication, editing, onSavePublicationArticle }) => {
+const Publication = ({
+  activePublication,
+  editing,
+  onSavePublicationArticle,
+}) => {
   const articleEncoded = activePublication.article
   const articleDecoded = Base64.decode(articleEncoded)
   if (editing) {
     return (
-      <div className='publication'>
+      <div className="publication">
         <Editor
           doc={activePublication}
           articleDecoded={articleDecoded}
@@ -18,9 +22,9 @@ const Publication = ({ activePublication, editing, onSavePublicationArticle }) =
       </div>
     )
   }
-  const createMarkup = () => ({__html: articleDecoded})
+  const createMarkup = () => ({ __html: articleDecoded })
   return (
-    <div className='publication'>
+    <div className="publication">
       <div dangerouslySetInnerHTML={createMarkup()} />
     </div>
   )
