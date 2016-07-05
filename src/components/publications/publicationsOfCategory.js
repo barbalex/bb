@@ -20,19 +20,19 @@ export default React.createClass({
     docToRemove: React.PropTypes.object
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       docToRemove: null
     }
   },
 
-  componentDidMount () {
+  componentDidMount() {
     // somehow on first load the panel does not scroll up far enough
     // call for more
     this.scrollToActivePanel('more')
   },
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (this.props.activePublication) {
       if (
         !prevProps.activePublication ||
@@ -45,7 +45,7 @@ export default React.createClass({
     }
   },
 
-  onClickPublication (id, e) {
+  onClickPublication(id, e) {
     const { activePublication } = this.props
     // prevent higher level panels from reacting
     e.stopPropagation()
@@ -53,18 +53,24 @@ export default React.createClass({
     app.Actions.getPublication(idToGet)
   },
 
-  onClickEventCollapse (event) {
+  onClickEventCollapse(event) {
     // prevent higher level panels from reacting
     event.stopPropagation()
   },
 
-  onRemovePublication (docToRemove, event) {
+  onRemovePublication(docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
   },
 
-  scrollToActivePanel (more) {
+  onToggleDraft(doc, event) {
+    event.preventDefault()
+    event.stopPropagation()
+    app.Actions.toggleDraftOfPublication(doc)
+  },
+
+  scrollToActivePanel(more) {
     const node = ReactDOM.findDOMNode(this._activePublicationPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
@@ -79,30 +85,30 @@ export default React.createClass({
     }
   },
 
-  removePublication (remove) {
+  removePublication(remove) {
     const { docToRemove } = this.state
     if (remove) app.Actions.removePublication(docToRemove)
     this.setState({ docToRemove: null })
   },
 
-  removePublicationGlyph (doc) {
+  removePublicationGlyph(doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 8,
       top: 6,
-      fontSize: 1.5 + 'em'
+      fontSize: '1.5em'
     }
     return (
       <OverlayTrigger
-        placement='top'
+        placement="top"
         overlay={
-          <Tooltip id='removeThisPublication'>
+          <Tooltip id="removeThisPublication">
             remove
           </Tooltip>
         }
       >
         <Glyphicon
-          glyph='remove-circle'
+          glyph="remove-circle"
           style={glyphStyle}
           onClick={this.onRemovePublication.bind(this, doc)}
         />
@@ -110,21 +116,21 @@ export default React.createClass({
     )
   },
 
-  toggleDraftGlyph (doc) {
+  toggleDraftGlyph(doc) {
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : 'green'
     const glyphStyle = {
       position: 'absolute',
       right: 38,
       top: 6,
-      fontSize: 1.5 + 'em',
-      color: color
+      fontSize: '1.5em',
+      color
     }
     return (
       <OverlayTrigger
-        placement='top'
+        placement="top"
         overlay={
-          <Tooltip id='toggleDraft'>
+          <Tooltip id="toggleDraft">
             {doc.draft ? 'publish' : 'unpublish'}
           </Tooltip>
         }
@@ -138,13 +144,7 @@ export default React.createClass({
     )
   },
 
-  onToggleDraft (doc, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    app.Actions.toggleDraftOfPublication(doc)
-  },
-
-  publicationsComponent (category) {
+  publicationsComponent(category) {
     const {
       activePublication,
       editing,
@@ -188,26 +188,28 @@ export default React.createClass({
       return (
         <div
           key={dIndex}
-          ref={(c) => this[ref] = c}
-          className='panel panel-default month'
+          ref={(c) => {
+            this[ref] = c
+          }}
+          className="panel panel-default month"
         >
           <div
-            className='panel-heading'
-            role='tab'
-            id={'heading' + dIndex}
+            className="panel-heading"
+            role="tab"
+            id={`heading${dIndex}`}
             onClick={this.onClickPublication.bind(this, doc._id)}
             style={panelHeadingStyle}
           >
             <h4
-              className='panel-title'
+              className="panel-title"
             >
               <a
-                role='button'
-                data-toggle='collapse'
-                data-parent={'#' + category}
-                href={'#collapse' + dIndex}
-                aria-expanded='false'
-                aria-controls={'#collapse' + dIndex}
+                role="button"
+                data-toggle="collapse"
+                data-parent={`#${category}`}
+                href={`#collapse${dIndex}`}
+                aria-expanded="false"
+                aria-controls={`#collapse${dIndex}`}
               >
                 {doc.title}
               </a>
@@ -224,14 +226,14 @@ export default React.createClass({
           {
             isActivePublication &&
             <div
-              id={'#collapse' + dIndex}
-              className='panel-collapse collapse in'
-              role='tabpanel'
-              aria-labelledby={'heading' + dIndex}
+              id={`#collapse${dIndex}`}
+              className="panel-collapse collapse in"
+              role="tabpanel"
+              aria-labelledby={`heading${dIndex}`}
               onClick={this.onClickEventCollapse}
             >
               <div
-                className='panel-body'
+                className="panel-body"
                 style={panelBodyStyle}
               >
                 <Publication
@@ -247,7 +249,7 @@ export default React.createClass({
     })
   },
 
-  render () {
+  render() {
     const { category, activePublication } = this.props
     const { docToRemove } = this.state
     const activePublicationId = activePublication ? activePublication._id : null
@@ -255,7 +257,9 @@ export default React.createClass({
       <PanelGroup
         activeKey={activePublicationId}
         id={category}
-        ref={(c) => this[category] = c}
+        ref={(c) => {
+          this[category] = c
+        }}
         accordion
       >
         {this.publicationsComponent(category)}

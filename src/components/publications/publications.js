@@ -21,15 +21,15 @@ export default React.createClass({
     showNewPublication: React.PropTypes.bool
   },
 
-  componentDidMount () {
+  componentDidMount() {
     app.Actions.getPublications()
   },
 
-  onClickCategory (activePublicationCategory) {
+  onClickCategory(activePublicationCategory) {
     app.Actions.setPublicationCategory(activePublicationCategory)
   },
 
-  publicationCategoriesComponent (activePublicationCategory) {
+  publicationCategoriesComponent(activePublicationCategory) {
     const {
       publications,
       activePublication,
@@ -42,7 +42,7 @@ export default React.createClass({
     if (publications.length > 0 && publicationCategories.length > 0) {
       publicationCategories = sortBy(publicationCategories, (cat) => {
         const orderByCategory = {
-          'Academic': 3,
+          Academic: 3,
           'European Union': 1,
           'IOs & NGOs': 2
         }
@@ -50,7 +50,7 @@ export default React.createClass({
         if (!order) order = 4
         return order
       })
-      return publicationCategories.map((category, yIndex) => {
+      return publicationCategories.map((category) => {
         const className = (
           category === activePublicationCategory ?
           'category active' :
@@ -82,7 +82,7 @@ export default React.createClass({
     return null
   },
 
-  render () {
+  render() {
     const {
       activePublicationCategory,
       showNewPublication,
@@ -94,7 +94,7 @@ export default React.createClass({
 
     return (
       <div
-        id='publications'
+        id="publications"
         style={divStyle}
       >
         <h1>

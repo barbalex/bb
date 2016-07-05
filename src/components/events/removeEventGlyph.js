@@ -4,7 +4,7 @@ import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
 const glyphStyle = {
-  fontSize: 0.9 + 'em',
+  fontSize: '0.9em',
   color: 'red',
   paddingLeft: 8,
   cursor: 'pointer'
@@ -12,15 +12,15 @@ const glyphStyle = {
 
 const RemoveEventGlyph = ({ event, onRemoveEvent }) =>
   <OverlayTrigger
-    placement='top'
+    placement="top"
     overlay={
-      <Tooltip id='removeThisEvent'>
+      <Tooltip id="removeThisEvent">
         remove
       </Tooltip>
     }
   >
     <Glyphicon
-      glyph='remove-circle'
+      glyph="remove-circle"
       style={glyphStyle}
       onClick={() =>
         onRemoveEvent(event)
