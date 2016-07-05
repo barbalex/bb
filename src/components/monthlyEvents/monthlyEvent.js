@@ -18,26 +18,26 @@ export default React.createClass({
     onSaveMonthlyEventArticle: React.PropTypes.func
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       showMeta: false
     }
   },
 
-  onClickMeta () {
+  onClickMeta() {
     const { showMeta } = this.state
     this.setState({
       showMeta: !showMeta
     })
   },
 
-  onCloseMeta () {
+  onCloseMeta() {
     this.setState({
       showMeta: false
     })
   },
 
-  render () {
+  render() {
     const {
       activeMonthlyEvent,
       year,
@@ -56,7 +56,7 @@ export default React.createClass({
     if (editing) {
       return (
         <div
-          className='monthlyEvent'
+          className="monthlyEvent"
         >
           {
             showMeta &&
@@ -81,10 +81,10 @@ export default React.createClass({
         </div>
       )
     }
-    const createMarkup = () => ({__html: articleDecoded})
+    const createMarkup = () => ({ __html: articleDecoded })
     return (
       <div
-        className='monthlyEvent'
+        className="monthlyEvent"
       >
         <div
           dangerouslySetInnerHTML={createMarkup()}

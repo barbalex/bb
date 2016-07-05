@@ -11,7 +11,7 @@ const ModalRemoveMonthlyEvent = ({ doc, removeMonthlyEvent }) => {
   const eventName = `${month} ${year}`
 
   return (
-    <div className='static-modal'>
+    <div className="static-modal">
       <Modal.Dialog>
         <Modal.Header>
           <Modal.Title>
@@ -25,7 +25,7 @@ const ModalRemoveMonthlyEvent = ({ doc, removeMonthlyEvent }) => {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            bsStyle='danger'
+            bsStyle="danger"
             onClick={() =>
               removeMonthlyEvent(true)
             }
