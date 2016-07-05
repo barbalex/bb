@@ -1,5 +1,3 @@
-'use strict'
-
 import app from 'ampersand-app'
 import { map, min, max } from 'lodash'
 import sortEvents from './sortEvents.js'

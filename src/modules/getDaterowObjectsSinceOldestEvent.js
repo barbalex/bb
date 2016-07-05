@@ -1,5 +1,3 @@
-'use strict'
-
 import moment from 'moment'
 import { max } from 'lodash'
 import getDateFromEventId from './getDateFromEventId.js'
@@ -8,7 +6,7 @@ export default (events, activeEventYears) => {
   const oldestEvent = events[events.length - 1]
   if (oldestEvent) {
     const oldestDate = getDateFromEventId(oldestEvent._id)
-    let daterowObjects = []
+    const daterowObjects = []
     const activeYearIsCurrentYear = activeEventYears.includes(
       parseInt(moment().format('YYYY'), 0)
     )
@@ -34,9 +32,9 @@ export default (events, activeEventYears) => {
       migrationEvents.sort((a, b) =>
         a.order - b.order
       )
-      politicsEvents.forEach((event) =>
+      politicsEvents.forEach((event) => {
         event.order = (event.order || 99)
-      )
+      })
       politicsEvents.sort((a, b) =>
         a.order - b.order
       )
