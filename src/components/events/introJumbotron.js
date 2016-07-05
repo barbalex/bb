@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * can't convert to es6 function because this is referenced
  */
