@@ -12,7 +12,12 @@ import {
 import CopyToClipboard from 'react-copy-to-clipboard'
 import getCouchUrl from '../modules/getCouchUrl.js'
 
-const AttachedImage = ({ doc, attName, urlCopied, onCopyUrl }) => {
+const AttachedImage = ({
+  doc,
+  attName,
+  urlCopied,
+  onCopyUrl,
+}) => {
   const id = doc._id
   const url = `${getCouchUrl()}/${id}/${attName}`
   const divStyle = {
@@ -25,7 +30,7 @@ const AttachedImage = ({ doc, attName, urlCopied, onCopyUrl }) => {
     position: 'absolute',
     top: 10,
     left: 175,
-    fontSize: 2 + 'em',
+    fontSize: '2em',
     color: 'red',
     cursor: 'pointer'
   }
@@ -55,17 +60,17 @@ const AttachedImage = ({ doc, attName, urlCopied, onCopyUrl }) => {
       style={divStyle}
     >
       <div
-        className='media-left'
+        className="media-left"
         style={mediaLeftStyle}
       >
         <img
           src={url}
-          className='media-object'
+          className="media-object"
           alt={attName}
           style={imgStyle}
         />
         <Glyphicon
-          glyph='remove-circle'
+          glyph="remove-circle"
           style={glyphStyle}
           onClick={() =>
             app.Actions.removePageAttachment(doc, attName)
@@ -73,7 +78,7 @@ const AttachedImage = ({ doc, attName, urlCopied, onCopyUrl }) => {
         />
       </div>
       <div
-        className='media-body media-middle'
+        className="media-body media-middle"
       >
         <FormGroup>
           <InputGroup>
