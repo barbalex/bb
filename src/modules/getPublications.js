@@ -1,5 +1,3 @@
-'use strict'
-
 import app from 'ampersand-app'
 import { map } from 'lodash'
 import sortPublications from './sortPublications.js'

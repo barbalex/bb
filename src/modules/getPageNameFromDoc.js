@@ -1,5 +1,3 @@
-'use strict'
-
 import getYearFromEventId from './getYearFromEventId.js'
 import getMonthFromEventId from './getMonthFromEventId.js'
 

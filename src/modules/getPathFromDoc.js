@@ -1,5 +1,3 @@
-'use strict'
-
 export default (doc) => {
   let path = doc && doc._id ? doc._id : null
   if (path) {
