@@ -4,8 +4,6 @@
  * if the link is local
  */
 
-'use strict'
-
 import app from 'ampersand-app'
 import React from 'react'
 import localLinks from 'local-links'
