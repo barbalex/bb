@@ -2,25 +2,29 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import {
+  Glyphicon,
+  Tooltip,
+  OverlayTrigger,
+} from 'react-bootstrap'
 
 const glyphStyle = {
-  fontSize: 0.9 + 'em',
+  fontSize: '0.9em',
   paddingLeft: 8,
   cursor: 'pointer'
 }
 
 const EditEventGlyph = ({ event }) =>
   <OverlayTrigger
-    placement='top'
+    placement="top"
     overlay={
-      <Tooltip id='editThisEvent'>
+      <Tooltip id="editThisEvent">
         edit
       </Tooltip>
     }
   >
     <Glyphicon
-      glyph='pencil'
+      glyph="pencil"
       style={glyphStyle}
       onClick={() =>
         app.Actions.getEvent(event._id)

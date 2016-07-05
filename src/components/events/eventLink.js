@@ -1,5 +1,3 @@
-'use strict'
-
 import app from 'ampersand-app'
 import React from 'react'
 import { ListenerMixin } from 'reflux'
@@ -10,14 +8,11 @@ import {
   OverlayTrigger,
   Glyphicon,
   FormGroup,
-  ControlLabel,
-  FormControl
+  FormControl,
 } from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'EventLink',
-
-  mixins: [ListenerMixin],
 
   propTypes: {
     activeEvent: React.PropTypes.object,
@@ -26,32 +21,33 @@ export default React.createClass({
     index: React.PropTypes.number
   },
 
-  componentDidMount () {
-    this.listenTo(app.eventsStore, this.onEventsStoreChange)
-  },
+  mixins: [ListenerMixin],
 
-  getInitialState () {
+  getInitialState() {
     return {
       link: this.props.link
     }
   },
 
-  onEventsStoreChange () {
+  componentDidMount() {
+    this.listenTo(app.eventsStore, this.onEventsStoreChange)
+  },
+
+  onEventsStoreChange() {
     // this is a bad hack
     // without it state is not changed when activeEvent changes
     // > if a link is deleted, the wrong one keeps being shown
     this.state.link = this.props.link
   },
 
-  onChangeUrl (e) {
-    let { link } = this.state
+  onChangeUrl(e) {
+    const { link } = this.state
     link.url = e.target.value
     this.setState({ link })
   },
 
-  onBlurUrl () {
-    let { activeEvent } = this.props
-    const { link: oldLink } = this.props
+  onBlurUrl() {
+    const { activeEvent, link: oldLink } = this.props
     const { link: newLink } = this.state
     const index = activeEvent.links.findIndex((link) =>
       link.label === oldLink.label && link.url === oldLink.url
@@ -60,15 +56,14 @@ export default React.createClass({
     app.Actions.saveEvent(activeEvent)
   },
 
-  onChangeLabel (e) {
-    let { link } = this.state
+  onChangeLabel(e) {
+    const { link } = this.state
     link.label = e.target.value
     this.setState({ link })
   },
 
-  onBlurLabel () {
-    let { activeEvent } = this.props
-    const { link: oldLink } = this.props
+  onBlurLabel() {
+    const { activeEvent, link: oldLink } = this.props
     const { link: newLink } = this.state
     const index = activeEvent.links.findIndex((link) =>
       link.url === oldLink.url && link.label === oldLink.label
@@ -77,8 +72,8 @@ export default React.createClass({
     app.Actions.saveEvent(activeEvent)
   },
 
-  onRemoveLink () {
-    let { activeEvent } = this.props
+  onRemoveLink() {
+    const { activeEvent } = this.props
     const { link: linkToRemove } = this.props
     activeEvent.links = activeEvent.links.filter((link) =>
       link.label !== linkToRemove.label && link.url !== linkToRemove.url
@@ -86,23 +81,23 @@ export default React.createClass({
     app.Actions.saveEvent(activeEvent)
   },
 
-  removeLinkGlyph () {
+  removeLinkGlyph() {
     const glyphStyle = {
-      fontSize: 1.5 + 'em',
+      fontSize: '1.5em',
       color: 'red',
       cursor: 'pointer'
     }
     return (
       <OverlayTrigger
-        placement='right'
+        placement="right"
         overlay={
-          <Tooltip id='removeLink'>
+          <Tooltip id="removeLink">
             remove
           </Tooltip>
         }
       >
         <Glyphicon
-          glyph='remove-circle'
+          glyph="remove-circle"
           style={glyphStyle}
           onClick={this.onRemoveLink}
         />
@@ -110,7 +105,7 @@ export default React.createClass({
     )
   },
 
-  render () {
+  render() {
     const { focus, index } = this.props
     const { link } = this.state
     const focusLabel = focus && !link.label
@@ -127,8 +122,8 @@ export default React.createClass({
             controlId="eventLink"
           >
             <FormControl
-              type='text'
-              bsSize='small'
+              type="text"
+              bsSize="small"
               value={link.label}
               onChange={(event) => this.onChangeLabel(event)}
               onBlur={() => this.onBlurLabel()}
@@ -144,8 +139,8 @@ export default React.createClass({
             controlId="eventUrl"
           >
             <FormControl
-              type='url'
-              bsSize='small'
+              type="url"
+              bsSize="small"
               value={link.url}
               onChange={(event) => this.onChangeUrl(event)}
               onBlur={() => this.onBlurUrl()}

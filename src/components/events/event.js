@@ -1,12 +1,15 @@
 'use strict'
 
-import app from 'ampersand-app'
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import RemoveEventGlyph from './removeEventGlyph.js'
 import EditEventGlyph from './editEventGlyph.js'
 
-const Event = ({ event, email, onRemoveEvent }) => {
+const Event = ({
+  event,
+  email,
+  onRemoveEvent,
+}) => {
   const showEditingGlyphons = !!email
   const classNames = (
     event.tags && event.tags.length > 0 ?
@@ -25,17 +28,20 @@ const Event = ({ event, email, onRemoveEvent }) => {
   const links = event.links.map((link, key) =>
     <span
       key={key}
-      style={outerSpanStyle}>
+      style={outerSpanStyle}
+    >
       {
         key > 0 &&
         ' '
       }
       <a
         href={link.url}
-        target='_blank'>
+        target="_blank"
+      >
         <Glyphicon
-          glyph='new-window'
-          style={linkGlyphStyle} />
+          glyph="new-window"
+          style={linkGlyphStyle}
+        />
         {link.label}
       </a>
     </span>
@@ -43,9 +49,11 @@ const Event = ({ event, email, onRemoveEvent }) => {
 
   return (
     <li
-      className={classNames}>
+      className={classNames}
+    >
       <p
-      className={classNames}>
+        className={classNames}
+      >
         {event.title} <span>{links}</span>
         {
           showEditingGlyphons &&
