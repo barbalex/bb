@@ -1,10 +1,8 @@
-'use strict'
-
 import moment from 'moment'
 import getYearOfFirstEvent from './getYearOfFirstEvent.js'
 
 export default () =>
-  new Promise((resolve, reject) =>
+  new Promise((resolve) =>
     getYearOfFirstEvent()
       .then((oldestYear) => {
         const thisYear = parseInt(moment().format('YYYY'), 0)
