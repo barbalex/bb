@@ -10,9 +10,14 @@ import { Jumbotron } from 'react-bootstrap'
 export default React.createClass({
   displayName: 'IntroJumbotron',
 
-  render () {
+  render() {
     return (
-      <Jumbotron className='eventsIntro' style={{ hyphens: 'manual' }}>
+      <Jumbotron
+        className="eventsIntro"
+        style={{
+          hyphens: 'manual'
+        }}
+      >
         <p style={{ marginBottom: 0 }}>
           Most mi&shy;grants and re&shy;fu&shy;gees ar&shy;ri&shy;ving in Eu&shy;ro&shy;pe
           cross the blue bor&shy;­ders of the Eas&shy;­tern and Cen&shy;­tral Me­diterrane­an.

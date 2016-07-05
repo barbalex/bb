@@ -30,25 +30,29 @@ export default React.createClass({
     setActiveEventYears: React.PropTypes.func
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       docToRemove: null,
       introJumbotronHeight: null
     }
   },
 
-  componentDidMount () {
+  componentDidMount() {
     app.Actions.getEvents([parseInt(moment().format('YYYY'), 0)])
     app.Actions.getYearsOfEvents()
     this.setIntroComponentsHeight()
     window.addEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
   },
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
   },
 
-  setIntroComponentsHeight () {
+  onRemoveEvent(docToRemove) {
+    this.setState({ docToRemove })
+  },
+
+  setIntroComponentsHeight() {
     const { introJumbotronHeight: introJumbotronHeightOld } = this.state
     const introJumbotronDomNode = this.introJumbotron ? ReactDOM.findDOMNode(this.introJumbotron) : null
     const introJumbotronHeight = introJumbotronDomNode ? introJumbotronDomNode.clientHeight : null
@@ -57,17 +61,13 @@ export default React.createClass({
     }
   },
 
-  onRemoveEvent (docToRemove) {
-    this.setState({ docToRemove })
+  setActiveYear(activeEventYears) {
+    const { setActiveEventYears } = this.props
+    app.Actions.getEvents([activeEventYears])
+    setActiveEventYears([activeEventYears])
   },
 
-  removeEvent (remove) {
-    const { docToRemove } = this.state
-    if (remove) app.Actions.removeEvent(docToRemove)
-    this.setState({ docToRemove: null })
-  },
-
-  yearButtons () {
+  yearButtons() {
     const { yearsOfEvents, activeEventYears } = this.props
     return yearsOfEvents.map((year, index) =>
       <Button
@@ -80,14 +80,13 @@ export default React.createClass({
     )
   },
 
-  setActiveYear (activeEventYears) {
-    const { setActiveEventYears } = this.props
-    activeEventYears = [activeEventYears]
-    app.Actions.getEvents(activeEventYears)
-    setActiveEventYears(activeEventYears)
+  removeEvent(remove) {
+    const { docToRemove } = this.state
+    if (remove) app.Actions.removeEvent(docToRemove)
+    this.setState({ docToRemove: null })
   },
 
-  render () {
+  render() {
     const {
       events,
       yearsOfEvents,
@@ -106,9 +105,11 @@ export default React.createClass({
     const showEventsTable = min(activeEventYears) > 2014
 
     return (
-      <div className='events'>
+      <div className="events">
         <IntroJumbotron
-          ref={(j) => this.introJumbotron = j}
+          ref={(j) => {
+            this.introJumbotron = j
+          }}
         />
         <div
           style={{ textAlign: 'center' }}

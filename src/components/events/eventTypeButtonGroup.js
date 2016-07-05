@@ -11,18 +11,18 @@ export default React.createClass({
     onChangeEventType: React.PropTypes.func
   },
 
-  componentDidMount () {
+  componentDidMount() {
     const { eventType, onChangeEventType } = this.props
     // if no eventType, set migration
     if (!eventType) onChangeEventType('migration')
   },
 
-  onChangeEventType (eventType) {
+  onChangeEventType(eventType) {
     const { onChangeEventType } = this.props
     onChangeEventType(eventType)
   },
 
-  render () {
+  render() {
     const { eventType } = this.props
     const labelStyle = {
       fontWeight: 'bold',
@@ -30,7 +30,7 @@ export default React.createClass({
     }
     return (
       <div
-        style={{marginBottom: 20}}
+        style={{ marginBottom: 20 }}
       >
         <div
           style={labelStyle}
@@ -40,7 +40,8 @@ export default React.createClass({
         <ButtonGroup>
           <Button
             className={eventType === 'migration' ? 'active' : ''}
-            onClick={this.onChangeEventType.bind(this, 'migration')}>
+            onClick={this.onChangeEventType.bind(this, 'migration')}
+          >
             maritime events / monthly statistics
           </Button>
           <Button
