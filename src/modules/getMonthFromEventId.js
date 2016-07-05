@@ -1,5 +1,3 @@
-'use strict'
-
 import getMonths from './getMonths.js'
 
 export default (id) => {
