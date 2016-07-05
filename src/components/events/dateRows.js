@@ -15,7 +15,7 @@ const DateRows = ({
   onRemoveEvent
 }) => {
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(events, activeEventYears)
-  let dateRows = []
+  const dateRows = []
   if (dateRowObjects.length > 0) {
     dateRowObjects.forEach((dRO, index) => {
       const day = moment(dRO.date).format('D')
@@ -83,7 +83,7 @@ const DateRows = ({
         <ReactList
           itemRenderer={renderDateRow}
           length={dateRows.length}
-          type='variable'
+          type="variable"
         />
       </div>
     )
@@ -103,7 +103,7 @@ DateRows.propTypes = {
   events: React.PropTypes.array,
   email: React.PropTypes.string,
   activeEventYears: React.PropTypes.array,
-  onRemoveEvent: React.PropTypes.func
+  onRemoveEvent: React.PropTypes.func,
 }
 
 export default DateRows

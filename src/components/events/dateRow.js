@@ -27,19 +27,22 @@ const DateRow = ({ dateRowObject: dRO, onRemoveEvent, email }) => {
   return (
     <div className="eventsTable-body-row">
       <div
-        className={['eventsTable-body-cell', dayClassName].join(' ')}>
+        className={['eventsTable-body-cell', dayClassName].join(' ')}
+      >
         <p>
           {day}
         </p>
       </div>
       <div
-        className="eventsTable-body-cell eventsTable-cell-migration">
+        className="eventsTable-body-cell eventsTable-cell-migration"
+      >
         <ul>
           {migrationEvents}
         </ul>
       </div>
       <div
-        className="eventsTable-body-cell eventsTable-cell-politics">
+        className="eventsTable-body-cell eventsTable-cell-politics"
+      >
         <ul>
           {politicsEvents}
         </ul>

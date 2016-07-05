@@ -2,7 +2,14 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, Alert, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import {
+  Modal,
+  Button,
+  Alert,
+  FormGroup,
+  ControlLabel,
+  FormControl,
+} from 'react-bootstrap'
 import moment from 'moment'
 import EventTypeButtonGroup from './eventTypeButtonGroup.js'
 import DateInput from './dateInput.js'
@@ -19,14 +26,14 @@ export default React.createClass({
     error: React.PropTypes.string
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       error: null
     }
   },
 
-  onChangeTitle (e) {
-    let { activeEvent, onChangeActiveEvent } = this.props
+  onChangeTitle(e) {
+    const { activeEvent, onChangeActiveEvent } = this.props
     const title = e.target.value
     if (title) {
       activeEvent.title = title
@@ -38,7 +45,7 @@ export default React.createClass({
     }
   },
 
-  onBlurTitle (e) {
+  onBlurTitle(e) {
     const { activeEvent } = this.props
     activeEvent.title = e.target.value
     if (activeEvent.title) {
@@ -47,7 +54,7 @@ export default React.createClass({
     }
   },
 
-  onChangeDatePicker (event, picker) {
+  onChangeDatePicker(event, picker) {
     const { activeEvent } = this.props
     const datePassed = moment(picker.startDate, 'DD.MM.YYYY')
     if (datePassed) {
@@ -59,34 +66,34 @@ export default React.createClass({
     }
   },
 
-  onChangeEventType (eventType) {
-    let { activeEvent } = this.props
+  onChangeEventType(eventType) {
+    const { activeEvent } = this.props
     activeEvent.eventType = eventType
     app.Actions.saveEvent(activeEvent)
   },
 
-  onChangeOrder (e) {
-    let { activeEvent, onChangeActiveEvent } = this.props
+  onChangeOrder(e) {
+    const { activeEvent, onChangeActiveEvent } = this.props
     activeEvent.order = e.target.value
     onChangeActiveEvent(activeEvent)
     this.setState({ error: null })
   },
 
-  onBlurOrder (e) {
+  onBlurOrder(e) {
     const { activeEvent } = this.props
     activeEvent.order = e.target.value
     app.Actions.saveEvent(activeEvent)
   },
 
-  close () {
-    app.Actions.getEvent(null)
-  },
-
-  onHide () {
+  onHide() {
     // seems that this method is needed ???
   },
 
-  render () {
+  close() {
+    app.Actions.getEvent(null)
+  },
+
+  render() {
     const { activeEvent, error } = this.props
     const date = getDateFromEventId(activeEvent._id)
     const alertStyle = {
@@ -100,8 +107,9 @@ export default React.createClass({
       <Modal
         show
         onHide={this.close}
-        bsSize='large'
-        dialogClassName='editEvent'>
+        bsSize="large"
+        dialogClassName="editEvent"
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             Edit event
@@ -114,7 +122,7 @@ export default React.createClass({
           >
             <ControlLabel>Title</ControlLabel>
             <FormControl
-              type='text'
+              type="text"
               value={activeEvent.title}
               onChange={this.onChangeTitle}
               onBlur={this.onBlurTitle}
@@ -134,7 +142,7 @@ export default React.createClass({
           >
             <ControlLabel>Order</ControlLabel>
             <FormControl
-              type='number'
+              type="number"
               value={activeEvent.order}
               onChange={this.onChangeOrder}
               onBlur={this.onBlurOrder}
@@ -151,7 +159,7 @@ export default React.createClass({
           {
             error &&
             <Alert
-              bsStyle='danger'
+              bsStyle="danger"
               style={alertStyle}
             >
               {error}
