@@ -1,5 +1,3 @@
-'use strict'
-
 import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
