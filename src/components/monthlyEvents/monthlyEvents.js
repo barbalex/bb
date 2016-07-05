@@ -22,25 +22,25 @@ export default React.createClass({
     showNewMonthlyEvent: React.PropTypes.bool
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       activeYear: null
     }
   },
 
-  componentDidMount () {
+  componentDidMount() {
     app.Actions.getMonthlyEvents()
   },
 
-  onClickYear (activeYear) {
+  onClickYear(activeYear) {
     this.setState({ activeYear })
     // make sure no monthlyEvent is loaded
     // i.e. if an monthlyEvent was loaded it is unloaded
     app.Actions.getMonthlyEvent(null)
   },
 
-  yearsOfEvents () {
-    let { monthlyEvents } = this.props
+  yearsOfEvents() {
+    const { monthlyEvents } = this.props
     const allYears = monthlyEvents.map((doc) =>
       getYearFromEventId(doc._id)
     )
@@ -51,12 +51,12 @@ export default React.createClass({
     return []
   },
 
-  mostRecentYear () {
+  mostRecentYear() {
     const years = this.yearsOfEvents()
     return years[0]
   },
 
-  eventYearsComponent (activeYear) {
+  eventYearsComponent(activeYear) {
     const {
       activeMonthlyEvent,
       editing,
@@ -66,7 +66,7 @@ export default React.createClass({
     let { monthlyEvents } = this.props
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
-      return years.map((year, yIndex) => {
+      return years.map((year) => {
         const className = year === activeYear ? 'year active' : 'year not-active'
         // wanted to only build MonthlyEventsOfYear if isActiveYear
         // but opening a year was way to hideous
@@ -76,14 +76,16 @@ export default React.createClass({
             header={year}
             eventKey={year}
             className={className}
-            onClick={this.onClickYear.bind(this, year)}>
+            onClick={this.onClickYear.bind(this, year)}
+          >
             <MonthlyEventsOfYear
               year={year}
               monthlyEvents={monthlyEvents}
               activeMonthlyEvent={activeMonthlyEvent}
               editing={editing}
               email={email}
-              onSaveMonthlyEventArticle={onSaveMonthlyEventArticle} />
+              onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
+            />
           </Panel>
         )
       })
@@ -91,7 +93,7 @@ export default React.createClass({
     return null
   },
 
-  render () {
+  render() {
     const {
       activeMonthlyEvent,
       showNewMonthlyEvent,
@@ -109,7 +111,7 @@ export default React.createClass({
 
     return (
       <div
-        id='monthlyEvents'
+        id="monthlyEvents"
         style={divStyle}
       >
         <h1>

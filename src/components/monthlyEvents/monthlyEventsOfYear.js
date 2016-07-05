@@ -3,7 +3,12 @@
 import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { PanelGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import {
+  PanelGroup,
+  Glyphicon,
+  OverlayTrigger,
+  Tooltip,
+} from 'react-bootstrap'
 import { has } from 'lodash'
 import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
@@ -23,19 +28,19 @@ export default React.createClass({
     docToRemove: React.PropTypes.object
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       docToRemove: null
     }
   },
 
-  componentDidMount () {
+  componentDidMount() {
     // somehow on first load the panel does not scroll up far enough
     // call for more
     this.scrollToActivePanel('more')
   },
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (this.props.activeMonthlyEvent) {
       const activeMonthlyEventChanged = (
         !prevProps.activeMonthlyEvent ||
@@ -49,7 +54,7 @@ export default React.createClass({
     }
   },
 
-  onClickMonthlyEvent (id, event) {
+  onClickMonthlyEvent(id, event) {
     const { activeMonthlyEvent } = this.props
     // prevent higher level panels from reacting
     event.stopPropagation()
@@ -61,18 +66,24 @@ export default React.createClass({
     app.Actions.getMonthlyEvent(idToGet)
   },
 
-  onClickEventCollapse (event) {
+  onClickEventCollapse(event) {
     // prevent higher level panels from reacting
     event.stopPropagation()
   },
 
-  onRemoveMonthlyEvent (docToRemove, event) {
+  onRemoveMonthlyEvent(docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
   },
 
-  scrollToActivePanel (more) {
+  onToggleDraft(doc, event) {
+    event.preventDefault()
+    event.stopPropagation()
+    app.Actions.toggleDraftOfMonthlyEvent(doc)
+  },
+
+  scrollToActivePanel(more) {
     const node = ReactDOM.findDOMNode(this._activeMonthlyEventPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
@@ -87,30 +98,30 @@ export default React.createClass({
     }
   },
 
-  removeMonthlyEvent (remove) {
+  removeMonthlyEvent(remove) {
     const { docToRemove } = this.state
     if (remove) app.Actions.removeMonthlyEvent(docToRemove)
     this.setState({ docToRemove: null })
   },
 
-  removeMonthlyEventGlyph (doc) {
+  removeMonthlyEventGlyph(doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 8,
       top: 6,
-      fontSize: 1.5 + 'em'
+      fontSize: '1.5em'
     }
     return (
       <OverlayTrigger
-        placement='top'
+        placement="top"
         overlay={
-          <Tooltip id='removeThisMonthlyEvent'>
+          <Tooltip id="removeThisMonthlyEvent">
             remove
           </Tooltip>
         }
       >
         <Glyphicon
-          glyph='remove-circle'
+          glyph="remove-circle"
           style={glyphStyle}
           onClick={this.onRemoveMonthlyEvent.bind(this, doc)}
         />
@@ -118,21 +129,21 @@ export default React.createClass({
     )
   },
 
-  toggleDraftGlyph (doc) {
+  toggleDraftGlyph(doc) {
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : 'green'
     const glyphStyle = {
       position: 'absolute',
       right: 38,
       top: 6,
-      fontSize: 1.5 + 'em',
-      color: color
+      fontSize: '1.5em',
+      color
     }
     return (
       <OverlayTrigger
-        placement='top'
+        placement="top"
         overlay={
-          <Tooltip id='toggleDraft'>
+          <Tooltip id="toggleDraft">
             {doc.draft ? 'publish' : 'unpublish'}
           </Tooltip>
         }
@@ -146,13 +157,7 @@ export default React.createClass({
     )
   },
 
-  onToggleDraft (doc, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    app.Actions.toggleDraftOfMonthlyEvent(doc)
-  },
-
-  monthlyEventsComponent (year) {
+  monthlyEventsComponent(year) {
     const {
       activeMonthlyEvent,
       editing,
@@ -185,24 +190,26 @@ export default React.createClass({
       return (
         <div
           key={dIndex}
-          ref={(c) => this[ref] = c}
-          className='panel panel-default month'
+          ref={(c) => {
+            this[ref] = c
+          }}
+          className="panel panel-default month"
         >
           <div
-            className='panel-heading'
-            role='tab'
-            id={'heading' + dIndex}
+            className="panel-heading"
+            role="tab"
+            id={`heading${dIndex}`}
             onClick={this.onClickMonthlyEvent.bind(this, doc._id)}
             style={panelHeadingStyle}
           >
-            <h4 className='panel-title'>
+            <h4 className="panel-title">
               <a
-                role='button'
-                data-toggle='collapse'
-                data-parent={'#' + year}
-                href={'#collapse' + dIndex}
-                aria-expanded='false'
-                aria-controls={'#collapse' + dIndex}
+                role="button"
+                data-toggle="collapse"
+                data-parent={`#${year}`}
+                href={`#collapse${dIndex}`}
+                aria-expanded="false"
+                aria-controls={`#collapse${dIndex}`}
               >
                 {month}
               </a>
@@ -219,14 +226,14 @@ export default React.createClass({
           {
             isActiveMonthlyEvent &&
             <div
-              id={'#collapse' + dIndex}
-              className='panel-collapse collapse in'
-              role='tabpanel'
-              aria-labelledby={'heading' + dIndex}
+              id={`#collapse${dIndex}`}
+              className="panel-collapse collapse in"
+              role="tabpanel"
+              aria-labelledby={`heading${dIndex}`}
               onClick={this.onClickEventCollapse}
             >
               <div
-                className='panel-body'
+                className="panel-body"
                 style={panelBodyStyle}
               >
                 <MonthlyEvent
@@ -244,7 +251,7 @@ export default React.createClass({
     })
   },
 
-  render () {
+  render() {
     const { year, activeMonthlyEvent } = this.props
     const { docToRemove } = this.state
     const activeEventId = has(activeMonthlyEvent, '_id') ? activeMonthlyEvent._id : null
@@ -252,7 +259,9 @@ export default React.createClass({
       <PanelGroup
         activeKey={activeEventId}
         id={year}
-        ref={(c) => this[year] = c}
+        ref={(c) => {
+          this[year] = c
+        }}
         accordion
       >
         {this.monthlyEventsComponent(year)}

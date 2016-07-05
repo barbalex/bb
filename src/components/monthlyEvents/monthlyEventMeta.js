@@ -2,7 +2,13 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Modal, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import {
+  Modal,
+  Button,
+  FormGroup,
+  ControlLabel,
+  FormControl,
+} from 'react-bootstrap'
 
 export default React.createClass({
   displayName: 'MonthlyEventMeta',
@@ -16,7 +22,7 @@ export default React.createClass({
     victims: React.PropTypes.number
   },
 
-  getInitialState () {
+  getInitialState() {
     const { activeMonthlyEvent } = this.props
     return {
       arrivals: activeMonthlyEvent.arrivals,
@@ -24,27 +30,27 @@ export default React.createClass({
     }
   },
 
-  onChangeValue (property, event) {
-    let { activeMonthlyEvent } = this.props
+  onChangeValue(property, event) {
+    const { activeMonthlyEvent } = this.props
     const value = parseInt(event.target.value, 10)
     activeMonthlyEvent[property] = value
     app.Actions.saveMonthlyEvent(activeMonthlyEvent)
     this.setState({ [property]: value })
   },
 
-  close () {
+  close() {
     const { onCloseMeta } = this.props
     onCloseMeta()
   },
 
-  render () {
+  render() {
     const { year, month } = this.props
     const { arrivals, victims } = this.state
     return (
       <Modal
         show
         onHide={this.close}
-        bsSize='medium'
+        bsSize="medium"
       >
         <Modal.Header>
           <Modal.Title>
@@ -58,7 +64,7 @@ export default React.createClass({
           >
             <ControlLabel>Arrivals</ControlLabel>
             <FormControl
-              type='number'
+              type="number"
               defaultValue={arrivals}
               onBlur={this.onChangeValue.bind(this, 'arrivals')}
               autoFocus
@@ -69,7 +75,7 @@ export default React.createClass({
           >
             <ControlLabel>Victims</ControlLabel>
             <FormControl
-              type='number'
+              type="number"
               defaultValue={victims}
               onBlur={this.onChangeValue.bind(this, 'victims')}
               autoFocus
@@ -79,7 +85,7 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button
-            bsStyle='primary'
+            bsStyle="primary"
             onClick={this.close}
           >
             close
