@@ -2,7 +2,13 @@
 
 import app from 'ampersand-app'
 import React from 'react'
-import { Button, Glyphicon, FormGroup, FormControl, InputGroup } from 'react-bootstrap'
+import {
+  Button,
+  Glyphicon,
+  FormGroup,
+  FormControl,
+  InputGroup,
+} from 'react-bootstrap'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import getCouchUrl from '../modules/getCouchUrl.js'
 

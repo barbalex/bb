@@ -4,7 +4,7 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 
 const ModalRemoveEvent = ({ doc, removeEvent }) =>
-  <div className='static-modal'>
+  <div className="static-modal">
     <Modal.Dialog>
       <Modal.Header>
         <Modal.Title>
@@ -18,7 +18,7 @@ const ModalRemoveEvent = ({ doc, removeEvent }) =>
       </Modal.Body>
       <Modal.Footer>
         <Button
-          bsStyle='danger'
+          bsStyle="danger"
           onClick={() =>
             removeEvent(true)
           }
