@@ -55,7 +55,7 @@ window.PouchDB = PouchDB
  * modules that need an app method import ampersand-app instead of using a global
  */
 app.extend({
-  init () {
+  init() {
     this.Actions = actions()
     stores(this.Actions)
     Promise.all([
@@ -66,7 +66,10 @@ app.extend({
       this.router.history.start()
     })
     .catch((error) =>
-      app.Actions.showError({title: 'Fehler in app.js:', msg: error})
+      app.Actions.showError({
+        title: 'Fehler in app.js:',
+        msg: error
+      })
     )
   }
 })
