@@ -1,5 +1,3 @@
-'use strict'
-
 import React from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
