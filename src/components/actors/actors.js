@@ -13,8 +13,6 @@ import ModalRemoveActor from './modalRemoveActor.js'
 export default React.createClass({
   displayName: 'Actors',
 
-  mixins: [ListenerMixin],
-
   propTypes: {
     actors: React.PropTypes.array,
     activeActor: React.PropTypes.object,
@@ -26,17 +24,19 @@ export default React.createClass({
     docToRemove: React.PropTypes.object
   },
 
-  getInitialState () {
+  mixins: [ListenerMixin],
+
+  getInitialState() {
     return {
       docToRemove: null
     }
   },
 
-  componentDidMount () {
+  componentDidMount() {
     app.Actions.getActors()
   },
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (this.props.activeActor) {
       if (!prevProps.activeActor) {
         /**
@@ -57,7 +57,7 @@ export default React.createClass({
     }
   },
 
-  onClickActor (id, e) {
+  onClickActor(id, e) {
     const { activeActor } = this.props
     // prevent higher level panels from reacting
     e.stopPropagation()
@@ -65,18 +65,24 @@ export default React.createClass({
     app.Actions.getActor(idToGet)
   },
 
-  onClickActorCollapse (event) {
+  onClickActorCollapse(event) {
     // prevent higher level panels from reacting
     event.stopPropagation()
   },
 
-  onRemoveActor (docToRemove, event) {
+  onRemoveActor(docToRemove, event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ docToRemove })
   },
 
-  scrollToActivePanel () {
+  onToggleDraft(doc, event) {
+    event.preventDefault()
+    event.stopPropagation()
+    app.Actions.toggleDraftOfActor(doc)
+  },
+
+  scrollToActivePanel() {
     const node = ReactDOM.findDOMNode(this._activeActorPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
@@ -89,13 +95,13 @@ export default React.createClass({
     }
   },
 
-  removeActor (remove) {
+  removeActor(remove) {
     const { docToRemove } = this.state
     if (remove) app.Actions.removeActor(docToRemove)
     this.setState({ docToRemove: null })
   },
 
-  removeActorGlyph (doc) {
+  removeActorGlyph(doc) {
     const glyphStyle = {
       position: 'absolute',
       right: 10,
@@ -105,15 +111,15 @@ export default React.createClass({
     }
     return (
       <OverlayTrigger
-        placement='top'
+        placement="top"
         overlay={
-          <Tooltip id='removeThisActor'>
+          <Tooltip id="removeThisActor">
             remove
           </Tooltip>
         }
       >
         <Glyphicon
-          glyph='remove-circle'
+          glyph="remove-circle"
           style={glyphStyle}
           onClick={(event) =>
             this.onRemoveActor(doc, event)
@@ -123,21 +129,21 @@ export default React.createClass({
     )
   },
 
-  toggleDraftGlyph (doc) {
+  toggleDraftGlyph(doc) {
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : '#00D000'
     const glyphStyle = {
       position: 'absolute',
       right: 40,
       top: 6,
-      fontSize: 1.5 + 'em',
-      color: color
+      fontSize: '1.5em',
+      color
     }
     return (
       <OverlayTrigger
-        placement='top'
+        placement="top"
         overlay={
-          <Tooltip id='toggleDraft'>
+          <Tooltip id="toggleDraft">
             {doc.draft ? 'publish' : 'unpublish'}
           </Tooltip>
         }
@@ -145,19 +151,13 @@ export default React.createClass({
         <Glyphicon
           glyph={glyph}
           style={glyphStyle}
-          onClick={this.onToggleDraft.bind(this, doc)} /
-        >
+          onClick={this.onToggleDraft.bind(this, doc)}
+        />
       </OverlayTrigger>
     )
   },
 
-  onToggleDraft (doc, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    app.Actions.toggleDraftOfActor(doc)
-  },
-
-  actorsComponent () {
+  actorsComponent() {
     const {
       activeActor,
       editing,
@@ -178,7 +178,7 @@ export default React.createClass({
           cursor: 'pointer'
         }
         const panelBodyPadding = editing ? 0 : 15
-        const panelBodyMarginTop = editing ? -1 + 'px' : 0
+        const panelBodyMarginTop = editing ? '-1px' : 0
         const panelBodyStyle = {
           padding: panelBodyPadding,
           marginTop: panelBodyMarginTop,
@@ -191,32 +191,34 @@ export default React.createClass({
             borderBottomLeftRadius: 3
           })
         }
-        const ref = isActiveActor ? '_activeActorPanel' : '_actorPanel' + doc._id
+        const ref = isActiveActor ? '_activeActorPanel' : `_actorPanel${doc._id}`
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
           <div
             key={doc._id}
-            ref={(c) => this[ref] = c}
-            className='panel panel-default'
+            ref={(c) => {
+              this[ref] = c
+            }}
+            className="panel panel-default"
           >
             <div
-              className='panel-heading'
-              role='tab'
-              id={'heading' + index}
+              className="panel-heading"
+              role="tab"
+              id={`heading${index}`}
               onClick={this.onClickActor.bind(this, doc._id)}
               style={panelHeadingStyle}
             >
               <h4
-                className='panel-title'
+                className="panel-title"
               >
                 <a
-                  role='button'
-                  data-toggle='collapse'
-                  data-parent='#actorsAccordion'
-                  href={'#collapse' + index}
-                  aria-expanded='false'
-                  aria-controls={'#collapse' + index}
+                  role="button"
+                  data-toggle="collapse"
+                  data-parent="#actorsAccordion"
+                  href={`#collapse${index}`}
+                  aria-expanded="false"
+                  aria-controls={`#collapse${index}`}
                 >
                   {doc.category}
                 </a>
@@ -233,14 +235,14 @@ export default React.createClass({
             {
               isActiveActor &&
               <div
-                id={'#collapse' + index}
-                className='panel-collapse collapse in'
-                role='tabpanel'
-                aria-labelledby={'heading' + index}
+                id={`#collapse${index}`}
+                className="panel-collapse collapse in"
+                role="tabpanel"
+                aria-labelledby={`heading${index}`}
                 onClick={this.onClickActorCollapse}
               >
                 <div
-                  className='panel-body'
+                  className="panel-body"
                   style={panelBodyStyle}
                 >
                   <Actor
@@ -258,17 +260,17 @@ export default React.createClass({
     return null
   },
 
-  render () {
+  render() {
     const { activeActor, showNewActor, onCloseNewActor } = this.props
     const { docToRemove } = this.state
     const activeId = activeActor ? activeActor._id : null
     return (
       <div
-        className='actors'
+        className="actors"
       >
         <PanelGroup
           activeKey={activeId}
-          id='actorsAccordion'
+          id="actorsAccordion"
           accordion
         >
           {this.actorsComponent()}
