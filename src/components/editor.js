@@ -1,5 +1,3 @@
-'use strict'
-
 import React from 'react'
 import { Base64 } from 'js-base64'
 
