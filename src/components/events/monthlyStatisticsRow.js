@@ -1,10 +1,13 @@
 'use strict'
 
 import React from 'react'
-import moment from 'moment'
 import Event from './event.js'
 
-const mapEventComponents = (events, onRemoveEvent, email) =>
+const mapEventComponents = (
+  events,
+  onRemoveEvent,
+  email,
+) =>
   events.map((ev, key) =>
     <Event
       key={key}
@@ -14,11 +17,18 @@ const mapEventComponents = (events, onRemoveEvent, email) =>
     />
   )
 
-const MonthlyStatisticsRow = ({ dateRowObject: dRO, onRemoveEvent, email }) => {
+const MonthlyStatisticsRow = ({
+  dateRowObject: dRO,
+  onRemoveEvent,
+  email,
+}) => {
   const migrationEvents = mapEventComponents(dRO.migrationEvents, onRemoveEvent, email)
   const politicsEvents = mapEventComponents(dRO.politicsEvents, onRemoveEvent, email)
 
-  if (migrationEvents.length > 0 || politicsEvents.length > 0) {
+  if (
+    migrationEvents.length > 0 ||
+    politicsEvents.length > 0
+  ) {
     return (
       <div className="eventsTable-body-row monthlyStatisticsRow">
         <div className="eventsTable-body-cell eventsTable-cell-day">

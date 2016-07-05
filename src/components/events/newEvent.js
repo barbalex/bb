@@ -8,7 +8,7 @@ import {
   Alert,
   FormGroup,
   ControlLabel,
-  FormControl
+  FormControl,
 } from 'react-bootstrap'
 import moment from 'moment'
 import DateInput from './dateInput.js'
@@ -23,7 +23,7 @@ export default React.createClass({
     error: React.PropTypes.string
   },
 
-  getInitialState () {
+  getInitialState() {
     return {
       title: '',
       date: moment(),
@@ -31,17 +31,22 @@ export default React.createClass({
     }
   },
 
-  onChangeTitle (event) {
+  onChangeTitle(event) {
     const title = event.target.value
     this.setState({ title })
   },
 
-  onChangeDatePicker (event, picker) {
+  onChangeDatePicker(event, picker) {
     const date = moment(picker.startDate, 'DD.MM.YYYY')
     this.setState({ date })
   },
 
-  createNewEvent () {
+  close() {
+    const { onCloseNewEvent } = this.props
+    onCloseNewEvent()
+  },
+
+  createNewEvent() {
     const { title, date } = this.state
     if (title && date) {
       app.Actions.newEvent({ date, title })
@@ -52,16 +57,7 @@ export default React.createClass({
     }
   },
 
-  close () {
-    const { onCloseNewEvent } = this.props
-    onCloseNewEvent()
-  },
-
-  onHide () {
-    // seems that this method is needed ???
-  },
-
-  render () {
+  render() {
     const { title, date, error } = this.state
     const alertStyle = {
       marginTop: 10,
@@ -71,8 +67,9 @@ export default React.createClass({
       <Modal
         show
         onHide={this.close}
-        bsSize='large'
-        dialogClassName='editEvent'>
+        bsSize="large"
+        dialogClassName="editEvent"
+      >
         <Modal.Header>
           <Modal.Title>
             New event
@@ -85,7 +82,7 @@ export default React.createClass({
           >
             <ControlLabel>Title</ControlLabel>
             <FormControl
-              type='text'
+              type="text"
               value={title}
               onChange={this.onChangeTitle}
               autoFocus
@@ -99,8 +96,9 @@ export default React.createClass({
           {
             error &&
             <Alert
-              bsStyle='danger'
-              style={alertStyle}>
+              bsStyle="danger"
+              style={alertStyle}
+            >
               {error}
             </Alert>
           }
@@ -108,12 +106,14 @@ export default React.createClass({
 
         <Modal.Footer>
           <Button
-            onClick={this.close}>
+            onClick={this.close}
+          >
             discard input and close
           </Button>
           <Button
-            bsStyle='primary'
-            onClick={this.createNewEvent}>
+            bsStyle="primary"
+            onClick={this.createNewEvent}
+          >
             create new event
           </Button>
         </Modal.Footer>
