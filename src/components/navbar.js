@@ -128,40 +128,33 @@ export default React.createClass({
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
-        <Navbar.Collapse
-          eventKey={0}
-        >
+        <Navbar.Collapse>
           <Nav>
             <NavItem
-              eventKey={0}
               active={id === 'pages_commentaries'}
               onClick={() => this.onClickPage('pages_commentaries')}
             >
               Commentaries
             </NavItem>
             <NavItem
-              eventKey={1}
               active={id === 'pages_actors'}
               onClick={() => this.onClickPage('pages_actors')}
             >
               Actors
             </NavItem>
             <NavItem
-              eventKey={2}
               active={id === 'pages_publications'}
               onClick={() => this.onClickPage('pages_publications')}
             >
               Publications
             </NavItem>
             <NavItem
-              eventKey={3}
               active={id === 'pages_links'}
               onClick={() => this.onClickPage('pages_links')}
             >
               Links
             </NavItem>
             <NavItem
-              eventKey={4}
               active={id === 'pages_aboutUs'}
               onClick={() =>
                 this.onClickPage('pages_aboutUs')
@@ -189,7 +182,6 @@ export default React.createClass({
                   }
                 >
                   <NavItem
-                    eventKey={1}
                     onClick={this.onClickEdit}
                   >
                     <Glyphicon
@@ -209,7 +201,6 @@ export default React.createClass({
                   }
                 >
                   <NavItem
-                    eventKey={2}
                     onClick={onClickNewCommentary}
                   >
                     <Glyphicon
@@ -229,7 +220,6 @@ export default React.createClass({
                   }
                 >
                   <NavItem
-                    eventKey={3}
                     onClick={onClickNewEvent}
                   >
                     <Glyphicon
@@ -249,7 +239,6 @@ export default React.createClass({
                   }
                 >
                   <NavItem
-                    eventKey={4}
                     onClick={onClickNewActor}
                   >
                     <Glyphicon
@@ -269,7 +258,6 @@ export default React.createClass({
                   }
                 >
                   <NavItem
-                    eventKey={5}
                     onClick={onClickNewMonthlyEvent}
                   >
                     <Glyphicon
@@ -289,7 +277,6 @@ export default React.createClass({
                   }
                 >
                   <NavItem
-                    eventKey={6}
                     onClick={onClickNewPublication}
                   >
                     <Glyphicon
@@ -307,7 +294,6 @@ export default React.createClass({
                 }
               >
                 <NavItem
-                  eventKey={7}
                   onClick={this.onClickLogout}
                 >
                   <Glyphicon

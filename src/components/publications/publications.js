@@ -61,7 +61,6 @@ export default React.createClass({
           <Panel
             key={category}
             header={category}
-            eventKey={category}
             className={className}
             onClick={this.onClickCategory.bind(this, category)}
           >
