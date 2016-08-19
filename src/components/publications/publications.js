@@ -24,6 +24,7 @@ export default React.createClass({
   },
 
   onClickCategory(activePublicationCategory) {
+    // console.log('category clicked:', activePublicationCategory)
     app.Actions.setPublicationCategory(activePublicationCategory)
   },
 
@@ -51,19 +52,37 @@ export default React.createClass({
       return publicationCategories.map((category) => {
         const className = (
           category === activePublicationCategory ?
-          'category active' :
-          'category not-active'
+          'panel panel-default category active in' :
+          'panel panel-default category not-active'
         )
         // wanted to only build publicationsOfCategory if isActiveYear
         // but opening a category was way to hideous
         // const isActiveYear = category === activePublicationCategory
         return (
-          <Panel
+          <div
             key={category}
-            header={category}
             className={className}
             onClick={this.onClickCategory.bind(this, category)}
           >
+            <div
+              className="panel-heading"
+              role="tab"
+              id={`heading${category}`}
+            >
+              <h4 className="panel-title">
+                <a
+                  className="collapsed"
+                  role="button"
+                  data-toggle="collapse"
+                  data-parent="#publicationsAccordion"
+                  href="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  {category}
+                </a>
+              </h4>
+            </div>
             <PublicationsOfCategory
               category={category}
               publications={publications}
@@ -72,7 +91,7 @@ export default React.createClass({
               email={email}
               onSavePublicationArticle={onSavePublicationArticle}
             />
-          </Panel>
+          </div>
         )
       })
     }
@@ -97,12 +116,13 @@ export default React.createClass({
         <h1>
           Publications
         </h1>
-        <PanelGroup
-          activeKey={activePublicationCategory}
-          accordion
+        <div
+          className="panel-group"
+          id="publicationsAccordion"
+          role="tablist"
         >
           {this.publicationCategoriesComponent(activePublicationCategory)}
-        </PanelGroup>
+        </div>
         {
           showNewPublication &&
           <NewPublication

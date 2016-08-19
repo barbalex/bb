@@ -252,13 +252,12 @@ export default React.createClass({
     const { docToRemove } = this.state
     const activePublicationId = activePublication ? activePublication._id : null
     return (
-      <PanelGroup
-        activeKey={activePublicationId}
+      <div
+        className="panel-group"
         id={category}
         ref={(c) => {
           this[category] = c
         }}
-        accordion
       >
         {this.publicationsComponent(category)}
         {
@@ -268,7 +267,7 @@ export default React.createClass({
             removePublication={this.removePublication}
           />
         }
-      </PanelGroup>
+      </div>
     )
   }
 })
