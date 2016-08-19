@@ -1,7 +1,7 @@
 import app from 'ampersand-app'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { PanelGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Publication from './publication.js'
 import ModalRemovePublication from './modalRemovePublication.js'
 
@@ -248,9 +248,8 @@ export default React.createClass({
   },
 
   render() {
-    const { category, activePublication } = this.props
+    const { category } = this.props
     const { docToRemove } = this.state
-    const activePublicationId = activePublication ? activePublication._id : null
     return (
       <div
         className="panel-group"

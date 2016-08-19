@@ -1,7 +1,6 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { sortBy } from 'lodash'
-import { PanelGroup, Panel } from 'react-bootstrap'
 import PublicationsOfCategory from './publicationsOfCategory.js'
 import NewPublication from './newPublication.js'
 
@@ -50,18 +49,16 @@ export default React.createClass({
         return order
       })
       return publicationCategories.map((category) => {
-        const className = (
-          category === activePublicationCategory ?
-          'panel panel-default category active in' :
-          'panel panel-default category not-active'
-        )
-        // wanted to only build publicationsOfCategory if isActiveYear
-        // but opening a category was way to hideous
-        // const isActiveYear = category === activePublicationCategory
+        // deactivated when changed to showing open list:
+        // const className = (
+        //   category === activePublicationCategory ?
+        //   'panel panel-default category active' :
+        //   'panel panel-default category not-active'
+        // )
         return (
           <div
             key={category}
-            className={className}
+            className="panel panel-default category active"
             onClick={this.onClickCategory.bind(this, category)}
           >
             <div
@@ -75,7 +72,7 @@ export default React.createClass({
                   role="button"
                   data-toggle="collapse"
                   data-parent="#publicationsAccordion"
-                  href="#collapseThree"
+                  href={`#${category}`}
                   aria-expanded="false"
                   aria-controls="collapseThree"
                 >
